@@ -16,6 +16,11 @@ public class TransactionService {
     @Autowired
     private TransactionRepository transactionRepository;
 
+    @Transactional(readOnly = true)
+    public Observable<Transaction> findByAddress(final String address) {
+        return Observable.from(() -> transactionRepository.findByAddressFromOrTo(address).iterator());
+    }
+
     @Transactional
     public Observable<Transaction> getTransaction(final String transactionHash) {
         return transactionRepository.findOne(transactionHash)
@@ -23,20 +28,22 @@ public class TransactionService {
                 .orElse(
                         web3j.ethGetTransactionByHash(transactionHash).observable()
                                 .map(transaction -> transaction.getTransaction()
-                                        .map(tx -> Transaction.builder()
-                                                .blockHash(tx.getBlockHash())
-                                                .from(tx.getFrom())
-                                                .gas(tx.getGas())
-                                                .hash(tx.getHash())
-                                                .input(tx.getInput())
-                                                .to(tx.getTo())
-                                                .gasPrice(tx.getGasPrice())
-                                                .s(tx.getS())
-                                                .r(tx.getR())
-                                                .v(tx.getV())
-                                                .nonce(tx.getNonce())
-                                                .transactionIndex(tx.getTransactionIndex())
-                                                .build())
+                                        .map(tx ->
+                                                Transaction.builder()
+                                                        .blockHash(tx.getBlockHash())
+                                                        .fromAddress(tx.getFrom())
+                                                        .gas(tx.getGas())
+                                                        .hash(tx.getHash())
+                                                        .input(tx.getInput())
+                                                        .toAddress(tx.getTo())
+                                                        .value(tx.getValue())
+                                                        .gasPrice(tx.getGasPrice())
+                                                        .s(tx.getS())
+                                                        .r(tx.getR())
+                                                        .v(tx.getV())
+                                                        .nonce(tx.getNonce())
+                                                        .transactionIndex(tx.getTransactionIndex())
+                                                        .build())
                                         .map(tx -> transactionRepository.save(tx))
                                         .orElse(null))
                 );

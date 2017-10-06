@@ -1,0 +1,158 @@
+<!DOCTYPE html >
+<html lang="en"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="decorator/normal/decorator">
+<div layout:fragment="header-content">
+</div>
+
+<body>
+<div layout:fragment="main-content">
+    <section class="breadcrumbs g-bg-gray-light-v5 g-py-50">
+        <div class="container">
+            <div class="d-sm-flex text-center">
+                <div class="align-self-center">
+                    <h2 class="h3 g-font-weight-300 w-100 g-mb-10 g-mb-0--md">Address <span
+                            th:text="${hash}"></span></h2>
+                </div>
+
+                <div class="align-self-center ml-auto">
+                    <ul class="u-list-inline">
+                        <li class="list-inline-item g-mr-5">
+                            <a class="u-link-v5 g-color-main g-color-primary--hover" href="#">Home</a>
+                            <i class="g-color-gray-light-v2 g-ml-5">/</i>
+                        </li>
+                        <li class="list-inline-item g-mr-5">
+                            <a class="u-link-v5 g-color-main g-color-primary--hover" href="#">Addresses</a>
+                            <i class="g-color-gray-light-v2 g-ml-5">/</i>
+                        </li>
+                        <li class="list-inline-item g-color-primary">
+                            <span>Address</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="container g-pt-10 g-pb-30">
+
+        <!-- Nav tabs -->
+        <ul class="nav u-nav-v8-1" role="tablist" data-target="nav-8-1-default-hor-left"
+            data-tabs-mobile-type="slide-up-down"
+            data-btn-classes="btn btn-md btn-block rounded-0 u-btn-outline-lightgray">
+            <li class="nav-item">
+                <a class="nav-link active" data-toggle="tab" href="#blockInformation" role="tab">
+      <span class="u-nav-v8__icon u-icon-v3 u-icon-size--lg g-rounded-50x g-brd-around g-brd-4 g-brd-white">
+        <i class="fa fa-binoculars"></i>
+      </span>
+                    <strong class="text-uppercase u-nav-v8__title">Information</strong>
+                    <em class="u-nav-v8__description">General information about this block.</em>
+                </a>
+            </li>
+            <li th:if="${address.isContract()}" class="nav-item">
+                <a class="nav-link" data-toggle="tab" href="#addressCode" role="tab">
+      <span class="u-nav-v8__icon u-icon-v3 u-icon-size--lg g-rounded-50x g-brd-around g-brd-4 g-brd-white">
+        <i class="fa fa-code"></i>
+      </span>
+                    <strong class="text-uppercase u-nav-v8__title">Code</strong>
+                    <em class="u-nav-v8__description">This is a smart contract.</em>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" href="#blockComments" role="tab">
+      <span class="u-nav-v8__icon u-icon-v3 u-icon-size--lg g-rounded-50x g-brd-around g-brd-4 g-brd-white">
+        <i class="fa fa-comments-o"></i>
+      </span>
+                    <strong class="text-uppercase u-nav-v8__title">Comments</strong>
+                    <em class="u-nav-v8__description">Join the conversation.</em>
+                </a>
+            </li>
+        </ul>
+        <!-- End Nav tabs -->
+
+        <!-- Tab panes -->
+        <div id="nav-8-1-default-hor-left" class="tab-content g-pt-20">
+            <div class="tab-pane fade show active" id="blockInformation" role="tabpanel">
+
+                <div class="row text-center text-uppercase">
+                    <div class="col-lg-3 col-sm-6 g-mb-50">
+                        <div class="g-brd-around g-brd-gray-light-v3 g-pa-20">
+                            <div class="js-counter g-font-size-35 g-font-weight-300 g-mb-7"
+                                 th:text="${address.transactionCount}">
+                                52147
+                            </div>
+                            <h4 class="h5 g-color-gray-dark-v4 g-mb-5">Transaction Count</h4>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-6 col-sm-12 g-mb-50">
+                        <div class="g-brd-around g-brd-primary g-pa-20">
+                            <div class="g-font-size-35 g-font-weight-300 g-mb-7"
+                                 th:text="${address.balance}">24583
+                            </div>
+                            <h4 class="h5 g-color-gray-dark-v4 g-mb-5">Balance</h4>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-3 col-sm-6 g-mb-50">
+                        <div class="g-brd-around g-brd-gray-light-v3 g-pa-20">
+                            <div class="js-counter g-font-size-35 g-font-weight-300 g-mb-7"
+                            >7348
+                            </div>
+                            <h4 class="h5 g-color-gray-dark-v4 g-mb-5">placeholder</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tab-pane fade" id="addressCode" role="tabpanel">
+                <div class="row text-center text-uppercase">
+                    <div class="col-lg-12 col-sm-12 g-mb-50">
+                        <div id="accordion-03" class="u-accordion" role="tablist" aria-multiselectable="true">
+                            <!-- Card -->
+                            <div class="card rounded-0 g-mb-5">
+                                <div id="accordion-03-heading-01" class="u-accordion__header" role="tab">
+                                    <h5 class="mb-0">
+                                        <a class="d-block u-link-v5 g-color-main g-color-primary--hover g-font-size-16 " href="#accordion-03-body-01" data-toggle="collapse" data-parent="#accordion-03" aria-expanded="true" aria-controls="accordion-03-body-01">Code
+                                        </a>
+                                    </h5>
+                                </div>
+                                <div id="accordion-03-body-01" class="collapse hide" role="tabpanel" aria-labelledby="accordion-03-heading-01">
+                                    <div class="u-accordion__body g-brd-top g-brd-gray-light-v4 g-color-gray-dark-v5">
+                                        <span th:text="${address.code}">
+
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- End Card -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-pane fade" id="blockComments" role="tabpanel">
+                <h4>Comments will be implemented here</h4>
+            </div>
+        </div>
+        <!-- End Tab panes -->
+    </section>
+</div>
+
+<div layout:fragment="footer-content">
+    <!-- JS Implementing Plugins -->
+    <script th:src="@{/assets/vendor/appear.js}"></script>
+
+    <!-- JS Unify -->
+    <script th:src="@{/assets/js/components/hs.counter.js}"></script>
+    <!-- JS Plugins Init. -->
+    <script>
+		$(document).on('ready', function () {
+			// initialization of counters
+			var counters = $.HSCore.components.HSCounter.init('[class*="js-counter"]', {time: 1000});
+		});
+    </script>
+
+</div>
+</body>
+</html>

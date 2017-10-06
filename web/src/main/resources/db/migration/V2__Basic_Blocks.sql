@@ -1,17 +1,17 @@
-create table blocks(
-  hash varchar(66) primary key,
-  height BIGINT not null,
-  parent_hash varchar(66) default null,
-  sha3_uncles varchar(66) default null,
-  mined_by varchar(42) default null,
-  difficulty bigint default null,
-  difficulty_total bigint default null,
-  gas_limit bigint default null,
-  gas_used bigint default null,
-  receipts_root varchar(66) default null,
-  size bigint default null,
-  timestamp bigint default null,
-  nonce bigint default null,
-  extra_data text default null,
-  mix_hash varchar(66) default null
+CREATE TABLE blocks (
+  hash             VARCHAR(66) PRIMARY KEY,
+  height           BIGINT UNSIGNED NOT NULL,
+  parent_hash      VARCHAR(66)     DEFAULT NULL,
+  sha3_uncles      VARCHAR(66)     DEFAULT NULL,
+  mined_by         VARCHAR(42)     DEFAULT NULL,
+  difficulty       VARCHAR(100)    DEFAULT NULL,
+  difficulty_total VARCHAR(100)    DEFAULT NULL,
+  gas_limit        VARCHAR(100)    DEFAULT NULL,
+  gas_used         VARCHAR(100)    DEFAULT NULL,
+  receipts_root    VARCHAR(66)     DEFAULT NULL,
+  size             BIGINT UNSIGNED DEFAULT NULL,
+  timestamp        BIGINT UNSIGNED DEFAULT NULL,
+  nonce            BIGINT UNSIGNED DEFAULT NULL,
+  extra_data       TEXT            DEFAULT NULL,
+  mix_hash         VARCHAR(66)     DEFAULT NULL
 );

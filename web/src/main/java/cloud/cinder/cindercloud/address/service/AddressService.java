@@ -5,6 +5,7 @@ import org.springframework.stereotype.Component;
 import org.web3j.protocol.Web3j;
 import org.web3j.protocol.core.DefaultBlockParameterName;
 import org.web3j.protocol.core.methods.response.EthGetBalance;
+import org.web3j.protocol.core.methods.response.EthGetCode;
 import org.web3j.protocol.core.methods.response.EthGetTransactionCount;
 import rx.Observable;
 
@@ -15,6 +16,10 @@ public class AddressService {
 
     @Autowired
     private Web3j web3j;
+
+    public Observable<String> getCode(final String hash) {
+        return web3j.ethGetCode(hash, DefaultBlockParameterName.LATEST).observable().map(EthGetCode::getCode);
+    }
 
     public Observable<BigInteger> getBalance(final String address) {
         return web3j.ethGetBalance(address, DefaultBlockParameterName.LATEST).observable().map(
