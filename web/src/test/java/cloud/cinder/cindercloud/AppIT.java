@@ -18,6 +18,6 @@ public class AppIT {
 
     @Test
     public void ethereumAppCorrectlyStarts() throws Exception {
-        assertThat(environment.getProperty("spring.application.name")).isEqualTo("ZoekUwAannemer");
+        assertThat(environment.getProperty("spring.application.name")).isEqualTo("Cindercloud");
     }
 }
