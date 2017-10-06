@@ -1,0 +1,240 @@
+<html lang="en"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+>
+
+<div th:fragment="statistieken">
+    <th:block th:if="${subscription != null}">
+        <div class="card border-0 rounded-0 g-mb-50">
+            <!-- Panel Header -->
+            <div class="card-header d-flex align-items-center justify-content-between g-bg-gray-light-v5 border-0 g-mb-15">
+                <h3 class="h6 mb-0">
+                    <i class="icon-layers g-pos-rel g-top-1 g-mr-5"></i> Statistieken
+                </h3>
+            </div>
+            <!-- End Panel Header -->
+
+            <!-- Panel Body -->
+            <div class="js-scrollbar card-block u-info-v1-1 g-bg-white-gradient-v1--after g-height-300 g-pa-0 mCustomScrollbar _mCS_1 mCS-autoHide"
+                 style="overflow: visible;">
+                <div id="mCSB_1" class="mCustomScrollBox mCS-minimal-dark mCSB_vertical mCSB_outside"
+                     style="max-height: none;" tabindex="0">
+                    <div id="mCSB_1_container" class="mCSB_container"
+                         style="position:relative; top:0; left:0;" dir="ltr">
+                        <!-- Web Design -->
+                        <div class="g-mb-20">
+                            <h6 class="g-mb-10">Abonnement <span class="float-right g-ml-10"
+                                                                 th:text="${subscriptionPercentagePassed} + '%'">68%</span>
+                            </h6>
+                            <div class="js-hr-progress-bar progress g-bg-black-opacity-0_1 rounded-0 g-mb-5">
+                                <div class="js-hr-progress-bar-indicator progress-bar g-bg-cyan u-progress-bar--xs"
+                                     th:styleappend="'width: ' + ${subscriptionPercentagePassed} + '%'"
+                                     role="progressbar" aria-valuenow="68" aria-valuemin="0"
+                                     aria-valuemax="100"></div>
+                            </div>
+                        </div>
+                        <!-- End Web Design -->
+                    </div>
+                </div>
+            </div>
+            <!-- End Panel Body -->
+        </div>
+    </th:block>
+    <hr/>
+</div>
+
+<div th:fragment="bedrijfsInformatieTab" id="bedrijfsInformatieTab" class="tab-pane fade show active" role="tabpanel">
+    <h2 class="h4 g-font-weight-300">Beheer uw bedrijfsinformatie</h2>
+
+    <form th:object="${companyDto}" th:action="@{/mijn-bedrijf/save}" method="POST">
+
+        <div class="form-group row g-mb-25">
+            <label class="col-sm-3 col-form-label g-color-gray-dark-v2 g-font-weight-700 text-sm-right g-mb-10">Bedrijfsnaam</label>
+            <div class="col-sm-9">
+                <div class="input-group g-brd-primary--focus">
+                    <input class="form-control form-control-md border-right-0 rounded-0 g-py-13 pr-0" th:field="*{name}"
+                           placeholder="Officiële naam van uw bedrijf"/>
+                </div>
+            </div>
+        </div>
+        <div class="form-group row g-mb-25">
+            <label class="col-sm-3 col-form-label g-color-gray-dark-v2 g-font-weight-700 text-sm-right g-mb-10">Email</label>
+            <div class="col-sm-9">
+                <div class="input-group g-brd-primary--focus">
+                    <input class="form-control form-control-md border-right-0 rounded-0 g-py-13 pr-0"
+                           th:field="*{email}" placeholder="uw emailadres"/>
+                </div>
+            </div>
+        </div>
+        <div class="form-group row g-mb-25">
+            <label class="col-sm-3 col-form-label g-color-gray-dark-v2 g-font-weight-700 text-sm-right g-mb-10">Straat</label>
+            <div class="col-sm-9">
+                <div class="input-group g-brd-primary--focus">
+                    <input class="form-control form-control-md border-right-0 rounded-0 g-py-13 pr-0"
+                           th:field="*{street}" placeholder=""/>
+                </div>
+            </div>
+        </div>
+        <div class="form-group row g-mb-25">
+            <label class="col-sm-3 col-form-label g-color-gray-dark-v2 g-font-weight-700 text-sm-right g-mb-10">Huisnummer</label>
+            <div class="col-sm-9">
+                <div class="input-group g-brd-primary--focus">
+                    <input class="form-control form-control-md border-right-0 rounded-0 g-py-13 pr-0"
+                           th:field="*{streetNumber}" placeholder=""/>
+                </div>
+            </div>
+        </div>
+        <div class="form-group row g-mb-25">
+            <label class="col-sm-3 col-form-label g-color-gray-dark-v2 g-font-weight-700 text-sm-right g-mb-10">Postcode</label>
+            <div class="col-sm-9">
+                <div class="input-group g-brd-primary--focus">
+                    <input class="form-control form-control-md border-right-0 rounded-0 g-py-13 pr-0" type="number"
+                           th:field="*{postcode}" placeholder=""/>
+                </div>
+            </div>
+        </div>
+        <div class="form-group row g-mb-25">
+            <label class="col-sm-3 col-form-label g-color-gray-dark-v2 g-font-weight-700 text-sm-right g-mb-10">Plaats</label>
+            <div class="col-sm-9">
+                <div class="input-group g-brd-primary--focus">
+                    <input class="form-control form-control-md border-right-0 rounded-0 g-py-13 pr-0" th:field="*{city}"
+                           placeholder="Stad of gemeente"/>
+                </div>
+            </div>
+        </div>
+        <div class="form-group row g-mb-25">
+            <label class="col-sm-3 col-form-label g-color-gray-dark-v2 g-font-weight-700 text-sm-right g-mb-10">Telefoonnummer</label>
+            <div class="col-sm-9">
+                <div class="input-group g-brd-primary--focus">
+                    <input class="form-control form-control-md border-right-0 rounded-0 g-py-13 pr-0"
+                           th:field="*{phone}" placeholder=""/>
+                </div>
+            </div>
+        </div>
+        <div class="form-group row g-mb-25">
+            <label class="col-sm-3 col-form-label g-color-gray-dark-v2 g-font-weight-700 text-sm-right g-mb-10">BTW
+                nummer</label>
+            <div class="col-sm-9">
+                <div class="input-group g-brd-primary--focus">
+                    <input class="form-control form-control-md border-right-0 rounded-0 g-py-13 pr-0"
+                           th:field="*{vatNumber}" placeholder=""/>
+                </div>
+            </div>
+        </div>
+        <div class="form-group row g-mb-25">
+            <label class="col-sm-3 col-form-label g-color-gray-dark-v2 g-font-weight-700 text-sm-right g-mb-10">Website</label>
+            <div class="col-sm-9">
+                <div class="input-group g-brd-primary--focus">
+                    <input class="form-control form-control-md border-right-0 rounded-0 g-py-13 pr-0"
+                           th:field="*{website}" placeholder=""/>
+                </div>
+            </div>
+        </div>
+
+        <div class="text-sm-right">
+            <button type="submit" class="btn u-btn-darkgray rounded-0 g-py-12 g-px-25 g-mr-10">Cancel</button>
+            <button class="btn u-btn-primary rounded-0 g-py-12 g-px-25" type="submit">Save Changes</button>
+        </div>
+    </form>
+</div>
+
+<div th:fragment="abonnementTab" id="abonnementTab" class="tab-pane fade show" role="tabpanel">
+
+    <th:block th:if="${subscription != null}">
+        <h2 class="h4 g-font-weight-300">Hieronder vind u uw abonnementinformatie</h2>
+        <dl class="dl-horizontal">
+            <dt>
+                <strong>begindatum</strong>
+            </dt>
+            <dd>
+                <span th:text="${#dates.format(subscription.startDate, 'dd MMM yyyy')}"></span>
+            </dd>
+
+            <dt>
+                <strong>einddatum</strong>
+            </dt>
+            <dd>
+                <span th:text="${#dates.format(subscription.endDate, 'dd MMM yyyy')}"></span>
+            </dd>
+
+            <dt>
+                <strong>type</strong>
+            </dt>
+            <dd>
+                <span th:text="${subscription.subscriptionType.name}"></span>
+            </dd>
+        </dl>
+    </th:block>
+
+    <th:block th:if="${subscription == null}">
+        <h2 class="heading-md">Het lijkt er op dat u op dit moment geen abonnement heeft. </h2>
+
+        <a th:href="@{/prijzen}" class="btn btn-lg u-btn-outline-orange u-btn-hover-v1-1 g-mr-10 g-mb-15">bekijk onze abonnementen</a>
+    </th:block>
+
+</div>
+
+<div th:fragment="vakgebiedenTab" id="vakgebiedenTab" class="tab-pane fade show" role="tabpanel">
+    <h2 class="h4 g-font-weight-300">Beheer uw vakgebieden</h2>
+
+
+    <div th:if="${mijnSpecialisaties == null || mijnSpecialisaties.isEmpty()}">
+        <span class="label rounded label-orange">U hebt nog geen specialisaties</span>
+    </div>
+    <div th:unless="${mijnSpecialisaties == null || mijnSpecialisaties.isEmpty()}">
+        <ul class="u-list-inline">
+            <li th:each="mijnSpecialisatie : ${mijnSpecialisaties}" class="list-inline-item g-mb-10">
+                <a th:text="${mijnSpecialisatie.name} + ' &times;'" class="u-tags-v1 g-color-main g-brd-around g-brd-gray-light-v3 g-bg-gray-dark-v2--hover g-brd-gray-dark-v2--hover g-color-white--hover g-rounded-50 g-py-4 g-px-15" href="#">Web Design</a>
+            </li>
+        </ul>
+    </div>
+
+    <hr />
+
+    <form th:object="${specialisatieDto}" th:action="@{/mijn-bedrijf/add-specialisatie}" method="POST"
+          class="sky-form" id="sky-form4" action="#" novalidate="novalidate">
+        <div th:errorclass="u-has-error-v1" th:name="specialisatie" class="form-group row g-mb-25">
+            <label class="col-sm-3 col-form-label g-mb-10" for="specialisatie"
+            >Specialisatie</label>
+            <div class="col-sm-9">
+                <select th:field="*{specialisatie}" id="specialiatie" class="form-control u-form-control rounded-0"
+                        name="specialisatie">
+                    <option th:each="specialisatie : ${specialisaties}"
+                            th:value="${specialisatie.id}"
+                            th:text="${specialisatie.name}">spec
+                    </option>
+                </select>
+            </div>
+        </div>
+
+        <div class="text-sm-right">
+            <button class="btn u-btn-primary rounded-0 g-py-12 g-px-25" type="submit">voeg toe</button>
+        </div>
+    </form>
+
+</div>
+
+
+<div th:fragment="companySettings" class="col-md-9">
+    <ul class="nav nav-justified u-nav-v1-1 u-nav-primary g-brd-bottom--md g-brd-bottom-2 g-brd-primary g-mb-20"
+        role="tablist" data-target="nav-1-1-default-hor-left-underline" data-tabs-mobile-type="slide-up-down"
+        data-btn-classes="btn btn-md btn-block rounded-0 u-btn-outline-primary g-mb-20">
+        <li class="nav-item">
+            <a class="nav-link g-py-10 active" data-toggle="tab" href="#bedrijfsInformatieTab" role="tab">Bedrijfsinformatie</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link g-py-10" data-toggle="tab" href="#vakgebiedenTab" role="tab">Vakgebieden</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link g-py-10" data-toggle="tab" href="#abonnementTab" role="tab">Abonnement</a>
+        </li>
+    </ul>
+
+    <div class="tab-content">
+        <div th:replace="components/mycompany :: bedrijfsInformatieTab" th:remove="tag"></div>
+        <div th:replace="components/mycompany :: vakgebiedenTab" th:remove="tag"></div>
+        <div th:replace="components/mycompany :: abonnementTab" th:remove="tag"></div>
+    </div>
+</div>
+
+</html>

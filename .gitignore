@@ -10,3 +10,5 @@ web/out/
 .idea
 out/
 
+build/
+gradle/d
