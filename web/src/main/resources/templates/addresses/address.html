@@ -104,6 +104,49 @@
                         </div>
                     </div>
                 </div>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <thead>
+                                <tr>
+                                    <th>Hash</th>
+                                    <th>Block</th>
+                                    <th>From</th>
+                                    <th>To</th>
+                                    <th>Value</th>
+                                </tr>
+                                </thead>
+
+                                <tbody>
+                                <tr th:each="tx : ${address.transactions}">
+                                    <td><a th:href="@{'/tx/' + ${tx.hash}}"><span th:text="${tx.prettyHash()}"></span></a></td>
+                                    <td><a th:href="@{'/blocks/' + ${tx.blockHash}}"><span th:text="${tx.prettyBlockHash()}"></span></a></td>
+                                    <td>
+                                        <a th:href="@{'/address/' + ${tx.fromAddress}}" th:if="${tx.direction(hash) == T(cloud.cinder.cindercloud.transaction.model.Transaction.Direction).IN}"><span th:text="${tx.prettyFromAddress()}"></span></a>
+                                        <span th:unless="${tx.direction(hash) == T(cloud.cinder.cindercloud.transaction.model.Transaction.Direction).IN}"  th:text="${tx.prettyFromAddress()}"></span>
+                                    </td>
+                                    <td>
+                                        <div th:if="${tx.isContractCreation()}">
+                                            <a th:href="@{'/address/' + ${tx.creates}}" th:unless="${tx.direction(hash) == T(cloud.cinder.cindercloud.transaction.model.Transaction.Direction).IN}"><span th:text="${tx.prettyToAddress()}"></span></a>
+                                            <span th:if="${tx.direction(hash) == T(cloud.cinder.cindercloud.transaction.model.Transaction.Direction).IN}" th:text="${tx.prettyToAddress()}"></span>
+                                        </div>
+                                        <div th:unless="${tx.isContractCreation()}">
+                                            <a th:href="@{'/address/' + ${tx.creates}}" th:unless="${tx.direction(hash) == T(cloud.cinder.cindercloud.transaction.model.Transaction.Direction).IN}"><span th:text="${tx.prettyToAddress()}"></span></a>
+                                            <span th:if="${tx.direction(hash) == T(cloud.cinder.cindercloud.transaction.model.Transaction.Direction).IN}" th:text="${tx.prettyToAddress()}"></span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <span class="u-label u-label-success g-color-white" th:text="${tx.formattedValue()}">0</span>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <!-- End Table Striped Rows -->
+                </div>
             </div>
 
             <div class="tab-pane fade" id="addressCode" role="tabpanel">
@@ -114,11 +157,15 @@
                             <div class="card rounded-0 g-mb-5">
                                 <div id="accordion-03-heading-01" class="u-accordion__header" role="tab">
                                     <h5 class="mb-0">
-                                        <a class="d-block u-link-v5 g-color-main g-color-primary--hover g-font-size-16 " href="#accordion-03-body-01" data-toggle="collapse" data-parent="#accordion-03" aria-expanded="true" aria-controls="accordion-03-body-01">Code
+                                        <a class="d-block u-link-v5 g-color-main g-color-primary--hover g-font-size-16 "
+                                           href="#accordion-03-body-01" data-toggle="collapse"
+                                           data-parent="#accordion-03" aria-expanded="true"
+                                           aria-controls="accordion-03-body-01">Code
                                         </a>
                                     </h5>
                                 </div>
-                                <div id="accordion-03-body-01" class="collapse hide" role="tabpanel" aria-labelledby="accordion-03-heading-01">
+                                <div id="accordion-03-body-01" class="collapse hide" role="tabpanel"
+                                     aria-labelledby="accordion-03-heading-01">
                                     <div class="u-accordion__body g-brd-top g-brd-gray-light-v4 g-color-gray-dark-v5">
                                         <span th:text="${address.code}">
 

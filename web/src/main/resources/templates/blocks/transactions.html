@@ -1,0 +1,55 @@
+<html lang="en"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+>
+
+<div th:fragment="blockTransactions">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th>Hash</th>
+                        <th>Block</th>
+                        <th>From</th>
+                        <th>To</th>
+                        <th>Value</th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                    <tr th:each="tx : ${transactions}">
+                        <td><a th:href="@{'/tx/' + ${tx.hash}}"><span th:text="${tx.prettyHash()}"></span></a></td>
+                        <td><a th:href="@{'/blocks/' + ${tx.blockHash}}"><span th:text="${tx.prettyBlockHash()}"></span></a>
+                        </td>
+                        <td>
+                            <a th:href="@{'/address/' + ${tx.fromAddress}}"
+                               th:if="${tx.direction(hash) == T(cloud.cinder.cindercloud.transaction.model.Transaction.Direction).IN}"><span
+                                    th:text="${tx.prettyFromAddress()}"></span></a>
+                            <span th:unless="${tx.direction(hash) == T(cloud.cinder.cindercloud.transaction.model.Transaction.Direction).IN}"
+                                  th:text="${tx.prettyFromAddress()}"></span>
+                        </td>
+                        <td>
+                            <div th:if="${tx.isContractCreation()}">
+                                <span th:text="${tx.prettyToAddress()}"></span>
+                            </div>
+                            <div th:unless="${tx.isContractCreation()}">
+                                <a th:href="@{'/address/' + ${tx.creates}}"><span
+                                        th:text="${tx.prettyToAddress()}"></span></a>
+                            </div>
+                        </td>
+                        <td>
+                            <span class="u-label u-label-success g-color-white"
+                                  th:text="${tx.formattedValue()}">0</span>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <!-- End Table Striped Rows -->
+    </div>
+</div>
+
+</html>

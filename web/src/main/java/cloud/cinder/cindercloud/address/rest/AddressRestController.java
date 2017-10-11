@@ -17,7 +17,7 @@ public class AddressRestController {
     private AddressService addressService;
 
     /*
-     * Balance in wei
+     * Balance in weihr
      */
     @RequestMapping(value = "/balance")
     public DeferredResult<BigInteger> getBalance(@PathVariable("address") final String address) {

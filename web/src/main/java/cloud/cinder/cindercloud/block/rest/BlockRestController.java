@@ -18,7 +18,11 @@ public class BlockRestController {
     @RequestMapping(value = "/{hash}")
     public DeferredResult<Block> getBlock(@PathVariable("hash") final String hash) {
         DeferredResult<Block> result = new DeferredResult<>();
-        blockService.getBlock(hash).subscribe(result::setResult);
+        blockService.getBlock(hash).subscribe(block -> {
+            result.setResult(block);
+        }, error -> {
+            error.printStackTrace();
+        });
         return result;
     }
 

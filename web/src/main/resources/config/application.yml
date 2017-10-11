@@ -35,7 +35,7 @@ server:
     session:
         cookie:
             http-only: true
-debug: true
+debug: false
 
 endpoints:
   enabled: true
@@ -47,9 +47,9 @@ management:
 logging:
   level:
     org:
-      springframework: debug
-    eu:
-      deswaef: DEBUG
+      springframework: info
+    cloud:
+      cinder: DEBUG
 
 
 cloud:
@@ -57,6 +57,6 @@ cloud:
     ethereum:
       endpoint:
         token:
-        url: https://rinkeby.de-swaef.eu
+        url: https://kovan.de-swaef.eu
 
 
