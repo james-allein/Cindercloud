@@ -1,0 +1,6 @@
+cloud:
+  cinder:
+    ethereum:
+      endpoint:
+        token:
+        url: https://rinkeby.de-swaef.eu

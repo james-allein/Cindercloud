@@ -11,4 +11,6 @@ web/out/
 out/
 
 build/
-gradle/d
+gradle/
+
+.gradle
