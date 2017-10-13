@@ -57,7 +57,9 @@ public class TransactionService {
                                                         .transactionIndex(tx.getTransactionIndex())
                                                         .build())
                                         .map(tx -> transactionRepository.save(tx))
-                                        .orElse(null))
+                                        .orElseThrow(() -> {
+                                            throw new IllegalArgumentException("Transaction with this hash was not found");
+                                        }))
                 );
     }
 

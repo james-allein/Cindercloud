@@ -4,3 +4,5 @@ cloud:
       endpoint:
         token:
         url: https://rinkeby.de-swaef.eu
+    sqs:
+      name: cindercloud_rinkeby

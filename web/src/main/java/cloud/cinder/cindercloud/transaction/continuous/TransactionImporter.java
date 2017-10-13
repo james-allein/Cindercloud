@@ -6,6 +6,7 @@ import cloud.cinder.cindercloud.transaction.repository.TransactionRepository;
 import cloud.cinder.cindercloud.transaction.service.TransactionService;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.aws.messaging.listener.SqsMessageDeletionPolicy;
 import org.springframework.cloud.aws.messaging.listener.annotation.SqsListener;
@@ -18,6 +19,7 @@ import javax.annotation.PostConstruct;
 import java.io.IOException;
 
 @Component
+@Slf4j
 public class TransactionImporter {
 
     @Autowired
@@ -34,8 +36,8 @@ public class TransactionImporter {
         objectMapper.enable(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT);
     }
 
-    @SqsListener(value = "cindercloud_kovan", deletionPolicy = SqsMessageDeletionPolicy.ON_SUCCESS)
-    public void importTransactions(final String blockAsString ,
+    @SqsListener(value = "${cloud.cinder.sqs.name}", deletionPolicy = SqsMessageDeletionPolicy.ON_SUCCESS)
+    public void importTransactions(final String blockAsString,
                                    @Header("event_type") String eventType) {
 
         if ("block_with_transactions_imported".equals(eventType)) {
@@ -49,7 +51,7 @@ public class TransactionImporter {
                         .map(tx -> ((EthBlock.TransactionObject) tx.get()).get())
                         .filter(tx -> !transactionRepository.exists(tx.getHash()))
                         .map(tx -> {
-                            System.out.println(tx.getHash());
+                            log.debug("importing transaction {}", tx.getHash());
                             return Transaction.builder()
                                     .blockHash(tx.getBlockHash())
                                     .fromAddress(tx.getFrom())
@@ -68,12 +70,11 @@ public class TransactionImporter {
                                     .build();
                         }).forEach(transactionService::save);
             } catch (IOException e) {
+                log.error("Error trying to import transactions from block", e);
                 e.printStackTrace();
             }
         } else {
-            System.out.println("not a valid messagetype");
+            log.warn("not a valid eventtype: ", eventType);
         }
-
     }
-
 }

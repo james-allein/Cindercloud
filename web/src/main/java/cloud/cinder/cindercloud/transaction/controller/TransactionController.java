@@ -20,10 +20,12 @@ public class TransactionController {
     @RequestMapping(value = "/{hash}", method = GET)
     public DeferredResult<ModelAndView> getTransaction(@PathVariable("hash") final String hash) {
         final DeferredResult<ModelAndView> result = new DeferredResult<>();
-        final ModelAndView modelAndView = new ModelAndView("transactions/transaction");
         transactionService.getTransaction(hash).subscribe(tx -> {
+            final ModelAndView modelAndView = new ModelAndView("transactions/transaction");
             modelAndView.addObject("tx", tx);
             result.setResult(modelAndView);
+        }, onError -> {
+            result.setErrorResult("error");
         });
         return result;
     }
