@@ -36,5 +36,4 @@ public class Block {
     private BigInteger timestamp;
     private BigInteger nonce;
     private String extraData;
-
 }

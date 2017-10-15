@@ -36,31 +36,36 @@ public class TransactionService {
     public Observable<Transaction> getTransaction(final String transactionHash) {
         return transactionRepository.findOne(transactionHash)
                 .map(Observable::just)
-                .orElse(
-                        web3j.ethGetTransactionByHash(transactionHash).observable()
-                                .map(transaction -> transaction.getTransaction()
-                                        .map(tx ->
-                                                Transaction.builder()
-                                                        .blockHash(tx.getBlockHash())
-                                                        .fromAddress(tx.getFrom())
-                                                        .gas(tx.getGas())
-                                                        .hash(tx.getHash())
-                                                        .input(tx.getInput())
-                                                        .toAddress(tx.getTo())
-                                                        .value(tx.getValue())
-                                                        .gasPrice(tx.getGasPrice())
-                                                        .creates(tx.getCreates())
-                                                        .s(tx.getS())
-                                                        .r(tx.getR())
-                                                        .v(tx.getV())
-                                                        .nonce(tx.getNonce())
-                                                        .transactionIndex(tx.getTransactionIndex())
-                                                        .build())
-                                        .map(tx -> transactionRepository.save(tx))
-                                        .orElseThrow(() -> {
-                                            throw new IllegalArgumentException("Transaction with this hash was not found");
-                                        }))
-                );
+                .orElse(getInternalTransaction(transactionHash));
+    }
+
+    private Observable<Transaction> getInternalTransaction(final String transactionHash) {
+        try {
+            return web3j.ethGetTransactionByHash(transactionHash)
+                    .observable()
+                    .filter(x -> x.getTransaction().isPresent())
+                    .map(transaction -> transaction.getTransaction().get())
+                    .map(tx ->
+                            Transaction.builder()
+                                    .blockHash(tx.getBlockHash())
+                                    .fromAddress(tx.getFrom())
+                                    .gas(tx.getGas())
+                                    .hash(tx.getHash())
+                                    .input(tx.getInput())
+                                    .toAddress(tx.getTo())
+                                    .value(tx.getValue())
+                                    .gasPrice(tx.getGasPrice())
+                                    .creates(tx.getCreates())
+                                    .s(tx.getS())
+                                    .r(tx.getR())
+                                    .v(tx.getV())
+                                    .nonce(tx.getNonce())
+                                    .transactionIndex(tx.getTransactionIndex())
+                                    .build())
+                    .map(tx -> transactionRepository.save(tx));
+        } catch (Exception ex) {
+            return Observable.error(ex);
+        }
     }
 
 }

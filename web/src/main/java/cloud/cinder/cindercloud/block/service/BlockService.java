@@ -5,6 +5,9 @@ import cloud.cinder.cindercloud.block.repository.BlockRepository;
 import cloud.cinder.cindercloud.infrastructure.service.SqsQueueSender;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import org.web3j.protocol.Web3j;
@@ -78,6 +81,16 @@ public class BlockService {
                                         .build())
                                 .map(this::save)
                 );
+    }
+
+    @Transactional(readOnly = true)
+    public Page<Block> getLastImportedBlock() {
+        return blockRepository.findLatestBlock(new PageRequest(0, 1));
+    }
+
+    @Transactional(readOnly = true)
+    public Page<Block> getBlocks(final Pageable pageable) {
+        return blockRepository.findAllOrderByHeightDesc(pageable);
     }
 
 }
