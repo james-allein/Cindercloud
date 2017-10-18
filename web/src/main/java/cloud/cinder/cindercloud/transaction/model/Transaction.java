@@ -5,12 +5,14 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.ocpsoft.prettytime.PrettyTime;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.math.BigInteger;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
+import java.util.Date;
 
 import static cloud.cinder.cindercloud.utils.WeiUtils.format;
 
@@ -41,6 +43,10 @@ public class Transaction {
     private String toAddress;
     private String creates;
 
+    @Column(name = "block_timestamp")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date blockTimestamp;
+
     public boolean isContractCreation() {
         return (StringUtils.isNullOrEmpty(toAddress) && !StringUtils.isNullOrEmpty(creates));
     }
@@ -70,6 +76,11 @@ public class Transaction {
             return creates.substring(0, 18) + "... [contract creation]";
         }
         return toAddress.substring(0, 18) + "...";
+    }
+
+    public String prettyBlockTimestamp() {
+        final PrettyTime prettyTime = new PrettyTime(java.sql.Date.from(LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant()));
+        return prettyTime.format(blockTimestamp);
     }
 
     public Direction direction(final String address) {

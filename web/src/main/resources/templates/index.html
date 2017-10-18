@@ -1,7 +1,6 @@
 <!DOCTYPE html >
 <html lang="en"
       xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorator="decorator/normal/decorator">
 <div layout:fragment="header-content">
@@ -10,7 +9,32 @@
 <body>
 <div layout:fragment="main-content">
 
+    <section class="g-bg-secondary g-py-50">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 g-mb-30 g-mb-0--lg" id="lastBlocks">
 
+                </div>
+                <div class="col-lg-8 g-mb-30 g-mb-0--lg" id="lastTransactions">
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+</div>
+<div layout:fragment="footer-content">
+    <script>
+		$(document).on('ready', function () {
+		    $.get('/?section=blocks', function(result) {
+				$("#lastBlocks").html(result);
+			})
+			$.get('/?section=transactions', function(result) {
+				$("#lastTransactions").html(result);
+			})
+		});
+    </script>
 </div>
 </body>
 </html>

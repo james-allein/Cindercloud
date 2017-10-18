@@ -1,0 +1,94 @@
+<html lang="en"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+>
+
+<div th:fragment="blocks">
+    <h2>Last Blocks</h2>
+    <hr />
+
+    <div th:each="block : ${blocks}">
+
+        <article>
+            <h2 class="h4 g-mb-15">
+                <a class="u-link-v5 g-color-gray-dark-v1 g-color-primary--hover" href="#"
+                   th:href="@{/blocks/} + ${block.hash}"
+                   th:text="${block.height}">Hash</a>
+            </h2>
+
+            <div class="d-lg-flex justify-content-between align-items-center g-mb-15">
+                <!-- Search Info -->
+                <ul class="list-inline g-mb-10 g-mb-0--lg">
+                    <li class="list-inline-item g-mr-30">
+                        <i class="icon-clock g-pos-rel g-top-1 g-color-gray-dark-v5 g-mr-5"></i> <span
+                            th:text="${block.prettyTimestamp()}">2 weeks ago</span>
+                    </li>
+                </ul>
+                <!-- End Search Info -->
+
+                <!-- Share, Print and More -->
+                <ul class="list-inline mb-0">
+                    <li class="list-inline-item g-mr-20">
+                        <a class="u-link-v5 g-color-gray-dark-v5 g-color-primary--hover"
+                           th:href="@{/blocks/} + ${block.hash}" href="#">
+                            <i class="icon-check g-pos-rel g-top-1 g-mr-5"></i> View
+                        </a>
+                    </li>
+
+                </ul>
+                <!-- End Share, Print and More -->
+            </div>
+        </article>
+        <hr class="g-brd-gray-light-v4 g-my-20" />
+    </div>
+
+
+</div>
+
+<div th:fragment="transactions">
+    <h2>Last Transactions</h2>
+    <hr />
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th>Hash</th>
+                    <th>Block</th>
+                    <th>From</th>
+                    <th>To</th>
+                    <th>Value</th>
+                </tr>
+                </thead>
+
+                <tbody>
+                <tr th:each="tx : ${transactions}">
+                    <td><a th:href="@{'/tx/' + ${tx.hash}}"><span th:text="${tx.prettyHash()}"></span></a></td>
+                    <td><a th:href="@{'/blocks/' + ${tx.blockHash}}"><span th:text="${tx.prettyBlockHash()}"></span></a>
+                    </td>
+                    <td>
+                        <a th:href="@{'/address/' + ${tx.fromAddress}}"
+                           th:if="${tx.direction(hash) == T(cloud.cinder.cindercloud.transaction.model.Transaction.Direction).IN}"><span
+                                th:text="${tx.prettyFromAddress()}"></span></a>
+                        <span th:unless="${tx.direction(hash) == T(cloud.cinder.cindercloud.transaction.model.Transaction.Direction).IN}"
+                              th:text="${tx.prettyFromAddress()}"></span>
+                    </td>
+                    <td>
+                        <div th:if="${tx.isContractCreation()}">
+                            <span th:text="${tx.prettyToAddress()}"></span>
+                        </div>
+                        <div th:unless="${tx.isContractCreation()}">
+                            <a th:href="@{'/address/' + ${tx.creates}}"><span
+                                    th:text="${tx.prettyToAddress()}"></span></a>
+                        </div>
+                    </td>
+                    <td>
+                            <span class="u-label u-label-success g-color-white"
+                                  th:text="${tx.formattedValue()}">0</span>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+</div>
+
+</html>

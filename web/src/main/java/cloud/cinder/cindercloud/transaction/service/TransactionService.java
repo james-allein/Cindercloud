@@ -1,21 +1,31 @@
 package cloud.cinder.cindercloud.transaction.service;
 
+import cloud.cinder.cindercloud.block.model.Block;
+import cloud.cinder.cindercloud.block.service.BlockService;
 import cloud.cinder.cindercloud.transaction.model.Transaction;
 import cloud.cinder.cindercloud.transaction.repository.TransactionRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.web3j.protocol.Web3j;
 import rx.Observable;
 
+import java.util.List;
+import java.util.Objects;
+
 @Service
+@Slf4j
 public class TransactionService {
 
     @Autowired
     private Web3j web3j;
     @Autowired
     private TransactionRepository transactionRepository;
+    @Autowired
+    private BlockService blockService;
 
     @Transactional(readOnly = true)
     public Observable<Transaction> findByAddress(final String address) {
@@ -39,14 +49,21 @@ public class TransactionService {
                 .orElse(getInternalTransaction(transactionHash));
     }
 
+    @Transactional(readOnly = true)
+    public List<Transaction> getLastTransactions(Pageable pageable) {
+        return transactionRepository.findAllOrOrderByBlockTimestamp(pageable).getContent();
+    }
+
     private Observable<Transaction> getInternalTransaction(final String transactionHash) {
         try {
             return web3j.ethGetTransactionByHash(transactionHash)
                     .observable()
                     .filter(x -> x.getTransaction().isPresent())
                     .map(transaction -> transaction.getTransaction().get())
-                    .map(tx ->
-                            Transaction.builder()
+                    .map(tx -> {
+                        final Block block = blockService.getBlock(tx.getBlockHash()).toBlocking().first();
+                        if (block != null) {
+                            return Transaction.builder()
                                     .blockHash(tx.getBlockHash())
                                     .fromAddress(tx.getFrom())
                                     .gas(tx.getGas())
@@ -61,9 +78,18 @@ public class TransactionService {
                                     .v(tx.getV())
                                     .nonce(tx.getNonce())
                                     .transactionIndex(tx.getTransactionIndex())
-                                    .build())
+                                    .build();
+                        } else {
+                            log.error("couldnt import {} because we dont have the block yet", tx.getHash());
+                            return null;
+                        }
+                    })
+                    .filter(Objects::nonNull)
                     .map(tx -> transactionRepository.save(tx));
-        } catch (Exception ex) {
+        } catch (
+                Exception ex)
+
+        {
             return Observable.error(ex);
         }
     }

@@ -1,6 +1,7 @@
 package cloud.cinder.cindercloud.transaction.continuous;
 
 import cloud.cinder.cindercloud.block.model.Block;
+import cloud.cinder.cindercloud.block.service.BlockService;
 import cloud.cinder.cindercloud.transaction.model.Transaction;
 import cloud.cinder.cindercloud.transaction.repository.TransactionRepository;
 import cloud.cinder.cindercloud.transaction.service.TransactionService;
@@ -17,6 +18,10 @@ import org.web3j.protocol.core.methods.response.EthBlock;
 
 import javax.annotation.PostConstruct;
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
+import java.util.Date;
+import java.util.Objects;
 
 @Component
 @Slf4j
@@ -30,6 +35,8 @@ public class TransactionImporter {
     private TransactionRepository transactionRepository;
     @Autowired
     private ObjectMapper objectMapper;
+    @Autowired
+    private BlockService blockService;
 
     @PostConstruct
     public void init() {
@@ -42,7 +49,7 @@ public class TransactionImporter {
 
         if ("block_with_transactions_imported".equals(eventType)) {
             try {
-                Block convertedBlock = objectMapper.readValue(blockAsString, Block.class);
+                final Block convertedBlock = objectMapper.readValue(blockAsString, Block.class);
                 web3j.ethGetBlockByHash(convertedBlock.getHash(), true)
                         .observable()
                         .filter(bk -> bk.getBlock() != null)
@@ -52,23 +59,32 @@ public class TransactionImporter {
                         .filter(tx -> !transactionRepository.exists(tx.getHash()))
                         .map(tx -> {
                             log.debug("importing transaction {}", tx.getHash());
-                            return Transaction.builder()
-                                    .blockHash(tx.getBlockHash())
-                                    .fromAddress(tx.getFrom())
-                                    .gas(tx.getGas())
-                                    .hash(tx.getHash())
-                                    .input(tx.getInput())
-                                    .toAddress(tx.getTo())
-                                    .value(tx.getValue())
-                                    .gasPrice(tx.getGasPrice())
-                                    .creates(tx.getCreates())
-                                    .s(tx.getS())
-                                    .r(tx.getR())
-                                    .v(tx.getV())
-                                    .nonce(tx.getNonce())
-                                    .transactionIndex(tx.getTransactionIndex())
-                                    .build();
-                        }).forEach(transactionService::save);
+                            final Block block = blockService.getBlock(tx.getBlockHash()).toBlocking().first();
+                            if (block != null) {
+                                return Transaction.builder()
+                                        .blockHash(tx.getBlockHash())
+                                        .fromAddress(tx.getFrom())
+                                        .gas(tx.getGas())
+                                        .hash(tx.getHash())
+                                        .input(tx.getInput())
+                                        .toAddress(tx.getTo())
+                                        .value(tx.getValue())
+                                        .blockTimestamp(Date.from(LocalDateTime.ofEpochSecond(block.getTimestamp().longValue(), 0, ZoneOffset.UTC).atOffset(ZoneOffset.UTC).toInstant()))
+                                        .gasPrice(tx.getGasPrice())
+                                        .creates(tx.getCreates())
+                                        .s(tx.getS())
+                                        .r(tx.getR())
+                                        .v(tx.getV())
+                                        .nonce(tx.getNonce())
+                                        .transactionIndex(tx.getTransactionIndex())
+                                        .build();
+                            } else {
+                                log.error("couldnt import {} because we dont have the block yet", tx.getHash());
+                                return null;
+                            }
+                        })
+                        .filter(Objects::nonNull)
+                        .forEach(transactionService::save);
             } catch (IOException e) {
                 log.error("Error trying to import transactions from block", e);
                 e.printStackTrace();

@@ -89,7 +89,7 @@ public class BlockService {
     }
 
     @Transactional(readOnly = true)
-    public Page<Block> getBlocks(final Pageable pageable) {
+    public Page<Block> getLastBlocks(final Pageable pageable) {
         return blockRepository.findAllOrderByHeightDesc(pageable);
     }
 

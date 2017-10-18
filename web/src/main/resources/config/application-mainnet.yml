@@ -3,6 +3,6 @@ cloud:
     ethereum:
       endpoint:
         token:
-        url: https://mainnet.de-swaef.eu
+        url: https://parity.cinder.cloud
     sqs:
       name: cindercloud_mainnet

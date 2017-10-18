@@ -21,7 +21,7 @@ public class BlockRestController {
 
     @RequestMapping(method = RequestMethod.GET)
     public List<Block> getPagedBlocks(Pageable pageable) {
-        return blockService.getBlocks(pageable).getContent();
+        return blockService.getLastBlocks(pageable).getContent();
     }
 
     @RequestMapping(value = "/{hash}")

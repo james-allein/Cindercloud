@@ -38,7 +38,7 @@ public class BlockController {
         transactionService.getTransactionsForBlock(hash)
                 .toList()
                 .map(x -> {
-                    final ModelAndView modelAndView = new ModelAndView();
+                    final ModelAndView modelAndView = new ModelAndView("blocks/transactions :: blockTransactions");
                     modelAndView.addObject("transactions", x);
                     return modelAndView;
                 })
