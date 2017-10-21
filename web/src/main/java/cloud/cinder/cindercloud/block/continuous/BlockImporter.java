@@ -46,6 +46,7 @@ public class BlockImporter {
                         .sha3Uncles(block.getSha3Uncles())
                         .nonce(block.getNonceRaw() != null ? block.getNonce() : BigInteger.ZERO)
                         .size(block.getSize())
+                        .txCount((long) block.getTransactions().size())
                         .timestamp(block.getTimestamp())
                         .parentHash(block.getParentHash())
                         .receiptsRoot(block.getReceiptsRoot())

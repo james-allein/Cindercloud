@@ -85,7 +85,7 @@ public class BlockService {
 
     @Transactional(readOnly = true)
     public Page<Block> getLastImportedBlock() {
-        return blockRepository.findLatestBlock(new PageRequest(0, 1));
+        return blockRepository.findAllOrderByHeightDesc(new PageRequest(0, 1));
     }
 
     @Transactional(readOnly = true)
@@ -93,4 +93,8 @@ public class BlockService {
         return blockRepository.findAllOrderByHeightDesc(pageable);
     }
 
+    @Transactional(readOnly = true)
+    public Page<Block> search(final String searchKey, final Pageable pageable) {
+        return blockRepository.search(searchKey, pageable);
+    }
 }

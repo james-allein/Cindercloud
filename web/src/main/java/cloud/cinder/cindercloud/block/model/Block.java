@@ -36,6 +36,9 @@ public class Block {
     private BigInteger difficultyTotal;
     private BigInteger gasLimit;
     private BigInteger gasUsed;
+
+    @Column(name = "tx_count")
+    private Long txCount;
     private String receiptsRoot;
     private BigInteger size;
     private BigInteger timestamp;
