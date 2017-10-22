@@ -1,5 +1,7 @@
 package cloud.cinder.cindercloud.block.controller;
 
+import cloud.cinder.cindercloud.address.model.SpecialAddress;
+import cloud.cinder.cindercloud.address.service.AddressService;
 import cloud.cinder.cindercloud.block.service.BlockService;
 import cloud.cinder.cindercloud.transaction.service.TransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +25,8 @@ public class BlockController {
     private BlockService blockService;
     @Autowired
     private TransactionService transactionService;
+    @Autowired
+    private AddressService addressService;
 
     @RequestMapping(method = RequestMethod.GET)
     public String blocks(final ModelMap modelMap,
@@ -44,6 +48,9 @@ public class BlockController {
         blockService.getBlock(hash).subscribe(block -> {
             ModelAndView modelAndView = new ModelAndView("blocks/block");
             modelAndView.addObject("block", block);
+            final Optional<SpecialAddress> specialMinedBy = addressService.findByAddress(block.getMinedBy());
+            modelAndView.addObject("isMinedBySpecialName", specialMinedBy.isPresent());
+            modelAndView.addObject("minedBySpecialName", specialMinedBy.map(SpecialAddress::getName).orElse(""));
             result.setResult(
                     modelAndView
             );

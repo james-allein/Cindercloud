@@ -142,6 +142,19 @@
 
                     <div class="col-lg-12 col-sm-12 g-mb-50">
                         <div class="g-brd-around g-brd-gray-light-v3 g-pa-20">
+                            <a th:href="@{/address/} + ${block.minedBy}">
+                                <div th:unless="${isMinedBySpecialName}" class="g-font-size-18 g-font-weight-300 g-mb-7" th:text="${block.minedBy}">87904
+                                </div>
+                                <div th:if="${isMinedBySpecialName}" class="g-font-size-18 g-font-weight-300 g-mb-7" th:text="${minedBySpecialName}">87904
+                                </div>
+
+                            </a>
+                            <h4 class="h5 g-color-gray-dark-v4 g-mb-5">Miner</h4>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-12 col-sm-12 g-mb-50">
+                        <div class="g-brd-around g-brd-gray-light-v3 g-pa-20">
                             <a th:href="@{/blocks/} + ${block.parentHash}">
                                 <div class="g-font-size-18 g-font-weight-300 g-mb-7" th:text="${block.parentHash}">87904
                                 </div>
