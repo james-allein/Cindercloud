@@ -33,7 +33,7 @@ public class IndexController {
 
     @RequestMapping(params = "section=transactions")
     public String getLast10Transactions(final ModelMap model) {
-        model.put("transactions", transactionService.getLastTransactions(new PageRequest(0, 10)));
+        model.put("transactions", transactionService.getLastTransactions(new PageRequest(0, 20)));
         return "components/index :: transactions";
     }
 

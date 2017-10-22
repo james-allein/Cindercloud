@@ -11,6 +11,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import java.math.BigInteger;
+import java.text.DecimalFormat;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
@@ -23,6 +24,8 @@ import java.util.Date;
 @Table(name = "blocks")
 @Entity
 public class Block {
+
+    private static final DecimalFormat format = new DecimalFormat("00.##%");
 
     @Id
     private String hash;
@@ -44,6 +47,14 @@ public class Block {
     private BigInteger timestamp;
     private BigInteger nonce;
     private String extraData;
+
+    public String gasUsedPercentage() {
+        try {
+            return format.format(gasUsed.doubleValue() / gasLimit.doubleValue());
+        } catch (final Exception ex) {
+            return "0%";
+        }
+    }
 
     public String prettyHash() {
         return hash.substring(0, 25) + "...";

@@ -6,6 +6,7 @@ import cloud.cinder.cindercloud.block.model.Block;
 import cloud.cinder.cindercloud.block.repository.BlockRepository;
 import cloud.cinder.cindercloud.block.service.BlockService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.web3j.protocol.Web3j;
 import org.web3j.protocol.core.DefaultBlockParameterNumber;
@@ -29,30 +30,35 @@ public class BlockImporter {
     @Autowired
     private BlockImportJobRepository blockImportJobRepository;
 
+    @Value("${cloud.cinder.ethereum.auto-import:false}")
+    private boolean autoBlockImport;
+
     @PostConstruct
     public void listenToBlocks() {
-        web3j.blockObservable(false)
-                .map(EthBlock::getBlock)
-                .filter(Objects::nonNull)
-                .map(block -> Block.builder()
-                        .difficulty(block.getDifficulty())
-                        .difficultyTotal(block.getTotalDifficulty())
-                        .extraData(block.getExtraData())
-                        .hash(block.getHash())
-                        .mixHash(block.getMixHash())
-                        .gasLimit(block.getGasLimit())
-                        .gasUsed(block.getGasUsed())
-                        .minedBy(block.getMiner())
-                        .sha3Uncles(block.getSha3Uncles())
-                        .nonce(block.getNonceRaw() != null ? block.getNonce() : BigInteger.ZERO)
-                        .size(block.getSize())
-                        .txCount((long) block.getTransactions().size())
-                        .timestamp(block.getTimestamp())
-                        .parentHash(block.getParentHash())
-                        .receiptsRoot(block.getReceiptsRoot())
-                        .height(block.getNumber())
-                        .build())
-                .subscribe(block -> blockService.save(block));
+        if (autoBlockImport) {
+            web3j.blockObservable(false)
+                    .map(EthBlock::getBlock)
+                    .filter(Objects::nonNull)
+                    .map(block -> Block.builder()
+                            .difficulty(block.getDifficulty())
+                            .difficultyTotal(block.getTotalDifficulty())
+                            .extraData(block.getExtraData())
+                            .hash(block.getHash())
+                            .mixHash(block.getMixHash())
+                            .gasLimit(block.getGasLimit())
+                            .gasUsed(block.getGasUsed())
+                            .minedBy(block.getMiner())
+                            .sha3Uncles(block.getSha3Uncles())
+                            .nonce(block.getNonceRaw() != null ? block.getNonce() : BigInteger.ZERO)
+                            .size(block.getSize())
+                            .txCount((long) block.getTransactions().size())
+                            .timestamp(block.getTimestamp())
+                            .parentHash(block.getParentHash())
+                            .receiptsRoot(block.getReceiptsRoot())
+                            .height(block.getNumber())
+                            .build())
+                    .subscribe(block -> blockService.save(block));
+        }
     }
 
     public void execute(final BlockImportJob job) {
