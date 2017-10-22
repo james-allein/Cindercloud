@@ -51,4 +51,7 @@ logging:
     cloud:
       cinder: DEBUG
 
-
+cloud:
+  cinder:
+    disqus:
+      name: cindercloud-app

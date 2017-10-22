@@ -6,6 +6,8 @@
     <head th:fragment="version2">
         <title>Cindercloud | The Ethereum Blockchain Interactor</title>
 
+        <meta name="_disqusname" th:content="${@environment.getProperty('cloud.cinder.disqus.name')}"/>
+
         <!-- Required Meta Tags Always Come First -->
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />

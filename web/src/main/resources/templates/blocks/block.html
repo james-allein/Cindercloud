@@ -173,7 +173,7 @@
                 <div th:attr="data-blockhash=${block.hash}" id="blockTransactionsFragment"></div>
             </div>
             <div class="tab-pane fade" id="blockComments" role="tabpanel">
-                <h4>Comments will be implemented here</h4>
+                <div id="disqus_thread"></div>
             </div>
         </div>
         <!-- End Tab panes -->
@@ -207,6 +207,9 @@
 			});
 		});
     </script>
+
+    <th:block th:replace="components/disqus :: footer"></th:block>
+
 
 </div>
 </body>
