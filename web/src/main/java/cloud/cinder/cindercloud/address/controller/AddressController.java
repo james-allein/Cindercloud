@@ -1,6 +1,7 @@
 package cloud.cinder.cindercloud.address.controller;
 
 import cloud.cinder.cindercloud.address.controller.vo.AddressVO;
+import cloud.cinder.cindercloud.address.model.SpecialAddress;
 import cloud.cinder.cindercloud.address.service.AddressService;
 import cloud.cinder.cindercloud.transaction.model.Transaction;
 import cloud.cinder.cindercloud.transaction.service.TransactionService;
@@ -14,6 +15,7 @@ import rx.Observable;
 
 import java.math.BigInteger;
 import java.util.List;
+import java.util.Optional;
 
 import static cloud.cinder.cindercloud.utils.WeiUtils.format;
 
@@ -35,8 +37,11 @@ public class AddressController {
         final Observable<List<Transaction>> transactions = transactionService.findByAddress(hash).toList();
         final Observable<BigInteger> transactionCount = addressService.getTransactionCount(hash);
         final Observable<BigInteger> balance = addressService.getBalance(hash);
+        final Optional<SpecialAddress> specialAddress = addressService.findByAddress(hash);
         Observable.zip(code, transactions, transactionCount, balance, (cde, tx, count, bal) -> {
             modelAndView.addObject("address", new AddressVO(cde, format(bal), count, tx));
+            modelAndView.addObject("isSpecial", specialAddress.isPresent());
+            modelAndView.addObject("specialName", specialAddress.map(SpecialAddress::getName).orElse(""));
             return modelAndView;
         }).subscribe(result::setResult);
         return result;
