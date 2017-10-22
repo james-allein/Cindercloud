@@ -14,6 +14,9 @@ import org.springframework.transaction.annotation.Transactional;
 import org.web3j.protocol.Web3j;
 import rx.Observable;
 
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
+import java.util.Date;
 import java.util.Objects;
 
 @Service
@@ -65,11 +68,13 @@ public class TransactionService {
                         if (block != null) {
                             return Transaction.builder()
                                     .blockHash(tx.getBlockHash())
+                                    .blockHeight(block.getHeight())
                                     .fromAddress(tx.getFrom())
                                     .gas(tx.getGas())
                                     .hash(tx.getHash())
                                     .input(tx.getInput())
                                     .toAddress(tx.getTo())
+                                    .blockTimestamp(Date.from(LocalDateTime.ofEpochSecond(block.getTimestamp().longValue(), 0, ZoneOffset.UTC).atOffset(ZoneOffset.UTC).toInstant()))
                                     .value(tx.getValue())
                                     .gasPrice(tx.getGasPrice())
                                     .creates(tx.getCreates())

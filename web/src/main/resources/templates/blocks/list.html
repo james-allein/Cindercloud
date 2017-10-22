@@ -130,7 +130,8 @@
                                         th:text="${block.minedBy}"></span></a>
                             </td>
                             <td>
-                                <span th:text="${block.gasUsed}"></span>
+                                <span th:text="${block.gasUsed}"></span> <b>(
+                                <span th:text="${block.gasUsedPercentage()}"></span>)</b>
                             </td>
                             <td>
                                 <span th:text="${block.gasLimit}"></span>

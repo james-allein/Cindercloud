@@ -63,6 +63,7 @@ public class TransactionImporter {
                             if (block != null) {
                                 return Transaction.builder()
                                         .blockHash(tx.getBlockHash())
+                                        .blockHeight(block.getHeight())
                                         .fromAddress(tx.getFrom())
                                         .gas(tx.getGas())
                                         .hash(tx.getHash())

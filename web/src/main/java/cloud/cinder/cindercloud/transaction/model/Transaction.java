@@ -5,13 +5,13 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.bouncycastle.util.encoders.Hex;
 import org.ocpsoft.prettytime.PrettyTime;
 
 import javax.persistence.*;
 import java.math.BigInteger;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.time.ZoneOffset;
 import java.util.Date;
 
 import static cloud.cinder.cindercloud.utils.WeiUtils.format;
@@ -28,6 +28,7 @@ public class Transaction {
     @Id
     private String hash;
     private String blockHash;
+    private BigInteger blockHeight;
     private BigInteger gasPrice;
     private BigInteger gas;
     private BigInteger transactionIndex;
@@ -88,6 +89,15 @@ public class Transaction {
             return Direction.OUT;
         } else {
             return Direction.IN;
+        }
+    }
+
+
+    public String inputString() {
+        try {
+            return new String(Hex.decode(input.substring(2)));
+        } catch (Exception extraDataString) {
+            return "";
         }
     }
 

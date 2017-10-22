@@ -89,7 +89,8 @@ public class BlockImporter {
                         .parentHash(block.getParentHash())
                         .receiptsRoot(block.getReceiptsRoot())
                         .height(block.getNumber())
-                        .build())
+                        .build()
+                )
                 .forEach(block -> blockService.save(block));
 
         job.setActive(false);

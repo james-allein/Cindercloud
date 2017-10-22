@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.bouncycastle.util.encoders.Hex;
 import org.ocpsoft.prettytime.PrettyTime;
 
 import javax.persistence.Column;
@@ -25,7 +26,7 @@ import java.util.Date;
 @Entity
 public class Block {
 
-    private static final DecimalFormat format = new DecimalFormat("00.##%");
+    private static final DecimalFormat format = new DecimalFormat("##.##%");
 
     @Id
     private String hash;
@@ -53,6 +54,14 @@ public class Block {
             return format.format(gasUsed.doubleValue() / gasLimit.doubleValue());
         } catch (final Exception ex) {
             return "0%";
+        }
+    }
+
+    public String getExtraDataString() {
+        try {
+            return new String(Hex.decode(extraData.substring(2)));
+        } catch (Exception extraDataString) {
+            return "";
         }
     }
 
