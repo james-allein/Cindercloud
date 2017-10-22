@@ -53,10 +53,14 @@
             <li class="nav-item">
                 <a class="nav-link" data-toggle="tab" href="#blockTransactions" role="tab">
                       <span class="u-nav-v8__icon u-icon-v3 u-icon-size--lg g-rounded-50x g-brd-around g-brd-4 g-brd-white">
-                        <i class="fa fa-exchange"></i>
+                          <i class="fa fa-exchange">
+                              <span class="u-badge-v1 g-color-white g-bg-primary g-rounded-50x"
+                              th:text="${block.txCount}">33</span>
+                          </i>
                       </span>
-                    <strong class="text-uppercase u-nav-v8__title">Transactions</strong>
-                    <em class="u-nav-v8__description">Transactoins in this block.</em>
+                    <strong class="text-uppercase u-nav-v8__title">Transactions
+                    </strong>
+                    <em class="u-nav-v8__description">Transactions in this block.</em>
                 </a>
             </li>
             <li class="nav-item">
