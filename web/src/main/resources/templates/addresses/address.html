@@ -79,7 +79,7 @@
                 <div class="row text-center text-uppercase">
                     <div class="col-lg-3 col-sm-6 g-mb-50">
                         <div class="g-brd-around g-brd-gray-light-v3 g-pa-20">
-                            <div class="js-counter g-font-size-35 g-font-weight-300 g-mb-7"
+                            <div class="g-font-size-35 g-font-weight-300 g-mb-7"
                                  th:text="${address.transactionCount}">
                                 52147
                             </div>
@@ -181,16 +181,6 @@
 <div layout:fragment="footer-content">
     <!-- JS Implementing Plugins -->
     <script th:src="@{/assets/vendor/appear.js}"></script>
-
-    <!-- JS Unify -->
-    <script th:src="@{/assets/js/components/hs.counter.js}"></script>
-    <!-- JS Plugins Init. -->
-    <script>
-		$(document).on('ready', function () {
-			// initialization of counters
-			var counters = $.HSCore.components.HSCounter.init('[class*="js-counter"]', {time: 1000});
-		});
-    </script>
 
     <th:block th:replace="components/disqus :: footer"></th:block>
 
