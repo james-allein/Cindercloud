@@ -33,7 +33,7 @@ public class BlockController {
                          final @RequestParam("q") Optional<String> searchKey,
                          final Pageable pageable) {
         if (searchKey.isPresent()) {
-            modelMap.put("blocks", blockService.search(searchKey.get(), pageable));
+            modelMap.put("blocks", blockService.searchBlocks(searchKey.get(), pageable));
             modelMap.put("q", searchKey.get());
         } else {
             modelMap.put("blocks", blockService.getLastBlocks(pageable));

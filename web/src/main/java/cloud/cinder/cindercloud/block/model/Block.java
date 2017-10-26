@@ -6,11 +6,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.bouncycastle.util.encoders.Hex;
 import org.ocpsoft.prettytime.PrettyTime;
+import org.web3j.protocol.core.methods.response.EthBlock;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.math.BigInteger;
 import java.text.DecimalFormat;
 import java.time.LocalDateTime;
@@ -46,8 +44,13 @@ public class Block {
     private String receiptsRoot;
     private BigInteger size;
     private BigInteger timestamp;
+    @Column(name = "block_timestamp")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date timestampDateTime;
     private BigInteger nonce;
     private String extraData;
+
+    private boolean uncle = false;
 
     public String gasUsedPercentage() {
         try {
@@ -74,4 +77,32 @@ public class Block {
         final PrettyTime prettyTime = new PrettyTime(Date.from(LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant()));
         return prettyTime.format(Date.from(localDateTime.atOffset(ZoneOffset.UTC).toInstant()));
     }
+
+    public static Block asBlock(final EthBlock.Block block) {
+        return Block.builder()
+                .difficulty(block.getDifficulty())
+                .difficultyTotal(block.getTotalDifficulty())
+                .extraData(block.getExtraData())
+                .hash(block.getHash())
+                .mixHash(block.getMixHash())
+                .gasLimit(block.getGasLimit())
+                .gasUsed(block.getGasUsed())
+                .minedBy(block.getMiner())
+                .timestampDateTime(Date.from(LocalDateTime.ofEpochSecond(block.getTimestamp().longValue(), 0, ZoneOffset.UTC).atOffset(ZoneOffset.UTC).toInstant()))
+                .sha3Uncles(block.getSha3Uncles())
+                .nonce(block.getNonceRaw() != null ? block.getNonce() : BigInteger.ZERO)
+                .size(block.getSize())
+                .timestamp(block.getTimestamp())
+                .parentHash(block.getParentHash())
+                .receiptsRoot(block.getReceiptsRoot())
+                .height(block.getNumber())
+                .build();
+    }
+
+    public static Block asUncle(final EthBlock.Block block) {
+        final Block retVal = asBlock(block);
+        retVal.setUncle(true);
+        return retVal;
+    }
+
 }
