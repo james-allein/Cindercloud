@@ -43,7 +43,7 @@ public class UncleController {
     }
 
     @RequestMapping(value = "/{hash}")
-    public DeferredResult<ModelAndView> getBlock(@PathVariable("hash") final String hash) {
+    public DeferredResult<ModelAndView> getUncle(@PathVariable("hash") final String hash) {
         final DeferredResult<ModelAndView> result = new DeferredResult<>();
         blockService.getUncle(hash).subscribe(block -> {
             ModelAndView modelAndView = new ModelAndView("blocks/block");

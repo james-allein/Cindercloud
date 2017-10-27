@@ -36,6 +36,7 @@ subprojects {
         imports {
             mavenBom("org.springframework.boot:spring-boot-dependencies:${theSpringBootVersion}")
             mavenBom "org.springframework.cloud:spring-cloud-netflix:${theSpringCloudNetflixVersion}"
+            mavenBom "org.springframework.cloud:spring-cloud-dependencies:${theSpringCloudVersion}"
             mavenBom "org.springframework.cloud:spring-cloud-aws:${theSpringCloudAwsVersion}"
             mavenBom "io.spring.platform:platform-bom:${theSpringPlatformBomVersion}"
         }

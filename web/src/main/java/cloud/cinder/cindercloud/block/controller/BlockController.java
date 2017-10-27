@@ -3,7 +3,6 @@ package cloud.cinder.cindercloud.block.controller;
 import cloud.cinder.cindercloud.address.model.SpecialAddress;
 import cloud.cinder.cindercloud.address.service.AddressService;
 import cloud.cinder.cindercloud.block.service.BlockService;
-import cloud.cinder.cindercloud.tracing.ParityTracing;
 import cloud.cinder.cindercloud.transaction.service.TransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
@@ -28,8 +27,6 @@ public class BlockController {
     private TransactionService transactionService;
     @Autowired
     private AddressService addressService;
-    @Autowired
-    private ParityTracing parity;
 
     @RequestMapping(method = RequestMethod.GET)
     public String blocks(final ModelMap modelMap,
@@ -62,7 +59,7 @@ public class BlockController {
     }
 
     @RequestMapping(value = "/{hash}/transactions")
-    public DeferredResult<ModelAndView> getTransactionsForBlock(@PathVariable("hash") final String hash) {
+    public DeferredResult<ModelAndView> getTransactionsForUncle(@PathVariable("hash") final String hash) {
         final DeferredResult<ModelAndView> result = new DeferredResult<>();
         transactionService.getTransactionsForBlock(hash)
                 .toList()

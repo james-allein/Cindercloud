@@ -29,10 +29,10 @@
 		$(document).on('ready', function () {
 		    $.get('/?section=blocks', function(result) {
 				$("#lastBlocks").html(result);
-			})
+			});
 			$.get('/?section=transactions', function(result) {
 				$("#lastTransactions").html(result);
-			})
+			});
 		});
     </script>
 </div>
