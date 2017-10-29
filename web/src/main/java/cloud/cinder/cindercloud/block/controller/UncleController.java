@@ -18,7 +18,7 @@ import org.springframework.web.servlet.ModelAndView;
 import java.util.Optional;
 
 @Controller
-@RequestMapping(value = "/blocks")
+@RequestMapping(value = "/uncles")
 public class UncleController {
 
     @Autowired

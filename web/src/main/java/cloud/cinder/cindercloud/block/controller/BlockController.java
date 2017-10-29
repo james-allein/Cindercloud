@@ -3,6 +3,7 @@ package cloud.cinder.cindercloud.block.controller;
 import cloud.cinder.cindercloud.address.model.SpecialAddress;
 import cloud.cinder.cindercloud.address.service.AddressService;
 import cloud.cinder.cindercloud.block.service.BlockService;
+import cloud.cinder.cindercloud.tracing.ParityTracing;
 import cloud.cinder.cindercloud.transaction.service.TransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
@@ -27,11 +28,14 @@ public class BlockController {
     private TransactionService transactionService;
     @Autowired
     private AddressService addressService;
+    @Autowired
+    private ParityTracing parity;
 
     @RequestMapping(method = RequestMethod.GET)
     public String blocks(final ModelMap modelMap,
                          final @RequestParam("q") Optional<String> searchKey,
                          final Pageable pageable) {
+        parity.replayTransaction("");
         if (searchKey.isPresent()) {
             modelMap.put("blocks", blockService.searchBlocks(searchKey.get(), pageable));
             modelMap.put("q", searchKey.get());

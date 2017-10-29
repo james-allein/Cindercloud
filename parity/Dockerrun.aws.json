@@ -1,0 +1,14 @@
+{
+  "AWSEBDockerrunVersion": "1",
+  "Ports": [
+    {
+      "ContainerPort": "8545"
+    }
+  ],
+  "Volumes": [
+    {
+      "HostDirectory": "/mnt/efs",
+      "ContainerDirectory": "/root/.local/share/io.parity.ethereum/chains"
+    }
+  ]
+}

@@ -82,9 +82,9 @@ public class BlockService {
                 .filter(Objects::nonNull)
                 .map(block -> {
                     if (uncle) {
-                        return Block.asBlock(block);
-                    } else {
                         return Block.asUncle(block);
+                    } else {
+                        return Block.asBlock(block);
                     }
                 })
                 .map(this::save)

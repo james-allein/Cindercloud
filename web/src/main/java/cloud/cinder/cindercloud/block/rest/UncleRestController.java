@@ -20,6 +20,6 @@ public class UncleRestController {
         return blockService
                 .getUncle(hash)
                 .map(x -> new ResponseEntity(x, HttpStatus.OK))
-                .orElse(new ResponseEntity(HttpStatus.NOT_FOUND));
+                .toBlocking().first();
     }
 }

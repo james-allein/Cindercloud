@@ -50,6 +50,7 @@ public class Block {
     private BigInteger nonce;
     private String extraData;
 
+    @Builder.Default
     private boolean uncle = false;
 
     public String gasUsedPercentage() {
@@ -93,6 +94,7 @@ public class Block {
                 .nonce(block.getNonceRaw() != null ? block.getNonce() : BigInteger.ZERO)
                 .size(block.getSize())
                 .timestamp(block.getTimestamp())
+                .txCount((long)block.getTransactions().size())
                 .parentHash(block.getParentHash())
                 .receiptsRoot(block.getReceiptsRoot())
                 .height(block.getNumber())
