@@ -7,6 +7,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -23,4 +24,7 @@ public interface TransactionRepository extends JpaRepository<Transaction, String
 
     @Query("select transaction from Transaction transaction where hash LIKE %:searchKey% order by blockTimestamp desc")
     Page<Transaction> find(@Param("searchKey") String searchKey, final Pageable pageable);
+
+    @Query("select transaction from Transaction transaction where blockTimestamp >= :from order by blockHeight")
+    Stream<Transaction> findAllTransactionsSince(@Param("from") final Date from);
 }

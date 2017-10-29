@@ -35,7 +35,6 @@ public class BlockController {
     public String blocks(final ModelMap modelMap,
                          final @RequestParam("q") Optional<String> searchKey,
                          final Pageable pageable) {
-        parity.replayTransaction("");
         if (searchKey.isPresent()) {
             modelMap.put("blocks", blockService.searchBlocks(searchKey.get(), pageable));
             modelMap.put("q", searchKey.get());
