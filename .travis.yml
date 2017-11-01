@@ -5,6 +5,7 @@ cache:
   directories:
   - ".autoconf"
   - "$HOME/.m2"
+script: ./gradlew build
 deploy:
   provider: releases
   api_key:
