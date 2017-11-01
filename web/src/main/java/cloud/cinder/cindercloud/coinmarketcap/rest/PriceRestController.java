@@ -2,7 +2,6 @@ package cloud.cinder.cindercloud.coinmarketcap.rest;
 
 import cloud.cinder.cindercloud.coinmarketcap.dto.Currency;
 import cloud.cinder.cindercloud.coinmarketcap.service.PriceService;
-import feign.RequestLine;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;

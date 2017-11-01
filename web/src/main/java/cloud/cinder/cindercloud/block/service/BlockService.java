@@ -13,6 +13,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import org.web3j.protocol.Web3j;
 import org.web3j.protocol.core.methods.response.EthBlock;
+import org.web3j.protocol.core.methods.response.EthBlockNumber;
 import org.web3j.protocol.core.methods.response.EthGetBlockTransactionCountByHash;
 import rx.Observable;
 
@@ -137,5 +138,9 @@ public class BlockService {
     @Transactional(readOnly = true)
     public Page<Block> searchUncles(final String searchKey, final Pageable pageable) {
         return blockRepository.searchUncles(searchKey, pageable);
+    }
+
+    public Observable<EthBlockNumber> getLastBlock() {
+        return web3j.ethBlockNumber().observable();
     }
 }

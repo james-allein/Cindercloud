@@ -8,6 +8,6 @@ import java.util.List;
 
 public interface CoinMarketCapClient {
 
-    @RequestLine("GET /ticker/{id}")
+    @RequestLine("GET /ticker/{id}?convert=EUR")
     List<TickerResult> getTickerById(@Param("id") final String id);
 }

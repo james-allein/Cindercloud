@@ -1,6 +1,8 @@
 package cloud.cinder.cindercloud.infrastructure.controller;
 
 import cloud.cinder.cindercloud.block.service.BlockService;
+import cloud.cinder.cindercloud.coinmarketcap.dto.Currency;
+import cloud.cinder.cindercloud.coinmarketcap.service.PriceService;
 import cloud.cinder.cindercloud.transaction.service.TransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -18,9 +20,13 @@ public class IndexController {
     private BlockService blockService;
     @Autowired
     private TransactionService transactionService;
+    @Autowired
+    private PriceService priceService;
 
     @RequestMapping(method = GET)
-    public String index() {
+    public String index(final ModelMap modelMap) {
+        modelMap.put("ethPrice", priceService.getPrice(Currency.USD));
+        modelMap.put("lastBlock", blockService.getLastBlock().toBlocking().first().getBlockNumber().longValue());
         return "index";
     }
 
@@ -36,5 +42,4 @@ public class IndexController {
         model.put("transactions", transactionService.getLastTransactions(new PageRequest(0, 20)));
         return "components/index :: transactions";
     }
-
 }

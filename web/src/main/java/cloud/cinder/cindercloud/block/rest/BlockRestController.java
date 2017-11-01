@@ -4,10 +4,7 @@ import cloud.cinder.cindercloud.block.model.Block;
 import cloud.cinder.cindercloud.block.service.BlockService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.async.DeferredResult;
 
 import java.util.List;
@@ -31,4 +28,8 @@ public class BlockRestController {
         return result;
     }
 
+    @RequestMapping(value = "/last/number")
+    public final Long getLastBlock() {
+        return blockService.getLastBlock().toBlocking().first().getBlockNumber().longValue();
+    }
 }

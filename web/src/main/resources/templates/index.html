@@ -11,6 +11,39 @@
 
     <section class="g-bg-secondary g-py-50">
         <div class="container">
+            <div class="row text-center">
+                <div class="col-md-3 col-sm-6 g-mb-30">
+                      <span class="u-icon-v3 u-icon-size--xl g-bg-primary-opacity-0_1 rounded-circle g-mb-10">
+                        <i class="et-icon-wallet g-color-primary"></i>
+                      </span>
+
+                    <div class="js-counter g-color-primary g-font-size-40 g-font-weight-300 g-mb-7">$ <span th:text="${ethPrice}" id="ethPrice">0</span></div>
+                </div>
+
+                <div class="col-md-3 col-sm-6 g-mb-30">
+                      <span class="u-icon-v3 u-icon-size--xl g-bg-cyan-opacity-0_1 rounded-circle g-mb-10">
+                        <i class="icon-organization g-color-cyan"></i>
+                      </span>
+
+                    <div class="js-counter g-color-cyan g-font-size-40 g-font-weight-300 g-mb-7" ><span th:text="${lastBlock}" id="lastBlock"></span> blocks</div>
+                </div>
+
+                <div class="col-md-3 col-sm-6 g-mb-30">
+                      <span class="u-icon-v3 u-icon-size--xl g-bg-lightred-opacity-0_1 rounded-circle g-mb-10">
+                        <i class="et-icon-tools g-color-lightred"></i>
+                      </span>
+
+                    <div class="js-counter g-color-lightred g-font-size-40 g-font-weight-300 g-mb-7">4691</div>
+                </div>
+
+                <div class="col-md-3 col-sm-6 g-mb-30">
+                      <span class="u-icon-v3 u-icon-size--xl g-bg-teal-opacity-0_1 rounded-circle g-mb-10">
+                        <i class="et-icon-chat g-color-teal"></i>
+                      </span>
+
+                    <div class="js-counter g-color-teal g-font-size-40 g-font-weight-300 g-mb-7">6098</div>
+                </div>
+            </div>
             <div class="row">
                 <div class="col-lg-4 g-mb-30 g-mb-0--lg" id="lastBlocks">
 
@@ -22,7 +55,6 @@
         </div>
     </section>
 
-
 </div>
 <div layout:fragment="footer-content">
     <script>
@@ -33,7 +65,23 @@
 			$.get('/?section=transactions', function(result) {
 				$("#lastTransactions").html(result);
 			});
+
+			updateEthPrice();
 		});
+
+		var updateEthPrice = function() {
+			$.get('/rest/price', function(result) {
+				$("#ethPrice").html(result);
+				setTimeout(updateEthPrice, 10000);
+			});
+		};
+
+		var updateLastBlock = function() {
+			$.get('/rest/block/last/number', function(result) {
+                $("#lastBlock").html(result);
+                setTimeout(updateLastBlock, 10000);
+            });
+        }
     </script>
 </div>
 </body>
