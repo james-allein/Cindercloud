@@ -59,7 +59,10 @@ public class BlockImporter {
             final EthBlock ethBlock = web3j.ethGetBlockByNumber(new DefaultBlockParameterNumber(i), false)
                     .observable().toBlocking().firstOrDefault(null);
             if (ethBlock != null && ethBlock.getBlock() != null && !blockRepository.findOne(ethBlock.getBlock().getHash()).isPresent()) {
+                log.debug("saving block {}", i);
                 blockService.save(Block.asBlock(ethBlock.getBlock()));
+            } else {
+                log.debug("couldn't find {} in web3", i);
             }
         }
 

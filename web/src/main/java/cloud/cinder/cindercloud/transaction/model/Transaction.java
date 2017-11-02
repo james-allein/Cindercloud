@@ -92,6 +92,9 @@ public class Transaction {
         }
     }
 
+    public boolean hasInput() {
+        return input != null && !input.equals("0x0");
+    }
 
     public String inputString() {
         try {
@@ -101,7 +104,7 @@ public class Transaction {
         }
     }
 
-    public static enum Direction {
+    public enum Direction {
         IN, OUT
     }
 }

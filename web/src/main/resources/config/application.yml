@@ -1,4 +1,15 @@
 spring:
+    boot:
+      admin:
+        url: http://localhost:8080
+        context-path: /monitoring
+        username: ${security.user.name}
+        password: ${security.user.password}
+        client:
+          metadata:
+              user:
+                name: ${security.user.name}
+                password: ${security.user.password}
     application:
         name: Cindercloud
     messages:
@@ -54,8 +65,6 @@ cloud:
       name: cindercloud-app
 security:
   user:
-    name: qkyrie
-    password: password
     role: SUPERUSER
 management:
   security:
