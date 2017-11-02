@@ -50,7 +50,7 @@ public class TransactionImporter {
                     .map(tx -> ((EthBlock.TransactionObject) tx.get()).get())
                     .filter(tx -> !transactionRepository.exists(tx.getHash()))
                     .map(tx -> {
-                        log.debug("importing transaction {}", tx.getHash());
+                        log.trace("importing transaction {}", tx.getHash());
                         final Block block = blockService.getBlock(tx.getBlockHash()).toBlocking().first();
                         if (block != null) {
                             return Transaction.builder()
