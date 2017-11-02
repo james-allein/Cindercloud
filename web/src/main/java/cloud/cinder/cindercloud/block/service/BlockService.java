@@ -88,8 +88,7 @@ public class BlockService {
                         return Block.asBlock(block);
                     }
                 })
-                .map(this::save)
-                .toBlocking().single();
+                .forEach(this::save);
     }
 
     private boolean wasWronglySavedAsNormalBlock(final String hash, final boolean uncle) {
