@@ -24,6 +24,7 @@ public class BlockImportJobRunner {
         log.info("Starting Block Import Job Runner");
         Stream.concat(blockImportJobRepository.findAllActive().stream(), blockImportJobRepository.findAllNotEndedYet().stream())
                 .forEach(x -> blockImporter.execute(x));
+        log.info("Done with block runner");
     }
 
 }
