@@ -86,7 +86,7 @@
                                     th:text="${blocks.totalPages}">116</span></a>
                         </li>
                         <li th:if="${blocks.hasNext()} " class="list-inline-item float-sm-right">
-                            <a th:href="@{/tx(page=${blocks.number+1}, q=${q})}"
+                            <a th:href="@{/blocks(page=${blocks.number+1}, q=${q})}"
                                class="u-pagination-v1__item g-brd-around g-color-primary g-brd-gray-light-v3 g-bg-gray-dark-v2--hover g-brd-gray-dark-v2--hover g-color-white--hover g-rounded-50 g-pa-7-16"
                                href="#" aria-label="Next">
         <span aria-hidden="true">
