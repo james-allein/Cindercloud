@@ -12,8 +12,9 @@
         <div class="container">
             <div class="d-sm-flex ">
                 <div class="align-self-center">
-                    <h2 class="h3 g-font-weight-300 w-100 g-mb-10 g-mb-0--md">Address: <br />
-                       <b> <span th:text="${hash}"></span> <span th:if="${isSpecial}">( <span th:text="${specialName}"></span> )</span></b>
+                    <h2 class="h3 g-font-weight-300 w-100 g-mb-10 g-mb-0--md">Address: <br/>
+                        <b> <span th:text="${hash}"></span> <span th:if="${isSpecial}">( <span
+                                th:text="${specialName}"></span> )</span></b>
                     </h2>
                 </div>
 
@@ -60,11 +61,23 @@
                     <em class="u-nav-v8__description">This is a smart contract.</em>
                 </a>
             </li>
+            <li th:if="${address.minedBlocks.size() > 0}" class="nav-item">
+                <a class="nav-link" data-toggle="tab" href="#blockMined" role="tab">
+                          <span class="u-nav-v8__icon u-icon-v3 u-icon-size--lg g-rounded-50x g-brd-around g-brd-4 g-brd-white">
+                            <i class="fa fa-th">
+                                 <span class="u-badge-v1 g-color-white g-bg-primary g-rounded-50x"
+                                       th:text="${address.minedBlocks.size()}">33</span>
+                            </i>
+                          </span>
+                    <strong class="text-uppercase u-nav-v8__title">Mined</strong>
+                    <em class="u-nav-v8__description">Blocks</em>
+                </a>
+            </li>
             <li class="nav-item">
                 <a class="nav-link" data-toggle="tab" href="#blockComments" role="tab">
-      <span class="u-nav-v8__icon u-icon-v3 u-icon-size--lg g-rounded-50x g-brd-around g-brd-4 g-brd-white">
-        <i class="fa fa-comments-o"></i>
-      </span>
+                          <span class="u-nav-v8__icon u-icon-v3 u-icon-size--lg g-rounded-50x g-brd-around g-brd-4 g-brd-white">
+                            <i class="fa fa-comments-o"></i>
+                          </span>
                     <strong class="text-uppercase u-nav-v8__title">Comments</strong>
                     <em class="u-nav-v8__description">Join the conversation.</em>
                 </a>
@@ -97,50 +110,81 @@
                     </div>
                 </div>
 
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="table-responsive">
-                            <table class="table table-striped">
-                                <thead>
-                                <tr>
-                                    <th>Hash</th>
-                                    <th>Block</th>
-                                    <th>From</th>
-                                    <th>To</th>
-                                    <th>Value</th>
-                                </tr>
-                                </thead>
+                <section th:if="${address.transactions.size() > 0}">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="table-responsive">
+                                <table class="table table-striped">
+                                    <thead>
+                                    <tr>
+                                        <th>Hash</th>
+                                        <th>Block</th>
+                                        <th>From</th>
+                                        <th>To</th>
+                                        <th>Value</th>
+                                    </tr>
+                                    </thead>
 
-                                <tbody>
-                                <tr th:each="tx : ${address.transactions}">
-                                    <td><a th:href="@{'/tx/' + ${tx.hash}}"><span th:text="${tx.prettyHash()}"></span></a></td>
-                                    <td><a th:href="@{'/blocks/' + ${tx.blockHash}}"><span th:text="${tx.prettyBlockHash()}"></span></a></td>
-                                    <td>
-                                        <a th:href="@{'/address/' + ${tx.fromAddress}}" th:if="${tx.direction(hash) == T(cloud.cinder.cindercloud.transaction.model.Transaction.Direction).IN}"><span th:text="${tx.prettyFromAddress()}"></span></a>
-                                        <span th:unless="${tx.direction(hash) == T(cloud.cinder.cindercloud.transaction.model.Transaction.Direction).IN}"  th:text="${tx.prettyFromAddress()}"></span>
-                                    </td>
-                                    <td>
-                                        <div th:if="${tx.isContractCreation()}">
-                                            <a th:href="@{'/address/' + ${tx.creates}}" th:unless="${tx.direction(hash) == T(cloud.cinder.cindercloud.transaction.model.Transaction.Direction).IN}"><span th:text="${tx.prettyToAddress()}"></span></a>
-                                            <span th:if="${tx.direction(hash) == T(cloud.cinder.cindercloud.transaction.model.Transaction.Direction).IN}" th:text="${tx.prettyToAddress()}"></span>
-                                        </div>
-                                        <div th:unless="${tx.isContractCreation()}">
-                                            <a th:href="@{'/address/' + ${tx.creates}}" th:unless="${tx.direction(hash) == T(cloud.cinder.cindercloud.transaction.model.Transaction.Direction).IN}"><span th:text="${tx.prettyToAddress()}"></span></a>
-                                            <span th:if="${tx.direction(hash) == T(cloud.cinder.cindercloud.transaction.model.Transaction.Direction).IN}" th:text="${tx.prettyToAddress()}"></span>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <span class="u-label u-label-success g-color-white" th:text="${tx.formattedValue()}">0</span>
-                                    </td>
-                                </tr>
-                                </tbody>
-                            </table>
+                                    <tbody>
+                                    <tr th:each="tx : ${address.transactions}">
+                                        <td><a th:href="@{'/tx/' + ${tx.hash}}"><span
+                                                th:text="${tx.prettyHash()}"></span></a></td>
+                                        <td><a th:href="@{'/blocks/' + ${tx.blockHash}}"><span
+                                                th:text="${tx.blockHeight}"></span></a></td>
+                                        <td>
+                                            <a th:href="@{'/address/' + ${tx.fromAddress}}"
+                                               th:if="${tx.direction(hash) == T(cloud.cinder.cindercloud.transaction.model.Transaction.Direction).IN}"><span
+                                                    th:text="${tx.prettyFromAddress()}"></span></a>
+                                            <span th:unless="${tx.direction(hash) == T(cloud.cinder.cindercloud.transaction.model.Transaction.Direction).IN}"
+                                                  th:text="${tx.prettyFromAddress()}"></span>
+                                        </td>
+                                        <td>
+                                            <div th:if="${tx.isContractCreation()}">
+                                                <a th:href="@{'/address/' + ${tx.creates}}"
+                                                   th:unless="${tx.direction(hash) == T(cloud.cinder.cindercloud.transaction.model.Transaction.Direction).IN}"><span
+                                                        th:text="${tx.prettyToAddress()}"></span></a>
+                                                <span th:if="${tx.direction(hash) == T(cloud.cinder.cindercloud.transaction.model.Transaction.Direction).IN}"
+                                                      th:text="${tx.prettyToAddress()}"></span>
+                                            </div>
+                                            <div th:unless="${tx.isContractCreation()}">
+                                                <a th:href="@{'/address/' + ${tx.creates}}"
+                                                   th:unless="${tx.direction(hash) == T(cloud.cinder.cindercloud.transaction.model.Transaction.Direction).IN}"><span
+                                                        th:text="${tx.prettyToAddress()}"></span></a>
+                                                <span th:if="${tx.direction(hash) == T(cloud.cinder.cindercloud.transaction.model.Transaction.Direction).IN}"
+                                                      th:text="${tx.prettyToAddress()}"></span>
+                                            </div>
+                                        </td>
+                                        <td>
+                                        <span class="u-label u-label-success g-color-white"
+                                              th:text="${tx.formattedValue()}">0</span>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <!-- End Table Striped Rows -->
+                    </div>
+                </section>
+                <section th:unless="${address.transactions.size() > 0}">
+                    <div class="alert alert-dismissible fade show g-bg-gray-dark-v2 g-color-white rounded-0"
+                         role="alert">
+                        <button type="button" class="close u-alert-close--light" data-dismiss="alert"
+                                aria-label="Close">
+                            <span class="g-color-white" aria-hidden="true">×</span>
+                        </button>
+
+                        <div class="media">
+        <span class="d-flex g-mr-10 g-mt-5">
+          <i class="icon-question g-font-size-25"></i>
+        </span>
+                            <span class="media-body align-self-center">
+          <strong>Unused account?</strong><br/> No transactions could be found referencing this account. Maybe we didn't index them yet?
+        </span>
                         </div>
                     </div>
-                    <!-- End Table Striped Rows -->
-                </div>
+                </section>
             </div>
-
             <div class="tab-pane fade" id="addressCode" role="tabpanel">
                 <div class="row text-center text-uppercase">
                     <div class="col-lg-12 col-sm-12 g-mb-50">
@@ -170,6 +214,56 @@
                     </div>
                 </div>
             </div>
+            <div th:if="${address.minedBlocks.size() > 0}" class="tab-pane fade" id="blockMined" role="tabpanel">
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <thead>
+                                <tr>
+                                    <th>Height</th>
+                                    <th>Hash</th>
+                                    <th>Age</th>
+                                    <th>TxCount</th>
+                                    <th>Gas Used</th>
+                                    <th>Gas Limit</th>
+                                </tr>
+                                </thead>
+
+                                <tbody>
+                                <tr th:each="block : ${address.minedBlocks}">
+                                    <td>
+                                        <a th:href="@{'/blocks/' + ${block.hash}}">
+                                            <span th:text="${block.height}"></span>
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <a th:href="@{'/blocks/' + ${block.hash}}">
+                                            <span th:text="${block.prettyHash()}"></span>
+                                        </a>
+                                    </td>
+                                    <td><span th:text="${block.prettyTimestamp()}"></span></td>
+
+                                    <td>
+                                        <span th:text="${block.txCount}"></span>
+                                    </td>
+                                    <td>
+                                        <span th:text="${block.gasUsed}"></span> <b>(
+                                        <span th:text="${block.gasUsedPercentage()}"></span>)</b>
+                                    </td>
+                                    <td>
+                                        <span th:text="${block.gasLimit}"></span>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
             <div class="tab-pane fade" id="blockComments" role="tabpanel">
                 <div id="disqus_thread"></div>
             </div>

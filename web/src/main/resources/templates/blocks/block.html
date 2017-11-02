@@ -91,8 +91,7 @@
 
                     <div class="col-lg-3 col-sm-6 g-mb-50">
                         <div class="g-brd-around g-brd-gray-light-v3 g-pa-20">
-                            <div class="g-font-size-12 g-font-weight-300 g-mb-7"
-                                 th:text="${block.difficulty}">24583
+                            <div class="g-font-size-12 g-font-weight-300 g-mb-7"><span th:text="${block.getPrettyDifficulty()}"></span> TH
                             </div>
                             <h4 class="h5 g-color-gray-dark-v4 g-mb-5">Difficulty</h4>
                         </div>
@@ -101,7 +100,7 @@
                     <div class="col-lg-3 col-sm-6 g-mb-50">
                         <div class="g-brd-around g-brd-gray-light-v3 g-pa-20">
                             <div class="g-font-size-12 g-font-weight-300 g-mb-7"
-                                 th:text="${block.difficultyTotal}">7348
+                                 th:text="${block.getPrettyTotalDifficulty()}">7348
                             </div>
                             <h4 class="h5 g-color-gray-dark-v4 g-mb-5">Total Difficulty</h4>
                         </div>
@@ -225,7 +224,6 @@
 			var items = $.HSCore.components.HSChartPie.init('.js-pie');
 
 			var blockHash = $("#blockTransactionsFragment").data('blockhash');
-			console.log(blockHash);
 			$.get('/blocks/' + blockHash + '/transactions', function (result) {
 				$("#blockTransactionsFragment").html(result);
 			});

@@ -3,6 +3,7 @@ package cloud.cinder.cindercloud.block.continuous;
 import cloud.cinder.cindercloud.block.continuous.repository.BlockImportJobRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -10,6 +11,7 @@ import java.util.stream.Stream;
 
 @Component
 @Slf4j
+@ConditionalOnProperty(name = "cloud.cinder.ethereum.historic-import", havingValue = "true")
 public class BlockImportJobRunner {
 
     @Autowired

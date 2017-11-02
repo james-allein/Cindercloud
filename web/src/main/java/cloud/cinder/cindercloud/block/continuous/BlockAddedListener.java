@@ -5,6 +5,7 @@ import cloud.cinder.cindercloud.transaction.continuous.TransactionImporter;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.cloud.aws.messaging.listener.SqsMessageDeletionPolicy;
 import org.springframework.cloud.aws.messaging.listener.annotation.SqsListener;
 import org.springframework.messaging.handler.annotation.Header;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @Slf4j
+@ConditionalOnProperty(name = "cloud.cinder.ethereum.auto-import", havingValue = "true")
 public class BlockAddedListener {
 
     @Autowired

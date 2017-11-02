@@ -35,6 +35,7 @@ public class TransactionService {
         return Observable.from(() -> transactionRepository.findByAddressFromOrTo(address).iterator());
     }
 
+
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public Transaction save(final Transaction transaction) {
         return transactionRepository.save(transaction);

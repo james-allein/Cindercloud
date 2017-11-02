@@ -69,6 +69,14 @@ public class Block {
         }
     }
 
+    public String getPrettyDifficulty() {
+        return difficulty == null ? "" : difficulty.divide(BigInteger.valueOf(1000000000).multiply(BigInteger.valueOf(1000))).toString();
+    }
+
+    public String getPrettyTotalDifficulty() {
+        return difficultyTotal == null ? "" : difficultyTotal.divide(BigInteger.valueOf(1000000000).multiply(BigInteger.valueOf(1000))).toString();
+    }
+
     public String prettyHash() {
         return hash.substring(0, 25) + "...";
     }

@@ -5,6 +5,7 @@ import cloud.cinder.cindercloud.block.continuous.repository.BlockImportJobReposi
 import cloud.cinder.cindercloud.block.model.Block;
 import cloud.cinder.cindercloud.block.repository.BlockRepository;
 import cloud.cinder.cindercloud.block.service.BlockService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -18,6 +19,7 @@ import java.util.Objects;
 import java.util.stream.LongStream;
 
 @Component
+@Slf4j
 public class BlockImporter {
 
     @Autowired
@@ -35,11 +37,15 @@ public class BlockImporter {
     @PostConstruct
     public void listenToBlocks() {
         if (autoBlockImport) {
+            log.debug("importing live-blocks");
             web3j.blockObservable(false)
                     .map(EthBlock::getBlock)
                     .filter(Objects::nonNull)
                     .map(Block::asBlock)
-                    .subscribe(block -> blockService.save(block));
+                    .subscribe(block -> {
+                        log.debug("received live block");
+                        blockService.save(block);
+                    });
         }
     }
 
@@ -48,19 +54,17 @@ public class BlockImporter {
         job.setStartTime(new Date());
         blockImportJobRepository.save(job);
 
-        LongStream.rangeClosed(job.getFromBlock(), job.getToBlock())
-                .mapToObj(blocknr -> web3j.ethGetBlockByNumber(new DefaultBlockParameterNumber(blocknr), true)
-                        .observable().toBlocking().first())
-                .filter(Objects::nonNull)
-                .map(EthBlock::getBlock)
-                .filter(Objects::nonNull)
-                .filter(block -> !blockRepository.findOne(block.getHash()).isPresent())
-                .map(Block::asBlock)
-                .forEach(block -> blockService.save(block));
+        for (long i = job.getFromBlock() ;  i <= job.getToBlock(); i++) {
+            log.debug("Historic Import: trying to import block: {}", i);
+            final EthBlock ethBlock = web3j.ethGetBlockByNumber(new DefaultBlockParameterNumber(i), false)
+                    .observable().toBlocking().firstOrDefault(null);
+            if (ethBlock != null && ethBlock.getBlock() != null && !blockRepository.findOne(ethBlock.getBlock().getHash()).isPresent()) {
+                blockService.save(Block.asBlock(ethBlock.getBlock()));
+            }
+        }
 
         job.setActive(false);
         job.setEndTime(new Date());
         blockImportJobRepository.save(job);
     }
-
 }
