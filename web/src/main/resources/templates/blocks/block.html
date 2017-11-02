@@ -82,36 +82,42 @@
                 <div class="row text-center text-uppercase">
                     <div class="col-lg-3 col-sm-6 g-mb-50">
                         <div class="g-brd-around g-brd-gray-light-v3 g-pa-20">
-                            <div class="g-font-size-12 g-font-weight-300 g-mb-7" th:text="${block.height}">
-                                52147
+                            <div class="g-font-size-12 g-font-weight-300 g-mb-7">
+                                Height
                             </div>
-                            <h4 class="h5 g-color-gray-dark-v4 g-mb-5">Block Height</h4>
+                            <h4 class="h5 g-color-gray-dark-v4 g-mb-5" th:text="${block.height}"></h4>
                         </div>
                     </div>
 
                     <div class="col-lg-3 col-sm-6 g-mb-50">
                         <div class="g-brd-around g-brd-gray-light-v3 g-pa-20">
-                            <div class="g-font-size-12 g-font-weight-300 g-mb-7"><span th:text="${block.getPrettyDifficulty()}"></span> TH
+                            <div class="g-font-size-12 g-font-weight-300 g-mb-7">
+                                Difficulty
+
                             </div>
-                            <h4 class="h5 g-color-gray-dark-v4 g-mb-5">Difficulty</h4>
+                            <h4 class="h5 g-color-gray-dark-v4 g-mb-5">
+                                <span th:text="${block.getPrettyDifficulty()}"></span> TH
+                            </h4>
                         </div>
                     </div>
 
                     <div class="col-lg-3 col-sm-6 g-mb-50">
                         <div class="g-brd-around g-brd-gray-light-v3 g-pa-20">
-                            <div class="g-font-size-12 g-font-weight-300 g-mb-7"
-                                 th:text="${block.getPrettyTotalDifficulty()}">7348
+                            <div class="g-font-size-12 g-font-weight-300 g-mb-7">
+                                Total Difficulty
                             </div>
-                            <h4 class="h5 g-color-gray-dark-v4 g-mb-5">Total Difficulty</h4>
+                            <h4 class="h5 g-color-gray-dark-v4 g-mb-5"><span
+                                    th:text="${block.getPrettyTotalDifficulty()}"></span></h4>
                         </div>
                     </div>
 
                     <div class="col-lg-3 col-sm-6 g-mb-50">
                         <div class="g-brd-around g-brd-gray-light-v3 g-pa-20">
-                            <div class="g-font-size-12 g-font-weight-300 g-mb-7"><span
-                                    th:text="${block.size}">87904</span> bytes
+                            <div class="g-font-size-12 g-font-weight-300 g-mb-7">
+                                Block Size
                             </div>
-                            <h4 class="h5 g-color-gray-dark-v4 g-mb-5">Block Size</h4>
+                            <h4 class="h5 g-color-gray-dark-v4 g-mb-5">
+                                <span th:text="${block.size}"></span> bytes</h4>
                         </div>
                     </div>
 
@@ -120,7 +126,7 @@
                     <div class="col-lg-3 col-sm-6"></div>
                     <div class="col-lg-6 col-sm-6 g-mb-50">
                         <div class="g-brd-around g-brd-green g-pa-20">
-                            <h2><span th:text="${block.gasUsedPercentage()}"></span></h2>
+                            <h2><span class="g-font-weight-900" th:text="${block.gasUsedPercentage()}"></span></h2>
                             <div class="g-font-size-35 g-font-weight-300 g-mb-7"><span
                                     th:text="${block.gasUsed}">87904</span> /
                                 <span th:text="${block.gasLimit}">87904</span>
@@ -142,9 +148,11 @@
                     <div class="col-lg-12 col-sm-12 g-mb-50">
                         <div class="g-brd-around g-brd-gray-light-v3 g-pa-20">
                             <a th:href="@{/address/} + ${block.minedBy}">
-                                <div th:unless="${isMinedBySpecialName}" class="g-font-size-18 g-font-weight-300 g-mb-7" th:text="${block.minedBy}">87904
+                                <div th:unless="${isMinedBySpecialName}" class="g-font-size-18 g-font-weight-300 g-mb-7"
+                                     th:text="${block.minedBy}">87904
                                 </div>
-                                <div th:if="${isMinedBySpecialName}" class="g-font-size-18 g-font-weight-300 g-mb-7" th:text="${minedBySpecialName}">87904
+                                <div th:if="${isMinedBySpecialName}" class="g-font-size-18 g-font-weight-300 g-mb-7"
+                                     th:text="${minedBySpecialName}">87904
                                 </div>
 
                             </a>
@@ -173,7 +181,7 @@
                     <div class="col-lg-6 col-sm-6 g-mb-50">
                         <div class="g-bg-white g-rounded-4 g-brd-bottom g-brd-2 g-brd-gray-light-v3 g-pa-20">
                             <div class="g-font-size-18 g-font-weight-300 g-mb-7">
-                                <span style="word-wrap: break-word;" >
+                                <span style="word-wrap: break-word;">
                                     <span th:text="${block.extraData}"></span>
                                 </span>
                             </div>
@@ -183,7 +191,7 @@
                     <div class="col-lg-6 col-sm-6 g-mb-50">
                         <div class="g-bg-white g-rounded-4 g-brd-bottom g-brd-2 g-brd-gray-light-v3 g-pa-20">
                             <div class="g-font-size-18 g-font-weight-300 g-mb-7">
-                                <span th:text="${block.extraDataString}" style="word-wrap: break-word;" >
+                                <span th:text="${block.extraDataString}" style="word-wrap: break-word;">
                                 </span>
                             </div>
                             <h4 class="h5 g-color-gray-dark-v4 g-mb-5">Extra Data</h4>
