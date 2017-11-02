@@ -39,9 +39,6 @@ debug: false
 
 endpoints:
   enabled: true
-management:
-  security:
-    enabled: false
 
 #logging
 logging:
@@ -55,3 +52,15 @@ cloud:
   cinder:
     disqus:
       name: cindercloud-app
+security:
+  user:
+    name: qkyrie
+    password: password
+    role: SUPERUSER
+management:
+  security:
+    enabled: true
+    roles: SUPERUSER
+  context-path: /management
+
+
