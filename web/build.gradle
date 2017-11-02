@@ -15,7 +15,6 @@ configurations {
 }
 
 dependencies {
-
     compile("org.springframework.boot:spring-boot-starter")
     compile("org.springframework.boot:spring-boot-starter-thymeleaf")
     compile("org.springframework.boot:spring-boot-starter-security")
@@ -25,6 +24,11 @@ dependencies {
     compile("org.springframework.boot:spring-boot-devtools")
     compile("org.springframework.cloud:spring-cloud-starter-feign")
     compile('org.thymeleaf.extras:thymeleaf-extras-springsecurity4:2.1.2.RELEASE')
+
+    compile("de.codecentric:spring-boot-admin-server:1.5.4")
+    compile("de.codecentric:spring-boot-admin-server-ui:1.5.4")
+    compile("de.codecentric:spring-boot-admin-starter-client:1.5.4")
+    compile("de.codecentric:spring-boot-admin-server-ui-login:1.5.4")
 
     compile 'org.springframework.cloud:spring-cloud-starter-aws'
     compile 'org.springframework.cloud:spring-cloud-aws-messaging'
