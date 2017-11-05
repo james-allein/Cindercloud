@@ -2,14 +2,12 @@ package cloud.cinder.cindercloud.block.repository;
 
 import cloud.cinder.cindercloud.block.model.Block;
 import cloud.cinder.cindercloud.infrastructure.repository.JpaRepository;
-import cloud.cinder.cindercloud.transaction.model.Transaction;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.Date;
-import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
 

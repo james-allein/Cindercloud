@@ -49,7 +49,7 @@ dependencies {
 }
 
 jar {
-    baseName = 'application'
+    baseName = 'web'
     version = null
 }
 
@@ -60,15 +60,4 @@ springBoot {
 bootRun {
     systemProperties System.properties
     addResources = true
-}
-
-task prepareRelease(type: Copy, dependsOn: bootRepackage) {
-    from 'elasticbeanstalk'
-    into "build/"
-}
-
-
-task doRelease(type: Copy, dependsOn: prepareRelease) {
-    from 'build/libs/application.jar'
-    into "build/"
 }

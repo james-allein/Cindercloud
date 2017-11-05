@@ -1,8 +1,8 @@
 package cloud.cinder.cindercloud.block.continuous;
 
 import cloud.cinder.cindercloud.block.continuous.model.BlockImportJob;
-import cloud.cinder.cindercloud.block.continuous.repository.BlockImportJobRepository;
 import cloud.cinder.cindercloud.block.model.Block;
+import cloud.cinder.cindercloud.block.continuous.repository.BlockImportJobRepository;
 import cloud.cinder.cindercloud.block.repository.BlockRepository;
 import cloud.cinder.cindercloud.block.service.BlockService;
 import lombok.extern.slf4j.Slf4j;
@@ -70,7 +70,7 @@ public class BlockImporter {
         for (long i = job.getFromBlock(); i <= job.getToBlock(); i++) {
             log.debug("Historic Import: trying to import block: {}", i);
             final EthBlock ethBlock = web3j.ethGetBlockByNumber(new DefaultBlockParameterNumber(i), false)
-                    .observable().toBlocking().firstOrDefault(null  );
+                    .observable().toBlocking().firstOrDefault(null);
             if (ethBlock != null && ethBlock.getBlock() != null && !blockRepository.findOne(ethBlock.getBlock().getHash()).isPresent()) {
                 log.debug("saving block {}", i);
                 blockService.save(Block.asBlock(ethBlock.getBlock()));

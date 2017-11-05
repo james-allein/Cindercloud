@@ -1,10 +1,6 @@
 spring:
     application:
         name: CinderCloud-Importer
-    messages:
-        basename: i18n/messages
-    thymeleaf:
-        mode: XHTML
     datasource:
         url: jdbc:mysql://localhost:3306/cindercloud
         username: cindercloud
@@ -25,11 +21,6 @@ spring:
           log-abandoned: true
           log-validation-errors: true
           max-wait: 1000
-    http:
-      multipart:
-        location: /tmp
-        max-file-size: 150MB
-        max-request-size: 200MB
 server:
     port: 8081
     session:

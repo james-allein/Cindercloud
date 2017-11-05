@@ -2,7 +2,6 @@ package cloud.cinder.cindercloud.block.continuous;
 
 import cloud.cinder.cindercloud.block.continuous.model.BlockImportJob;
 import cloud.cinder.cindercloud.block.continuous.repository.BlockImportJobRepository;
-import com.google.common.collect.Lists;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.ListUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,9 +9,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Stream;
 
 @Component
 @Slf4j

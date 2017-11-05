@@ -1,4 +1,4 @@
-package cloud.cinder.cindercloud.importer.config;
+package cloud.cinder.cindercloud.config;
 
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;

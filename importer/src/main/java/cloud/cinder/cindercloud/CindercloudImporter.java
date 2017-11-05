@@ -1,4 +1,4 @@
-package cloud.cinder.cindercloud.importer;
+package cloud.cinder.cindercloud;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -1,4 +1,4 @@
-package cloud.cinder.cindercloud.importer.config;
+package cloud.cinder.cindercloud.config;
 
 import com.amazonaws.auth.AWSCredentials;
 import com.amazonaws.auth.AWSCredentialsProvider;

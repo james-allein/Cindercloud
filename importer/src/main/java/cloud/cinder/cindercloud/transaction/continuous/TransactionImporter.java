@@ -2,9 +2,9 @@ package cloud.cinder.cindercloud.transaction.continuous;
 
 import cloud.cinder.cindercloud.block.model.Block;
 import cloud.cinder.cindercloud.block.service.BlockService;
-import cloud.cinder.cindercloud.transaction.model.Transaction;
 import cloud.cinder.cindercloud.transaction.repository.TransactionRepository;
 import cloud.cinder.cindercloud.transaction.service.TransactionService;
+import cloud.cinder.cindercloud.transaction.model.Transaction;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
@@ -14,7 +14,6 @@ import org.web3j.protocol.Web3j;
 import org.web3j.protocol.core.methods.response.EthBlock;
 
 import javax.annotation.PostConstruct;
-import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.Date;

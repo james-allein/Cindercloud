@@ -39,7 +39,6 @@ dependencies {
     compileOnly 'org.projectlombok:lombok:1.16.18'
     compile("org.ocpsoft.prettytime:prettytime:3.2.7.Final")
 
-    compile("org.flywaydb:flyway-core")
     compile("mysql:mysql-connector-java")
 
     testCompile("org.springframework.boot:spring-boot-starter-test")
@@ -48,7 +47,7 @@ dependencies {
 }
 
 jar {
-    baseName = 'application'
+    baseName = 'importer'
     version = null
 }
 
@@ -59,15 +58,4 @@ springBoot {
 bootRun {
     systemProperties System.properties
     addResources = true
-}
-
-task prepareRelease(type: Copy, dependsOn: bootRepackage) {
-    from 'elasticbeanstalk'
-    into "build/"
-}
-
-
-task doRelease(type: Copy, dependsOn: prepareRelease) {
-    from 'build/libs/application.jar'
-    into "build/"
 }

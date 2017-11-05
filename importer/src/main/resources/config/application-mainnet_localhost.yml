@@ -1,0 +1,9 @@
+cloud:
+  cinder:
+    ethereum:
+      endpoint:
+        token:
+        url: https://parity.cinder.cloud
+        archive-url: https://parity-archive.cinder.cloud
+    sqs:
+      name: cindercloud_mainnet_localhost
