@@ -14,7 +14,7 @@ import java.util.stream.Stream;
 public interface TransactionRepository extends JpaRepository<Transaction, String> {
 
     @Query("select transaction from Transaction transaction where fromAddress like :address or toAddress like :address")
-    List<Transaction> findByAddressFromOrTo(@Param("address") final String address);
+    Page<Transaction> findByAddressFromOrTo(@Param("address") final String address, final Pageable pageable);
 
     List<Transaction> findAllByBlockHash(@Param("blockHash") final String blockHash);
 

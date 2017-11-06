@@ -36,7 +36,6 @@ public interface BlockRepository extends JpaRepository<Block, String> {
     @Query("select block from Block block where uncle = false and hash LIKE :hash")
     Optional<Block> findBlock(@Param("hash") final String hash);
 
-
     @Query("select block from Block block where minedBy LIKE :address")
-    List<Block> findByMiner(@Param("address") final String address);
+    Page<Block> findByMiner(@Param("address") final String address, final Pageable pageable);
 }

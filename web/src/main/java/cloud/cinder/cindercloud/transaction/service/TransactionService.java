@@ -31,8 +31,8 @@ public class TransactionService {
     private BlockService blockService;
 
     @Transactional(readOnly = true)
-    public Observable<Transaction> findByAddress(final String address) {
-        return Observable.from(() -> transactionRepository.findByAddressFromOrTo(address).iterator());
+    public Observable<Page<Transaction>> findByAddress(final String address, final Pageable pageable) {
+        return Observable.just(transactionRepository.findByAddressFromOrTo(address, pageable));
     }
 
 

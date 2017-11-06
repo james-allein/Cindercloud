@@ -3,7 +3,6 @@ package cloud.cinder.cindercloud.block.service;
 import cloud.cinder.cindercloud.block.model.Block;
 import cloud.cinder.cindercloud.block.repository.BlockRepository;
 import cloud.cinder.cindercloud.infrastructure.service.SqsQueueSender;
-import cloud.cinder.cindercloud.transaction.model.Transaction;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,8 +47,8 @@ public class BlockService {
     }
 
     @Transactional(readOnly = true)
-    public Observable<Block> findByMiner(final String address) {
-        return Observable.from(() -> blockRepository.findByMiner(address).iterator());
+    public Observable<Page<Block>> findByMiner(final String address, final Pageable pageable) {
+        return Observable.just(blockRepository.findByMiner(address, pageable));
     }
 
     private void propagateTransactions(final Block savedBlock) {

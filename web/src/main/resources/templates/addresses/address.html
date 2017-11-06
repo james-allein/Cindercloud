@@ -61,12 +61,12 @@
                     <em class="u-nav-v8__description">This is a smart contract.</em>
                 </a>
             </li>
-            <li th:if="${address.minedBlocks.size() > 0}" class="nav-item">
+            <li th:if="${address.minedBlocks.hasContent()}" class="nav-item">
                 <a class="nav-link" data-toggle="tab" href="#blockMined" role="tab">
                           <span class="u-nav-v8__icon u-icon-v3 u-icon-size--lg g-rounded-50x g-brd-around g-brd-4 g-brd-white">
                             <i class="fa fa-th">
                                  <span class="u-badge-v1 g-color-white g-bg-primary g-rounded-50x"
-                                       th:text="${address.minedBlocks.size()}">33</span>
+                                       th:text="${address.minedBlocks.getTotalElements()}">33</span>
                             </i>
                           </span>
                     <strong class="text-uppercase u-nav-v8__title">Mined</strong>
@@ -110,7 +110,7 @@
                     </div>
                 </div>
 
-                <section th:if="${address.transactions.size() > 0}">
+                <section th:if="${address.transactions.hasContent()}">
                     <div class="row">
                         <div class="col-md-12">
                             <div class="table-responsive">
@@ -126,7 +126,7 @@
                                     </thead>
 
                                     <tbody>
-                                    <tr th:each="tx : ${address.transactions}">
+                                    <tr th:each="tx : ${address.transactions.getContent()}">
                                         <td><a th:href="@{'/tx/' + ${tx.hash}}"><span
                                                 th:text="${tx.prettyHash()}"></span></a></td>
                                         <td><a th:href="@{'/blocks/' + ${tx.blockHash}}"><span
@@ -166,7 +166,7 @@
                         <!-- End Table Striped Rows -->
                     </div>
                 </section>
-                <section th:unless="${address.transactions.size() > 0}">
+                <section th:unless="${address.transactions.hasContent() || address.transactionCount > 0}">
                     <div class="alert alert-dismissible fade show g-bg-gray-dark-v2 g-color-white rounded-0"
                          role="alert">
                         <button type="button" class="close u-alert-close--light" data-dismiss="alert"
@@ -214,7 +214,7 @@
                     </div>
                 </div>
             </div>
-            <div th:if="${address.minedBlocks.size() > 0}" class="tab-pane fade" id="blockMined" role="tabpanel">
+            <div th:if="${address.minedBlocks.hasContent()}" class="tab-pane fade" id="blockMined" role="tabpanel">
 
                 <div class="row">
                     <div class="col-md-12">
@@ -232,7 +232,7 @@
                                 </thead>
 
                                 <tbody>
-                                <tr th:each="block : ${address.minedBlocks}">
+                                <tr th:each="block : ${address.minedBlocks.getContent()}">
                                     <td>
                                         <a th:href="@{'/blocks/' + ${block.hash}}">
                                             <span th:text="${block.height}"></span>
