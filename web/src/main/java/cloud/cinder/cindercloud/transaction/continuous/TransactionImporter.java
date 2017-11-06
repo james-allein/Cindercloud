@@ -80,7 +80,6 @@ public class TransactionImporter {
                     .forEach(transactionService::save);
         } catch (final Exception e) {
             log.error("Error trying to import transactions from block", e);
-            e.printStackTrace();
         }
     }
 }

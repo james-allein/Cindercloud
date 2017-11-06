@@ -12,11 +12,11 @@ import org.springframework.stereotype.Component;
 import org.web3j.protocol.Web3j;
 import org.web3j.protocol.core.DefaultBlockParameterNumber;
 import org.web3j.protocol.core.methods.response.EthBlock;
+import rx.Subscription;
 
 import javax.annotation.PostConstruct;
 import java.util.Date;
 import java.util.Objects;
-import java.util.stream.LongStream;
 
 @Component
 @Slf4j
@@ -34,19 +34,32 @@ public class BlockImporter {
     @Value("${cloud.cinder.ethereum.auto-import:false}")
     private boolean autoBlockImport;
 
+
+    private Subscription liveSubscription;
+
     @PostConstruct
     public void listenToBlocks() {
         if (autoBlockImport) {
             log.debug("importing live-blocks");
-            web3j.blockObservable(false)
-                    .map(EthBlock::getBlock)
-                    .filter(Objects::nonNull)
-                    .map(Block::asBlock)
-                    .subscribe(block -> {
-                        log.debug("received live block");
-                        blockService.save(block);
-                    });
+            this.liveSubscription = subscribe();
         }
+    }
+
+    private Subscription subscribe() {
+        return web3j.blockObservable(false)
+                .map(EthBlock::getBlock)
+                .filter(Objects::nonNull)
+                .map(Block::asBlock)
+                .subscribe(block -> {
+                    log.debug("received live block");
+                    blockService.save(block);
+                }, onError -> {
+                    log.error("Something went wrong");
+                    if (liveSubscription.isUnsubscribed()) {
+                        log.info("Resubscribing to live");
+                        this.liveSubscription = subscribe();
+                    }
+                });
     }
 
     public void execute(final BlockImportJob job) {
@@ -54,10 +67,10 @@ public class BlockImporter {
         job.setStartTime(new Date());
         blockImportJobRepository.save(job);
 
-        for (long i = job.getFromBlock() ;  i <= job.getToBlock(); i++) {
+        for (long i = job.getFromBlock(); i <= job.getToBlock(); i++) {
             log.debug("Historic Import: trying to import block: {}", i);
             final EthBlock ethBlock = web3j.ethGetBlockByNumber(new DefaultBlockParameterNumber(i), false)
-                    .observable().toBlocking().firstOrDefault(null);
+                    .observable().toBlocking().firstOrDefault(null  );
             if (ethBlock != null && ethBlock.getBlock() != null && !blockRepository.findOne(ethBlock.getBlock().getHash()).isPresent()) {
                 log.debug("saving block {}", i);
                 blockService.save(Block.asBlock(ethBlock.getBlock()));
