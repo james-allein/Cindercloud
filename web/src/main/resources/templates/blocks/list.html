@@ -118,7 +118,7 @@
 
                         <tbody>
                         <tr th:each="block : ${blocks}">
-                            <td><span th:text="${block.height}"></span></td>
+                            <td><a th:href="@{/block/} + ${block.hash}"><span th:text="${block.height}"></span></a></td>
                             <td><span th:text="${block.prettyHash()}"></span></td>
                             <td><span th:text="${block.prettyTimestamp()}"></span></td>
 
