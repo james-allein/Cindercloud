@@ -12,7 +12,7 @@
         <div class="container">
             <div class="d-sm-flex text-center">
                 <div class="align-self-center">
-                    <h2 class="h3 g-font-weight-300 w-100 g-mb-10 g-mb-0--md">Blocks</h2>
+                    <h2 class="h3 g-font-weight-300 w-100 g-mb-10 g-mb-0--md">Uncles</h2>
                 </div>
 
                 <div class="align-self-center ml-auto">
@@ -22,7 +22,7 @@
                             <i class="g-color-gray-light-v2 g-ml-5">/</i>
                         </li>
                         <li class="list-inline-item g-color-primary">
-                            <span>Blocks</span>
+                            <span>Uncles</span>
                         </li>
                     </ul>
                 </div>
@@ -40,12 +40,12 @@
         <div class="container text-center g-py-50--md g-py-30">
 
             <!-- Search Form -->
-            <form class="g-width-60x--md mx-auto" th:action="@{/blocks}">
+            <form class="g-width-60x--md mx-auto" th:action="@{/uncles}">
                 <div class="form-group g-mb-20">
                     <div class="input-group u-shadow-v21 rounded g-mb-15">
                         <input name="q"
                                class="form-control form-control-md g-brd-white g-font-size-16 border-right-0 pr-0 g-py-15"
-                               type="text" placeholder="Search for Blocks (hashes or heights)"/>
+                               type="text" placeholder="Search for Uncles (hashes or heights)"/>
                         <div class="input-group-addon d-flex align-items-center g-bg-white g-brd-white g-color-gray-light-v1 g-pa-2">
                             <button class="btn u-btn-primary g-font-size-16 g-py-15 g-px-20" type="submit">
                                 <i class="icon-magnifier g-pos-rel g-top-1"></i>
@@ -62,7 +62,7 @@
         <br/>
         <div class="row g-pb-30">
             <div class="col-md-4">
-                <span>a total of <b th:text="${blocks.totalElements}"></b> blocks were found.</span>
+                <span>a total of <b th:text="${blocks.totalElements}"></b> uncles were found.</span>
             </div>
             <div class="col-md-4"></div>
             <div class="col-md-4">
@@ -70,7 +70,7 @@
                 <nav class="text-center" aria-label="Page Navigation">
                     <ul class="list-inline">
                         <li th:if="${blocks.hasPrevious()}" class="list-inline-item float-sm-left">
-                            <a th:href="@{/blocks(page=${blocks.number-1}, q=${q})}"
+                            <a th:href="@{/uncles(page=${blocks.number-1}, q=${q})}"
                                class="u-pagination-v1__item g-brd-around g-color-primary g-brd-gray-light-v3 g-bg-gray-dark-v2--hover g-brd-gray-dark-v2--hover g-color-white--hover g-rounded-50 g-pa-7-16"
                                href="#" aria-label="Previous">
         <span aria-hidden="true">
@@ -86,7 +86,7 @@
                                     th:text="${blocks.totalPages}">116</span></a>
                         </li>
                         <li th:if="${blocks.hasNext()} " class="list-inline-item float-sm-right">
-                            <a th:href="@{/blocks(page=${blocks.number+1}, q=${q})}"
+                            <a th:href="@{/uncles(page=${blocks.number+1}, q=${q})}"
                                class="u-pagination-v1__item g-brd-around g-color-primary g-brd-gray-light-v3 g-bg-gray-dark-v2--hover g-brd-gray-dark-v2--hover g-color-white--hover g-rounded-50 g-pa-7-16"
                                href="#" aria-label="Next">
         <span aria-hidden="true">
