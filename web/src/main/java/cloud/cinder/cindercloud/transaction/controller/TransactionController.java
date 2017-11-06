@@ -25,13 +25,17 @@ public class TransactionController {
     @RequestMapping(method = GET)
     public String getTransactions(final Pageable pageable,
                                   final ModelMap modelMap,
-                                  @RequestParam(name = "q", required = false) final Optional<String> searchKey) {
-        if (searchKey.isPresent()) {
-            modelMap.put("transactions", transactionService.find(searchKey.get(), pageable));
-            modelMap.put("q", searchKey.get());
+                                  @RequestParam(name = "q", required = false) final Optional<String> searchKey,
+                                  @RequestParam(name = "block", required = false) final Optional<String> block) {
+        if (searchKey.isPresent() || block.isPresent()) {
+            modelMap.put("transactions", transactionService.find(searchKey.orElse(""), block.orElse(""), pageable));
+            modelMap.put("q", searchKey.orElse(""));
+            modelMap.put("block", block.orElse(""));
+
         } else {
             modelMap.put("transactions", transactionService.getLastTransactions(pageable));
             modelMap.put("q", "");
+            modelMap.put("block", "");
         }
         return "transactions/list";
     }

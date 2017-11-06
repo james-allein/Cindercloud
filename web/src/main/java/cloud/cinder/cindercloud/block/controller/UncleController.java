@@ -5,6 +5,7 @@ import cloud.cinder.cindercloud.address.service.AddressService;
 import cloud.cinder.cindercloud.block.service.BlockService;
 import cloud.cinder.cindercloud.transaction.service.TransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -61,11 +62,11 @@ public class UncleController {
     @RequestMapping(value = "/{hash}/transactions")
     public DeferredResult<ModelAndView> getTransactionsForBlock(@PathVariable("hash") final String hash) {
         final DeferredResult<ModelAndView> result = new DeferredResult<>();
-        transactionService.getTransactionsForBlock(hash)
-                .toList()
+        transactionService.getTransactionsForBlock(hash, new PageRequest(0, 20))
                 .map(x -> {
                     final ModelAndView modelAndView = new ModelAndView("blocks/transactions :: blockTransactions");
                     modelAndView.addObject("transactions", x);
+                    modelAndView.addObject("hash", hash);
                     return modelAndView;
                 })
                 .subscribe(result::setResult);

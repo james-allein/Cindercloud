@@ -71,7 +71,7 @@
                 <nav class="text-center" aria-label="Page Navigation">
                     <ul class="list-inline">
                         <li th:if="${transactions.hasPrevious()}" class="list-inline-item float-sm-left">
-                            <a th:href="@{/tx(page=${transactions.number-1}, q=${q})}"
+                            <a th:href="@{/tx(page=${transactions.number-1}, q=${q}, block=${block})}"
                                class="u-pagination-v1__item g-brd-around g-color-primary g-brd-gray-light-v3 g-bg-gray-dark-v2--hover g-brd-gray-dark-v2--hover g-color-white--hover g-rounded-50 g-pa-7-16"
                                href="#" aria-label="Previous">
         <span aria-hidden="true">
@@ -87,7 +87,7 @@
                                     th:text="${transactions.totalPages}">116</span></a>
                         </li>
                         <li th:if="${transactions.hasNext()} " class="list-inline-item float-sm-right">
-                            <a th:href="@{/tx(page=${transactions.number+1}, q=${q})}"
+                            <a th:href="@{/tx(page=${transactions.number+1}, q=${q}, block=${block})}"
                                class="u-pagination-v1__item g-brd-around g-color-primary g-brd-gray-light-v3 g-bg-gray-dark-v2--hover g-brd-gray-dark-v2--hover g-color-white--hover g-rounded-50 g-pa-7-16"
                                href="#" aria-label="Next">
         <span aria-hidden="true">

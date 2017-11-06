@@ -42,8 +42,8 @@ public class TransactionService {
     }
 
     @Transactional(readOnly = true)
-    public Observable<Transaction> getTransactionsForBlock(final String blockHash) {
-        return Observable.from(transactionRepository.findAllByBlockHash(blockHash));
+    public Observable<Page<Transaction>> getTransactionsForBlock(final String blockHash, final Pageable pageable) {
+        return Observable.just(transactionRepository.findAllByBlockHash(blockHash, pageable));
     }
 
     @Transactional
@@ -100,7 +100,7 @@ public class TransactionService {
         }
     }
 
-    public Page<Transaction> find(final String searchKey, final Pageable pageable) {
-        return transactionRepository.find(searchKey, pageable);
+    public Page<Transaction> find(final String searchKey, final String block, final Pageable pageable) {
+        return transactionRepository.find(searchKey, block, pageable);
     }
 }
