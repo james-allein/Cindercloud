@@ -136,8 +136,8 @@ public class BlockService {
     }
 
     @Transactional(readOnly = true)
-    public Page<Block> searchBlocks(final String searchKey, final Pageable pageable) {
-        return blockRepository.searchBlocks(searchKey, pageable);
+    public Page<Block> searchBlocks(final String searchKey, final String minedBy, final Pageable pageable) {
+        return blockRepository.searchBlocks(searchKey, minedBy, pageable);
     }
 
     @Transactional(readOnly = true)

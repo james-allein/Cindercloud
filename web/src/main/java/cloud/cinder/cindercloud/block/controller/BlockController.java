@@ -31,10 +31,12 @@ public class BlockController {
     @RequestMapping(method = RequestMethod.GET)
     public String blocks(final ModelMap modelMap,
                          final @RequestParam("q") Optional<String> searchKey,
+                         final @RequestParam("mined_by") Optional<String> minedBy,
                          final Pageable pageable) {
-        if (searchKey.isPresent()) {
-            modelMap.put("blocks", blockService.searchBlocks(searchKey.get(), pageable));
-            modelMap.put("q", searchKey.get());
+        if (searchKey.isPresent() || minedBy.isPresent()) {
+            modelMap.put("blocks", blockService.searchBlocks(searchKey.orElse(""), minedBy.orElse(""), pageable));
+            modelMap.put("q", searchKey.orElse(null));
+            modelMap.put("mined_by", minedBy.orElse(null));
         } else {
             modelMap.put("blocks", blockService.getLastBlocks(pageable));
             modelMap.put("q", "");

@@ -21,8 +21,8 @@ public interface BlockRepository extends JpaRepository<Block, String> {
     @Query("select block from Block block where uncle = false order by height desc")
     Page<Block> findAllUnclesOrderByHeightDesc(Pageable pageable);
 
-    @Query("select block from Block block where (hash like %:searchKey% or height LIKE %:searchKey%) and uncle = false order by height desc")
-    Page<Block> searchBlocks(final String searchKey, final Pageable pageable);
+    @Query("select block from Block block where (hash like %:searchKey% or height LIKE %:searchKey%) and minedBy LIKE %:minedBy% and uncle = false order by height desc")
+    Page<Block> searchBlocks(@Param("searchKey") final String searchKey, @Param("minedBy") final String minedBy, final Pageable pageable);
 
     @Query("select block from Block block where (hash like %:searchKey% or height LIKE %:searchKey%) and uncle = true order by height desc")
     Page<Block> searchUncles(final String searchKey, final Pageable pageable);
