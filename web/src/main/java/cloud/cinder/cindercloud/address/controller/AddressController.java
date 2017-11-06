@@ -48,6 +48,7 @@ public class AddressController {
         Observable.zip(code, transactions, minedBlocks, transactionCount, balance, (cde, tx, blocks, count, bal) -> {
             modelAndView.addObject("address", new AddressVO(cde, format(bal), count, tx, blocks));
             modelAndView.addObject("isSpecial", specialAddress.isPresent());
+            modelAndView.addObject("hash", hash);
             modelAndView.addObject("specialName", specialAddress.map(SpecialAddress::getName).orElse(""));
             return modelAndView;
         }).subscribe(result::setResult);

@@ -111,6 +111,22 @@
                 </div>
 
                 <section th:if="${address.transactions.hasContent()}">
+
+                    <div th:if="${address.transactions.hasNext()}" class="alert alert-dismissible fade show g-bg-teal g-color-white rounded-0" role="alert">
+                        <button type="button" class="close u-alert-close--light" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                        <div class="media">
+                        <span class="d-flex g-mr-10 g-mt-5">
+                          <i class="icon-check g-font-size-25"></i>
+                        </span>
+                            <span class="media-body align-self-center">
+                          <strong>More blocks!</strong> <a th:href="@{/blocks?q=} + ${hash}" style="color:white;">Find out all transactions referencing this account.</a>
+                        </span>
+                        </div>
+                    </div>
+
+
                     <div class="row">
                         <div class="col-md-12">
                             <div class="table-responsive">
@@ -215,6 +231,20 @@
                 </div>
             </div>
             <div th:if="${address.minedBlocks.hasContent()}" class="tab-pane fade" id="blockMined" role="tabpanel">
+
+                <div th:if="${address.minedBlocks.hasNext()}" class="alert alert-dismissible fade show g-bg-teal g-color-white rounded-0" role="alert">
+                    <button type="button" class="close u-alert-close--light" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                    <div class="media">
+                        <span class="d-flex g-mr-10 g-mt-5">
+                          <i class="icon-check g-font-size-25"></i>
+                        </span>
+                        <span class="media-body align-self-center">
+                          <strong>More blocks!</strong> <a th:href="@{/blocks?mined_by=} + ${hash}" style="color:white;">Find out all blocks this account has mined.</a>
+                        </span>
+                    </div>
+                </div>
 
                 <div class="row">
                     <div class="col-md-12">
