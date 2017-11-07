@@ -1,0 +1,51 @@
+spring:
+    application:
+        name: CinderCloud-Importer
+    messages:
+        basename: i18n/messages
+    thymeleaf:
+        mode: XHTML
+    datasource:
+        url: jdbc:mysql://localhost:3306/cindercloud
+        username: cindercloud
+        password: cindercloud
+        driver-class-name: com.mysql.jdbc.Driver
+        type: org.apache.tomcat.jdbc.pool.DataSource
+        tomcat:
+          max-idle: 10
+          min-idle: 10
+          max-active: 32
+          remove-abandoned: true
+          validation-query: /* cinderloud Health Check */ SELECT 1
+          validation-query-timeout: 300
+          test-on-borrow: true
+          test-on-connect: true
+          test-while-idle: true
+          initial-size: 10
+          log-abandoned: true
+          log-validation-errors: true
+          max-wait: 1000
+    http:
+      multipart:
+        location: /tmp
+        max-file-size: 150MB
+        max-request-size: 200MB
+server:
+    port: 8081
+    session:
+        cookie:
+            http-only: true
+debug: false
+
+endpoints:
+  enabled: true
+
+#logging
+logging:
+  level:
+    org:
+      springframework: info
+    cloud:
+      cinder: DEBUG
+
+
