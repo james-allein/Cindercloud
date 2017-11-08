@@ -31,7 +31,7 @@ public class BlockImporter {
     @Autowired
     private BlockImportJobRepository blockImportJobRepository;
 
-    @Value("${cloud.cinder.ethereum.auto-import:false}")
+    @Value("${cloud.cinder.ethereum.live-block-import:false}")
     private boolean autoBlockImport;
 
 

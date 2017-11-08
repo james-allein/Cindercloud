@@ -16,7 +16,7 @@ import java.util.stream.Stream;
 
 @Component
 @Slf4j
-@ConditionalOnProperty(name = "cloud.cinder.ethereum.historic-import", havingValue = "true")
+@ConditionalOnProperty(name = "cloud.cinder.ethereum.historic-block-import", havingValue = "true")
 public class BlockImportJobRunner {
 
     @Autowired

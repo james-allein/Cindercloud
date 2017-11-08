@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @Slf4j
-@ConditionalOnProperty(name = "cloud.cinder.ethereum.auto-import", havingValue = "true")
+@ConditionalOnProperty(name = "cloud.cinder.ethereum.sqs-transaction-import", havingValue = "true")
 public class BlockAddedListener {
 
     @Autowired
