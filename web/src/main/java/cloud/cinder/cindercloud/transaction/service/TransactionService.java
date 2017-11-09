@@ -17,6 +17,7 @@ import rx.Observable;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.Date;
+import java.util.List;
 import java.util.Objects;
 
 @Service
@@ -54,7 +55,7 @@ public class TransactionService {
     }
 
     @Transactional(readOnly = true)
-    public Page<Transaction> getLastTransactions(Pageable pageable) {
+    public List<Transaction> getLastTransactions(Pageable pageable) {
         return transactionRepository.findAllOrOrderByBlockTimestamp(pageable);
     }
 

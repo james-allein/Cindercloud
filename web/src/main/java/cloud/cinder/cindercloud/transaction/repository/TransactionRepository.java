@@ -18,9 +18,8 @@ public interface TransactionRepository extends JpaRepository<Transaction, String
 
     Page<Transaction> findAllByBlockHash(@Param("blockHash") final String blockHash, final Pageable pageable);
 
-
     @Query("select transaction from Transaction transaction order by blockTimestamp desc")
-    Page<Transaction> findAllOrOrderByBlockTimestamp(Pageable pageable);
+    List<Transaction> findAllOrOrderByBlockTimestamp(Pageable pageable);
 
     @Query("select transaction from Transaction transaction where hash LIKE %:searchKey% AND blockHash LIKE %:block% order by blockTimestamp desc")
     Page<Transaction> find(@Param("searchKey") String searchKey, @Param("block") final String block, final Pageable pageable);
