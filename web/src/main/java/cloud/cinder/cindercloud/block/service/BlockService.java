@@ -48,7 +48,7 @@ public class BlockService {
 
     @Transactional(readOnly = true)
     public Observable<Page<Block>> findByMiner(final String address, final Pageable pageable) {
-        return Observable.just(blockRepository.findByMiner(address, pageable));
+        return Observable.just(blockRepository.findBlocksAndUnclesByMiner(address, pageable));
     }
 
     private void propagateTransactions(final Block savedBlock) {
@@ -110,7 +110,7 @@ public class BlockService {
     public Observable<Block> getBlock(final String hash) {
         return blockRepository.findBlock(hash)
                 .map(Observable::just)
-                .orElse(
+                .orElseGet(() ->
                         web3j.ethGetBlockByHash(hash, false)
                                 .observable()
                                 .map(EthBlock::getBlock)

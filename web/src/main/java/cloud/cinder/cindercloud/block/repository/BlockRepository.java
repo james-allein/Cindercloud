@@ -18,7 +18,7 @@ public interface BlockRepository extends JpaRepository<Block, String> {
     @Query("select block from Block block where uncle = false order by height desc")
     Page<Block> findAllBlocksOrderByHeightDesc(Pageable pageable);
 
-    @Query("select block from Block block where uncle = false order by height desc")
+    @Query("select block from Block block where uncle = true order by height desc")
     Page<Block> findAllUnclesOrderByHeightDesc(Pageable pageable);
 
     @Query("select block from Block block where (hash like %:searchKey% or height LIKE %:searchKey%) and minedBy LIKE %:minedBy% and uncle = false order by height desc")
@@ -37,5 +37,5 @@ public interface BlockRepository extends JpaRepository<Block, String> {
     Optional<Block> findBlock(@Param("hash") final String hash);
 
     @Query("select block from Block block where minedBy LIKE :address")
-    Page<Block> findByMiner(@Param("address") final String address, final Pageable pageable);
+    Page<Block> findBlocksAndUnclesByMiner(@Param("address") final String address, final Pageable pageable);
 }

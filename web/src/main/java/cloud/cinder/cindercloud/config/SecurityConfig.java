@@ -18,8 +18,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(final HttpSecurity http) throws Exception {
         http.csrf().disable();
         http.headers().frameOptions().sameOrigin();
-//        http.authorizeRequests()
-//                .antMatchers("/**").permitAll();
 
         http.formLogin().loginPage("/monitoring/login.html").loginProcessingUrl("/monitoring/login").permitAll();
 

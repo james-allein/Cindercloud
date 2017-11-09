@@ -74,10 +74,11 @@
                     </td>
                     <td>
                         <div th:if="${tx.isContractCreation()}">
-                            <span th:text="${tx.prettyToAddress()}"></span>
+                            <a th:href="@{'/address/' + ${tx.creates}}"><span
+                                    th:text="${tx.prettyToAddress()}"></span></a>
                         </div>
                         <div th:unless="${tx.isContractCreation()}">
-                            <a th:href="@{'/address/' + ${tx.creates}}"><span
+                            <a th:href="@{'/address/' + ${tx.toAddress}}"><span
                                     th:text="${tx.prettyToAddress()}"></span></a>
                         </div>
                     </td>
