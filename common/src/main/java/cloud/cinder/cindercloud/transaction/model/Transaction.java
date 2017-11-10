@@ -1,6 +1,7 @@
 package cloud.cinder.cindercloud.transaction.model;
 
 import cloud.cinder.cindercloud.utils.WeiUtils;
+import cloud.cinder.cindercloud.utils.dto.PrettyAmount;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -51,11 +52,11 @@ public class Transaction {
         return (StringUtils.isEmpty(toAddress) && !StringUtils.isEmpty(creates));
     }
 
-    public String formattedValue() {
+    public PrettyAmount formattedValue() {
         return WeiUtils.format(value);
     }
 
-    public String formattedGasPrice() {
+    public PrettyAmount formattedGasPrice() {
         return WeiUtils.format(gasPrice);
     }
 
