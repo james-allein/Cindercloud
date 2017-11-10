@@ -39,8 +39,16 @@
 
                                 <ul class="hs-sub-menu list-unstyled u-shadow-v11 g-brd-top g-brd-primary g-brd-top-2 g-min-width-220 g-mt-21 g-mt-11--lg--scrolling" id="nav-submenu-pages" aria-labelledby="nav-link-pages">
                                     <!-- Pages - Pricing -->
-                                    <li class="dropdown-item ">
+                                    <li class="dropdown-item hs-has-sub-menu">
                                         <a class="nav-link" th:href="@{/blocks}">Blocks</a>
+                                        <ul class="hs-sub-menu list-unstyled u-shadow-v11 g-brd-top g-brd-primary g-brd-top-2 g-min-width-220 g-mt-minus-2 animated" id="nav-submenu--features--sliders" aria-labelledby="nav-link--features--sliders" style="display: none;">
+                                            <li class="dropdown-item ">
+                                                <a class="nav-link" th:href="@{/blocks}">Normal Blocks</a>
+                                            </li>
+                                            <li class="dropdown-item ">
+                                                <a class="nav-link" th:href="@{/uncles}">Uncles</a>
+                                            </li>
+                                        </ul>
                                     </li>
                                     <li class="dropdown-item ">
                                         <a class="nav-link" th:href="@{/tx}">Transactions</a>
