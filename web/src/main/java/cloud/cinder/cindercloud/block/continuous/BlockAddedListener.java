@@ -26,6 +26,7 @@ public class BlockAddedListener {
                                    @Header("event_type") String eventType) {
         if ("block_with_transactions_imported".equals(eventType)) {
             try {
+                log.debug("Fetched from queue: {}", blockAsString);
                 final Block convertedBlock = objectMapper.readValue(blockAsString, Block.class);
                 transactionImporter.importTransactions(convertedBlock);
             } catch (final Exception ex) {

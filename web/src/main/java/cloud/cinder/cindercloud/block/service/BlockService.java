@@ -52,6 +52,7 @@ public class BlockService {
     }
 
     private void propagateTransactions(final Block savedBlock) {
+        log.debug("Propagating Transactions");
         web3j.ethGetBlockTransactionCountByHash(savedBlock.getHash())
                 .observable()
                 .filter(Objects::nonNull)
@@ -79,6 +80,7 @@ public class BlockService {
 
     @Transactional
     public void importByHash(final String hash, final boolean uncle) {
+        log.trace("importing block or uncle by hash");
         if (wasWronglySavedAsNormalBlock(hash, uncle)) {
             blockRepository.delete(hash);
         }
@@ -111,12 +113,15 @@ public class BlockService {
         return blockRepository.findBlock(hash)
                 .map(Observable::just)
                 .orElseGet(() ->
-                        web3j.ethGetBlockByHash(hash, false)
-                                .observable()
-                                .map(EthBlock::getBlock)
-                                .filter(Objects::nonNull)
-                                .map(Block::asBlock)
-                                .map(this::save)
+                        {
+                            log.debug("Block {} was not found in repository, fetching from web3.", hash);
+                            return web3j.ethGetBlockByHash(hash, false)
+                                    .observable()
+                                    .map(EthBlock::getBlock)
+                                    .filter(Objects::nonNull)
+                                    .map(Block::asBlock)
+                                    .map(this::save);
+                        }
                 );
     }
 
