@@ -11,7 +11,7 @@ import java.text.DecimalFormat;
 @Slf4j
 public class PrettyAmount {
 
-    final DecimalFormat decimalFormatter = new DecimalFormat("##.0000");
+    final DecimalFormat decimalFormatter = new DecimalFormat("#0.0000");
 
     private String value;
     private String unit;
