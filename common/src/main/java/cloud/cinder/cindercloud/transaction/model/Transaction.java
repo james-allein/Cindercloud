@@ -5,9 +5,9 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.apache.commons.lang.StringUtils;
 import org.bouncycastle.util.encoders.Hex;
 import org.ocpsoft.prettytime.PrettyTime;
+import org.springframework.util.StringUtils;
 
 import javax.persistence.*;
 import java.math.BigInteger;

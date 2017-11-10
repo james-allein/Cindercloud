@@ -19,6 +19,7 @@ import org.web3j.protocol.core.methods.response.EthGetBlockTransactionCountByHas
 import rx.Observable;
 
 import java.math.BigInteger;
+import java.util.List;
 import java.util.Objects;
 
 @Component
@@ -126,13 +127,13 @@ public class BlockService {
     }
 
     @Transactional(readOnly = true)
-    public Page<Block> getLastImportedBlock() {
-        return blockRepository.findAllBlocksOrderByHeightDesc(new PageRequest(0, 1));
+    public List<Block> getLast10IndexedBlocks() {
+        return blockRepository.findAllBlocksOrderByHeightDescAsList(new PageRequest(0, 1));
     }
 
     @Transactional(readOnly = true)
     public Page<Block> getLastBlocks(final Pageable pageable) {
-        return blockRepository.findAllBlocksOrderByHeightDesc(pageable);
+        return blockRepository.findAllBlocksOrderByHeightDescAsPage(pageable);
     }
 
     @Transactional(readOnly = true)

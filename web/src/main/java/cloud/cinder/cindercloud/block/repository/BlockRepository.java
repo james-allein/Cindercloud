@@ -8,13 +8,17 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
 
 public interface BlockRepository extends JpaRepository<Block, String> {
 
     @Query("select block from Block block where uncle = false order by height desc")
-    Page<Block> findAllBlocksOrderByHeightDesc(Pageable pageable);
+    Page<Block> findAllBlocksOrderByHeightDescAsPage(Pageable pageable);
+
+    @Query("select block from Block block where uncle = false order by height desc")
+    List<Block> findAllBlocksOrderByHeightDescAsList(Pageable pageable);
 
     @Query("select block from Block block where uncle = true order by height desc")
     Page<Block> findAllUnclesOrderByHeightDesc(Pageable pageable);

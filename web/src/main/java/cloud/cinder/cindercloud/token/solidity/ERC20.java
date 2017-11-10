@@ -19,6 +19,7 @@ import org.web3j.protocol.core.methods.request.EthFilter;
 import org.web3j.tx.Contract;
 import rx.Observable;
 
+import java.io.IOException;
 import java.math.BigInteger;
 import java.util.Arrays;
 
@@ -31,44 +32,44 @@ public class ERC20 extends Contract {
         super("", contractAddress, web3j, Credentials.create(ECKeyPair.create(BigInteger.ZERO)), gasPrice, gasLimit);
     }
 
-    public Observable<Uint8> decimals() {
+    public Observable<Uint8> decimals() throws IOException {
         final Function function = new Function("decimals",
                 emptyList(),
                 singletonList(new TypeReference<Uint8>() {
                 }));
-        return Observable.from(executeCallSingleValueReturnAsync(function));
+        return Observable.just(executeCallSingleValueReturn(function));
     }
 
-    public Observable<Utf8String> version() {
+    public Observable<Utf8String> version() throws IOException {
         final Function function = new Function("version",
                 Arrays.asList(),
                 Arrays.asList(new TypeReference<Utf8String>() {
                 }));
-        return Observable.from(executeCallSingleValueReturnAsync(function));
+        return Observable.just(executeCallSingleValueReturn(function));
     }
 
-    public Observable<Uint256> balanceOf(Address _owner) {
+    public Observable<Uint256> balanceOf(Address _owner) throws IOException {
         final Function function = new Function("balanceOf",
                 Arrays.asList(_owner),
                 Arrays.asList(new TypeReference<Uint256>() {
                 }));
-        return Observable.from(executeCallSingleValueReturnAsync(function));
+        return Observable.just(executeCallSingleValueReturn(function));
     }
 
-    public Observable<Utf8String> symbol() {
+    public Observable<Utf8String> symbol() throws IOException {
         final Function function = new Function("symbol",
                 Arrays.asList(),
                 Arrays.asList(new TypeReference<Utf8String>() {
                 }));
-        return Observable.from(executeCallSingleValueReturnAsync(function));
+        return Observable.just(executeCallSingleValueReturn(function));
     }
 
-    public Observable<Uint256> allowance(final Address _owner, final Address _spender) {
+    public Observable<Uint256> allowance(final Address _owner, final Address _spender) throws IOException {
         final Function function = new Function("allowance",
                 Arrays.asList(_owner, _spender),
                 Arrays.asList(new TypeReference<Uint256>() {
                 }));
-        return Observable.from(executeCallSingleValueReturnAsync(function));
+        return Observable.just(executeCallSingleValueReturn(function));
     }
 
     public Observable<TransferEventResponse> transferEventObservable(DefaultBlockParameter startBlock, DefaultBlockParameter endBlock) {

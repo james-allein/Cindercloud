@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.web3j.protocol.Web3j;
 
+import java.io.IOException;
 import java.math.BigInteger;
 import java.util.Optional;
 
@@ -30,7 +31,7 @@ public class TokenService {
         return tokenRepository.findByAddress(addressHash);
     }
 
-    public void readTokenFromBlockchain(final String address) {
+    public void readTokenFromBlockchain(final String address) throws IOException {
         final ERC20 erc20 = new ERC20(address, web3j, BigInteger.ZERO, BigInteger.ZERO);
         System.out.println(erc20.version().toBlocking().first());
     }

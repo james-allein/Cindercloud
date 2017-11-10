@@ -33,7 +33,7 @@ public class IndexController {
 
     @RequestMapping(params = "section=blocks")
     public String getLast10Blocks(final ModelMap model) {
-        model.put("blocks", blockService.getLastBlocks(new PageRequest(0, 10)).getContent());
+        model.put("blocks", blockService.getLast10IndexedBlocks());
         return "components/index :: blocks";
     }
 
