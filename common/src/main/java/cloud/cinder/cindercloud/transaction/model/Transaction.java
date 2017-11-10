@@ -1,5 +1,6 @@
 package cloud.cinder.cindercloud.transaction.model;
 
+import cloud.cinder.cindercloud.address.model.SpecialAddress;
 import cloud.cinder.cindercloud.utils.WeiUtils;
 import cloud.cinder.cindercloud.utils.dto.PrettyAmount;
 import lombok.AllArgsConstructor;
@@ -48,6 +49,11 @@ public class Transaction {
     @Temporal(TemporalType.TIMESTAMP)
     private Date blockTimestamp;
 
+    @Transient
+    public SpecialAddress specialFrom;
+    @Transient
+    public SpecialAddress specialTo;
+
     public boolean isContractCreation() {
         return (StringUtils.isEmpty(toAddress) && !StringUtils.isEmpty(creates));
     }
@@ -69,14 +75,22 @@ public class Transaction {
     }
 
     public String prettyFromAddress() {
-        return fromAddress.substring(0, 18) + "...";
+        if (specialFrom != null) {
+            return specialFrom.getName();
+        } else {
+            return fromAddress.substring(0, 18) + "...";
+        }
     }
 
     public String prettyToAddress() {
-        if (isContractCreation()) {
-            return creates.substring(0, 18) + "... [contract creation]";
+        if (specialTo != null) {
+            return specialTo.getName();
+        } else {
+            if (isContractCreation()) {
+                return creates.substring(0, 18) + "... [contract creation]";
+            }
+            return toAddress.substring(0, 18) + "...";
         }
-        return toAddress.substring(0, 18) + "...";
     }
 
     public String prettyBlockTimestamp() {

@@ -1,5 +1,6 @@
 package cloud.cinder.cindercloud.transaction.service;
 
+import cloud.cinder.cindercloud.address.service.AddressService;
 import cloud.cinder.cindercloud.block.model.Block;
 import cloud.cinder.cindercloud.block.service.BlockService;
 import cloud.cinder.cindercloud.transaction.model.Transaction;
@@ -30,10 +31,14 @@ public class TransactionService {
     private TransactionRepository transactionRepository;
     @Autowired
     private BlockService blockService;
+    @Autowired
+    private AddressService addressService;
 
     @Transactional(readOnly = true)
     public Observable<Page<Transaction>> findByAddress(final String address, final Pageable pageable) {
-        return Observable.just(transactionRepository.findByAddressFromOrTo(address, pageable));
+        final Page<Transaction> result = transactionRepository.findByAddressFromOrTo(address, pageable);
+        result.getContent().forEach(this::enrichWithSpecialAddresses);
+        return Observable.just(result);
     }
 
 
@@ -44,14 +49,27 @@ public class TransactionService {
 
     @Transactional(readOnly = true)
     public Observable<Page<Transaction>> getTransactionsForBlock(final String blockHash, final Pageable pageable) {
-        return Observable.just(transactionRepository.findAllByBlockHash(blockHash, pageable));
+        final Page<Transaction> result = transactionRepository.findAllByBlockHash(blockHash, pageable);
+        result.getContent().forEach(this::enrichWithSpecialAddresses);
+        return Observable.just(result);
     }
 
     @Transactional
     public Observable<Transaction> getTransaction(final String transactionHash) {
         return transactionRepository.findOne(transactionHash)
                 .map(Observable::just)
-                .orElse(getInternalTransaction(transactionHash));
+                .orElse(getInternalTransaction(transactionHash)
+                        .map(this::enrichWithSpecialAddresses));
+    }
+
+    private Transaction enrichWithSpecialAddresses(final Transaction tx) {
+        addressService.findByAddress(tx.getFromAddress()).ifPresent(tx::setSpecialFrom);
+        if (tx.isContractCreation()) {
+            addressService.findByAddress(tx.getCreates()).ifPresent(tx::setSpecialTo);
+        } else {
+            addressService.findByAddress(tx.getToAddress()).ifPresent(tx::setSpecialTo);
+        }
+        return tx;
     }
 
     @Transactional(readOnly = true)

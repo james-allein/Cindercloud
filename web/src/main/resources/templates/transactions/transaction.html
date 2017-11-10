@@ -72,7 +72,9 @@
                     <div class="col-lg-5 col-sm-5 g-mb-50">
                         <div class="g-brd-around g-brd-orange g-pa-20">
                             <a th:href="@{/address/} + ${tx.fromAddress}">
-                                <div class="g-font-size-16 g-font-weight-300 g-mb-7" th:text="${tx.fromAddress}">87904
+                                <div th:if="${tx.specialFrom == null}" class="g-font-size-16 g-font-weight-300 g-mb-7" th:text="${tx.fromAddress}">from
+                                </div>
+                                <div th:unless="${tx.specialFrom == null}" class="g-font-size-16 g-font-weight-300 g-mb-7" th:text="${tx.specialFrom.name}">from
                                 </div>
                             </a>
                             <h4 class="h5 g-color-gray-dark-v4 g-mb-5">FROM</h4>
@@ -89,7 +91,9 @@
                     <div class="col-lg-5 col-sm-5 g-mb-50">
                         <div class="g-brd-around g-brd-primary g-pa-20">
                             <a th:href="@{/address/} + ${tx.toAddress}">
-                                <div class="g-font-size-16 g-font-weight-300 g-mb-7" th:text="${tx.toAddress}">87904
+                                <div th:if="${tx.specialTo == null}" class="g-font-size-16 g-font-weight-300 g-mb-7" th:text="${tx.toAddress}">87904
+                                </div>
+                                <div th:unless="${tx.specialTo == null}" class="g-font-size-16 g-font-weight-300 g-mb-7" th:text="${tx.specialTo}">87904
                                 </div>
                             </a>
                             <h4 class="h5 g-color-gray-dark-v4 g-mb-5">TO</h4>
