@@ -8,6 +8,7 @@ import cloud.cinder.cindercloud.transaction.repository.TransactionRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -73,8 +74,13 @@ public class TransactionService {
     }
 
     @Transactional(readOnly = true)
-    public List<Transaction> getLastTransactions(Pageable pageable) {
-        return transactionRepository.findAllOrOrderByBlockTimestamp(pageable);
+    public Page<Transaction> getLastTransactions(Pageable pageable) {
+        return transactionRepository.findAllOrOrderByBlockTimestampAsPage(pageable);
+    }
+
+    @Transactional(readOnly = true)
+    public Object getLast20Transactions() {
+        return transactionRepository.findAllOrOrderByBlockTimestampAsList(new PageRequest(0, 20));
     }
 
     private Observable<Transaction> getInternalTransaction(final String transactionHash) {
