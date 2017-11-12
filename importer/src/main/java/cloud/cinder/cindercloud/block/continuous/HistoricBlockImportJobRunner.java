@@ -14,7 +14,7 @@ import java.util.List;
 @Component
 @Slf4j
 @ConditionalOnProperty(name = "cloud.cinder.ethereum.historic-block-import", havingValue = "true")
-public class BlockImportJobRunner {
+public class HistoricBlockImportJobRunner {
 
     @Autowired
     private BlockImportJobRepository blockImportJobRepository;
