@@ -21,15 +21,6 @@ spring:
           log-abandoned: true
           log-validation-errors: true
           max-wait: 1000
-server:
-    port: 8081
-    session:
-        cookie:
-            http-only: true
-debug: false
-
-endpoints:
-  enabled: true
 
 #logging
 logging:

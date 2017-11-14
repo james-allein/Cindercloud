@@ -31,6 +31,7 @@ public class BlockAddedListener {
                 transactionImporter.importTransactions(convertedBlock);
             } catch (final Exception ex) {
                 log.error("Error trying to receive message", ex);
+                throw new IllegalArgumentException("Unable to process");
             }
         }
     }
