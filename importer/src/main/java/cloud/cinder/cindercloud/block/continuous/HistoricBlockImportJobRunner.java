@@ -25,14 +25,12 @@ public class HistoricBlockImportJobRunner {
 
     @Scheduled(fixedDelay = 10000)
     public void run() {
-        log.info("Starting Block Import Job Runner");
         final List<BlockImportJob> allActive = blockImportJobRepository.findAllActive();
         final List<BlockImportJob> allNotEndedYet = blockImportJobRepository.findAllNotEndedYet();
         List<BlockImportJob> union = ListUtils.union(allActive, allNotEndedYet);
         if (union.size() > 0) {
             blockImporter.execute(union.get(0));
         }
-        log.info("Done with block runner");
     }
 
 }
