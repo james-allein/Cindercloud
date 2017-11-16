@@ -27,7 +27,7 @@ public class ImportBlockTransactionsController {
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<Void> importTransactions(@RequestBody final String blockAsString) {
         try {
-            log.debug("Fetched from queue: {}", blockAsString);
+            log.debug("Fetched from queue url endpoint: {}", blockAsString);
             final Block convertedBlock = objectMapper.readValue(blockAsString, Block.class);
             transactionImporter.importTransactions(convertedBlock);
             return new ResponseEntity<>(HttpStatus.OK);
