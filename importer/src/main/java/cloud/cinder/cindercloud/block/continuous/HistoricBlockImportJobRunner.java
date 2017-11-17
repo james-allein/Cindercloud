@@ -6,14 +6,16 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.ListUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.stereotype.Component;
 
 import java.util.List;
 
-@Component
+@Configuration
 @Slf4j
 @ConditionalOnProperty(name = "cloud.cinder.ethereum.historic-block-import", havingValue = "true")
+@EnableScheduling
 public class HistoricBlockImportJobRunner {
 
     @Autowired
