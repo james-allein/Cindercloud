@@ -3,6 +3,7 @@ amazon-aws.properties
 auth0.properties
 application-production.yml
 application-dev.yml
+application-aws.yml
 
 web/build/
 web/out/
