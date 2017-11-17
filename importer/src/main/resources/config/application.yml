@@ -21,6 +21,12 @@ spring:
           log-abandoned: true
           log-validation-errors: true
           max-wait: 1000
+    devtools:
+      livereload:
+        enabled: false
+      remote:
+        debug:
+          enabled: false
 
 #logging
 logging:
@@ -29,5 +35,4 @@ logging:
       springframework: info
     cloud:
       cinder: DEBUG
-
 
