@@ -2,6 +2,7 @@ package cloud.cinder.cindercloud.statistics;
 
 import cloud.cinder.cindercloud.block.model.Block;
 import cloud.cinder.cindercloud.block.repository.BlockRepository;
+import cloud.cinder.cindercloud.statistics.dto.MiningStatistics;
 import cloud.cinder.cindercloud.transaction.model.Transaction;
 import cloud.cinder.cindercloud.transaction.repository.TransactionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,9 +13,13 @@ import java.math.BigInteger;
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
+import java.time.temporal.ChronoUnit;
 import java.time.temporal.TemporalAmount;
 import java.time.temporal.TemporalUnit;
 import java.util.Date;
+import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @Service
@@ -24,6 +29,18 @@ public class StatisticsService {
     private BlockRepository blockRepository;
     @Autowired
     private TransactionRepository transactionRepository;
+
+    @Transactional(readOnly = true)
+    public MiningStatistics miningStatistics() {
+        Stream<Block> allBlocksSince = blockRepository.findAllBlocksSince(Date.from(LocalDateTime.now().minus(24, ChronoUnit.HOURS).atOffset(ZoneOffset.UTC).toInstant()));
+
+
+        final Map<String, Long> addressWithBlockAmounts = allBlocksSince.map(Block::getMinedBy)
+                .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
+
+        return new MiningStatistics(addressWithBlockAmounts,
+                addressWithBlockAmounts.values().stream().mapToLong(x -> x).sum());
+    }
 
     @Transactional(readOnly = true)
     public double getAverageDifficulty(final TemporalAmount since) {
