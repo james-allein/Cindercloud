@@ -4,9 +4,11 @@ import cloud.cinder.cindercloud.infrastructure.repository.JpaRepository;
 import cloud.cinder.cindercloud.transaction.model.Transaction;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.math.BigInteger;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Stream;
@@ -26,4 +28,10 @@ public interface TransactionRepository extends JpaRepository<Transaction, String
 
     @Query("select transaction from Transaction transaction where blockTimestamp >= :from order by blockHeight")
     Stream<Transaction> findAllTransactionsSince(@Param("from") final Date from);
+
+    @Query("select transaction from Transaction transactions order by blockHeight desc")
+    Slice<Transaction> getTransactionsOrderedByHeight(final Pageable pageable);
+
+    @Query("select transaction from Transaction transaction where blockHeight < :blockHeight")
+    Stream<Transaction> findAllTransactionsBefore(final BigInteger blockHeight);
 }

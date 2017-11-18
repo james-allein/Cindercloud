@@ -118,6 +118,27 @@ public class Transaction {
         }
     }
 
+    public HistoricTransaction toHistoricTransaction() {
+        return HistoricTransaction.builder()
+                .blockHash(blockHash)
+                .blockHeight(blockHeight)
+                .blockTimestamp(blockTimestamp)
+                .creates(creates)
+                .fromAddress(fromAddress)
+                .toAddress(toAddress)
+                .gas(gas)
+                .hash(hash)
+                .input(input)
+                .nonce(nonce)
+                .gasPrice(gasPrice)
+                .value(value)
+                .r(r)
+                .s(s)
+                .v(v)
+                .transactionIndex(transactionIndex)
+                .build();
+    }
+
     public enum Direction {
         IN, OUT
     }
