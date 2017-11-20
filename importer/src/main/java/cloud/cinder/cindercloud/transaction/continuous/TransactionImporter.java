@@ -47,7 +47,6 @@ public class TransactionImporter {
                     .flatMapIterable(bk -> bk.getBlock().getTransactions())
                     .filter(tx -> tx.get() != null && tx.get() instanceof EthBlock.TransactionObject && ((EthBlock.TransactionObject) tx.get()).get() != null)
                     .map(tx -> ((EthBlock.TransactionObject) tx.get()).get())
-                    .filter(tx -> !transactionRepository.exists(tx.getHash()))
                     .map(tx -> {
                         log.trace("importing transaction {}", tx.getHash());
                         final Block block = blockService.getBlock(tx.getBlockHash()).toBlocking().first();
@@ -76,6 +75,7 @@ public class TransactionImporter {
                         }
                     })
                     .filter(Objects::nonNull)
+                    .toList()
                     .forEach(transactionService::save);
         } catch (final Exception e) {
             log.error("Error trying to import transactions from block", e);

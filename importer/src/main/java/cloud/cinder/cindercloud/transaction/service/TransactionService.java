@@ -23,6 +23,11 @@ public class TransactionService {
         return transactionRepository.save(transaction);
     }
 
+    @Transactional
+    public List<Transaction> save(final List<Transaction> transactions) {
+        return transactionRepository.save(transactions);
+    }
+
     @Transactional(readOnly = true)
     public List<Transaction> getLastTransactions(Pageable pageable) {
         return transactionRepository.findAllOrOrderByBlockTimestamp(pageable);
