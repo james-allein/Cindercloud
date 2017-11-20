@@ -6,6 +6,7 @@ import cloud.cinder.cindercloud.transaction.repository.TransactionRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Slice;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -17,6 +18,7 @@ import java.util.stream.Stream;
 
 @Component
 @Slf4j
+@ConditionalOnProperty(name = "cloud.cinder.transactions.historic-mover", havingValue = "true")
 public class HistoricTransactionMover {
 
     @Value("${cloud.cinder.transactions.historic-threshold}")
