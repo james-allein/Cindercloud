@@ -4,6 +4,7 @@ import cloud.cinder.cindercloud.infrastructure.repository.JpaRepository;
 import cloud.cinder.cindercloud.transaction.model.Transaction;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
@@ -19,13 +20,13 @@ public interface TransactionRepository extends JpaRepository<Transaction, String
     Page<Transaction> findAllByBlockHash(@Param("blockHash") final String blockHash, final Pageable pageable);
 
     @Query("select transaction from Transaction transaction order by blockHeight desc")
-    Page<Transaction> findAllOrOrderByBlockTimestampAsPage(Pageable pageable);
+    Slice<Transaction> findAllOrOrderByBlockTimestampAsPage(Pageable pageable);
 
     @Query("select transaction from Transaction transaction order by blockHeight desc")
     List<Transaction> findAllOrOrderByBlockTimestampAsList(Pageable pageable);
 
     @Query("select transaction from Transaction transaction where hash LIKE %:searchKey% AND blockHash LIKE %:block% order by blockHeight desc")
-    Page<Transaction> find(@Param("searchKey") String searchKey, @Param("block") final String block, final Pageable pageable);
+    Slice<Transaction> find(@Param("searchKey") String searchKey, @Param("block") final String block, final Pageable pageable);
 
     @Query("select transaction from Transaction transaction where blockTimestamp >= :from order by blockHeight")
     Stream<Transaction> findAllTransactionsSince(@Param("from") final Date from);

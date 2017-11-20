@@ -28,8 +28,6 @@ public class TransactionImporter {
     @Autowired
     private TransactionService transactionService;
     @Autowired
-    private TransactionRepository transactionRepository;
-    @Autowired
     private ObjectMapper objectMapper;
     @Autowired
     private BlockService blockService;

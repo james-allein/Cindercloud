@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -74,7 +75,7 @@ public class TransactionService {
     }
 
     @Transactional(readOnly = true)
-    public Page<Transaction> getLastTransactions(Pageable pageable) {
+    public Slice<Transaction> getLastTransactions(Pageable pageable) {
         return transactionRepository.findAllOrOrderByBlockTimestampAsPage(pageable);
     }
 
@@ -125,7 +126,7 @@ public class TransactionService {
         }
     }
 
-    public Page<Transaction> find(final String searchKey, final String block, final Pageable pageable) {
+    public Slice<Transaction> find(final String searchKey, final String block, final Pageable pageable) {
         return transactionRepository.find(searchKey, block, pageable);
     }
 }

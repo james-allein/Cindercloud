@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -132,22 +133,22 @@ public class BlockService {
     }
 
     @Transactional(readOnly = true)
-    public Page<Block> getLastBlocks(final Pageable pageable) {
+    public Slice<Block> getLastBlocks(final Pageable pageable) {
         return blockRepository.findAllBlocksOrderByHeightDescAsPage(pageable);
     }
 
     @Transactional(readOnly = true)
-    public Page<Block> getLastUncles(final Pageable pageable) {
+    public Slice<Block> getLastUncles(final Pageable pageable) {
         return blockRepository.findAllUnclesOrderByHeightDesc(pageable);
     }
 
     @Transactional(readOnly = true)
-    public Page<Block> searchBlocks(final String searchKey, final String minedBy, final Pageable pageable) {
+    public Slice<Block> searchBlocks(final String searchKey, final String minedBy, final Pageable pageable) {
         return blockRepository.searchBlocks(searchKey, minedBy, pageable);
     }
 
     @Transactional(readOnly = true)
-    public Page<Block> searchUncles(final String searchKey, final Pageable pageable) {
+    public Slice<Block> searchUncles(final String searchKey, final Pageable pageable) {
         return blockRepository.searchUncles(searchKey, pageable);
     }
 
