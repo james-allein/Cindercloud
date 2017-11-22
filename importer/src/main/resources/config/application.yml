@@ -36,3 +36,7 @@ logging:
     cloud:
       cinder: DEBUG
 
+cloud:
+  cinder:
+    transactions:
+      historic-threshold: 500000
