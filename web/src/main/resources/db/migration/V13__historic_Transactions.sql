@@ -12,18 +12,19 @@ CREATE TABLE historic_transactions (
   creates           VARCHAR(42)     DEFAULT NULL,
   s                 TEXT            DEFAULT NULL,
   r                 TEXT            DEFAULT NULL,
-  v                 INT             DEFAULT NULL
+  v                 INT             DEFAULT NULL,
+  block_height      BIGINT UNSIGNED NOT NULL
 );
 
-create index idx_h_tx_from_adddress
-  on historic_transactions(from_address);
+CREATE INDEX idx_h_tx_from_adddress
+  ON historic_transactions (from_address);
 
-create index idx_h_tx_to_address
-  on historic_transactions(to_address);
+CREATE INDEX idx_h_tx_to_address
+  ON historic_transactions (to_address);
 
-create index idx_h_tx_block_hash
-  on historic_transactions(block_hash);
+CREATE INDEX idx_h_tx_block_hash
+  ON historic_transactions (block_hash);
 
-create index idx_h_tx_block_height
-  on historic_transactions(block_height);
+CREATE INDEX idx_h_tx_block_height
+  ON historic_transactions (block_height);
 
