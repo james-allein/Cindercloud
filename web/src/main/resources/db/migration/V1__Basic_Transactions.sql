@@ -6,7 +6,7 @@ CREATE TABLE transactions (
   gas               VARCHAR(100) DEFAULT NULL,
   transaction_index BIGINT       DEFAULT NULL,
   input             TEXT         DEFAULT NULL,
-  nonce             BIGINT       DEFAULT NULL,
+  nonce             VARCHAR(50)  DEFAULT NULL,
   from_address      VARCHAR(42)  DEFAULT NULL,
   to_address        VARCHAR(42)  DEFAULT NULL,
   creates           VARCHAR(42)  DEFAULT NULL,

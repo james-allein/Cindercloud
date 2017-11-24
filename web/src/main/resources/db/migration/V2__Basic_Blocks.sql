@@ -11,7 +11,7 @@ CREATE TABLE blocks (
   receipts_root    VARCHAR(66)  DEFAULT NULL,
   size             BIGINT       DEFAULT NULL,
   timestamp        BIGINT       DEFAULT NULL,
-  nonce            BIGINT       DEFAULT NULL,
+  nonce            VARCHAR(50)       DEFAULT NULL,
   extra_data       TEXT         DEFAULT NULL,
   mix_hash         VARCHAR(66)  DEFAULT NULL
 );

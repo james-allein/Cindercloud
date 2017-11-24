@@ -2,10 +2,10 @@ spring:
     application:
         name: CinderCloud-Importer
     datasource:
-        url: jdbc:mysql://localhost:3306/cindercloud
-        username: cindercloud
-        password: cindercloud
-        driver-class-name: com.mysql.jdbc.Driver
+        url: jdbc:postgresql://localhost:5432/cindercloud
+        username: cindercloud-web
+        password: cindercloud-web
+        driver-class-name: org.postgresql.Driver
         type: org.apache.tomcat.jdbc.pool.DataSource
         tomcat:
           max-idle: 10

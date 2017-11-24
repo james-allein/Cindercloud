@@ -76,7 +76,7 @@ public class BlockImporter {
             if (ethBlock != null && ethBlock.getBlock() != null && !blockRepository.findOne(ethBlock.getBlock().getHash()).isPresent()) {
                 blockService.save(Block.asBlock(ethBlock.getBlock()));
             } else {
-                log.debug("couldn't find {} in web3", i);
+                log.debug("couldn't find {} in web3 or already imported", i);
             }
         }
 
