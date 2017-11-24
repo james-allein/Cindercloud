@@ -2,14 +2,14 @@ package cloud.cinder.cindercloud.transaction.continuous;
 
 import cloud.cinder.cindercloud.block.model.Block;
 import cloud.cinder.cindercloud.block.service.BlockService;
-import cloud.cinder.cindercloud.transaction.repository.TransactionRepository;
-import cloud.cinder.cindercloud.transaction.service.TransactionService;
 import cloud.cinder.cindercloud.transaction.model.Transaction;
+import cloud.cinder.cindercloud.transaction.service.TransactionService;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 import org.web3j.protocol.Web3j;
 import org.web3j.protocol.core.methods.response.EthBlock;
 
@@ -29,14 +29,13 @@ public class TransactionImporter {
     private TransactionService transactionService;
     @Autowired
     private ObjectMapper objectMapper;
-    @Autowired
-    private BlockService blockService;
 
     @PostConstruct
     public void init() {
         objectMapper.enable(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT);
     }
 
+    @Transactional
     public void importTransactions(final Block convertedBlock) {
         try {
             web3j.ethGetBlockByHash(convertedBlock.getHash(), true)
@@ -47,30 +46,24 @@ public class TransactionImporter {
                     .map(tx -> ((EthBlock.TransactionObject) tx.get()).get())
                     .map(tx -> {
                         log.trace("importing transaction {}", tx.getHash());
-                        final Block block = blockService.getBlock(tx.getBlockHash()).toBlocking().first();
-                        if (block != null) {
-                            return Transaction.builder()
-                                    .blockHash(tx.getBlockHash())
-                                    .blockHeight(block.getHeight())
-                                    .fromAddress(tx.getFrom())
-                                    .gas(tx.getGas())
-                                    .hash(tx.getHash())
-                                    .input(tx.getInput())
-                                    .toAddress(tx.getTo())
-                                    .value(tx.getValue())
-                                    .blockTimestamp(Date.from(LocalDateTime.ofEpochSecond(block.getTimestamp().longValue(), 0, ZoneOffset.UTC).atOffset(ZoneOffset.UTC).toInstant()))
-                                    .gasPrice(tx.getGasPrice())
-                                    .creates(tx.getCreates())
-                                    .s(tx.getS())
-                                    .r(tx.getR())
-                                    .v(tx.getV())
-                                    .nonce(tx.getNonce())
-                                    .transactionIndex(tx.getTransactionIndex())
-                                    .build();
-                        } else {
-                            log.error("couldnt import {} because we dont have the block yet", tx.getHash());
-                            return null;
-                        }
+                        return Transaction.builder()
+                                .blockHash(tx.getBlockHash())
+                                .blockHeight(convertedBlock.getHeight())
+                                .fromAddress(tx.getFrom())
+                                .gas(tx.getGas())
+                                .hash(tx.getHash())
+                                .input(tx.getInput())
+                                .toAddress(tx.getTo())
+                                .value(tx.getValue())
+                                .blockTimestamp(Date.from(LocalDateTime.ofEpochSecond(convertedBlock.getTimestamp().longValue(), 0, ZoneOffset.UTC).atOffset(ZoneOffset.UTC).toInstant()))
+                                .gasPrice(tx.getGasPrice())
+                                .creates(tx.getCreates())
+                                .s(tx.getS())
+                                .r(tx.getR())
+                                .v(tx.getV())
+                                .nonce(tx.getNonce())
+                                .transactionIndex(tx.getTransactionIndex())
+                                .build();
                     })
                     .filter(Objects::nonNull)
                     .toList()

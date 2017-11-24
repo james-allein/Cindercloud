@@ -23,7 +23,7 @@ public class TransactionService {
         return transactionRepository.save(transaction);
     }
 
-    @Transactional
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public List<Transaction> save(final List<Transaction> transactions) {
         return transactionRepository.save(transactions);
     }
