@@ -44,7 +44,7 @@ dependencies {
     compile("org.ocpsoft.prettytime:prettytime:3.2.7.Final")
 
     compile("org.flywaydb:flyway-core")
-    compile("mysql:mysql-connector-java")
+    compile("org.postgresql:postgresql:42.1.4")
 
     testCompile("org.springframework.boot:spring-boot-starter-test")
     testCompile 'org.assertj:assertj-core:3.4.1'

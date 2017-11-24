@@ -1,19 +1,19 @@
 CREATE TABLE historic_transactions (
   hash              VARCHAR(66) PRIMARY KEY,
-  block_hash        VARCHAR(66)     DEFAULT NULL,
-  value             VARCHAR(100)    DEFAULT 0,
-  gas_price         VARCHAR(100)    DEFAULT NULL,
-  gas               VARCHAR(100)    DEFAULT NULL,
-  transaction_index BIGINT UNSIGNED DEFAULT NULL,
-  input             TEXT            DEFAULT NULL,
-  nonce             BIGINT UNSIGNED DEFAULT NULL,
-  from_address      VARCHAR(42)     DEFAULT NULL,
-  to_address        VARCHAR(42)     DEFAULT NULL,
-  creates           VARCHAR(42)     DEFAULT NULL,
-  s                 TEXT            DEFAULT NULL,
-  r                 TEXT            DEFAULT NULL,
-  v                 INT             DEFAULT NULL,
-  block_height      BIGINT UNSIGNED NOT NULL
+  block_hash        VARCHAR(66)  DEFAULT NULL,
+  value             VARCHAR(100) DEFAULT 0,
+  gas_price         VARCHAR(100) DEFAULT NULL,
+  gas               VARCHAR(100) DEFAULT NULL,
+  transaction_index BIGINT       DEFAULT NULL,
+  input             TEXT         DEFAULT NULL,
+  nonce             BIGINT       DEFAULT NULL,
+  from_address      VARCHAR(42)  DEFAULT NULL,
+  to_address        VARCHAR(42)  DEFAULT NULL,
+  creates           VARCHAR(42)  DEFAULT NULL,
+  s                 TEXT         DEFAULT NULL,
+  r                 TEXT         DEFAULT NULL,
+  v                 INT          DEFAULT NULL,
+  block_height      BIGINT NOT NULL
 );
 
 CREATE INDEX idx_h_tx_from_adddress

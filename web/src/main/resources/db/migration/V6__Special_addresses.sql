@@ -1,11 +1,11 @@
 CREATE TABLE special_addresses (
-  id      BIGINT(20) PRIMARY KEY AUTO_INCREMENT,
+  id      SERIAL PRIMARY KEY,
   address VARCHAR(42) NOT NULL,
   name    TEXT        NOT NULL,
   slug    TEXT        NOT NULL,
   type    VARCHAR(10) NOT NULL,
-  chain   VARCHAR(10)            DEFAULT 'MAINNET',
-  url     TEXT                   DEFAULT NULL
+  chain   VARCHAR(10) DEFAULT 'MAINNET',
+  url     TEXT        DEFAULT NULL
 );
 
 INSERT INTO special_addresses (address, type, name, slug)
@@ -63,5 +63,6 @@ INSERT INTO special_addresses (address, type, name, slug)
 VALUES ('0xb3764761e297d6f121e79c32a65829cd1ddb4d32', 'wallet', 'MultisigExploit Hacker', 'hacker_multisig');
 
 INSERT INTO special_addresses (address, type, name, slug)
-VALUES ('0x755cdba6ae4f479f7164792b318b2a06c759833b', 'wallet', 'Extrabalance DAO Withdrawal', 'dao_extrabalance_withdraw');
+VALUES
+  ('0x755cdba6ae4f479f7164792b318b2a06c759833b', 'wallet', 'Extrabalance DAO Withdrawal', 'dao_extrabalance_withdraw');
 

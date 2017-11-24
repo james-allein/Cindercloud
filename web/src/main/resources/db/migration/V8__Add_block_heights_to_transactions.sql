@@ -1,2 +1,2 @@
 ALTER TABLE transactions
-  ADD block_height BIGINT UNSIGNED NOT NULL;
+  ADD block_height BIGINT NOT NULL;
