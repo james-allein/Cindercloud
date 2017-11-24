@@ -29,7 +29,7 @@ public interface TransactionRepository extends JpaRepository<Transaction, String
     @Query("select transaction from Transaction transaction where blockTimestamp >= :from order by blockHeight")
     Stream<Transaction> findAllTransactionsSince(@Param("from") final Date from);
 
-    @Query("select transaction from Transaction transactions order by blockHeight desc")
+    @Query("select transaction from Transaction transaction order by blockHeight desc")
     Slice<Transaction> getTransactionsOrderedByHeight(final Pageable pageable);
 
     @Query("select transaction from Transaction transaction where blockHeight < :blockHeight")
