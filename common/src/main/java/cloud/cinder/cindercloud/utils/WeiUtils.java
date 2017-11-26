@@ -8,7 +8,9 @@ import java.math.BigInteger;
 
 public class WeiUtils {
     public static PrettyAmount format(final BigInteger value) {
-        if (isSmallerThan(value, Convert.toWei("0.01", Convert.Unit.ETHER).toBigInteger())) {
+        if (value.equals(BigInteger.ZERO)) {
+            return new PrettyAmount("0", "wei");
+        } else if (isSmallerThan(value, Convert.toWei("0.01", Convert.Unit.ETHER).toBigInteger())) {
             if (isSmallerThan(value, Convert.toWei("0.01", Convert.Unit.FINNEY).toBigInteger())) {
                 if (isSmallerThan(value, Convert.toWei("0.01", Convert.Unit.GWEI).toBigInteger())) {
                     return new PrettyAmount(value.toString(), "wei");

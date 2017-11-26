@@ -6,11 +6,11 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.stereotype.Service;
-import org.web3j.crypto.ECKeyPair;
-import org.web3j.crypto.Keys;
-import org.web3j.crypto.Wallet;
-import org.web3j.crypto.WalletFile;
+import org.web3j.crypto.*;
 
+import javax.crypto.Cipher;
+import java.io.File;
+import java.io.IOException;
 import java.util.Objects;
 
 @Service
@@ -21,6 +21,17 @@ public class WalletService {
     static {
         walletmapper.configure(JsonParser.Feature.ALLOW_UNQUOTED_FIELD_NAMES, true);
         walletmapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+    }
+
+    public Credentials login(final String password, final String wallet) {
+        try {
+            final WalletFile walletFile = walletmapper.readValue(wallet, WalletFile.class);
+            return Credentials.create(Wallet.decrypt(password, walletFile));
+        } catch (final IOException io) {
+            throw new IllegalArgumentException("The keystore you provided is not valid");
+        } catch (final CipherException cip) {
+            throw new IllegalArgumentException("Unable to decrypt wallet. Is your password correct?");
+        }
     }
 
     public GeneratedCredentials generateWallet(final String password, final boolean strong) {

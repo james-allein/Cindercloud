@@ -54,7 +54,6 @@ public class BlockService {
     }
 
     private void propagateTransactions(final Block savedBlock) {
-        log.debug("Propagating Transactions");
         web3j.ethGetBlockTransactionCountByHash(savedBlock.getHash())
                 .observable()
                 .filter(Objects::nonNull)
@@ -63,6 +62,7 @@ public class BlockService {
                 .filter(txCount -> txCount.compareTo(BigInteger.ZERO) != 0)
                 .subscribe(txCount -> {
                     try {
+                        log.trace("Propagating Transactions for block {}", savedBlock.getHeight());
                         $.send(objectMapper.writeValueAsString(savedBlock), "block_with_transactions_imported");
                     } catch (final Exception ex) {
                         log.error("Problem while trying to send block with transactions to sqs", ex);

@@ -18,6 +18,6 @@ public class GeneratedCredentials {
     private PrivateKey privateKey;
 
     public String getFilename() {
-        return formatter.format(new Date()) + "--" + Credentials.create(privateKey.asString()).getAddress();
+        return formatter.format(new Date()) + "--" + Credentials.create(privateKey.asString()).getAddress() + ".json";
     }
 }
