@@ -3,12 +3,14 @@ package cloud.cinder.cindercloud.wallet.controller;
 import cloud.cinder.cindercloud.wallet.controller.command.CreateKeystoreCommand;
 import cloud.cinder.cindercloud.wallet.domain.GeneratedCredentials;
 import cloud.cinder.cindercloud.wallet.service.WalletService;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 @RequestMapping(value = "/wallet/create")
@@ -26,6 +28,10 @@ public class CreateWalletController {
     @RequestMapping(method = RequestMethod.POST, params = "type=keystore")
     public String createKeystore(final ModelMap modelMap,
                                  @ModelAttribute("createKeystore") final CreateKeystoreCommand createKeystoreCommand) {
+        if (StringUtils.isEmpty(createKeystoreCommand.getPassword())) {
+            modelMap.put("error", "Your password should be at least 8 characters long");
+            return "wallets/create";
+        }
         final GeneratedCredentials wallet = walletService.generateWallet(createKeystoreCommand.getPassword(), createKeystoreCommand.isSecure());
         modelMap.put("wallet", wallet);
         return "wallets/created_keystore";
