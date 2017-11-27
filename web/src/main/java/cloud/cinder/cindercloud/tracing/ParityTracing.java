@@ -22,10 +22,7 @@ public class ParityTracing {
         return new Request<>(
                 "trace_replayTransaction",
                 Arrays.asList(txHash, Arrays.asList("trace")),
-                ID,
                 web3jService,
                 ParityTracingResponse.class);
     }
-
-
 }
