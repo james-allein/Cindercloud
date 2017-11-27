@@ -1,8 +1,8 @@
 package cloud.cinder.cindercloud.block.continuous;
 
 import cloud.cinder.cindercloud.block.continuous.model.BlockImportJob;
-import cloud.cinder.cindercloud.block.model.Block;
 import cloud.cinder.cindercloud.block.continuous.repository.BlockImportJobRepository;
+import cloud.cinder.cindercloud.block.model.Block;
 import cloud.cinder.cindercloud.block.repository.BlockRepository;
 import cloud.cinder.cindercloud.block.service.BlockService;
 import lombok.extern.slf4j.Slf4j;
@@ -54,11 +54,8 @@ public class BlockImporter {
                     log.trace("received live block");
                     blockService.save(block);
                 }, onError -> {
-                    log.error("Something went wrong");
-                    if (liveSubscription.isUnsubscribed()) {
-                        log.info("Resubscribing to live");
-                        this.liveSubscription = subscribe();
-                    }
+                    this.liveSubscription.unsubscribe();
+                    this.liveSubscription = subscribe();
                 });
     }
 
