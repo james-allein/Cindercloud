@@ -43,7 +43,7 @@ public class BlockService {
     }
 
     private void propagateTransactions(final Block savedBlock) {
-        log.debug("Propagating Transactions");
+        log.trace("Propagating Transactions");
         web3j.ethGetBlockTransactionCountByHash(savedBlock.getHash())
                 .observable()
                 .filter(Objects::nonNull)

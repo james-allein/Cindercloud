@@ -63,18 +63,23 @@ public class BlockImporter {
     }
 
     public void execute(final BlockImportJob job) {
+        log.debug("Starting job {}", job.getId());
         job.setActive(true);
         job.setStartTime(new Date());
         blockImportJobRepository.save(job);
 
         for (long i = job.getFromBlock(); i <= job.getToBlock(); i++) {
             if (i % 25 == 0) {
-                log.trace("Historic Import: trying to import block: {}", i);
+                log.debug("Historic Import: trying to import block: {}", i);
             }
             final EthBlock ethBlock = web3j.ethGetBlockByNumber(new DefaultBlockParameterNumber(i), false)
                     .observable().toBlocking().firstOrDefault(null);
             if (ethBlock != null && ethBlock.getBlock() != null && !blockRepository.findOne(ethBlock.getBlock().getHash()).isPresent()) {
-                blockService.save(Block.asBlock(ethBlock.getBlock()));
+                try {
+                    blockService.save(Block.asBlock(ethBlock.getBlock()));
+                } catch (final Exception exc) {
+                    log.debug("unable to save block", exc);
+                }
             } else {
                 log.debug("couldn't find {} in web3 or already imported", i);
             }
