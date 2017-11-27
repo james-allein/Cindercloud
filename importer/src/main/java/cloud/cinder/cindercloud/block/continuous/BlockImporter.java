@@ -54,6 +54,7 @@ public class BlockImporter {
                     log.trace("received live block");
                     blockService.save(block);
                 }, onError -> {
+                    log.debug("Error while looking for new blocks", onError);
                     this.liveSubscription.unsubscribe();
                     this.liveSubscription = subscribe();
                 });
