@@ -1,0 +1,37 @@
+spring:
+    application:
+        name: CinderCloud-Whitehat
+    datasource:
+        url: jdbc:postgresql://localhost:5432/cindercloud
+        username: cindercloud-web
+        password: cindercloud-web
+        driver-class-name: org.postgresql.Driver
+        type: org.apache.tomcat.jdbc.pool.DataSource
+        tomcat:
+          max-idle: 10
+          min-idle: 10
+          max-active: 32
+          remove-abandoned: true
+          validation-query: /* cinderloud Health Check */ SELECT 1
+          validation-query-timeout: 300
+          test-on-borrow: true
+          test-on-connect: true
+          test-while-idle: true
+          initial-size: 10
+          log-abandoned: true
+          log-validation-errors: true
+          max-wait: 1000
+    devtools:
+      livereload:
+        enabled: false
+      remote:
+        debug:
+          enabled: false
+
+#logging
+logging:
+  level:
+    org:
+      springframework: info
+    cloud:
+      cinder: DEBUG
