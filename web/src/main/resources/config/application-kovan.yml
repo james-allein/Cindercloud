@@ -1,8 +1,0 @@
-cloud:
-  cinder:
-    ethereum:
-      endpoint:
-        token:
-        url: https://kovan.de-swaef.eu
-    sqs:
-      name: cindercloud_kovan
