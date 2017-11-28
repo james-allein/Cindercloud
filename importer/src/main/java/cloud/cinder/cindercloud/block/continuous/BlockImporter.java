@@ -56,7 +56,7 @@ public class BlockImporter {
                         blockService.save(block);
                     } catch (final Exception exc) {
                         log.error("unable to save block {}", block.getHeight());
-                        log.error(exc);
+                        log.error("error: ", exc);
                     }
                 }, onError -> {
                     log.debug("Error while looking for new blocks", onError);
