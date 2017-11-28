@@ -51,8 +51,13 @@ public class BlockImporter {
                 .filter(Objects::nonNull)
                 .map(Block::asBlock)
                 .subscribe(block -> {
-                    log.trace("received live block");
-                    blockService.save(block);
+                    try {
+                        log.trace("received live block");
+                        blockService.save(block);
+                    } catch (final Exception exc) {
+                        log.error("unable to save block {}", block.getHeight());
+                        log.error(exc);
+                    }
                 }, onError -> {
                     log.debug("Error while looking for new blocks", onError);
                     this.liveSubscription.unsubscribe();
