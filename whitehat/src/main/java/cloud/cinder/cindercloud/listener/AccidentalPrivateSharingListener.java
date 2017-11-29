@@ -18,16 +18,17 @@ public class AccidentalPrivateSharingListener {
     @Autowired
     private CredentialService credentialService;
 
-    private Subscription subscription;
+    private Subscription pendingTransactionsSubscription;
 
-    @Scheduled(fixedDelay = 10000)
+    @Scheduled(fixedRate = 60000)
     public void start() {
-        if (subscription == null) {
+        if (pendingTransactionsSubscription == null) {
             log.debug("[Private Sharing] startup of subscription for accidental private sharing");
-            this.subscription = subscribe();
-        } else if (this.subscription.isUnsubscribed()) {
+            this.pendingTransactionsSubscription = subscribe();
+        } else {
+            this.pendingTransactionsSubscription.unsubscribe();
             log.debug("[Private Sharing] unsubscribed, resubbing to accidental private sharing");
-            this.subscription = subscribe();
+            this.pendingTransactionsSubscription = subscribe();
         }
     }
 
@@ -45,8 +46,8 @@ public class AccidentalPrivateSharingListener {
                     }
                 }, error -> {
                     log.error("[Private Sharing]Problem with pending transactions, resubbing", error);
-                    subscription.unsubscribe();
-                    this.subscription = subscribe();
+                    pendingTransactionsSubscription.unsubscribe();
+                    this.pendingTransactionsSubscription = subscribe();
                 });
     }
 }

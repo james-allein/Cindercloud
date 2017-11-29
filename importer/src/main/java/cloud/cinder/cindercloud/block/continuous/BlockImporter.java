@@ -8,6 +8,7 @@ import cloud.cinder.cindercloud.block.service.BlockService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.web3j.protocol.Web3j;
 import org.web3j.protocol.core.DefaultBlockParameterNumber;
@@ -37,11 +38,15 @@ public class BlockImporter {
 
     private Subscription liveSubscription;
 
-    @PostConstruct
+    @Scheduled(fixedRate = 60000)
     public void listenToBlocks() {
         if (autoBlockImport) {
-            log.trace("importing live-blocks");
-            this.liveSubscription = subscribe();
+            if (this.liveSubscription == null) {
+                this.liveSubscription = subscribe();
+            } else {
+                this.liveSubscription.unsubscribe();
+                this.liveSubscription = subscribe();
+            }
         }
     }
 
@@ -75,16 +80,20 @@ public class BlockImporter {
             if (i % 25 == 0) {
                 log.debug("Historic Import: trying to import block: {}", i);
             }
-            final EthBlock ethBlock = web3j.ethGetBlockByNumber(new DefaultBlockParameterNumber(i), false)
-                    .observable().toBlocking().firstOrDefault(null);
-            if (ethBlock != null && ethBlock.getBlock() != null && !blockRepository.findOne(ethBlock.getBlock().getHash()).isPresent()) {
-                try {
-                    blockService.save(Block.asBlock(ethBlock.getBlock()));
-                } catch (final Exception exc) {
-                    log.debug("unable to save block", exc);
+            try {
+                final EthBlock ethBlock = web3j.ethGetBlockByNumber(new DefaultBlockParameterNumber(i), false)
+                        .observable().toBlocking().firstOrDefault(null);
+                if (ethBlock != null && ethBlock.getBlock() != null && !blockRepository.findOne(ethBlock.getBlock().getHash()).isPresent()) {
+                    try {
+                        blockService.save(Block.asBlock(ethBlock.getBlock()));
+                    } catch (final Exception exc) {
+                        log.debug("unable to save block", exc);
+                    }
+                } else {
+                    log.debug("couldn't find {} in web3 or already imported", i);
                 }
-            } else {
-                log.debug("couldn't find {} in web3 or already imported", i);
+            } catch (final Exception exc) {
+                log.debug("unable to get block");
             }
         }
 
