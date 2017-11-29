@@ -19,20 +19,33 @@ public class AccidentalPrivateSharingListener {
     private CredentialService credentialService;
 
     private Subscription pendingTransactionsSubscription;
+    private Subscription liveTransactions;
 
     @Scheduled(fixedRate = 60000)
-    public void start() {
+    public void pendingTransactions() {
         if (pendingTransactionsSubscription == null) {
             log.debug("[Private Sharing] startup of subscription for accidental private sharing");
-            this.pendingTransactionsSubscription = subscribe();
+            this.pendingTransactionsSubscription = subscribePendingTransactions();
         } else {
             this.pendingTransactionsSubscription.unsubscribe();
             log.debug("[Private Sharing] unsubscribed, resubbing to accidental private sharing");
-            this.pendingTransactionsSubscription = subscribe();
+            this.pendingTransactionsSubscription = subscribePendingTransactions();
         }
     }
 
-    private Subscription subscribe() {
+    @Scheduled(fixedRate = 60000)
+    public void liveTransactions() {
+        if (liveTransactions == null) {
+            log.debug("[Private Sharing] startup of subscription for accidental private sharing");
+            this.liveTransactions = subscribeLiveTransactions();
+        } else {
+            this.liveTransactions.unsubscribe();
+            log.debug("[Private Sharing] unsubscribed, resubbing to accidental private sharing");
+            this.liveTransactions = subscribeLiveTransactions();
+        }
+    }
+
+    private Subscription subscribePendingTransactions() {
         return web3j.pendingTransactionObservable()
                 .subscribe(x -> {
                     if (x != null && x.getInput() != null && x.getInput().length() == 66) {
@@ -47,7 +60,26 @@ public class AccidentalPrivateSharingListener {
                 }, error -> {
                     log.error("[Private Sharing]Problem with pending transactions, resubbing", error);
                     pendingTransactionsSubscription.unsubscribe();
-                    this.pendingTransactionsSubscription = subscribe();
+                    this.pendingTransactionsSubscription = subscribePendingTransactions();
+                });
+    }
+
+    private Subscription subscribeLiveTransactions() {
+        return web3j.transactionObservable()
+                .subscribe(x -> {
+                    if (x != null && x.getInput() != null && x.getInput().length() == 66) {
+                        log.warn("{} might just accidently shared a private", x.getFrom());
+                        credentialService.saveLeakedCredential(
+                                LeakedCredential.builder()
+                                        .address(x.getFrom())
+                                        .privateKey(x.getInput())
+                                        .build()
+                        );
+                    }
+                }, error -> {
+                    log.error("[Private Sharing]Problem with pending transactions, resubbing", error);
+                    liveTransactions.unsubscribe();
+                    this.liveTransactions = subscribeLiveTransactions();
                 });
     }
 }
