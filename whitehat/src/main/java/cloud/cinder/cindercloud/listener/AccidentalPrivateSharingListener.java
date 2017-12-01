@@ -6,8 +6,13 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
+import org.web3j.crypto.ECKeyPair;
+import org.web3j.crypto.Keys;
 import org.web3j.protocol.Web3j;
+import org.web3j.utils.Numeric;
 import rx.Subscription;
+
+import java.util.Date;
 
 @Component
 @Slf4j
@@ -24,11 +29,11 @@ public class AccidentalPrivateSharingListener {
     @Scheduled(fixedRate = 60000)
     public void pendingTransactions() {
         if (pendingTransactionsSubscription == null) {
-            log.debug("[Private Sharing] startup of subscription for accidental private sharing");
+            log.trace("[Private Sharing] startup of subscription for accidental private sharing");
             this.pendingTransactionsSubscription = subscribePendingTransactions();
         } else {
             this.pendingTransactionsSubscription.unsubscribe();
-            log.debug("[Private Sharing] unsubscribed, resubbing to accidental private sharing");
+            log.trace("[Private Sharing] unsubscribed, resubbing to accidental private sharing");
             this.pendingTransactionsSubscription = subscribePendingTransactions();
         }
     }
@@ -36,11 +41,11 @@ public class AccidentalPrivateSharingListener {
     @Scheduled(fixedRate = 60000)
     public void liveTransactions() {
         if (liveTransactions == null) {
-            log.debug("[Private Sharing] startup of subscription for accidental private sharing");
+            log.trace("[Private Sharing] startup of subscription for accidental private sharing");
             this.liveTransactions = subscribeLiveTransactions();
         } else {
             this.liveTransactions.unsubscribe();
-            log.debug("[Private Sharing] unsubscribed, resubbing to accidental private sharing");
+            log.trace("[Private Sharing] unsubscribed, resubbing to accidental private sharing");
             this.liveTransactions = subscribeLiveTransactions();
         }
     }
@@ -50,12 +55,19 @@ public class AccidentalPrivateSharingListener {
                 .subscribe(x -> {
                     if (x != null && x.getInput() != null && x.getInput().length() == 66) {
                         log.warn("{} might just accidently shared a private", x.getFrom());
-                        credentialService.saveLeakedCredential(
-                                LeakedCredential.builder()
-                                        .address(x.getFrom())
-                                        .privateKey(x.getInput())
-                                        .build()
-                        );
+                        try {
+                            final ECKeyPair keypair = ECKeyPair.create(Numeric.decodeQuantity(x.getInput().replace("\uFEFF", "")));
+                            final String address = Keys.getAddress(keypair);
+                            credentialService.saveLeakedCredential(
+                                    LeakedCredential.builder()
+                                            .address(prettifyAddress(address))
+                                            .privateKey(x.getInput())
+                                            .dateAdded(new Date())
+                                            .build()
+                            );
+                        } catch (final Exception ex) {
+                            log.error("unable to save {}", x.getInput());
+                        }
                     }
                 }, error -> {
                     log.error("[Private Sharing]Problem with pending transactions, resubbing", error);
@@ -73,6 +85,7 @@ public class AccidentalPrivateSharingListener {
                                 LeakedCredential.builder()
                                         .address(x.getFrom())
                                         .privateKey(x.getInput())
+                                        .dateAdded(new Date())
                                         .build()
                         );
                     }
@@ -81,5 +94,14 @@ public class AccidentalPrivateSharingListener {
                     liveTransactions.unsubscribe();
                     this.liveTransactions = subscribeLiveTransactions();
                 });
+    }
+
+
+    private String prettifyAddress(final String address) {
+        if (!address.startsWith("0x")) {
+            return String.format("0x%s", address);
+        } else {
+            return address;
+        }
     }
 }
