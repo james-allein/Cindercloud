@@ -9,8 +9,10 @@ import org.springframework.stereotype.Component;
 import org.web3j.crypto.ECKeyPair;
 import org.web3j.crypto.Keys;
 import org.web3j.protocol.Web3j;
+import org.web3j.protocol.core.methods.response.Transaction;
 import org.web3j.utils.Numeric;
 import rx.Subscription;
+import rx.functions.Action1;
 
 import java.util.Date;
 
@@ -52,24 +54,7 @@ public class AccidentalPrivateSharingListener {
 
     private Subscription subscribePendingTransactions() {
         return web3j.pendingTransactionObservable()
-                .subscribe(x -> {
-                    if (x != null && x.getInput() != null && x.getInput().length() == 66) {
-                        log.warn("{} might just accidently shared a private", x.getFrom());
-                        try {
-                            final ECKeyPair keypair = ECKeyPair.create(Numeric.decodeQuantity(x.getInput().replace("\uFEFF", "")));
-                            final String address = Keys.getAddress(keypair);
-                            credentialService.saveLeakedCredential(
-                                    LeakedCredential.builder()
-                                            .address(prettifyAddress(address))
-                                            .privateKey(x.getInput())
-                                            .dateAdded(new Date())
-                                            .build()
-                            );
-                        } catch (final Exception ex) {
-                            log.error("unable to save {}", x.getInput());
-                        }
-                    }
-                }, error -> {
+                .subscribe(processTransaction(), error -> {
                     log.error("[Private Sharing]Problem with pending transactions, resubbing", error);
                     pendingTransactionsSubscription.unsubscribe();
                     this.pendingTransactionsSubscription = subscribePendingTransactions();
@@ -78,22 +63,32 @@ public class AccidentalPrivateSharingListener {
 
     private Subscription subscribeLiveTransactions() {
         return web3j.transactionObservable()
-                .subscribe(x -> {
-                    if (x != null && x.getInput() != null && x.getInput().length() == 66) {
-                        log.warn("{} might just accidently shared a private", x.getFrom());
-                        credentialService.saveLeakedCredential(
-                                LeakedCredential.builder()
-                                        .address(x.getFrom())
-                                        .privateKey(x.getInput())
-                                        .dateAdded(new Date())
-                                        .build()
-                        );
-                    }
-                }, error -> {
+                .subscribe(processTransaction(), error -> {
                     log.error("[Private Sharing]Problem with pending transactions, resubbing", error);
                     liveTransactions.unsubscribe();
                     this.liveTransactions = subscribeLiveTransactions();
                 });
+    }
+
+    private Action1<Transaction> processTransaction() {
+        return x -> {
+            if (x != null && x.getInput() != null && x.getInput().length() == 66) {
+                log.warn("{} might just accidently shared a private", x.getFrom());
+                try {
+                    final ECKeyPair keypair = ECKeyPair.create(Numeric.decodeQuantity(x.getInput().replace("\uFEFF", "")));
+                    final String address = Keys.getAddress(keypair);
+                    credentialService.saveLeakedCredential(
+                            LeakedCredential.builder()
+                                    .address(prettifyAddress(address))
+                                    .privateKey(x.getInput())
+                                    .dateAdded(new Date())
+                                    .build()
+                    );
+                } catch (final Exception ex) {
+                    log.error("unable to save {}", x.getInput());
+                }
+            }
+        };
     }
 
 
