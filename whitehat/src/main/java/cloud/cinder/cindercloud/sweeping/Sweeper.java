@@ -33,12 +33,16 @@ public class Sweeper {
     private String whitehatAddress;
 
     public void sweep(final String privateKey) {
-        final ECKeyPair keypair = ECKeyPair.create(Numeric.decodeQuantity(privateKey.trim()));
-        final String address = Keys.getAddress(keypair);
+        try {
+            final ECKeyPair keypair = ECKeyPair.create(Numeric.decodeQuantity(privateKey.trim()));
+            final String address = Keys.getAddress(keypair);
 
-        web3j.ethGetBalance(prettifyAddress(address), DefaultBlockParameterName.LATEST).observable()
-                .filter(Objects::nonNull)
-                .subscribe(balanceFetched(keypair));
+            web3j.ethGetBalance(prettifyAddress(address), DefaultBlockParameterName.LATEST).observable()
+                    .filter(Objects::nonNull)
+                    .subscribe(balanceFetched(keypair));
+        } catch (final Exception ex) {
+            log.error("something went wrong while trying sweep {}", privateKey);
+        }
     }
 
     private Action1<EthGetBalance> balanceFetched(final ECKeyPair keyPair) {
