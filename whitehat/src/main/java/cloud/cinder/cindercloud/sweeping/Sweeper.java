@@ -11,6 +11,7 @@ import org.web3j.protocol.Web3j;
 import org.web3j.protocol.core.DefaultBlockParameterName;
 import org.web3j.protocol.core.methods.response.EthGetBalance;
 import org.web3j.protocol.core.methods.response.EthGetTransactionCount;
+import org.web3j.protocol.core.methods.response.EthSendTransaction;
 import org.web3j.utils.Numeric;
 import rx.functions.Action1;
 
@@ -23,7 +24,7 @@ public class Sweeper {
 
     private static final BigInteger GAS_PRICE = BigInteger.valueOf(2000000000L);
     private static final BigInteger ETHER_TRANSACTION_GAS_LIMIT = BigInteger.valueOf(21000L);
-    public static final BigInteger GAS_COST = GAS_PRICE.add(ETHER_TRANSACTION_GAS_LIMIT);
+    private static final BigInteger GAS_COST = GAS_PRICE.add(ETHER_TRANSACTION_GAS_LIMIT);
 
 
     @Autowired
@@ -66,8 +67,12 @@ public class Sweeper {
 
                         final byte[] signedMessage = sign(keyPair, etherTransaction);
                         final String signedMessageAsHex = Hex.toHexString(signedMessage);
-                        web3j.ethSendRawTransaction(signedMessageAsHex).observable()
-                                .subscribe(x -> log.debug("Sent transaction with hash: {}", x.getTransactionHash()));
+                        try {
+                            EthSendTransaction send = web3j.ethSendRawTransaction(signedMessageAsHex).send();
+                            log.debug("txHash: {}", send.getTransactionHash());
+                        } catch (final Exception ex) {
+                            log.error("Error sending transaction (io)");
+                        }
                     } else {
                         log.error("Noncecount returned an error for {}", Keys.getAddress(keyPair));
                     }
@@ -85,7 +90,7 @@ public class Sweeper {
 
     private EthGetTransactionCount calculateNonce(final ECKeyPair keyPair) {
         return web3j.ethGetTransactionCount(
-                Keys.getAddress(keyPair),
+                prettifyAddress(Keys.getAddress(keyPair)),
                 DefaultBlockParameterName.LATEST
         ).observable().toBlocking().first();
     }
