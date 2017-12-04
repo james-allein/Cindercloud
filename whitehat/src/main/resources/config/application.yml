@@ -35,8 +35,3 @@ logging:
       springframework: info
     cloud:
       cinder: DEBUG
-
-cloud:
-  cinder:
-    whitehat:
-      address: '0x3b6ff8818385843496f02cdcc41c694fe679a021'
