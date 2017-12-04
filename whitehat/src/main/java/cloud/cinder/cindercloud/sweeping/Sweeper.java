@@ -24,7 +24,7 @@ public class Sweeper {
 
     private static final BigInteger GAS_PRICE = BigInteger.valueOf(2000000000L);
     private static final BigInteger ETHER_TRANSACTION_GAS_LIMIT = BigInteger.valueOf(21000L);
-    private static final BigInteger GAS_COST = GAS_PRICE.add(ETHER_TRANSACTION_GAS_LIMIT);
+    private static final BigInteger GAS_COST = GAS_PRICE.multiply(ETHER_TRANSACTION_GAS_LIMIT);
 
 
     @Autowired
@@ -38,7 +38,7 @@ public class Sweeper {
             final ECKeyPair keypair = ECKeyPair.create(Numeric.decodeQuantity(privateKey.trim()));
             final String address = Keys.getAddress(keypair);
 
-            web3j.ethGetBalance(prettifyAddress(address), DefaultBlockParameterName.LATEST).observable()
+            web3j.ethGetBalance(prettify(address), DefaultBlockParameterName.LATEST).observable()
                     .filter(Objects::nonNull)
                     .subscribe(balanceFetched(keypair));
         } catch (final Exception ex) {
@@ -66,9 +66,9 @@ public class Sweeper {
 
 
                         final byte[] signedMessage = sign(keyPair, etherTransaction);
-                        final String signedMessageAsHex = Hex.toHexString(signedMessage);
+                        final String signedMessageAsHex = prettify(Hex.toHexString(signedMessage));
                         try {
-                            EthSendTransaction send = web3j.ethSendRawTransaction(signedMessageAsHex).send();
+                            EthSendTransaction send = web3j.ethSendRawTransaction(signedMessageAsHex).sendAsync().get();
                             log.debug("txHash: {}", send.getTransactionHash());
                         } catch (final Exception ex) {
                             log.error("Error sending transaction (io)");
@@ -90,12 +90,12 @@ public class Sweeper {
 
     private EthGetTransactionCount calculateNonce(final ECKeyPair keyPair) {
         return web3j.ethGetTransactionCount(
-                prettifyAddress(Keys.getAddress(keyPair)),
+                prettify(Keys.getAddress(keyPair)),
                 DefaultBlockParameterName.LATEST
         ).observable().toBlocking().first();
     }
 
-    private String prettifyAddress(final String address) {
+    private String prettify(final String address) {
         if (!address.startsWith("0x")) {
             return String.format("0x%s", address);
         } else {
