@@ -35,3 +35,8 @@ logging:
       springframework: info
     cloud:
       cinder: DEBUG
+
+cloud:
+  cinder:
+    whitehat:
+      gasPrice: 20000000000

@@ -15,6 +15,7 @@ import org.web3j.protocol.core.methods.response.EthSendTransaction;
 import org.web3j.utils.Numeric;
 import rx.functions.Action1;
 
+import javax.annotation.PostConstruct;
 import java.math.BigInteger;
 import java.util.Objects;
 
@@ -22,9 +23,7 @@ import java.util.Objects;
 @Slf4j
 public class Sweeper {
 
-    private static final BigInteger GAS_PRICE = BigInteger.valueOf(2000000000L);
     private static final BigInteger ETHER_TRANSACTION_GAS_LIMIT = BigInteger.valueOf(21000L);
-    private static final BigInteger GAS_COST = GAS_PRICE.multiply(ETHER_TRANSACTION_GAS_LIMIT);
 
 
     @Autowired
@@ -32,6 +31,20 @@ public class Sweeper {
 
     @Value("${cloud.cinder.whitehat.address}")
     private String whitehatAddress;
+
+    @Value("${cloud.cinder.whitehat.gasPrice}")
+    private Long gasPrice;
+
+    private BigInteger GAS_PRICE;
+    private BigInteger GAS_COST;
+
+
+    @PostConstruct
+    public void init() {
+        this.GAS_PRICE = BigInteger.valueOf(gasPrice);
+        this.GAS_COST = this.GAS_PRICE.multiply(ETHER_TRANSACTION_GAS_LIMIT);
+    }
+
 
     public void sweep(final String privateKey) {
         try {
