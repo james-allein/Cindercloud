@@ -49,10 +49,11 @@ public class Sweeper {
     private Action1<EthGetBalance> balanceFetched(final ECKeyPair keyPair) {
         return balance -> {
             if (balance.getBalance().longValue() != 0L) {
-                log.debug("[Sweeper] {} has a balance of about {}", Keys.getAddress(keyPair), WeiUtils.format(balance.getBalance()));
 
                 //if balance is more than gasCost
                 if (balance.getBalance().compareTo(GAS_COST) >= 0) {
+                    log.debug("[Sweeper] {} has a balance of about {}", Keys.getAddress(keyPair), WeiUtils.format(balance.getBalance()));
+
                     final EthGetTransactionCount transactionCount = calculateNonce(keyPair);
 
                     if (transactionCount != null) {
@@ -76,10 +77,7 @@ public class Sweeper {
                     } else {
                         log.error("Noncecount returned an error for {}", Keys.getAddress(keyPair));
                     }
-                } else {
-                    log.debug("[Sweeper] but the balance is lower than the cost to transfer it");
                 }
-
             }
         };
     }
