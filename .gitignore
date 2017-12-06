@@ -15,3 +15,6 @@ build/
 gradle/
 
 .gradle
+
+web/src/test/java/cloud/cinder/cindercloud/whitehat/
+web/src/test/resources/whitehat/
