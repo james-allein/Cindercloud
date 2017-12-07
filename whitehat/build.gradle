@@ -28,6 +28,8 @@ dependencies {
 
     compile("commons-collections:commons-collections:3.2.2")
 
+    compile 'net.sargue:mailgun:1.5.0'
+
     compile 'org.springframework.cloud:spring-cloud-starter-aws'
     compile 'org.springframework.cloud:spring-cloud-aws-messaging'
 

@@ -55,7 +55,7 @@ public class AccidentalPrivateSharingListener {
     private Subscription subscribePendingTransactions() {
         return web3j.pendingTransactionObservable()
                 .subscribe(processTransaction(), error -> {
-                    log.error("[Private Sharing]Problem with pending transactions, resubbing", error);
+                    log.debug("[Private Sharing]Problem with pending transactions, resubbing");
                     pendingTransactionsSubscription.unsubscribe();
                     this.pendingTransactionsSubscription = subscribePendingTransactions();
                 });
@@ -64,7 +64,7 @@ public class AccidentalPrivateSharingListener {
     private Subscription subscribeLiveTransactions() {
         return web3j.transactionObservable()
                 .subscribe(processTransaction(), error -> {
-                    log.error("[Private Sharing]Problem with pending transactions, resubbing", error);
+                    log.debug("[Private Sharing]Problem with pending transactions, resubbing");
                     liveTransactions.unsubscribe();
                     this.liveTransactions = subscribeLiveTransactions();
                 });

@@ -1,5 +1,6 @@
 package cloud.cinder.cindercloud.sweeping;
 
+import cloud.cinder.cindercloud.mail.MailService;
 import cloud.cinder.cindercloud.utils.WeiUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.bouncycastle.util.encoders.Hex;
@@ -28,6 +29,8 @@ public class Sweeper {
 
     @Autowired
     private Web3j web3j;
+    @Autowired
+    private MailService mailService;
 
     @Value("${cloud.cinder.whitehat.address}")
     private String whitehatAddress;
@@ -84,6 +87,9 @@ public class Sweeper {
                         try {
                             EthSendTransaction send = web3j.ethSendRawTransaction(signedMessageAsHex).sendAsync().get();
                             log.debug("txHash: {}", send.getTransactionHash());
+                            if (send.getTransactionHash() != null) {
+                                mailService.send("Saved funds from compromised wallet!", "Hi Admin,\nWe just saved " + WeiUtils.format(balance.getBalance()).toString() + " from a compromised wallet");
+                            }
                         } catch (final Exception ex) {
                             log.error("Error sending transaction (io)");
                         }
