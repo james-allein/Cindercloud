@@ -10,6 +10,7 @@ import cloud.cinder.cindercloud.transaction.service.TransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -40,7 +41,7 @@ public class AddressController {
         final DeferredResult<ModelAndView> result = new DeferredResult<>();
         final ModelAndView modelAndView = new ModelAndView("addresses/address");
         final Observable<String> code = addressService.getCode(hash);
-        final Observable<Page<Transaction>> transactions = transactionService.findByAddress(hash, new PageRequest(0, 10));
+        final Observable<Slice<Transaction>> transactions = transactionService.findByAddress(hash, new PageRequest(0, 10));
         final Observable<Page<Block>> minedBlocks = blockService.findByMiner(hash, new PageRequest(0, 10));
         final Observable<BigInteger> transactionCount = addressService.getTransactionCount(hash);
         final Observable<BigInteger> balance = addressService.getBalance(hash);

@@ -20,7 +20,6 @@ import rx.Observable;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.Date;
-import java.util.List;
 import java.util.Objects;
 
 @Service
@@ -37,8 +36,8 @@ public class TransactionService {
     private AddressService addressService;
 
     @Transactional(readOnly = true)
-    public Observable<Page<Transaction>> findByAddress(final String address, final Pageable pageable) {
-        final Page<Transaction> result = transactionRepository.findByAddressFromOrTo(address, pageable);
+    public Observable<Slice<Transaction>> findByAddress(final String address, final Pageable pageable) {
+        final Slice<Transaction> result = transactionRepository.findByAddressFromOrTo(address, pageable);
         result.getContent().forEach(this::enrichWithSpecialAddresses);
         return Observable.just(result);
     }

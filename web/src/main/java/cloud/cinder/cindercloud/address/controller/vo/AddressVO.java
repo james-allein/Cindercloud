@@ -6,6 +6,7 @@ import cloud.cinder.cindercloud.utils.dto.PrettyAmount;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Slice;
 
 import java.math.BigInteger;
 
@@ -16,8 +17,8 @@ public class AddressVO {
     private String code;
     private PrettyAmount balance;
     private BigInteger transactionCount;
-    private Page<Transaction> transactions;
-    private Page<Block> minedBlocks;
+    private Slice<Transaction> transactions;
+    private Slice<Block> minedBlocks;
 
     public boolean isContract() {
         return (code != null && !code.equals("0x"));
