@@ -3,6 +3,7 @@ package cloud.cinder.cindercloud.transaction.service;
 import cloud.cinder.cindercloud.address.service.AddressService;
 import cloud.cinder.cindercloud.block.model.Block;
 import cloud.cinder.cindercloud.block.service.BlockService;
+import cloud.cinder.cindercloud.etherscan.EtherscanService;
 import cloud.cinder.cindercloud.transaction.model.Transaction;
 import cloud.cinder.cindercloud.transaction.repository.TransactionRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -34,11 +35,17 @@ public class TransactionService {
     private BlockService blockService;
     @Autowired
     private AddressService addressService;
+    @Autowired
+    private EtherscanService etherscanService;
 
-    @Transactional(readOnly = true)
+
+    @Transactional
     public Observable<Slice<Transaction>> findByAddress(final String address, final Pageable pageable) {
         final Slice<Transaction> result = transactionRepository.findByAddressFromOrTo(address, pageable);
         result.getContent().forEach(this::enrichWithSpecialAddresses);
+        if (result.hasContent()) {
+            etherscanService.importByAddress(address);
+        }
         return Observable.just(result);
     }
 

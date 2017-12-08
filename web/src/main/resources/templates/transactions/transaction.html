@@ -75,9 +75,12 @@
                     <div class="col-lg-5 col-sm-5 g-mb-50">
                         <div class="g-brd-around g-brd-orange g-pa-20">
                             <a th:href="@{/address/} + ${tx.fromAddress}">
-                                <div th:if="${tx.specialFrom == null}" class="g-font-size-16 g-font-weight-300 g-mb-7" th:text="${tx.fromAddress}">from
+                                <div th:if="${tx.specialFrom == null}" class="g-font-size-16 g-font-weight-300 g-mb-7"
+                                     th:text="${tx.fromAddress}">from
                                 </div>
-                                <div th:unless="${tx.specialFrom == null}" class="g-font-size-16 g-font-weight-300 g-mb-7" th:text="${tx.specialFrom.name}">from
+                                <div th:unless="${tx.specialFrom == null}"
+                                     class="g-font-size-16 g-font-weight-300 g-mb-7" th:text="${tx.specialFrom.name}">
+                                    from
                                 </div>
                             </a>
                             <h4 class="h5 g-color-gray-dark-v4 g-mb-5">FROM</h4>
@@ -94,9 +97,11 @@
                     <div class="col-lg-5 col-sm-5 g-mb-50">
                         <div class="g-brd-around g-brd-primary g-pa-20">
                             <a th:href="@{/address/} + ${tx.toAddress}">
-                                <div th:if="${tx.specialTo == null}" class="g-font-size-16 g-font-weight-300 g-mb-7" th:text="${tx.toAddress}">87904
+                                <div th:if="${tx.specialTo == null}" class="g-font-size-16 g-font-weight-300 g-mb-7"
+                                     th:text="${tx.toAddress}">87904
                                 </div>
-                                <div th:unless="${tx.specialTo == null}" class="g-font-size-16 g-font-weight-300 g-mb-7" th:text="${tx.specialTo}">87904
+                                <div th:unless="${tx.specialTo == null}" class="g-font-size-16 g-font-weight-300 g-mb-7"
+                                     th:text="${tx.specialTo}">87904
                                 </div>
                             </a>
                             <h4 class="h5 g-color-gray-dark-v4 g-mb-5">TO</h4>
@@ -158,7 +163,7 @@
                     <div class="col-lg-6 col-sm-6 g-mb-50" th:if="${tx.hasInput()}">
                         <div class="g-bg-white g-rounded-4 g-brd-bottom g-brd-2 g-brd-gray-light-v3 g-pa-20">
                             <div class="g-font-size-18 g-font-weight-300 g-mb-7">
-                                <span  th:text="${tx.input}" style="word-wrap: break-word;"></span>
+                                <span th:text="${tx.input}" style="word-wrap: break-word;"></span>
                             </div>
                             <h4 class="h5 g-color-gray-dark-v4 g-mb-5">Input Data</h4>
                         </div>
@@ -166,11 +171,30 @@
                     <div class="col-lg-6 col-sm-6 g-mb-50" th:if="${tx.hasInput()}">
                         <div class="g-bg-white g-rounded-4 g-brd-bottom g-brd-2 g-brd-gray-light-v3 g-pa-20">
                             <div class="g-font-size-18 g-font-weight-300 g-mb-7">
-                                <span  th:text="${tx.inputString()}" style="word-wrap: break-word;"></span>
+                                <span th:text="${tx.inputString()}" style="word-wrap: break-word;"></span>
                             </div>
                             <h4 class="h5 g-color-gray-dark-v4 g-mb-5">Input Data</h4>
                         </div>
                     </div>
+                    <div class="col-lg-1" th:unless="${tx.hasInput()}"></div>
+                    <div class="col-lg-10" th:unless="${tx.hasInput()}">
+                        <div class="g-mb-50">
+                            <div class="alert fade show g-brd-around g-brd-primary rounded-0" role="alert">
+
+
+                                <div class="media">
+
+                                    <div class="media-body">
+
+                                        <p class="m-0 g-font-size-14">No extra data was provided as input.</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+
                 </div>
             </div>
 

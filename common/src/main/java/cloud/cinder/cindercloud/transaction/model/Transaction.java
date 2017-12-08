@@ -107,7 +107,7 @@ public class Transaction {
     }
 
     public boolean hasInput() {
-        return input != null && !input.equals("0x0");
+        return input != null && !input.equals("0x");
     }
 
     public String inputString() {

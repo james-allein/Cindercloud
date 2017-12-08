@@ -29,7 +29,7 @@
                     <!-- Profile Settings List -->
                     <ul class="list-unstyled mb-0">
                         <li class="g-pb-3">
-                            <a class="d-block active align-middle u-link-v5 g-color-text g-color-primary--hover g-bg-gray-light-v5--hover g-color-primary--parent-active g-bg-gray-light-v5--active rounded g-pa-3"
+                            <a class="d-block align-middle u-link-v5 g-color-text g-color-primary--hover g-bg-gray-light-v5--hover rounded g-pa-3"
                                th:href="@{/wallet}">
                                 <span class="u-icon-v1 g-color-gray-dark-v5 mr-2"><i
                                         class="icon-finance-059 u-line-icon-pro"></i></span>
@@ -37,7 +37,7 @@
                             </a>
                         </li>
                         <li class="g-py-3">
-                            <a class="d-block align-middle u-link-v5 g-color-text g-color-primary--hover g-bg-gray-light-v5--hover rounded g-pa-3"
+                            <a class="d-block active align-middle u-link-v5 g-color-text g-color-primary--hover g-bg-gray-light-v5--hover rounded g-pa-3"
                                th:href="@{/wallet/transactions}">
                                 <span class="u-icon-v1 g-color-gray-dark-v5 mr-2"><i
                                         class="icon-finance-135 u-line-icon-pro"></i></span>
@@ -66,32 +66,56 @@
 
                     <!-- Balance Info -->
                     <div class="row justify-content-between">
-                        <div class="col-sm-4 g-mb-30">
-                            <div class="g-bg-primary text-center rounded g-px-20 g-py-30">
-                                <span class="d-block g-color-white g-font-weight-600 g-font-size-25 mb-1"
-                                      th:text="${balance}">$74.57</span>
-                                <span class="d-block g-color-white-opacity-0_8 g-font-size-18">Available Balance</span>
+                        <div class="col-md-12">
+                            <div class="table-responsive">
+                                <table class="table table-striped">
+                                    <thead>
+                                    <tr>
+                                        <th>Hash</th>
+                                        <th>Block</th>
+                                        <th>From</th>
+                                        <th>To</th>
+                                        <th>Value</th>
+                                    </tr>
+                                    </thead>
+
+                                    <tbody>
+                                    <tr th:each="tx : ${transactions.getContent()}">
+                                        <td><a th:href="@{'/tx/' + ${tx.hash}}"><span th:text="${tx.prettyHash()}"></span></a></td>
+                                        <td><a th:href="@{'/blocks/' + ${tx.blockHash}}"><span th:text="${tx.blockHeight}"></span></a>
+                                        </td>
+                                        <td>
+                                            <a th:href="@{'/address/' + ${tx.fromAddress}}"
+                                               th:if="${tx.direction(hash) == T(cloud.cinder.cindercloud.transaction.model.Transaction.Direction).IN}"><span
+                                                    th:text="${tx.prettyFromAddress()}"></span></a>
+                                            <span th:unless="${tx.direction(hash) == T(cloud.cinder.cindercloud.transaction.model.Transaction.Direction).IN}"
+                                                  th:text="${tx.prettyFromAddress()}"></span>
+                                        </td>
+                                        <td>
+                                            <div th:if="${tx.isContractCreation()}">
+                                                <a th:href="@{'/address/' + ${tx.creates}}"><span
+                                                        th:text="${tx.prettyToAddress()}"></span></a>
+                                            </div>
+                                            <div th:unless="${tx.isContractCreation()}">
+                                                <a th:href="@{'/address/' + ${tx.toAddress}}"><span
+                                                        th:text="${tx.prettyToAddress()}"></span></a>
+                                            </div>
+                                        </td>
+                                        <td>
+                            <span class="u-label u-label-success g-color-white"
+                                  th:text="${tx.formattedValue()}">0</span>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
 
-                        <div class="col-sm-4 g-mb-30">
-                            <div class="g-bg-yellow text-center rounded g-px-20 g-py-30">
-                                <span class="d-block g-color-white g-font-weight-600 g-font-size-25 mb-1">$<span id="usdBalance">?</span></span>
-                                <span class="d-block g-color-white-opacity-0_8 g-font-size-18">Balance in USD</span>
-                            </div>
-                        </div>
-
-                        <div class="col-sm-4 g-mb-30">
-                            <div class="g-bg-blue text-center rounded g-px-20 g-py-30">
-                                <span class="d-block g-color-white g-font-weight-600 g-font-size-25 mb-1">$<span id="eurBalance">?</span></span>
-                                <span class="d-block g-color-white-opacity-0_8 g-font-size-18">Balance in EUR</span>
-                            </div>
-                        </div>
                     </div>
                     <!-- End Balance Info -->
 
                     <!-- Add Balance -->
-                    <div class="g-mb-50">
+                    <div class="g-mb-50" th:if="${transactions == null || !transactions.hasContent()}">
                         <div class="alert fade show g-brd-around g-brd-primary rounded-0" role="alert">
                             <button type="button" class="close u-alert-close--light g-ml-10 g-mt-1" data-dismiss="alert"
                                     aria-label="Close">
@@ -109,8 +133,7 @@
                                         <p class="m-0"><strong>Shapeshift</strong>
                                         </p>
                                     </div>
-                                    <p class="m-0 g-font-size-14">It would appear your balance is empty. Visit <a
-                                            href="https://shapeshift.io">Shapeshift</a> to fill up your balance.</p>
+                                    <p class="m-0 g-font-size-14">No transactions were found for this account.</p>
                                 </div>
                             </div>
                         </div>

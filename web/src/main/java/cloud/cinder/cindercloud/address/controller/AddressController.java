@@ -5,8 +5,11 @@ import cloud.cinder.cindercloud.address.model.SpecialAddress;
 import cloud.cinder.cindercloud.address.service.AddressService;
 import cloud.cinder.cindercloud.block.model.Block;
 import cloud.cinder.cindercloud.block.service.BlockService;
+import cloud.cinder.cindercloud.coinmarketcap.dto.Currency;
+import cloud.cinder.cindercloud.coinmarketcap.service.PriceService;
 import cloud.cinder.cindercloud.transaction.model.Transaction;
 import cloud.cinder.cindercloud.transaction.service.TransactionService;
+import cloud.cinder.cindercloud.utils.WeiUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -35,6 +38,8 @@ public class AddressController {
     private BlockService blockService;
     @Autowired
     private AddressService addressService;
+    @Autowired
+    private PriceService priceService;
 
     @RequestMapping("/{hash}")
     public DeferredResult<ModelAndView> getAddress(@PathVariable("hash") final String hash) {
@@ -48,6 +53,8 @@ public class AddressController {
         final Optional<SpecialAddress> specialAddress = addressService.findByAddress(hash);
         Observable.zip(code, transactions, minedBlocks, transactionCount, balance, (cde, tx, blocks, count, bal) -> {
             modelAndView.addObject("address", new AddressVO(cde, format(bal), count, tx, blocks));
+            modelAndView.addObject("balEUR", priceService.getPrice(Currency.EUR) * WeiUtils.asEth(bal));
+            modelAndView.addObject("balUSD", priceService.getPrice(Currency.USD) * WeiUtils.asEth(bal));
             modelAndView.addObject("isSpecial", specialAddress.isPresent());
             modelAndView.addObject("hash", hash);
             modelAndView.addObject("specialName", specialAddress.map(SpecialAddress::getName).orElse(""));
