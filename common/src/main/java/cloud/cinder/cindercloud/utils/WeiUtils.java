@@ -7,6 +7,11 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 
 public class WeiUtils {
+
+    public static double asEth(final BigInteger weiBalance) {
+        return weiBalance.divide(BigInteger.valueOf((long) Math.pow(10, 18))).doubleValue();
+    }
+
     public static PrettyAmount format(final BigInteger value) {
         if (value.equals(BigInteger.ZERO)) {
             return new PrettyAmount("0", "wei");
