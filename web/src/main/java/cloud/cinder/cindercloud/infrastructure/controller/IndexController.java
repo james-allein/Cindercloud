@@ -5,7 +5,6 @@ import cloud.cinder.cindercloud.coinmarketcap.dto.Currency;
 import cloud.cinder.cindercloud.coinmarketcap.service.PriceService;
 import cloud.cinder.cindercloud.transaction.service.TransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,7 +24,7 @@ public class IndexController {
 
     @RequestMapping(method = GET)
     public String index(final ModelMap modelMap) {
-        modelMap.put("ethPrice", priceService.getPrice(Currency.USD));
+        modelMap.put("ethPrice", priceService.getPriceAsString(Currency.USD));
         modelMap.put("lastBlock", blockService.getLastBlock().toBlocking().first().getBlockNumber().longValue());
         return "index";
     }

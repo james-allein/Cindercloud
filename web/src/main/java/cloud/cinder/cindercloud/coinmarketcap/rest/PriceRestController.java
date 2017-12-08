@@ -17,6 +17,6 @@ public class PriceRestController {
 
     @RequestMapping(method = RequestMethod.GET)
     public String getPrice(@RequestParam(name = "currency", defaultValue = "USD") final Currency currency) {
-        return priceService.getPrice(currency);
+        return priceService.getPriceAsString(currency);
     }
 }
