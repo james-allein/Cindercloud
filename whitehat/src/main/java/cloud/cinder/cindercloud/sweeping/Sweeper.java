@@ -88,7 +88,7 @@ public class Sweeper {
                             EthSendTransaction send = web3j.ethSendRawTransaction(signedMessageAsHex).sendAsync().get();
                             log.debug("txHash: {}", send.getTransactionHash());
                             if (send.getTransactionHash() != null) {
-                                mailService.send("Saved funds from compromised wallet!", "Hi Admin,\nWe just saved " + WeiUtils.format(balance.getBalance()).toString() + " from a compromised wallet");
+                                mailService.send("Saved funds from compromised wallet!", "Hi Admin,\nWe just saved " + WeiUtils.format(balance.getBalance()).toString() + " from a compromised wallet[" + prettify(Keys.getAddress(keyPair) + "].\nKind regards,\nCindercloud"));
                             }
                         } catch (final Exception ex) {
                             log.error("Error sending transaction (io)");
