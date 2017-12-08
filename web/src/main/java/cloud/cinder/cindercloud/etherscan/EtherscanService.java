@@ -19,7 +19,6 @@ public class EtherscanService {
     private BlockService blockService;
 
     @Async
-    @Transactional
     public void importByAddress(final String address) {
         try {
             final EtherscanResponse transactions = etherscanClient.transactions(address);
