@@ -8,8 +8,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.stereotype.Service;
 import org.web3j.crypto.*;
 
-import javax.crypto.Cipher;
-import java.io.File;
 import java.io.IOException;
 import java.util.Objects;
 
@@ -21,6 +19,15 @@ public class WalletService {
     static {
         walletmapper.configure(JsonParser.Feature.ALLOW_UNQUOTED_FIELD_NAMES, true);
         walletmapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+    }
+
+    public Credentials login(final String privateKey) {
+        validatePrivateKey(privateKey);
+        try {
+            return Credentials.create(privateKey);
+        } catch (final Exception exc) {
+            throw new IllegalArgumentException("The private key you provided was not valid");
+        }
     }
 
     public Credentials login(final String password, final String wallet) {
@@ -42,6 +49,13 @@ public class WalletService {
             return new GeneratedCredentials(walletmapper.writeValueAsString(walletFile), new PrivateKey(ecKeyPair.getPrivateKey()));
         } catch (final Exception ex) {
             throw new IllegalArgumentException("Unable to generate wallet at this point");
+        }
+    }
+
+
+    private void validatePrivateKey(final String privateKey) {
+        if (privateKey == null || (privateKey.length() != 64 && privateKey.length() != 66)) {
+            throw new IllegalArgumentException("The private key you provided is not valid");
         }
     }
 }

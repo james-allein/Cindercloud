@@ -7,9 +7,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class KeystoreLoginCommand {
+public class PrivateKeyLoginCommand {
 
-    private String keystoreValue;
-    private String password;
-
+    private String privateKey;
 }

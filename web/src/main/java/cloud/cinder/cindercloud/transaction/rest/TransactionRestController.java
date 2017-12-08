@@ -1,7 +1,5 @@
 package cloud.cinder.cindercloud.transaction.rest;
 
-import cloud.cinder.cindercloud.tracing.ParityTracing;
-import cloud.cinder.cindercloud.tracing.ParityTracingResponse;
 import cloud.cinder.cindercloud.transaction.model.Transaction;
 import cloud.cinder.cindercloud.transaction.service.TransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,19 +16,12 @@ public class TransactionRestController {
 
     @Autowired
     private TransactionService transactionService;
-    @Autowired
-    private ParityTracing parityTracing;
+
 
     @RequestMapping(method = GET, value = "/{transaction}")
     public DeferredResult<Transaction> getTransaction(@PathVariable("transaction") final String transaction) {
         final DeferredResult<Transaction> transactionDeferredResult = new DeferredResult<>();
         transactionService.getTransaction(transaction).subscribe(transactionDeferredResult::setResult);
         return transactionDeferredResult;
-    }
-
-    @RequestMapping(method = GET, value = "/{transaction}/internal")
-    public ParityTracingResponse.TracingResponse getInternalTransactions(@PathVariable("transaction") final String transaction) {
-        return parityTracing.replayTransaction(transaction)
-                .observable().toBlocking().first().getResult();
     }
 }

@@ -37,6 +37,8 @@ dependencies {
     compile 'org.springframework.cloud:spring-cloud-starter-aws'
     compile 'org.springframework.cloud:spring-cloud-aws-messaging'
 
+    compile group: 'org.bitcoinj', name: 'bitcoinj-core', version: '0.14.4'
+
     compile group: 'org.web3j', name: 'core', version: "${theWeb3jVersion}"
     compile group: 'org.web3j', name: 'parity', version: "${theWeb3jVersion}"
     compile group: 'org.web3j', name: 'geth', version: "${theWeb3jVersion}"

@@ -37,11 +37,13 @@
         <div class="row justify-content-between">
 
             <th:block th:replace="components/login :: keystore"></th:block>
+            <th:block th:replace="components/login :: privateKey"></th:block>
 
             <div class="col-md-6 order-lg-1 g-mb-80">
                 <div class="mb-5">
                     <h2 class="h1 g-font-weight-400 mb-3">Choose your preferenced login method</h2>
-                    <p class="g-color-gray-dark-v4">We support a variety of login methods. Below you can see a list of what we support, sorted by level of security.</p>
+                    <p class="g-color-gray-dark-v4">We support a variety of login methods. Below you can see a list of
+                        what we support, sorted by level of security.</p>
                 </div>
 
                 <div class="row">
@@ -54,7 +56,9 @@
                     </span>
                             </div>
                             <div class="media-body align-self-center">
-                                <h3 class="h5 g-font-weight-400">Use your Keystore</h3>
+                                <h3 class="h5 g-font-weight-400">
+                                    <a onclick="keystore()">Use your Keystore</a>
+                                </h3>
                                 <p class="g-color-gray-dark-v5 mb-0">Login using your keystore file and a password.</p>
                             </div>
                         </div>
@@ -69,7 +73,7 @@
                             </div>
                             <div class="media-body align-self-center">
                                 <h3 class="h5 g-font-weight-400">
-                                    <a onclick="alert('not yet bro, working on it');">Use Your Private Key [Coming soon]</a>
+                                    <a onclick="privateKey()">Use Your Private Key [Coming soon]</a>
                                 </h3>
                                 <p class="g-color-gray-dark-v5 mb-0">Login using your private key.</p>
                             </div>
@@ -83,9 +87,20 @@
     <!-- End Login -->
 
 
-
 </div>
 <div layout:fragment="footer-content">
+
+    <script type="application/javascript">
+		keystore = function () {
+			$("#keystoreComponent").show();
+			$("#privateKeyComponent").hide();
+		};
+
+		privateKey = function () {
+			$("#privateKeyComponent").show();
+			$("#keystoreComponent").hide();
+		};
+    </script>
 
 </div>
 </body>

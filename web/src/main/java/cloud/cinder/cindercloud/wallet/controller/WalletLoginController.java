@@ -2,7 +2,9 @@ package cloud.cinder.cindercloud.wallet.controller;
 
 import cloud.cinder.cindercloud.security.domain.PrivateKeyAuthentication;
 import cloud.cinder.cindercloud.wallet.controller.command.KeystoreLoginCommand;
+import cloud.cinder.cindercloud.wallet.controller.command.PrivateKeyLoginCommand;
 import cloud.cinder.cindercloud.wallet.service.WalletService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -17,6 +19,7 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
 @RequestMapping(value = "/wallet/login")
 @Controller
+@Slf4j
 public class WalletLoginController {
 
     @Autowired
@@ -25,6 +28,7 @@ public class WalletLoginController {
     @RequestMapping(method = GET)
     public String index(final ModelMap modelMap) {
         modelMap.put("keystoreLoginCommand", new KeystoreLoginCommand());
+        modelMap.put("privatekeyLoginCommand", new PrivateKeyLoginCommand());
         return "wallets/login";
     }
 
@@ -36,7 +40,23 @@ public class WalletLoginController {
             populateSecurityContext(creds);
             return "redirect:/wallet";
         } catch (final Exception ex) {
+            log.debug("Error while trying to login with keystore", ex);
             ex.printStackTrace();
+            redirectAttributes.addFlashAttribute("error", ex.getMessage());
+            return "redirect:/wallet/login";
+        }
+    }
+
+    @RequestMapping(method = POST, params = "type=privatekey")
+    public String loginWithPrivateKey(final @ModelAttribute("keystoreLoginCommand") PrivateKeyLoginCommand privateKeyLoginCommand,
+                                      final RedirectAttributes redirectAttributes) {
+        try {
+            final Credentials creds = walletService.login(privateKeyLoginCommand.getPrivateKey());
+            populateSecurityContext(creds);
+            return "redirect:/wallet";
+        } catch (final Exception ex) {
+            ex.printStackTrace();
+            log.debug("Error while trying to login with private key", ex);
             redirectAttributes.addFlashAttribute("error", ex.getMessage());
             return "redirect:/wallet/login";
         }

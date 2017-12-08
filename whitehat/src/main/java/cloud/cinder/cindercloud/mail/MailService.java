@@ -19,6 +19,7 @@ public class MailService {
 
     public void send(final String title, final String content, final String to) {
         try {
+            log.debug("sending mail to {}", to);
             Mail.using(configuration)
                     .to(to)
                     .subject(title)
@@ -32,15 +33,6 @@ public class MailService {
 
 
     public void send(final String title, final String content) {
-        try {
-            Mail.using(configuration)
-                    .to(defaultTo)
-                    .subject(title)
-                    .text(content)
-                    .build()
-                    .send();
-        } catch (final Exception exception) {
-            log.error("Unable to send mail.", exception);
-        }
+        send(title, content, defaultTo);
     }
 }
