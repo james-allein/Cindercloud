@@ -27,7 +27,7 @@ public class LeakedCredentialController {
                         final ModelMap modelMap) {
         modelMap.put("checkLeakedCredentialsCommand", leakedCredentialsCommand);
         modelMap.put("results", leakedCredentialService.check(leakedCredentialsCommand.toCredentials()));
-        return "tools/leaked-credentials;";
+        return "tools/leaked-credentials";
     }
 
 }

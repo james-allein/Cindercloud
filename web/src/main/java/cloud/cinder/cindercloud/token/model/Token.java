@@ -2,10 +2,7 @@ package cloud.cinder.cindercloud.token.model;
 
 import lombok.Data;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Data
 @Entity
@@ -16,8 +13,15 @@ public class Token {
     @GeneratedValue
     private long id;
     private String name;
+
+    @Column(name = "coinmarketcap_name")
+    private String coinmarketcapName;
     private String slug;
     private String address;
     private String image;
+    private String website;
+    private String social;
+    private String symbol;
     private int decimals;
+
 }

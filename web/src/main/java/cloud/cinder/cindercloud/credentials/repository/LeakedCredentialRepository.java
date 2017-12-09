@@ -2,8 +2,8 @@ package cloud.cinder.cindercloud.credentials.repository;
 
 import cloud.cinder.cindercloud.credential.domain.LeakedCredential;
 import cloud.cinder.cindercloud.infrastructure.repository.JpaRepository;
-import feign.Param;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
