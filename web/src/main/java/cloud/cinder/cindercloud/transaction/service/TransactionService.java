@@ -8,7 +8,6 @@ import cloud.cinder.cindercloud.transaction.model.Transaction;
 import cloud.cinder.cindercloud.transaction.repository.TransactionRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
@@ -21,6 +20,7 @@ import rx.Observable;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.Date;
+import java.util.List;
 import java.util.Objects;
 
 @Service
@@ -56,8 +56,8 @@ public class TransactionService {
     }
 
     @Transactional(readOnly = true)
-    public Observable<Page<Transaction>> getTransactionsForBlock(final String blockHash, final Pageable pageable) {
-        final Page<Transaction> result = transactionRepository.findAllByBlockHash(blockHash, pageable);
+    public Observable<Slice<Transaction>> getTransactionsForBlock(final String blockHash, final Pageable pageable) {
+        final Slice<Transaction> result = transactionRepository.findAllByBlockHash(blockHash, pageable);
         result.getContent().forEach(this::enrichWithSpecialAddresses);
         return Observable.just(result);
     }
@@ -86,7 +86,7 @@ public class TransactionService {
     }
 
     @Transactional(readOnly = true)
-    public Object getLast20Transactions() {
+    public List<Transaction> getLast20Transactions() {
         return transactionRepository.findAllOrOrderByBlockTimestampAsList(new PageRequest(0, 20));
     }
 

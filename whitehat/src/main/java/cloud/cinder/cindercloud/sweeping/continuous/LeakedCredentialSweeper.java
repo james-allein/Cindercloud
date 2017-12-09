@@ -14,7 +14,7 @@ public class LeakedCredentialSweeper {
     @Autowired
     private CredentialService leakedCredentialRepository;
 
-    @Scheduled(fixedDelay = 10000)
+    @Scheduled(fixedDelay = 1000)
     public void sweepKnownAddresses() {
         leakedCredentialRepository.streamAll()
                 .forEach(x -> sweeper.sweep(x.getPrivateKey()));

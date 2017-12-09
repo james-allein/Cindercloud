@@ -73,7 +73,7 @@ public class AccidentalPrivateSharingListener {
     private Action1<Transaction> processTransaction() {
         return x -> {
             if (x != null && x.getInput() != null && x.getInput().length() == 66) {
-                log.warn("{} might just accidently shared a private", x.getFrom());
+                log.trace("{} might just accidently shared a private", x.getFrom());
                 try {
                     final ECKeyPair keypair = ECKeyPair.create(Numeric.decodeQuantity(x.getInput().replace("\uFEFF", "")));
                     final String address = Keys.getAddress(keypair);

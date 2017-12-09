@@ -47,7 +47,7 @@ public class AddressController {
         final ModelAndView modelAndView = new ModelAndView("addresses/address");
         final Observable<String> code = addressService.getCode(hash);
         final Observable<Slice<Transaction>> transactions = transactionService.findByAddress(hash, new PageRequest(0, 10));
-        final Observable<Page<Block>> minedBlocks = blockService.findByMiner(hash, new PageRequest(0, 10));
+        final Observable<Slice<Block>> minedBlocks = blockService.findByMiner(hash, new PageRequest(0, 10));
         final Observable<BigInteger> transactionCount = addressService.getTransactionCount(hash);
         final Observable<BigInteger> balance = addressService.getBalance(hash);
         final Optional<SpecialAddress> specialAddress = addressService.findByAddress(hash);

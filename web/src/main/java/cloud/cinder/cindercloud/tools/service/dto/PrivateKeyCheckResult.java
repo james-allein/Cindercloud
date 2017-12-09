@@ -1,4 +1,4 @@
-package cloud.cinder.cindercloud.tools.controller.dto;
+package cloud.cinder.cindercloud.tools.service.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

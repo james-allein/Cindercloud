@@ -1,6 +1,6 @@
-package cloud.cinder.cindercloud.tools;
+package cloud.cinder.cindercloud.tools.controller;
 
-import cloud.cinder.cindercloud.tools.controller.dto.TestPrivateKeysCommand;
+import cloud.cinder.cindercloud.tools.controller.command.TestPrivateKeysCommand;
 import cloud.cinder.cindercloud.tools.service.PrivateKeyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

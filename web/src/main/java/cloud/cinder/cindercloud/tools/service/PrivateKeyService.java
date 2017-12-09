@@ -1,7 +1,7 @@
 package cloud.cinder.cindercloud.tools.service;
 
 import cloud.cinder.cindercloud.credentials.CredentialService;
-import cloud.cinder.cindercloud.tools.controller.dto.PrivateKeyCheckResult;
+import cloud.cinder.cindercloud.tools.service.dto.PrivateKeyCheckResult;
 import cloud.cinder.cindercloud.utils.WeiUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

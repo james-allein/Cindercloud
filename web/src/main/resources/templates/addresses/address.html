@@ -66,10 +66,7 @@
             <li th:if="${address.minedBlocks.hasContent()}" class="nav-item">
                 <a class="nav-link" data-toggle="tab" href="#blockMined" role="tab">
                           <span class="u-nav-v8__icon u-icon-v3 u-icon-size--lg g-rounded-50x g-brd-around g-brd-4 g-brd-white">
-                            <i class="fa fa-th">
-                                 <span class="u-badge-v1 g-color-white g-bg-primary g-rounded-50x"
-                                       th:text="${address.minedBlocks.getTotalElements()}">33</span>
-                            </i>
+                            <i class="fa fa-th"></i>
                           </span>
                     <strong class="text-uppercase u-nav-v8__title">Mined</strong>
                     <em class="u-nav-v8__description">Blocks</em>
@@ -114,8 +111,10 @@
 
                 <section th:if="${address.transactions.hasContent()}">
 
-                    <div th:if="${address.transactions.hasNext()}" class="alert alert-dismissible fade show g-bg-teal g-color-white rounded-0" role="alert">
-                        <button type="button" class="close u-alert-close--light" data-dismiss="alert" aria-label="Close">
+                    <div th:if="${address.transactions.hasNext()}"
+                         class="alert alert-dismissible fade show g-bg-teal g-color-white rounded-0" role="alert">
+                        <button type="button" class="close u-alert-close--light" data-dismiss="alert"
+                                aria-label="Close">
                             <span aria-hidden="true">×</span>
                         </button>
                         <div class="media">
@@ -234,7 +233,8 @@
             </div>
             <div th:if="${address.minedBlocks.hasContent()}" class="tab-pane fade" id="blockMined" role="tabpanel">
 
-                <div th:if="${address.minedBlocks.hasNext()}" class="alert alert-dismissible fade show g-bg-teal g-color-white rounded-0" role="alert">
+                <div th:if="${address.minedBlocks.hasNext()}"
+                     class="alert alert-dismissible fade show g-bg-teal g-color-white rounded-0" role="alert">
                     <button type="button" class="close u-alert-close--light" data-dismiss="alert" aria-label="Close">
                         <span aria-hidden="true">×</span>
                     </button>
@@ -243,7 +243,8 @@
                           <i class="icon-check g-font-size-25"></i>
                         </span>
                         <span class="media-body align-self-center">
-                          <strong>More blocks!</strong> <a th:href="@{/blocks?mined_by=} + ${hash}" style="color:white;">Find out all blocks this account has mined.</a>
+                          <strong>More blocks!</strong> <a th:href="@{/blocks?mined_by=} + ${hash}"
+                                                           style="color:white;">Find out all blocks this account has mined.</a>
                         </span>
                     </div>
                 </div>

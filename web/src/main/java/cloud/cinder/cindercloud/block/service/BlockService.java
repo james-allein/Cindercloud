@@ -6,7 +6,6 @@ import cloud.cinder.cindercloud.infrastructure.service.SqsQueueSender;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
@@ -49,7 +48,7 @@ public class BlockService {
     }
 
     @Transactional(readOnly = true)
-    public Observable<Page<Block>> findByMiner(final String address, final Pageable pageable) {
+    public Observable<Slice<Block>> findByMiner(final String address, final Pageable pageable) {
         return Observable.just(blockRepository.findBlocksAndUnclesByMiner(address, pageable));
     }
 

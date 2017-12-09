@@ -1,5 +1,6 @@
-package cloud.cinder.cindercloud.tools.controller.dto;
+package cloud.cinder.cindercloud.tools.controller.command;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -8,14 +9,14 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-@NoArgsConstructor
 @Data
-public class TestPrivateKeysCommand {
+@NoArgsConstructor
+@AllArgsConstructor
+public class CheckLeakedCredentialsCommand {
 
     private String input;
 
-
-    public List<String> toPrivateKeys() {
+    public List<String> toCredentials() {
         if (input == null || input.length() == 0) {
             return new ArrayList<>();
         } else {
@@ -23,4 +24,5 @@ public class TestPrivateKeysCommand {
                     .collect(Collectors.toList());
         }
     }
+
 }

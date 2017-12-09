@@ -2,7 +2,6 @@ package cloud.cinder.cindercloud.transaction.repository;
 
 import cloud.cinder.cindercloud.infrastructure.repository.JpaRepository;
 import cloud.cinder.cindercloud.transaction.model.Transaction;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.jpa.repository.Query;
@@ -15,9 +14,9 @@ import java.util.stream.Stream;
 public interface TransactionRepository extends JpaRepository<Transaction, String> {
 
     @Query("select transaction from Transaction transaction where fromAddress like :address or toAddress like :address")
-    Page<Transaction> findByAddressFromOrTo(@Param("address") final String address, final Pageable pageable);
+    Slice<Transaction> findByAddressFromOrTo(@Param("address") final String address, final Pageable pageable);
 
-    Page<Transaction> findAllByBlockHash(@Param("blockHash") final String blockHash, final Pageable pageable);
+    Slice<Transaction> findAllByBlockHash(@Param("blockHash") final String blockHash, final Pageable pageable);
 
     @Query("select transaction from Transaction transaction order by blockHeight desc")
     Slice<Transaction> findAllOrOrderByBlockTimestampAsPage(Pageable pageable);
