@@ -48,9 +48,7 @@ public class TransactionController {
             final ModelAndView modelAndView = new ModelAndView("transactions/transaction");
             modelAndView.addObject("tx", tx);
             result.setResult(modelAndView);
-        }, onError -> {
-            result.setErrorResult("error");
-        });
+        }, onError -> result.setErrorResult("error"));
         return result;
     }
 
