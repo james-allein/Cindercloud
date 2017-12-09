@@ -9,7 +9,34 @@
 <body>
 <div layout:fragment="main-content">
 
-    <section class="g-bg-secondary g-py-50">
+    <section  class="g-bg-secondary  g-py-50">
+        <div class="row">
+            <div class="col-lg-2"></div>
+            <div class="col-lg-8">
+                <div class="alert fade show g-bg-blue-opacity-0_1 g-color-blue rounded-0" role="alert">
+                    <button type="button" class="close u-alert-close--light g-ml-10 g-mt-1" data-dismiss="alert"
+                            aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+
+                    <div class="media">
+                        <div class="d-flex g-mr-10">
+                            <span class="u-icon-v3 u-icon-size--sm g-bg-blue g-color-white g-rounded-50x">
+                              <i class="icon-puzzle"></i>
+                            </span>
+                        </div>
+                        <div class="media-body">
+                            <p class="m-0">We're currently <b>importing</b> historic blocks. Some transaction history might <b>not be available yet</b>.</p>
+                            <span class="g-font-size-12 g-color-gray">Cindercloud</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-2"></div>
+        </div>
+    </section>
+
+    <section class="g-bg-secondary g-py-10">
         <h1 style="display: none;">Cindercloud Blockchain Explorer</h1>
         <div class="container">
             <div class="row text-center">
@@ -18,7 +45,8 @@
                         <i class="et-icon-wallet g-color-primary"></i>
                       </span>
 
-                    <div class="js-counter g-color-primary g-font-size-40 g-font-weight-300 g-mb-7">$ <span th:text="${ethPrice}" id="ethPrice">0</span></div>
+                    <div class="js-counter g-color-primary g-font-size-40 g-font-weight-300 g-mb-7">$ <span
+                            th:text="${ethPrice}" id="ethPrice">0</span></div>
                 </div>
 
                 <div class="col-md-6 col-sm-6 g-mb-30">
@@ -26,7 +54,9 @@
                         <i class="icon-organization g-color-cyan"></i>
                       </span>
 
-                    <div class="js-counter g-color-cyan g-font-size-40 g-font-weight-300 g-mb-7" ><span th:text="${lastBlock}" id="lastBlock"></span> blocks</div>
+                    <div class="js-counter g-color-cyan g-font-size-40 g-font-weight-300 g-mb-7"><span
+                            th:text="${lastBlock}" id="lastBlock"></span> blocks
+                    </div>
                 </div>
             </div>
             <div class="row">
@@ -44,10 +74,10 @@
 <div layout:fragment="footer-content">
     <script>
 		$(document).on('ready', function () {
-		    $.get('/?section=blocks', function(result) {
+			$.get('/?section=blocks', function (result) {
 				$("#lastBlocks").html(result);
 			});
-			$.get('/?section=transactions', function(result) {
+			$.get('/?section=transactions', function (result) {
 				$("#lastTransactions").html(result);
 			});
 
@@ -55,19 +85,19 @@
 			updateLastBlock();
 		});
 
-		var updateEthPrice = function() {
-			$.get('/rest/price', function(result) {
+		var updateEthPrice = function () {
+			$.get('/rest/price', function (result) {
 				$("#ethPrice").html(result);
 				setTimeout(updateEthPrice, 10000);
 			});
 		};
 
-		var updateLastBlock = function() {
-			$.get('/rest/block/last/number', function(result) {
-                $("#lastBlock").html(result);
-                setTimeout(updateLastBlock, 10000);
-            });
-        }
+		var updateLastBlock = function () {
+			$.get('/rest/block/last/number', function (result) {
+				$("#lastBlock").html(result);
+				setTimeout(updateLastBlock, 10000);
+			});
+		}
     </script>
 </div>
 </body>
