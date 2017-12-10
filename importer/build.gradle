@@ -31,6 +31,8 @@ dependencies {
     compile 'org.springframework.cloud:spring-cloud-starter-aws'
     compile 'org.springframework.cloud:spring-cloud-aws-messaging'
 
+    compile("com.zaxxer:HikariCP:2.7.4")
+
     compile group: 'org.web3j', name: 'core', version: "${theWeb3jVersion}"
     compileOnly 'org.projectlombok:lombok:1.16.18'
 

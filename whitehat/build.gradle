@@ -37,6 +37,7 @@ dependencies {
     compileOnly 'org.projectlombok:lombok:1.16.18'
 
     compile("org.postgresql:postgresql:42.1.4")
+    compile("com.zaxxer:HikariCP:2.7.4")
 }
 
 jar {
