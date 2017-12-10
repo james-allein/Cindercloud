@@ -10,7 +10,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.web3j.protocol.Web3j;
 import org.web3j.protocol.core.methods.response.EthBlock;
@@ -35,7 +34,7 @@ public class BlockService {
     @Autowired
     private ObjectMapper objectMapper;
 
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    @Transactional
     public Block save(final Block block) {
         final Block savedBlock = blockRepository.save(block);
         try {
@@ -97,7 +96,12 @@ public class BlockService {
                         return Block.asBlock(block);
                     }
                 })
-                .forEach(this::save);
+                .forEach(newBlock -> {
+                    if (blockRepository.exists(newBlock.getHash())) {
+                        blockRepository.delete(newBlock.getHash());
+                        blockRepository.save(newBlock);
+                    }
+                });
     }
 
     private boolean wasWronglySavedAsNormalBlock(final String hash, final boolean uncle) {
