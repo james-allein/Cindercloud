@@ -5,6 +5,7 @@ import cloud.cinder.cindercloud.etherscan.dto.EtherscanResponse;
 import cloud.cinder.cindercloud.etherscan.dto.EtherscanTransaction;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,6 +18,8 @@ public class EtherscanService {
     private EtherscanClient etherscanClient;
     @Autowired
     private BlockService blockService;
+    @Value("${cloud.cinder.etherscan-enabled:false}")
+    private boolean enabled;
 
     @Async
     public void importByAddress(final String address) {
