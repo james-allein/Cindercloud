@@ -23,23 +23,25 @@ public class EtherscanService {
 
     @Async
     public void importByAddress(final String address) {
-        try {
-            final EtherscanResponse transactions = etherscanClient.transactions(address);
-            if (transactions.isSuccess() && transactions.getResult() != null) {
-                transactions.getResult()
-                        .stream()
-                        .map(EtherscanTransaction::getBlockHash)
-                        .forEach(x -> {
-                            try {
-                                log.trace("importing block {}", x);
-                                blockService.getBlock(x).subscribe();
-                            } catch (final Exception ex) {
-                                log.debug("unable to find block {}", x);
-                            }
-                        });
+        if (enabled) {
+            try {
+                final EtherscanResponse transactions = etherscanClient.transactions(address);
+                if (transactions.isSuccess() && transactions.getResult() != null) {
+                    transactions.getResult()
+                            .stream()
+                            .map(EtherscanTransaction::getBlockHash)
+                            .forEach(x -> {
+                                try {
+                                    log.trace("importing block {}", x);
+                                    blockService.getBlock(x).subscribe();
+                                } catch (final Exception ex) {
+                                    log.debug("unable to find block {}", x);
+                                }
+                            });
+                }
+            } catch (final Exception ex) {
+                log.debug("Unable to fetch transactions from etherscan for address {}", address);
             }
-        } catch (final Exception ex) {
-            log.debug("Unable to fetch transactions from etherscan for address {}", address);
         }
     }
 }
