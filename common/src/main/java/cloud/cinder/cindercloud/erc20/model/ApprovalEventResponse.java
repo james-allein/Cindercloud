@@ -1,4 +1,4 @@
-package cloud.cinder.cindercloud.token.solidity;
+package cloud.cinder.cindercloud.erc20.model;
 
 import java.math.BigInteger;
 
