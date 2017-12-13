@@ -309,6 +309,25 @@
     <!-- JS Implementing Plugins -->
     <script th:src="@{/assets/vendor/appear.js}"></script>
 
+    <span id="currentAddress" th:attr="data-hash=${hash}"></span>
+
+    <script type="application/javascript">
+        $(document).ready(function(){
+
+        	var displayToken = function(token, amount) {
+                console.log(token.name + ": " + amount);
+            };
+
+            $.get('/rest/tokens', function(response) {
+                $.each(response, function(idx, token){
+                	$.get('/rest/erc20/' + token.address + '/balance?address=' + $("#currentAddress").data('hash'), function(balance) {
+                		displayToken(token, balance);
+                    });
+                })
+            });
+        });
+    </script>
+
     <th:block th:replace="components/disqus :: footer"></th:block>
 
 </div>
