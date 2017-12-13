@@ -92,7 +92,7 @@ public class BlockImporter {
                         log.debug("unable to save block", exc);
                     }
                 } else {
-                    log.debug("couldn't find {} in web3 or already imported", i);
+                    log.trace("couldn't find {} in web3 or already imported", i);
                 }
             } catch (final Exception exc) {
                 log.debug("unable to get block");
