@@ -9,6 +9,6 @@ import java.util.Optional;
 public interface TokenRepository extends JpaRepository<Token, Long> {
 
     Optional<Token> findBySlug(@Param("slug") final String slug);
-    Optional<Token> findByAddress(@Param("address") final String address);
+    Optional<Token> findByAddressLike(@Param("address") final String address);
 
 }
