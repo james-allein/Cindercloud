@@ -11,7 +11,7 @@ spring:
                 name: ${security.user.name}
                 password: ${security.user.password}
     application:
-        name: Cindercloud
+        name: Cindercloud-web
     messages:
         basename: i18n/messages
     thymeleaf:
@@ -23,12 +23,10 @@ spring:
         driver-class-name: org.postgresql.Driver
         type: com.zaxxer.hikari.HikariDataSource
         hikari:
-          connection-timeout: 300000
           validation-timeout: 3000
-          connection-test-query: /* cindercloud health check */ SELECT 1
-          minimum-idle: 3
-          idle-timeout: 3000
-          maximum-pool-size: 20
+          minimum-idle: 2
+          idle-timeout: 10000
+          maximum-pool-size: 6
     http:
       multipart:
         location: /tmp

@@ -1,6 +1,6 @@
 spring:
     application:
-        name: CinderCloud-Importer
+        name: Cindercloud-importer
     datasource:
         url: jdbc:postgresql://localhost:5432/cindercloud
         username: cindercloud-web
@@ -8,12 +8,10 @@ spring:
         driver-class-name: org.postgresql.Driver
         type: com.zaxxer.hikari.HikariDataSource
         hikari:
-          connection-timeout: 300000
           validation-timeout: 3000
-          connection-test-query: /* cindercloud health check */ SELECT 1
-          minimum-idle: 3
+          minimum-idle: 2
           idle-timeout: 10000
-          maximum-pool-size: 20
+          maximum-pool-size: 6
     devtools:
       livereload:
         enabled: false
