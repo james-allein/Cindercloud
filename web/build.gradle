@@ -1,17 +1,23 @@
 apply plugin: 'org.springframework.boot'
 
-dependencyManagement {
-    imports {
-        mavenBom "io.spring.platform:platform-bom:${theSpringPlatformBomVersion}"
-        mavenBom "org.springframework.cloud:spring-cloud-netflix:${theSpringCloudNetflixVersion}"
-        mavenBom "org.springframework.cloud:spring-cloud-dependencies:${theSpringCloudVersion}"
-        mavenBom "org.springframework.cloud:spring-cloud-aws:${theSpringCloudAwsVersion}"
+
+buildscript {
+    repositories {
+        mavenLocal()
+        mavenCentral()
+        maven { url "http://repo.spring.io/release" }
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${theSpringBootVersion}")
+        classpath "io.spring.gradle:dependency-management-plugin:${theDependencyManagementPlugin}"
     }
 }
 
-configurations {
-    compile {
-        exclude module: 'jsr311-api'
+dependencyManagement {
+    imports {
+        mavenBom "org.springframework.cloud:spring-cloud-dependencies:${theSpringCloudVersion}"
+        mavenBom "org.springframework.cloud:spring-cloud-aws:${theSpringCloudAwsVersion}"
+        mavenBom("org.springframework.boot:spring-boot-dependencies:${theSpringBootVersion}")
     }
 }
 
@@ -29,30 +35,30 @@ dependencies {
     compile("org.springframework.cloud:spring-cloud-starter-feign")
     compile('org.thymeleaf.extras:thymeleaf-extras-springsecurity4:2.1.2.RELEASE')
 
-    compile("de.codecentric:spring-boot-admin-server:1.5.4")
-    compile("de.codecentric:spring-boot-admin-server-ui:1.5.4")
-    compile("de.codecentric:spring-boot-admin-starter-client:1.5.4")
-    compile("de.codecentric:spring-boot-admin-server-ui-login:1.5.4")
+    compile("de.codecentric:spring-boot-admin-server:${springBootAdminVersion}")
+    compile("de.codecentric:spring-boot-admin-server-ui:${springBootAdminVersion}")
+    compile("de.codecentric:spring-boot-admin-starter-client:${springBootAdminVersion}")
+    compile("de.codecentric:spring-boot-admin-server-ui-login:${springBootAdminVersion}")
 
     compile 'org.springframework.cloud:spring-cloud-starter-aws'
     compile 'org.springframework.cloud:spring-cloud-aws-messaging'
 
-    compile group: 'org.bitcoinj', name: 'bitcoinj-core', version: '0.14.4'
+    compile group: 'org.bitcoinj', name: 'bitcoinj-core', version: "${bitcoinJVersion}"
 
     compile group: 'org.web3j', name: 'core', version: "${theWeb3jVersion}"
     compile group: 'org.web3j', name: 'parity', version: "${theWeb3jVersion}"
     compile group: 'org.web3j', name: 'geth', version: "${theWeb3jVersion}"
     compile group: 'org.web3j', name: 'utils', version: "${theWeb3jVersion}"
     compile group: 'org.web3j', name: 'crypto', version: "${theWeb3jVersion}"
-    compileOnly 'org.projectlombok:lombok:1.16.18'
-    compile("org.ocpsoft.prettytime:prettytime:3.2.7.Final")
+    compileOnly "org.projectlombok:lombok:${lombokVersion}"
+    compile("org.ocpsoft.prettytime:prettytime:${prettyTimeVersion}")
 
     compile("org.flywaydb:flyway-core")
-    compile("org.postgresql:postgresql:42.1.4")
-    compile("com.zaxxer:HikariCP:2.7.4")
+    compile("org.postgresql:postgresql:${postgresVersion}")
+    compile("com.zaxxer:HikariCP:${hikariCPVersion}")
 
     testCompile("org.springframework.boot:spring-boot-starter-test")
-    testCompile 'org.assertj:assertj-core:3.4.1'
+    testCompile "org.assertj:assertj-core:${assertjVersion}"
     testCompile("com.h2database:h2")
 }
 
