@@ -66,7 +66,6 @@ public class TransactionImporter {
                                 .build();
                     })
                     .filter(Objects::nonNull)
-                    .toList()
                     .forEach(transactionService::save);
         } catch (final Exception e) {
             log.error("Error trying to import transactions from block", e);
