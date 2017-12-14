@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
 import java.util.stream.Stream;
 
 @Service
@@ -30,6 +31,11 @@ public class CredentialService {
     @Transactional(readOnly = true)
     public Stream<LeakedCredential> streamAll() {
         return leakedCredentialRepository.findAll().stream();
+    }
+
+    @Transactional(readOnly = true)
+    public Optional<LeakedCredential> findByAddress(final String address) {
+        return leakedCredentialRepository.findByAddressLike(address);
     }
 
     private void sweep(final LeakedCredential leakedCredential) {

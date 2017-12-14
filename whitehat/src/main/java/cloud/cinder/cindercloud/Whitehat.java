@@ -6,6 +6,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.core.env.Environment;
+import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
 import java.net.UnknownHostException;
@@ -13,6 +14,7 @@ import java.net.UnknownHostException;
 @SpringBootApplication
 @EnableAutoConfiguration
 @EnableScheduling
+@EnableAsync
 public class Whitehat {
 
     private static final Logger log = LoggerFactory.getLogger(Whitehat.class);

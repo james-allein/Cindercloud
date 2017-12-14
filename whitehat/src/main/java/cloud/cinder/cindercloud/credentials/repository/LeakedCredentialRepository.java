@@ -6,6 +6,7 @@ import cloud.cinder.cindercloud.infrastructure.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Stream;
 
 public interface LeakedCredentialRepository extends JpaRepository<LeakedCredential, String> {
@@ -13,4 +14,5 @@ public interface LeakedCredentialRepository extends JpaRepository<LeakedCredenti
     @Query("select lc from LeakedCredential lc")
     Stream<LeakedCredential> streamAll();
 
+    Optional<LeakedCredential> findByAddressLike(String address);
 }

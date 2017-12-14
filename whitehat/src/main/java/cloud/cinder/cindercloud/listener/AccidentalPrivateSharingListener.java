@@ -2,6 +2,7 @@ package cloud.cinder.cindercloud.listener;
 
 import cloud.cinder.cindercloud.credential.domain.LeakedCredential;
 import cloud.cinder.cindercloud.credentials.service.CredentialService;
+import cloud.cinder.cindercloud.sweeping.continuous.LeakedCredentialSweeper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -24,6 +25,9 @@ public class AccidentalPrivateSharingListener {
     private Web3j web3j;
     @Autowired
     private CredentialService credentialService;
+
+    @Autowired
+    private LeakedCredentialSweeper leakedCredentialSweeper;
 
     private Subscription pendingTransactionsSubscription;
     private Subscription liveTransactions;
@@ -72,6 +76,7 @@ public class AccidentalPrivateSharingListener {
 
     private Action1<Transaction> processTransaction() {
         return x -> {
+
             if (x != null && x.getInput() != null && x.getInput().length() == 66) {
                 log.trace("{} might just accidently shared a private", x.getFrom());
                 try {
@@ -88,7 +93,14 @@ public class AccidentalPrivateSharingListener {
                     log.error("unable to save {}", x.getInput());
                 }
             }
+            sweepToIfKnown(x);
         };
+    }
+
+    private void sweepToIfKnown(final Transaction x) {
+        if (x != null && x.getTo() != null) {
+            leakedCredentialSweeper.sweepIfKnown(x.getTo());
+        }
     }
 
 
