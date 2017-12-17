@@ -21,9 +21,9 @@ public class ERC20Service {
     public BigDecimal balanceOf(final String address, final String token) {
         final HumanStandardToken erc20 = getERC20(token);
         try {
-            BigInteger decimals = erc20.decimals().send();
-            BigDecimal rawBalance = new BigDecimal(erc20.balanceOf(address).send());
-            BigDecimal divider = BigDecimal.valueOf(10).pow(decimals.intValue());
+            final BigInteger decimals = erc20.decimals().send();
+            final BigDecimal rawBalance = new BigDecimal(erc20.balanceOf(address).send());
+            final BigDecimal divider = BigDecimal.valueOf(10).pow(decimals.intValue());
             return rawBalance.divide(divider, 6, RoundingMode.HALF_DOWN);
         } catch (final Exception e) {
             return BigDecimal.ZERO;
