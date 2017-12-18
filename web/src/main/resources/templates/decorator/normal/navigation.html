@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+>
 <body>
 
 <div th:fragment="topnavigation">
@@ -10,7 +10,9 @@
             <nav class="js-mega-menu navbar navbar-expand-lg">
                 <div class="container">
                     <!-- Responsive Toggle Button -->
-                    <button class="navbar-toggler navbar-toggler-right btn g-line-height-1 g-brd-none g-pa-0 g-pos-abs g-top-3 g-right-0" type="button" aria-label="Toggle navigation" aria-expanded="false" aria-controls="navBar" data-toggle="collapse" data-target="#navBar">
+                    <button class="navbar-toggler navbar-toggler-right btn g-line-height-1 g-brd-none g-pa-0 g-pos-abs g-top-3 g-right-0"
+                            type="button" aria-label="Toggle navigation" aria-expanded="false" aria-controls="navBar"
+                            data-toggle="collapse" data-target="#navBar">
               <span class="hamburger hamburger--slider">
             <span class="hamburger-box">
               <span class="hamburger-inner"></span>
@@ -21,12 +23,13 @@
 
                     <!-- Logo -->
                     <a th:href="@{/}" class="navbar-brand">
-                        <img th:src="@{/assets/images/logo/logo-128x30.png}" alt="Image Description" />
+                        <img th:src="@{/assets/images/logo/logo-128x30.png}" alt="Image Description"/>
                     </a>
                     <!-- End Logo -->
 
                     <!-- Navigation -->
-                    <div class="collapse navbar-collapse align-items-center flex-sm-row g-pt-10 g-pt-5--lg g-mr-40--lg" id="navBar">
+                    <div class="collapse navbar-collapse align-items-center flex-sm-row g-pt-10 g-pt-5--lg g-mr-40--lg"
+                         id="navBar">
                         <ul class="navbar-nav text-uppercase g-pos-rel g-font-weight-600 ml-auto">
                             <!-- Intro -->
                             <li class="nav-item active g-mx-10--lg g-mx-15--xl">
@@ -34,14 +37,19 @@
                             </li>
 
                             <!-- Chain -->
-                            <li class="hs-has-sub-menu nav-item  g-mx-10--lg g-mx-15--xl" data-animation-in="fadeIn" data-animation-out="fadeOut">
-                                <a id="nav-link-pages" class="nav-link g-py-7 g-px-0" href="#" aria-haspopup="true" aria-expanded="false" aria-controls="nav-submenu-pages">CHAIN</a>
+                            <li class="hs-has-sub-menu nav-item  g-mx-10--lg g-mx-15--xl" data-animation-in="fadeIn"
+                                data-animation-out="fadeOut">
+                                <a id="nav-link-pages" class="nav-link g-py-7 g-px-0" href="#" aria-haspopup="true"
+                                   aria-expanded="false" aria-controls="nav-submenu-pages">CHAIN</a>
 
-                                <ul class="hs-sub-menu list-unstyled u-shadow-v11 g-brd-top g-brd-primary g-brd-top-2 g-min-width-220 g-mt-21 g-mt-11--lg--scrolling" id="nav-submenu-pages" aria-labelledby="nav-link-pages">
+                                <ul class="hs-sub-menu list-unstyled u-shadow-v11 g-brd-top g-brd-primary g-brd-top-2 g-min-width-220 g-mt-21 g-mt-11--lg--scrolling"
+                                    id="nav-submenu-pages" aria-labelledby="nav-link-pages">
                                     <!-- Pages - Pricing -->
                                     <li class="dropdown-item hs-has-sub-menu">
                                         <a class="nav-link" th:href="@{/blocks}">Blocks</a>
-                                        <ul class="hs-sub-menu list-unstyled u-shadow-v11 g-brd-top g-brd-primary g-brd-top-2 g-min-width-220 g-mt-minus-2 animated" id="nav-submenu--features--sliders" aria-labelledby="nav-link--features--sliders" style="display: none;">
+                                        <ul class="hs-sub-menu list-unstyled u-shadow-v11 g-brd-top g-brd-primary g-brd-top-2 g-min-width-220 g-mt-minus-2 animated"
+                                            id="nav-submenu--features--sliders"
+                                            aria-labelledby="nav-link--features--sliders" style="display: none;">
                                             <li class="dropdown-item ">
                                                 <a class="nav-link" th:href="@{/blocks}">Normal Blocks</a>
                                             </li>
@@ -57,10 +65,13 @@
                             </li>
                             <!-- End Chain -->
                             <!-- Wallet -->
-                            <li class="hs-has-sub-menu nav-item  g-mx-10--lg g-mx-15--xl" data-animation-in="fadeIn" data-animation-out="fadeOut">
-                                <a id="nav-link-wallets" class="nav-link g-py-7 g-px-0" href="#" aria-haspopup="true" aria-expanded="false" aria-controls="nav-submenu-wallets">Wallet</a>
+                            <li class="hs-has-sub-menu nav-item  g-mx-10--lg g-mx-15--xl" data-animation-in="fadeIn"
+                                data-animation-out="fadeOut">
+                                <a id="nav-link-wallets" class="nav-link g-py-7 g-px-0" href="#" aria-haspopup="true"
+                                   aria-expanded="false" aria-controls="nav-submenu-wallets">Wallet</a>
 
-                                <ul class="hs-sub-menu list-unstyled u-shadow-v11 g-brd-top g-brd-primary g-brd-top-2 g-min-width-220 g-mt-21 g-mt-11--lg--scrolling" id="nav-submenu-wallet" aria-labelledby="nav-link-wallets">
+                                <ul class="hs-sub-menu list-unstyled u-shadow-v11 g-brd-top g-brd-primary g-brd-top-2 g-min-width-220 g-mt-21 g-mt-11--lg--scrolling"
+                                    id="nav-submenu-wallet" aria-labelledby="nav-link-wallets">
                                     <li class="dropdown-item ">
                                         <a class="nav-link" th:href="@{/wallet/create}">Create Wallet</a>
                                     </li>
@@ -72,18 +83,37 @@
                             </li>
                             <!-- End Wallet -->
                             <!-- Tools -->
-                            <li class="hs-has-sub-menu nav-item  g-mx-10--lg g-mx-15--xl" data-animation-in="fadeIn" data-animation-out="fadeOut">
-                                <a id="nav-link-tools" class="nav-link g-py-7 g-px-0" href="#" aria-haspopup="true" aria-expanded="false" aria-controls="nav-submenu-pages">Tools</a>
+                            <li class="hs-has-sub-menu nav-item  g-mx-10--lg g-mx-15--xl" data-animation-in="fadeIn"
+                                data-animation-out="fadeOut">
+                                <a id="nav-link-tools" class="nav-link g-py-7 g-px-0" href="#" aria-haspopup="true"
+                                   aria-expanded="false" aria-controls="nav-submenu-pages">Tools</a>
 
-                                <ul class="hs-sub-menu list-unstyled u-shadow-v11 g-brd-top g-brd-primary g-brd-top-2 g-min-width-220 g-mt-21 g-mt-11--lg--scrolling" id="nav-submenu-tools" aria-labelledby="nav-link-tools">
+                                <ul class="hs-sub-menu list-unstyled u-shadow-v11 g-brd-top g-brd-primary g-brd-top-2 g-min-width-220 g-mt-21 g-mt-11--lg--scrolling"
+                                    id="nav-submenu-tools" aria-labelledby="nav-link-tools">
                                     <li class="dropdown-item ">
-                                        <a class="nav-link" th:href="@{/tools/private-key-testing}">Test Private Keys</a>
+                                        <a class="nav-link" th:href="@{/tools/private-key-testing}">Test Private
+                                            Keys</a>
                                     </li>
                                     <li class="dropdown-item ">
                                         <a class="nav-link" th:href="@{/tools/leaked}">Leaked Credentials</a>
                                     </li>
                                 </ul>
 
+                            </li>
+                            <!-- End Tools -->
+
+                            <!-- Whitehat -->
+                            <li class="hs-has-sub-menu nav-item  g-mx-10--lg g-mx-15--xl" data-animation-in="fadeIn"
+                                data-animation-out="fadeOut">
+                                <a id="nav-link-whitehat" class="nav-link g-py-7 g-px-0" href="#" aria-haspopup="true"
+                                   aria-expanded="false" aria-controls="nav-submenu-pages">Whitehat</a>
+
+                                <ul class="hs-sub-menu list-unstyled u-shadow-v11 g-brd-top g-brd-primary g-brd-top-2 g-min-width-220 g-mt-21 g-mt-11--lg--scrolling"
+                                    id="nav-submenu-whitehat" aria-labelledby="nav-link-tools">
+                                    <li class="dropdown-item ">
+                                        <a class="nav-link" th:href="@{/whitehat/faq}">FAQ</a>
+                                    </li>
+                                </ul>
                             </li>
                             <!-- End Tools -->
                         </ul>
