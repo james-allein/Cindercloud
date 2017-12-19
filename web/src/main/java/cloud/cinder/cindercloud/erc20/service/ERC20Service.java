@@ -26,7 +26,6 @@ public class ERC20Service {
             BigDecimal divider = BigDecimal.valueOf(10).pow(decimals.intValue());
             return rawBalance.divide(divider, 6, RoundingMode.HALF_DOWN);
         } catch (final Exception e) {
-            System.out.println(e);
             return BigDecimal.ZERO;
         }
     }

@@ -43,24 +43,39 @@ public class AddressController {
 
     @RequestMapping("/{hash}")
     public DeferredResult<ModelAndView> getAddress(@PathVariable("hash") final String hash) {
+        if (hash == null || hash.isEmpty() || noValidAddress(hash)) {
+            throw new IllegalArgumentException("Not a valid address");
+        }
+        final String address = prettifyAddress(hash);
         final DeferredResult<ModelAndView> result = new DeferredResult<>();
         final ModelAndView modelAndView = new ModelAndView("addresses/address");
-        final Observable<String> code = addressService.getCode(hash);
-        final Observable<Slice<Transaction>> transactions = transactionService.findByAddress(hash, new PageRequest(0, 10));
-        final Observable<Slice<Block>> minedBlocks = blockService.findByMiner(hash, new PageRequest(0, 10));
-        final Observable<BigInteger> transactionCount = addressService.getTransactionCount(hash);
-        final Observable<BigInteger> balance = addressService.getBalance(hash);
-        final Optional<SpecialAddress> specialAddress = addressService.findByAddress(hash);
+        final Observable<String> code = addressService.getCode(address);
+        final Observable<Slice<Transaction>> transactions = transactionService.findByAddress(address, new PageRequest(0, 10));
+        final Observable<Slice<Block>> minedBlocks = blockService.findByMiner(address, new PageRequest(0, 10));
+        final Observable<BigInteger> transactionCount = addressService.getTransactionCount(address);
+        final Observable<BigInteger> balance = addressService.getBalance(address);
+        final Optional<SpecialAddress> specialAddress = addressService.findByAddress(address);
         Observable.zip(code, transactions, minedBlocks, transactionCount, balance, (cde, tx, blocks, count, bal) -> {
             modelAndView.addObject("address", new AddressVO(cde, format(bal), count, tx, blocks));
             modelAndView.addObject("balEUR", priceService.getPrice(Currency.EUR) * WeiUtils.asEth(bal));
             modelAndView.addObject("balUSD", priceService.getPrice(Currency.USD) * WeiUtils.asEth(bal));
             modelAndView.addObject("isSpecial", specialAddress.isPresent());
-            modelAndView.addObject("hash", hash);
+            modelAndView.addObject("hash", address);
             modelAndView.addObject("specialName", specialAddress.map(SpecialAddress::getName).orElse(""));
             return modelAndView;
         }).subscribe(result::setResult);
         return result;
     }
 
+    private boolean noValidAddress(final String hash) {
+        return !(hash.length() == 40 || hash.length() == 42);
+    }
+
+    private String prettifyAddress(final String address) {
+        if (!address.startsWith("0x")) {
+            return String.format("0x%s", address);
+        } else {
+            return address;
+        }
+    }
 }
