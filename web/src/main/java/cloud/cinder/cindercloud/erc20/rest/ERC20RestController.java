@@ -1,4 +1,4 @@
-package cloud.cinder.cindercloud.rest;
+package cloud.cinder.cindercloud.erc20.rest;
 
 import cloud.cinder.cindercloud.erc20.service.ERC20Service;
 import cloud.cinder.cindercloud.token.service.TokenService;

@@ -109,6 +109,8 @@
                     </div>
                 </div>
 
+
+
                 <section th:if="${address.transactions.hasContent()}">
 
                     <div th:if="${address.transactions.hasNext()}"
@@ -201,6 +203,8 @@
                         </div>
                     </div>
                 </section>
+                <hr /><br />
+                <section id="tokenSection"></section>
             </div>
             <div class="tab-pane fade" id="addressCode" role="tabpanel">
                 <div class="row text-center text-uppercase">
@@ -312,20 +316,11 @@
     <span id="currentAddress" th:attr="data-hash=${hash}"></span>
 
     <script type="application/javascript">
-        $(document).ready(function(){
-
-        	var displayToken = function(token, amount) {
-                console.log(token.name + ": " + amount);
-            };
-
-            $.get('/rest/tokens', function(response) {
-                $.each(response, function(idx, token){
-                	$.get('/rest/erc20/' + token.address + '/balance?address=' + $("#currentAddress").data('hash'), function(balance) {
-                		displayToken(token, balance);
-                    });
-                })
-            });
-        });
+		$(document).ready(function () {
+			$.get('/address/' + $("#currentAddress").data('hash') + '/tokens', function (result) {
+				$("#tokenSection").html(result);
+			});
+		});
     </script>
 
     <th:block th:replace="components/disqus :: footer"></th:block>

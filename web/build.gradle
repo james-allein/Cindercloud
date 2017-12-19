@@ -35,11 +35,6 @@ dependencies {
     compile("org.springframework.cloud:spring-cloud-starter-feign")
     compile('org.thymeleaf.extras:thymeleaf-extras-springsecurity4:2.1.2.RELEASE')
 
-    compile("de.codecentric:spring-boot-admin-server:${springBootAdminVersion}")
-    compile("de.codecentric:spring-boot-admin-server-ui:${springBootAdminVersion}")
-    compile("de.codecentric:spring-boot-admin-starter-client:${springBootAdminVersion}")
-    compile("de.codecentric:spring-boot-admin-server-ui-login:${springBootAdminVersion}")
-
     compile 'org.springframework.cloud:spring-cloud-starter-aws'
     compile 'org.springframework.cloud:spring-cloud-aws-messaging'
 
