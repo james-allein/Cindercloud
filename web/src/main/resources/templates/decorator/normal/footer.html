@@ -38,6 +38,30 @@
     <!-- JS Custom -->
     <script th:src="@{/assets/js/custom.js}"></script>
 
+    <!-- JS Plugins Init. -->
+    <script>
+		$(document).on('ready', function () {
+			// initialization of HSMegaMenu plugin
+			$('.js-mega-menu').HSMegaMenu({
+				event: 'hover',
+				pageContainer: $('.container'),
+				breakpoint: 991
+			});
+		});
+
+		$(window).on('load', function () {
+			// initialization of HSScrollNav
+			$.HSCore.components.HSScrollNav.init($('#js-scroll-nav'), {
+				duration: 700,
+				easing: 'easeOutExpo',
+				over: $('.u-secondary-navigation')
+			});
+
+			// initialization of sticky blocks
+			$.HSCore.components.HSStickyBlock.init('.js-sticky-block');
+		});
+    </script>
+
     <div layout:fragment="footer-content" th:remove="tag"></div>
 
 </div>
