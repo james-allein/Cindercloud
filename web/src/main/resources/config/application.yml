@@ -1,21 +1,11 @@
 spring:
     boot:
-      admin:
-        url: http://localhost:8080
-        context-path: /monitoring
-        username: ${security.user.name}
-        password: ${security.user.password}
-        client:
-          metadata:
-              user:
-                name: ${security.user.name}
-                password: ${security.user.password}
     application:
         name: Cindercloud-web
     messages:
         basename: i18n/messages
     thymeleaf:
-        mode: XHTML
+        mode: HTML5
     datasource:
         url: jdbc:postgresql://localhost:5432/cindercloud
         username: cindercloud-web
@@ -32,24 +22,26 @@ spring:
         location: /tmp
         max-file-size: 150MB
         max-request-size: 200MB
+    freemarker:
+      enabled: false
+    groovy:
+      template:
+        enabled: false
+    jmx:
+      enabled: false
 server:
     port: 8080
     session:
         cookie:
             http-only: true
-debug: false
-
 endpoints:
-  enabled: true
+  enabled: false
 
 #logging
 logging:
   level:
     org:
       springframework: info
-    cloud:
-      cinder: DEBUG
-
 cloud:
   cinder:
     etherscan-api-key: 'na-ah'
@@ -57,11 +49,3 @@ cloud:
     etherscan-api: 'https://api.etherscan.io/api'
     disqus:
       name: cindercloud-app
-security:
-  user:
-    role: SUPERUSER
-management:
-  security:
-    enabled: true
-    roles: SUPERUSER
-  context-path: /management

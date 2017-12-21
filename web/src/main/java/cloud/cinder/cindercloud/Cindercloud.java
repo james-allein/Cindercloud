@@ -3,8 +3,15 @@ package cloud.cinder.cindercloud;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
+import org.springframework.boot.actuate.autoconfigure.*;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.client.loadbalancer.LoadBalancerAutoConfiguration;
+import org.springframework.cloud.netflix.archaius.ArchaiusAutoConfiguration;
+import org.springframework.cloud.netflix.feign.FeignAutoConfiguration;
+import org.springframework.cloud.netflix.feign.ribbon.FeignRibbonClientAutoConfiguration;
+import org.springframework.cloud.netflix.metrics.servo.ServoMetricsAutoConfiguration;
+import org.springframework.cloud.netflix.ribbon.RibbonAutoConfiguration;
 import org.springframework.core.env.Environment;
 import org.springframework.scheduling.annotation.EnableAsync;
 
@@ -12,7 +19,19 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 
 @SpringBootApplication
-@EnableAutoConfiguration
+@EnableAutoConfiguration(exclude = {
+        ArchaiusAutoConfiguration.class,
+        EndpointAutoConfiguration.class,
+        FeignAutoConfiguration.class,
+        FeignRibbonClientAutoConfiguration.class,
+        HealthIndicatorAutoConfiguration.class,
+        InfoContributorAutoConfiguration.class,
+        LoadBalancerAutoConfiguration.class,
+        MetricExportAutoConfiguration.class,
+        PublicMetricsAutoConfiguration.class,
+        RibbonAutoConfiguration.class,
+        ServoMetricsAutoConfiguration.class
+})
 @EnableAsync
 public class Cindercloud {
 
