@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Slf4j
@@ -18,14 +19,14 @@ public class TransactionService {
     @Autowired
     private TransactionRepository transactionRepository;
 
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    @Transactional
     public Transaction save(final Transaction transaction) {
         return transactionRepository.save(transaction);
     }
 
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
-    public List<Transaction> save(final List<Transaction> transactions) {
-        return transactionRepository.save(transactions);
+    @Transactional(readOnly = true)
+    public Optional<Transaction> findOne(final String hash) {
+        return transactionRepository.findOne(hash);
     }
 
     @Transactional(readOnly = true)

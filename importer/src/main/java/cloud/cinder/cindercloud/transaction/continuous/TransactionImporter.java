@@ -35,7 +35,6 @@ public class TransactionImporter {
         objectMapper.enable(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT);
     }
 
-    @Transactional
     public void importTransactions(final Block convertedBlock) {
         try {
             web3j.ethGetBlockByHash(convertedBlock.getHash(), true)
@@ -66,6 +65,7 @@ public class TransactionImporter {
                                 .build();
                     })
                     .filter(Objects::nonNull)
+                    .filter(x -> !transactionService.findOne(x.getHash()).isPresent())
                     .forEach(transactionService::save);
         } catch (final Exception e) {
             log.error("Error trying to import transactions from block", e);
