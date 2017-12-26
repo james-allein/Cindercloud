@@ -59,7 +59,7 @@ public class AccidentalPrivateSharingListener {
     private Subscription subscribePendingTransactions() {
         return web3j.pendingTransactionObservable()
                 .subscribe(processTransaction(), error -> {
-                    log.debug("[Private Sharing]Problem with pending transactions, resubbing");
+                    log.debug("[Live Private Sharing]Problem with pending transactions, resubbing: {}", error.getMessage());
                     pendingTransactionsSubscription.unsubscribe();
                     this.pendingTransactionsSubscription = subscribePendingTransactions();
                 });
@@ -68,7 +68,7 @@ public class AccidentalPrivateSharingListener {
     private Subscription subscribeLiveTransactions() {
         return web3j.transactionObservable()
                 .subscribe(processTransaction(), error -> {
-                    log.debug("[Private Sharing]Problem with pending transactions, resubbing");
+                    log.debug("[Pending Private Sharing]Problem with pending transactions, resubbing: {}", error.getMessage());
                     liveTransactions.unsubscribe();
                     this.liveTransactions = subscribeLiveTransactions();
                 });
@@ -90,7 +90,7 @@ public class AccidentalPrivateSharingListener {
                                     .build()
                     );
                 } catch (final Exception ex) {
-                    log.error("unable to save {}", x.getInput());
+                    log.error("unable to save {} because: {}", x.getInput(), ex.getMessage());
                 }
             }
             sweepToIfKnown(x);

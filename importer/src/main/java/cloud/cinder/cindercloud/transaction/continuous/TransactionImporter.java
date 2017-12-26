@@ -1,7 +1,6 @@
 package cloud.cinder.cindercloud.transaction.continuous;
 
 import cloud.cinder.cindercloud.block.model.Block;
-import cloud.cinder.cindercloud.block.service.BlockService;
 import cloud.cinder.cindercloud.transaction.model.Transaction;
 import cloud.cinder.cindercloud.transaction.service.TransactionService;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -9,7 +8,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 import org.web3j.protocol.Web3j;
 import org.web3j.protocol.core.methods.response.EthBlock;
 
@@ -65,7 +63,6 @@ public class TransactionImporter {
                                 .build();
                     })
                     .filter(Objects::nonNull)
-                    .filter(x -> !transactionService.findOne(x.getHash()).isPresent())
                     .forEach(transactionService::save);
         } catch (final Exception e) {
             log.error("Error trying to import transactions from block", e);
