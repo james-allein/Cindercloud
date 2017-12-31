@@ -6,6 +6,7 @@ import cloud.cinder.cindercloud.block.service.BlockService;
 import cloud.cinder.cindercloud.etherscan.EtherscanService;
 import cloud.cinder.cindercloud.transaction.model.Transaction;
 import cloud.cinder.cindercloud.transaction.repository.TransactionRepository;
+import cloud.cinder.cindercloud.web3j.Web3jGateway;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -28,7 +29,7 @@ import java.util.Objects;
 public class TransactionService {
 
     @Autowired
-    private Web3j web3j;
+    private Web3jGateway web3jGateway;
     @Autowired
     private TransactionRepository transactionRepository;
     @Autowired
@@ -92,7 +93,7 @@ public class TransactionService {
 
     private Observable<Transaction> getInternalTransaction(final String transactionHash) {
         try {
-            return web3j.ethGetTransactionByHash(transactionHash)
+            return web3jGateway.web3j().ethGetTransactionByHash(transactionHash)
                     .observable()
                     .filter(x -> x.getTransaction().isPresent())
                     .map(transaction -> transaction.getTransaction().get())

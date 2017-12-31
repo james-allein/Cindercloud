@@ -3,6 +3,7 @@ package cloud.cinder.cindercloud.block.service;
 import cloud.cinder.cindercloud.block.model.Block;
 import cloud.cinder.cindercloud.block.repository.BlockRepository;
 import cloud.cinder.cindercloud.infrastructure.service.SqsQueueSender;
+import cloud.cinder.cindercloud.web3j.Web3jGateway;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +13,6 @@ import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import org.web3j.protocol.Web3j;
 import org.web3j.protocol.core.methods.response.EthBlock;
 import org.web3j.protocol.core.methods.response.EthBlockNumber;
 import org.web3j.protocol.core.methods.response.EthGetBlockTransactionCountByHash;
@@ -27,7 +27,7 @@ import java.util.Objects;
 public class BlockService {
 
     @Autowired
-    private Web3j web3j;
+    private Web3jGateway web3j;
     @Autowired
     private BlockRepository blockRepository;
     @Autowired
@@ -53,7 +53,7 @@ public class BlockService {
     }
 
     private void propagateTransactions(final Block savedBlock) {
-        web3j.ethGetBlockTransactionCountByHash(savedBlock.getHash())
+        web3j.web3j().ethGetBlockTransactionCountByHash(savedBlock.getHash())
                 .observable()
                 .filter(Objects::nonNull)
                 .map(EthGetBlockTransactionCountByHash::getTransactionCount)
@@ -70,7 +70,7 @@ public class BlockService {
     }
 
     private void importUncles(final Block block) {
-        web3j.ethGetBlockByHash(block.getHash(), false)
+        web3j.web3j().ethGetBlockByHash(block.getHash(), false)
                 .observable()
                 .filter(Objects::nonNull)
                 .map(EthBlock::getBlock)
@@ -86,7 +86,7 @@ public class BlockService {
             blockRepository.delete(hash);
         }
 
-        web3j.ethGetBlockByHash(hash, false)
+        web3j.web3j().ethGetBlockByHash(hash, false)
                 .observable()
                 .map(EthBlock::getBlock)
                 .filter(Objects::nonNull)
@@ -121,7 +121,7 @@ public class BlockService {
                 .orElseGet(() ->
                         {
                             log.debug("Block {} was not found in repository, fetching from web3.", hash);
-                            return web3j.ethGetBlockByHash(hash, false)
+                            return web3j.web3j().ethGetBlockByHash(hash, false)
                                     .observable()
                                     .map(EthBlock::getBlock)
                                     .filter(Objects::nonNull)
@@ -157,6 +157,6 @@ public class BlockService {
     }
 
     public Observable<EthBlockNumber> getLastBlock() {
-        return web3j.ethBlockNumber().observable();
+        return web3j.web3j().ethBlockNumber().observable();
     }
 }

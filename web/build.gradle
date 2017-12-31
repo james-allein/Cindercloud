@@ -42,6 +42,7 @@ dependencies {
 
     compile group: 'org.web3j', name: 'core', version: "${theWeb3jVersion}"
     compile group: 'org.web3j', name: 'parity', version: "${theWeb3jVersion}"
+    compile group: 'org.web3j', name: 'infura', version: "${theWeb3jVersion}"
     compile group: 'org.web3j', name: 'geth', version: "${theWeb3jVersion}"
     compile group: 'org.web3j', name: 'utils', version: "${theWeb3jVersion}"
     compile group: 'org.web3j', name: 'crypto', version: "${theWeb3jVersion}"

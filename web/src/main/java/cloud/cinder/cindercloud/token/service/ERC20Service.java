@@ -1,10 +1,10 @@
 package cloud.cinder.cindercloud.token.service;
 
 import cloud.cinder.cindercloud.erc20.model.HumanStandardToken;
+import cloud.cinder.cindercloud.web3j.Web3jGateway;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.web3j.crypto.Credentials;
-import org.web3j.protocol.Web3j;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -16,7 +16,7 @@ public class ERC20Service {
     private static final Credentials DUMMY = Credentials.create("0x0");
 
     @Autowired
-    private Web3j web3j;
+    private Web3jGateway web3j;
 
     public BigDecimal balanceOf(final String address, final String token) {
         final HumanStandardToken erc20 = getERC20(token);
@@ -31,7 +31,7 @@ public class ERC20Service {
     }
 
     private HumanStandardToken getERC20(final String token) {
-        return HumanStandardToken.load(token, web3j, DUMMY, BigInteger.valueOf(0), BigInteger.valueOf(0));
+        return HumanStandardToken.load(token, web3j.web3j(), DUMMY, BigInteger.valueOf(0), BigInteger.valueOf(0));
     }
 
 }
