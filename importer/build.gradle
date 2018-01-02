@@ -33,6 +33,7 @@ dependencies {
 
 
     compile group: 'org.web3j', name: 'core', version: "${theWeb3jVersion}"
+    compile group: 'org.web3j', name: 'infura', version: "${theWeb3jVersion}"
     compileOnly "org.projectlombok:lombok:${lombokVersion}"
 
     compile("com.zaxxer:HikariCP:${hikariCPVersion}")

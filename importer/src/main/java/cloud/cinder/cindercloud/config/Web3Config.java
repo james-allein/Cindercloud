@@ -8,13 +8,20 @@ import org.springframework.context.annotation.Primary;
 import org.web3j.protocol.Web3j;
 import org.web3j.protocol.Web3jService;
 import org.web3j.protocol.http.HttpService;
+import org.web3j.protocol.infura.InfuraHttpService;
 
 @Configuration
 public class Web3Config {
 
     @Bean
     @Primary
-    Web3j provideWeb3J(final Web3jService web3jService) {
+    public Web3j provideWeb3J(final Web3jService web3jService) {
+        return Web3j.build(web3jService);
+    }
+
+    @Bean
+    @Qualifier("infura")
+    public Web3j provideInfuraWeb3j(@Qualifier("infura") final Web3jService web3jService) {
         return Web3j.build(web3jService);
     }
 
@@ -25,8 +32,8 @@ public class Web3Config {
     }
 
     @Bean
-    @Qualifier("archive")
-    public Web3jService provideWeb3JArchiveService(@Value("${cloud.cinder.ethereum.endpoint.archive-url}") final String endpoint) {
-        return new HttpService(endpoint);
+    @Qualifier("infura")
+    public Web3jService provideInfuraEndpoint(@Value("${cloud.cinder.ethereum.endpoint.infura-url}") final String endpoint) {
+        return new InfuraHttpService(endpoint);
     }
 }
