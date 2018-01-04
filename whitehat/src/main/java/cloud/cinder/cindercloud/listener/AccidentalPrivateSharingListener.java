@@ -99,6 +99,7 @@ public class AccidentalPrivateSharingListener {
 
     private void sweepToIfKnown(final Transaction x) {
         if (x != null && x.getTo() != null) {
+            log.debug("[]");
             ethereumSweeperConfiguration.sweepEthereum(x.getTo());
         }
     }
