@@ -1,6 +1,6 @@
 package cloud.cinder.cindercloud.erc20.rest;
 
-import cloud.cinder.cindercloud.erc20.service.ERC20Service;
+import cloud.cinder.cindercloud.token.service.ERC20Service;
 import cloud.cinder.cindercloud.token.service.TokenService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;

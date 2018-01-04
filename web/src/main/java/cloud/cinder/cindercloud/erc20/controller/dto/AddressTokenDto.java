@@ -1,4 +1,4 @@
-package cloud.cinder.cindercloud.erc20.controller;
+package cloud.cinder.cindercloud.erc20.controller.dto;
 
 import cloud.cinder.cindercloud.token.model.Token;
 import lombok.AllArgsConstructor;

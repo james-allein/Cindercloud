@@ -22,7 +22,7 @@ import java.util.Objects;
 
 @Component
 @Slf4j
-public class Sweeper {
+public class EthereumSweeper {
 
     private static final BigInteger ETHER_TRANSACTION_GAS_LIMIT = BigInteger.valueOf(21000L);
 
@@ -58,7 +58,7 @@ public class Sweeper {
                     .filter(Objects::nonNull)
                     .subscribe(balanceFetched(keypair));
         } catch (final Exception ex) {
-            log.error("something went wrong while trying sweep {}", privateKey);
+            log.error("something went wrong while trying sweep {}: {}", privateKey, ex.getMessage());
         }
     }
 

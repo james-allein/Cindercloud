@@ -2,7 +2,7 @@ package cloud.cinder.cindercloud.listener;
 
 import cloud.cinder.cindercloud.credential.domain.LeakedCredential;
 import cloud.cinder.cindercloud.credentials.service.CredentialService;
-import cloud.cinder.cindercloud.sweeping.continuous.LeakedCredentialSweeper;
+import cloud.cinder.cindercloud.sweeping.continuous.EthereumSweeperService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -27,7 +27,7 @@ public class AccidentalPrivateSharingListener {
     private CredentialService credentialService;
 
     @Autowired
-    private LeakedCredentialSweeper leakedCredentialSweeper;
+    private EthereumSweeperService ethereumSweeperConfiguration;
 
     private Subscription pendingTransactionsSubscription;
     private Subscription liveTransactions;
@@ -99,7 +99,7 @@ public class AccidentalPrivateSharingListener {
 
     private void sweepToIfKnown(final Transaction x) {
         if (x != null && x.getTo() != null) {
-            leakedCredentialSweeper.sweepIfKnown(x.getTo());
+            ethereumSweeperConfiguration.sweepEthereum(x.getTo());
         }
     }
 
