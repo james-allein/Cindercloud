@@ -31,6 +31,7 @@ dependencies {
     compile("commons-collections:commons-collections:${collectionCommonsVersion}")
     compile "net.sargue:mailgun:${mailgunVersion}"
     compile group: 'org.web3j', name: 'core', version: "${theWeb3jVersion}"
+    compile group: 'org.web3j', name: 'infura', version: "${theWeb3jVersion}"
     compileOnly "org.projectlombok:lombok:${lombokVersion}"
 
     compile("org.postgresql:postgresql:${postgresVersion}")
