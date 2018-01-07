@@ -4,6 +4,7 @@ import cloud.cinder.cindercloud.erc20.service.ERC20Service;
 import cloud.cinder.cindercloud.mail.MailService;
 import cloud.cinder.cindercloud.token.model.Token;
 import cloud.cinder.cindercloud.token.service.TokenService;
+import cloud.cinder.cindercloud.web3j.Web3jGateway;
 import lombok.extern.slf4j.Slf4j;
 import org.bouncycastle.util.encoders.Hex;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +12,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.web3j.abi.FunctionEncoder;
 import org.web3j.abi.datatypes.Function;
 import org.web3j.crypto.*;
-import org.web3j.protocol.Web3j;
 import org.web3j.protocol.core.DefaultBlockParameterName;
 import org.web3j.protocol.core.methods.response.EthGetBalance;
 import org.web3j.protocol.core.methods.response.EthGetTransactionCount;
@@ -33,7 +33,7 @@ public class TokenSweeper {
     private static final BigInteger CONTRACT_TRANSACTION_GAS_LIMIT = BigInteger.valueOf(120000);
 
     @Autowired
-    private Web3j web3j;
+    private Web3jGateway web3j;
     @Autowired
     private TokenService tokenService;
     @Autowired
@@ -66,7 +66,7 @@ public class TokenSweeper {
                         final BigInteger tokenBalance = erc20Service.rawBalanceOf(address, token.getAddress());
                         if (!tokenBalance.equals(BigInteger.ZERO)) {
                             //has token tokenBalance
-                            web3j.ethGetBalance(prettify(address), DefaultBlockParameterName.LATEST).observable()
+                            web3j.web3j().ethGetBalance(prettify(address), DefaultBlockParameterName.LATEST).observable()
                                     .filter(Objects::nonNull)
                                     .subscribe(balanceFetched(keypair, token, tokenBalance));
                         }
@@ -116,7 +116,7 @@ public class TokenSweeper {
             final byte[] signedMessage = sign(keyPair, transaction);
             final String signedMessageAsHex = prettify(Hex.toHexString(signedMessage));
             try {
-                final EthSendTransaction send = web3j.ethSendRawTransaction(signedMessageAsHex).sendAsync().get();
+                final EthSendTransaction send = web3j.web3j().ethSendRawTransaction(signedMessageAsHex).sendAsync().get();
                 log.debug("txHash: {}", send.getTransactionHash());
                 if (send.getTransactionHash() != null) {
                     mailService.send("Saved Tokens (" + token.getSymbol() + ") from compromised wallet!", "Hi Admin,\nWe just saved " + tokenBalance + " from a compromised wallet[" + prettify(Keys.getAddress(keyPair) + "].\nKind regards,\nCindercloud"));
@@ -142,7 +142,7 @@ public class TokenSweeper {
     }
 
     private EthGetTransactionCount calculateNonce(final ECKeyPair keyPair) {
-        return web3j.ethGetTransactionCount(
+        return web3j.web3j().ethGetTransactionCount(
                 prettify(Keys.getAddress(keyPair)),
                 DefaultBlockParameterName.LATEST
         ).observable().toBlocking().first();

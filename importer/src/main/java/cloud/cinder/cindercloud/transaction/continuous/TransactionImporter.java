@@ -3,12 +3,12 @@ package cloud.cinder.cindercloud.transaction.continuous;
 import cloud.cinder.cindercloud.block.model.Block;
 import cloud.cinder.cindercloud.transaction.model.Transaction;
 import cloud.cinder.cindercloud.transaction.service.TransactionService;
+import cloud.cinder.cindercloud.web3j.Web3jGateway;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.web3j.protocol.Web3j;
 import org.web3j.protocol.core.methods.response.EthBlock;
 
 import javax.annotation.PostConstruct;
@@ -22,7 +22,7 @@ import java.util.Objects;
 public class TransactionImporter {
 
     @Autowired
-    private Web3j web3j;
+    private Web3jGateway web3j;
     @Autowired
     private TransactionService transactionService;
     @Autowired
@@ -35,7 +35,7 @@ public class TransactionImporter {
 
     public void importTransactions(final Block convertedBlock) {
         try {
-            web3j.ethGetBlockByHash(convertedBlock.getHash(), true)
+            web3j.web3j().ethGetBlockByHash(convertedBlock.getHash(), true)
                     .observable()
                     .filter(bk -> bk.getBlock() != null)
                     .flatMapIterable(bk -> bk.getBlock().getTransactions())

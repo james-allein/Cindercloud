@@ -14,8 +14,8 @@ public class Web3jGateway {
     @Autowired
     private Web3j cindercloud;
     @Autowired
-    @Qualifier("infura")
-    private Web3j infura;
+    @Qualifier("local")
+    private Web3j localWeb3j;
 
     private Web3j currentProvider;
 
@@ -34,7 +34,7 @@ public class Web3jGateway {
             cindercloud.ethBlockNumber().send();
             return cindercloud;
         } catch (final Exception ex) {
-            return infura;
+            return localWeb3j;
         }
     }
 }

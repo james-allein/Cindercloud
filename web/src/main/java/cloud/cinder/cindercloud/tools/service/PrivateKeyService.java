@@ -3,11 +3,11 @@ package cloud.cinder.cindercloud.tools.service;
 import cloud.cinder.cindercloud.credentials.CredentialService;
 import cloud.cinder.cindercloud.tools.service.dto.PrivateKeyCheckResult;
 import cloud.cinder.cindercloud.utils.WeiUtils;
+import cloud.cinder.cindercloud.web3j.Web3jGateway;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.web3j.crypto.ECKeyPair;
 import org.web3j.crypto.Keys;
-import org.web3j.protocol.Web3j;
 import org.web3j.protocol.core.DefaultBlockParameterName;
 import org.web3j.utils.Numeric;
 
@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
 public class PrivateKeyService {
 
     @Autowired
-    private Web3j web3j;
+    private Web3jGateway web3j;
     @Autowired
     private CredentialService credentialService;
 
@@ -32,8 +32,8 @@ public class PrivateKeyService {
                     try {
                         final ECKeyPair keypair = ECKeyPair.create(Numeric.decodeQuantity(x.trim()));
                         final String address = prettifyAddress(Keys.getAddress(keypair));
-                        final BigInteger balance = web3j.ethGetBalance(address, DefaultBlockParameterName.LATEST).observable().toBlocking().first().getBalance();
-                        final BigInteger txCount = web3j.ethGetTransactionCount(address, DefaultBlockParameterName.LATEST).observable().toBlocking().first().getTransactionCount();
+                        final BigInteger balance = web3j.web3j().ethGetBalance(address, DefaultBlockParameterName.LATEST).observable().toBlocking().first().getBalance();
+                        final BigInteger txCount = web3j.web3j().ethGetTransactionCount(address, DefaultBlockParameterName.LATEST).observable().toBlocking().first().getTransactionCount();
                         return PrivateKeyCheckResult.builder()
                                 .address(address)
                                 .balance(WeiUtils.format(balance).toString())

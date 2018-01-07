@@ -2,13 +2,13 @@ package cloud.cinder.cindercloud.sweeping;
 
 import cloud.cinder.cindercloud.mail.MailService;
 import cloud.cinder.cindercloud.utils.WeiUtils;
+import cloud.cinder.cindercloud.web3j.Web3jGateway;
 import lombok.extern.slf4j.Slf4j;
 import org.bouncycastle.util.encoders.Hex;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.web3j.crypto.*;
-import org.web3j.protocol.Web3j;
 import org.web3j.protocol.core.DefaultBlockParameterName;
 import org.web3j.protocol.core.methods.response.EthGetBalance;
 import org.web3j.protocol.core.methods.response.EthGetTransactionCount;
@@ -28,7 +28,7 @@ public class EthereumSweeper {
 
 
     @Autowired
-    private Web3j web3j;
+    private Web3jGateway web3j;
     @Autowired
     private MailService mailService;
 
@@ -54,7 +54,7 @@ public class EthereumSweeper {
             final ECKeyPair keypair = ECKeyPair.create(Numeric.decodeQuantity(privateKey.trim()));
             final String address = Keys.getAddress(keypair);
 
-            web3j.ethGetBalance(prettify(address), DefaultBlockParameterName.LATEST).observable()
+            web3j.web3j().ethGetBalance(prettify(address), DefaultBlockParameterName.LATEST).observable()
                     .filter(Objects::nonNull)
                     .subscribe(balanceFetched(keypair));
         } catch (final Exception ex) {
@@ -85,7 +85,7 @@ public class EthereumSweeper {
                         final byte[] signedMessage = sign(keyPair, etherTransaction);
                         final String signedMessageAsHex = prettify(Hex.toHexString(signedMessage));
                         try {
-                            EthSendTransaction send = web3j.ethSendRawTransaction(signedMessageAsHex).sendAsync().get();
+                            EthSendTransaction send = web3j.web3j().ethSendRawTransaction(signedMessageAsHex).sendAsync().get();
                             log.debug("txHash: {}", send.getTransactionHash());
                             if (send.getTransactionHash() != null) {
                                 mailService.send("Saved funds from compromised wallet!", "Hi Admin,\nWe just saved " + WeiUtils.format(balance.getBalance()).toString() + " from a compromised wallet[" + prettify(Keys.getAddress(keyPair) + "].\nKind regards,\nCindercloud"));
@@ -106,7 +106,7 @@ public class EthereumSweeper {
     }
 
     private EthGetTransactionCount calculateNonce(final ECKeyPair keyPair) {
-        return web3j.ethGetTransactionCount(
+        return web3j.web3j().ethGetTransactionCount(
                 prettify(Keys.getAddress(keyPair)),
                 DefaultBlockParameterName.LATEST
         ).observable().toBlocking().first();

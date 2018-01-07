@@ -20,8 +20,8 @@ public class Web3Config {
     }
 
     @Bean
-    @Qualifier("infura")
-    public Web3j provideInfuraWeb3j(@Qualifier("infura") final Web3jService web3jService) {
+    @Qualifier("local")
+    public Web3j provideInfuraWeb3j(@Qualifier("local") final Web3jService web3jService) {
         return Web3j.build(web3jService);
     }
 
@@ -32,8 +32,8 @@ public class Web3Config {
     }
 
     @Bean
-    @Qualifier("infura")
-    public Web3jService provideInfuraEndpoint(@Value("${cloud.cinder.ethereum.endpoint.infura-url}") final String endpoint) {
-        return new InfuraHttpService(endpoint);
+    @Qualifier("local")
+    public Web3jService provideInfuraEndpoint(@Value("${cloud.cinder.ethereum.endpoint.local-url}") final String endpoint) {
+        return new HttpService(endpoint);
     }
 }

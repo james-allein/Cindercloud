@@ -3,13 +3,13 @@ package cloud.cinder.cindercloud.listener;
 import cloud.cinder.cindercloud.credential.domain.LeakedCredential;
 import cloud.cinder.cindercloud.credentials.service.CredentialService;
 import cloud.cinder.cindercloud.sweeping.continuous.EthereumSweeperService;
+import cloud.cinder.cindercloud.web3j.Web3jGateway;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.web3j.crypto.ECKeyPair;
 import org.web3j.crypto.Keys;
-import org.web3j.protocol.Web3j;
 import org.web3j.protocol.core.methods.response.Transaction;
 import org.web3j.utils.Numeric;
 import rx.Subscription;
@@ -22,7 +22,7 @@ import java.util.Date;
 public class AccidentalPrivateSharingListener {
 
     @Autowired
-    private Web3j web3j;
+    private Web3jGateway web3j;
     @Autowired
     private CredentialService credentialService;
 
@@ -57,7 +57,7 @@ public class AccidentalPrivateSharingListener {
     }
 
     private Subscription subscribePendingTransactions() {
-        return web3j.pendingTransactionObservable()
+        return web3j.web3j().pendingTransactionObservable()
                 .subscribe(processTransaction(), error -> {
                     log.debug("[Live Private Sharing]Problem with pending transactions, resubbing: {}", error.getMessage());
                     pendingTransactionsSubscription.unsubscribe();
@@ -66,7 +66,7 @@ public class AccidentalPrivateSharingListener {
     }
 
     private Subscription subscribeLiveTransactions() {
-        return web3j.transactionObservable()
+        return web3j.web3j().transactionObservable()
                 .subscribe(processTransaction(), error -> {
                     log.debug("[Pending Private Sharing]Problem with pending transactions, resubbing: {}", error.getMessage());
                     liveTransactions.unsubscribe();

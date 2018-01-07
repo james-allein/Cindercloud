@@ -5,18 +5,17 @@ import cloud.cinder.cindercloud.block.continuous.repository.BlockImportJobReposi
 import cloud.cinder.cindercloud.block.model.Block;
 import cloud.cinder.cindercloud.block.repository.BlockRepository;
 import cloud.cinder.cindercloud.block.service.BlockService;
+import cloud.cinder.cindercloud.web3j.Web3jGateway;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
-import org.web3j.protocol.Web3j;
 import org.web3j.protocol.core.DefaultBlockParameterNumber;
 import org.web3j.protocol.core.methods.response.EthBlock;
 import rx.Subscription;
 
-import javax.annotation.PostConstruct;
 import java.util.Date;
 import java.util.Objects;
 
@@ -26,7 +25,7 @@ import java.util.Objects;
 public class BlockImporter {
 
     @Autowired
-    private Web3j web3j;
+    private Web3jGateway web3j;
     @Autowired
     private BlockService blockService;
     @Autowired
@@ -53,7 +52,7 @@ public class BlockImporter {
     }
 
     private Subscription subscribe() {
-        return web3j.blockObservable(false)
+        return web3j.web3j().blockObservable(false)
                 .map(EthBlock::getBlock)
                 .filter(Objects::nonNull)
                 .map(Block::asBlock)
@@ -83,7 +82,7 @@ public class BlockImporter {
                 log.debug("Historic Import: trying to import block: {}", i);
             }
             try {
-                final EthBlock ethBlock = web3j.ethGetBlockByNumber(new DefaultBlockParameterNumber(i), false)
+                final EthBlock ethBlock = web3j.web3j().ethGetBlockByNumber(new DefaultBlockParameterNumber(i), false)
                         .observable().toBlocking().firstOrDefault(null);
                 if (ethBlock != null && ethBlock.getBlock() != null && !blockRepository.findOne(ethBlock.getBlock().getHash()).isPresent()) {
                     try {
