@@ -1,0 +1,142 @@
+<!DOCTYPE html >
+<html lang="en"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="decorator/normal/decorator">
+<div layout:fragment="header-content">
+
+</div>
+
+<body>
+<div layout:fragment="main-content">
+    <div class="container g-pt-70 g-pb-30">
+        <div class="row">
+            <!-- Profile Settings -->
+            <div class="col-lg-3 g-mb-50">
+                <aside class="g-brd-around g-brd-gray-light-v4 rounded g-px-20 g-py-30">
+
+                    <div class="text-center g-pos-rel g-mb-30">
+                        <h2 class="h3">Address</h2>
+                        <div style="overflow-wrap: break-word">
+                            <a th:href="@{'/address/'} +${address}" target="_blank">
+                                <span class="d-block g-font-weight-500" th:text="${address}">James Collins</span>
+                            </a>
+                        </div>
+                    </div>
+
+                    <hr class="g-brd-gray-light-v4 g-my-30"/>
+
+                    <!-- Profile Settings List -->
+                    <ul class="list-unstyled mb-0">
+                        <li class="g-pb-3">
+                            <a class="d-block align-middle u-link-v5 g-color-text g-color-primary--hover g-bg-gray-light-v5--hover rounded g-pa-3"
+                               th:href="@{/wallet}">
+                                <span class="u-icon-v1 g-color-gray-dark-v5 mr-2"><i
+                                        class="icon-finance-059 u-line-icon-pro"></i></span>
+                                Your Wallet
+                            </a>
+                        </li>
+                        <li class="g-py-3">
+                            <a class="d-block active align-middle u-link-v5 g-color-text g-color-primary--hover g-bg-gray-light-v5--hover rounded g-pa-3"
+                               th:href="@{/wallet/transactions}">
+                                <span class="u-icon-v1 g-color-gray-dark-v5 mr-2"><i
+                                        class="icon-finance-135 u-line-icon-pro"></i></span>
+                                Your Transactions
+                            </a>
+                        </li>
+                        <li class="g-pb-3">
+                            <a class="d-block align-middle u-link-v5 g-color-text g-color-primary--hover g-bg-gray-light-v5--hover rounded g-pa-3"
+                               th:href="@{/wallet/send}">
+                                <span class="u-icon-v1 g-color-gray-dark-v5 mr-2"><i
+                                        class="icon-communication-015 u-line-icon-pro"></i></span>
+                                Send Ether
+                            </a>
+                        </li>
+                    </ul>
+                    <!-- End Profile Settings List -->
+                </aside>
+            </div>
+            <!-- End Profile Settings -->
+
+            <!-- Wallet -->
+            <div class="col-lg-9 g-mb-50">
+                <!-- Balance & Rewards -->
+                <div class="g-brd-around g-brd-gray-light-v4 rounded g-px-30 g-pt-30">
+                    <h3 class="h5 mb-3">Create a transaction</h3>
+
+                    <!-- Balance Info -->
+                    <div class="row justify-content-between">
+                        <div class="col-md-12">
+                            <form th:object="${createEtherTransactionCommand}" class="g-pa-30 g-mb-30">
+                                <div class="form-group row g-mb-25">
+                                    <label class="col-sm-3 col-form-label g-mb-10">To</label>
+
+                                    <div class="col-sm-9">
+                                        <input th:field="*{to}" class="form-control u-form-control rounded-0" type="text"
+                                               placeholder="0xEeb7dF8C260f7DE30b41A981D52b4573CB5dFe2f"/>
+                                    </div>
+                                </div>
+                                <div class="form-group row g-mb-20">
+                                    <label class="col-sm-3 col-form-label g-mb-10">Amount to send</label>
+                                    <div class="col-sm-9">
+                                        <input th:field="*{amount}" class="form-control u-form-control rounded-0" type="number"
+                                               placeholder="amount"/>
+                                    </div>
+                                </div>
+                                <div class="form-group row g-mb-20">
+                                    <label class="col-sm-3 col-form-label g-mb-10">Gas Limit</label>
+                                    <div class="col-sm-9">
+                                        <input th:field="*{gasLimit}" value="21000" class="form-control u-form-control rounded-0" type="number"
+                                               placeholder="amount"/>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row g-mb-40">
+                                    <label class="col-sm-3 col-form-label g-mb-10">
+                                        Gas Price
+                                        <span class="g-color-primary">(<span
+                                                id="regularSliderAmount3">25</span> GWEI)</span>
+                                    </label>
+                                    <div class="col-sm-9">
+
+                                        <div id="regularSlider3" class="u-slider-v1-3"
+                                             data-result-container="regularSliderAmount3" data-default="25" data-min="0"
+                                             data-max="100"></div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <!-- End Balance Info -->
+
+                </div>
+                <!-- End Balance & Rewards -->
+            </div>
+            <!-- End Wallet -->
+        </div>
+    </div>
+
+
+</div>
+<div layout:fragment="footer-content">
+    <script th:src="@{/assets/vendor/jquery-ui/ui/widget.js}"></script>
+    <script th:src="@{/assets/vendor/jquery-ui/ui/version.js}"></script>
+    <script th:src="@{/assets/vendor/jquery-ui/ui/keycode.js}"></script>
+    <script th:src="@{/assets/vendor/jquery-ui/ui/position.js}"></script>
+    <script th:src="@{/assets/vendor/jquery-ui/ui/unique-id.js}"></script>
+    <script th:src="@{/assets/vendor/jquery-ui/ui/safe-active-element.js}"></script>
+
+    <script th:src="@{/assets/vendor/jquery-ui/ui/widgets/menu.js}"></script>
+    <script th:src="@{/assets/vendor/jquery-ui/ui/widgets/mouse.js}"></script>
+    <script th:src="@{/assets/vendor/jquery-ui/ui/widgets/slider.js}"></script>
+    <script th:src="@{/assets/js/components/hs.slider.js}"></script>
+
+    <script>
+		$(document).on('ready', function () {
+			// initialization of forms
+			$.HSCore.components.HSSlider.init('#regularSlider3');
+		});
+    </script>
+</div>
+</body>
+</html>

@@ -44,12 +44,12 @@
                                 Your Transactions
                             </a>
                         </li>
-                        <li class="g-pt-3">
+                        <li class="g-pb-3">
                             <a class="d-block align-middle u-link-v5 g-color-text g-color-primary--hover g-bg-gray-light-v5--hover rounded g-pa-3"
-                               href="#">
+                               th:href="@{/wallet/send}">
                                 <span class="u-icon-v1 g-color-gray-dark-v5 mr-2"><i
-                                        class="icon-education-033 u-line-icon-pro"></i></span>
-                                Notifications (Soon)
+                                        class="icon-communication-015 u-line-icon-pro"></i></span>
+                                Send Ether
                             </a>
                         </li>
                     </ul>
@@ -76,14 +76,16 @@
 
                         <div class="col-sm-4 g-mb-30">
                             <div class="g-bg-yellow text-center rounded g-px-20 g-py-30">
-                                <span class="d-block g-color-white g-font-weight-600 g-font-size-25 mb-1">$<span id="usdBalance" th:text="${balUSD}">?</span></span>
+                                <span class="d-block g-color-white g-font-weight-600 g-font-size-25 mb-1">$<span
+                                        id="usdBalance" th:text="${balUSD}">?</span></span>
                                 <span class="d-block g-color-white-opacity-0_8 g-font-size-18">Balance in USD</span>
                             </div>
                         </div>
 
                         <div class="col-sm-4 g-mb-30">
                             <div class="g-bg-blue text-center rounded g-px-20 g-py-30">
-                                <span class="d-block g-color-white g-font-weight-600 g-font-size-25 mb-1">$<span id="eurBalance" th:text="${balEUR}">?</span></span>
+                                <span class="d-block g-color-white g-font-weight-600 g-font-size-25 mb-1">$<span
+                                        id="eurBalance" th:text="${balEUR}">?</span></span>
                                 <span class="d-block g-color-white-opacity-0_8 g-font-size-18">Balance in EUR</span>
                             </div>
                         </div>

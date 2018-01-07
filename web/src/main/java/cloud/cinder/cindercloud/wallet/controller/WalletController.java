@@ -8,7 +8,6 @@ import cloud.cinder.cindercloud.transaction.service.TransactionService;
 import cloud.cinder.cindercloud.utils.WeiUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -45,11 +44,11 @@ public class WalletController {
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/transactions")
-    public String transactions(final ModelMap modelMap,
-                               final Pageable pageable) {
+    public String transactions(final ModelMap modelMap) {
         requireAuthenticated();
         final String address = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         modelMap.put("transactions", transactionService.findByAddress(address, new PageRequest(0, 25)).toBlocking().first());
+        modelMap.put("address", address);
         return "wallets/transactions";
     }
 
