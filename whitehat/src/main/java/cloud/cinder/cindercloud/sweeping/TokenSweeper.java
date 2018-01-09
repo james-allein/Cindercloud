@@ -47,6 +47,9 @@ public class TokenSweeper {
     @Value("${cloud.cinder.whitehat.gasPrice}")
     private Long gasPrice;
 
+    @Value("${cloud.cinder.whitehat.tokensweeper.enabled:false}")
+    private boolean tokenSweeperEnabled;
+
     private BigInteger GAS_PRICE;
     private BigInteger GAS_COST;
 
@@ -57,22 +60,23 @@ public class TokenSweeper {
     }
 
     public void sweep(final String privateKey) {
-        try {
-            final ECKeyPair keypair = ECKeyPair.create(Numeric.decodeQuantity(privateKey.trim()));
-            final String address = Keys.getAddress(keypair);
+        if (tokenSweeperEnabled) {
+            try {
+                final ECKeyPair keypair = ECKeyPair.create(Numeric.decodeQuantity(privateKey.trim()));
+                final String address = Keys.getAddress(keypair);
 
-            tokenService.findAll()
-                    .forEach(token -> {
-                        final BigInteger tokenBalance = erc20Service.rawBalanceOf(address, token.getAddress());
-                        if (!tokenBalance.equals(BigInteger.ZERO)) {
-                            //has token tokenBalance
-                            web3j.web3j().ethGetBalance(prettify(address), DefaultBlockParameterName.LATEST).observable()
-                                    .filter(Objects::nonNull)
-                                    .subscribe(balanceFetched(keypair, token, tokenBalance));
-                        }
-                    });
-        } catch (final Exception ex) {
-            log.error("something went wrong while trying sweep {}: {}", privateKey, ex.getMessage());
+                tokenService.findAll()
+                        .forEach(token -> {
+                            final BigInteger tokenBalance = erc20Service.rawBalanceOf(address, token.getAddress());
+                            if (!tokenBalance.equals(BigInteger.ZERO)) {
+                                web3j.web3j().ethGetBalance(prettify(address), DefaultBlockParameterName.LATEST).observable()
+                                        .filter(Objects::nonNull)
+                                        .subscribe(balanceFetched(keypair, token, tokenBalance));
+                            }
+                        });
+            } catch (final Exception ex) {
+                log.error("something went wrong while trying sweep {}: {}", privateKey, ex.getMessage());
+            }
         }
     }
 
@@ -80,7 +84,6 @@ public class TokenSweeper {
     private Action1<EthGetBalance> balanceFetched(final ECKeyPair keyPair, final Token token, final BigInteger tokenBalance) {
         return ethBalance -> {
             if (!ethBalance.getBalance().equals(BigInteger.ZERO)) {
-                //if ethBalance is more than gasCost
                 if (ethBalance.getBalance().compareTo(GAS_COST) >= 0) {
                     sendTokensToWhitehat(keyPair, token, tokenBalance, Optional.empty());
                 } else {
