@@ -9,6 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.bouncycastle.util.encoders.Hex;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 import org.web3j.abi.FunctionEncoder;
 import org.web3j.abi.datatypes.Function;
 import org.web3j.crypto.*;
@@ -28,6 +29,7 @@ import static java.util.Arrays.asList;
 import static java.util.Collections.emptyList;
 
 @Slf4j
+@Component
 public class TokenSweeper {
 
     private static final BigInteger CONTRACT_TRANSACTION_GAS_LIMIT = BigInteger.valueOf(120000);
