@@ -2,7 +2,7 @@ package cloud.cinder.cindercloud.block.service;
 
 import cloud.cinder.cindercloud.block.model.Block;
 import cloud.cinder.cindercloud.block.repository.BlockRepository;
-import cloud.cinder.cindercloud.infrastructure.service.SqsQueueSender;
+import cloud.cinder.cindercloud.infrastructure.service.QueueSender;
 import cloud.cinder.cindercloud.web3j.Web3jGateway;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
@@ -26,7 +26,7 @@ public class BlockService {
     @Autowired
     private BlockRepository blockRepository;
     @Autowired
-    private SqsQueueSender $;
+    private QueueSender $;
     @Autowired
     private ObjectMapper objectMapper;
 

@@ -18,7 +18,12 @@ spring:
       remote:
         debug:
           enabled: false
-
+    rabbitmq:
+      password: xxx
+      username: cindercloud-worker
+      virtual-host: cindercloud
+      host: cindercloud-rabbitmq
+      port: 5672
 #logging
 logging:
   level:
