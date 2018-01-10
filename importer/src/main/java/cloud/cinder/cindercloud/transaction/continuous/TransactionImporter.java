@@ -9,6 +9,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 import org.web3j.protocol.core.methods.response.EthBlock;
 
 import javax.annotation.PostConstruct;
@@ -33,6 +34,7 @@ public class TransactionImporter {
         objectMapper.enable(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT);
     }
 
+    @Transactional
     public void importTransactions(final Block convertedBlock) {
         try {
             web3j.web3j().ethGetBlockByHash(convertedBlock.getHash(), true)
@@ -42,7 +44,7 @@ public class TransactionImporter {
                     .filter(tx -> tx.get() != null && tx.get() instanceof EthBlock.TransactionObject && ((EthBlock.TransactionObject) tx.get()).get() != null)
                     .map(tx -> ((EthBlock.TransactionObject) tx.get()).get())
                     .map(tx -> {
-                        log.trace("importing transaction {}", tx.getHash());
+                        log.debug("importing transaction {}", tx.getHash());
                         return Transaction.builder()
                                 .blockHash(tx.getBlockHash())
                                 .blockHeight(convertedBlock.getHeight())
@@ -63,7 +65,7 @@ public class TransactionImporter {
                                 .build();
                     })
                     .filter(Objects::nonNull)
-                    .forEach(transactionService::save);
+                    .forEach(transactionService::saveIfNotExists);
         } catch (final Exception e) {
             log.error("Error trying to import transactions from block", e);
         }
