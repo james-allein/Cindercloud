@@ -28,7 +28,7 @@ public class TransactionController {
                                   @RequestParam(name = "q", required = false) final Optional<String> searchKey,
                                   @RequestParam(name = "block", required = false) final Optional<String> block) {
         if (searchKey.isPresent() || block.isPresent()) {
-            modelMap.put("transactions", transactionService.find(searchKey.orElse(""), block.orElse(""), pageable));
+            modelMap.put("transactions", transactionService.find(block.orElse(""), pageable));
             modelMap.put("q", searchKey.orElse(""));
             modelMap.put("block", block.orElse(""));
 

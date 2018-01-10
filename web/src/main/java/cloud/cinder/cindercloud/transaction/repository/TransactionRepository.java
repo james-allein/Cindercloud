@@ -24,8 +24,8 @@ public interface TransactionRepository extends JpaRepository<Transaction, String
     @Query("select transaction from Transaction transaction order by blockHeight desc")
     List<Transaction> findAllOrOrderByBlockTimestampAsList(Pageable pageable);
 
-    @Query("select transaction from Transaction transaction where hash LIKE %:searchKey% AND blockHash LIKE %:block% order by blockHeight desc")
-    Slice<Transaction> find(@Param("searchKey") String searchKey, @Param("block") final String block, final Pageable pageable);
+    @Query("select transaction from Transaction transaction where blockHash LIKE %:block% order by blockHeight desc")
+    Slice<Transaction> findByBlockHash(@Param("block") final String block, final Pageable pageable);
 
     @Query("select transaction from Transaction transaction where blockTimestamp >= :from order by blockHeight")
     Stream<Transaction> findAllTransactionsSince(@Param("from") final Date from);

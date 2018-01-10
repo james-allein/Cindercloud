@@ -133,7 +133,7 @@ public class TransactionService {
         }
     }
 
-    public Slice<Transaction> find(final String searchKey, final String block, final Pageable pageable) {
-        return transactionRepository.find(searchKey, block, pageable);
+    public Slice<Transaction> find(final String block, final Pageable pageable) {
+        return transactionRepository.findByBlockHash(block, pageable);
     }
 }
