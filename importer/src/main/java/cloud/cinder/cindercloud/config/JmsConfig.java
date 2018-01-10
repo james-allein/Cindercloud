@@ -21,6 +21,7 @@ public class JmsConfig {
         container.setConnectionFactory(connectionFactory);
         container.setQueueNames(queueName);
         container.setMessageListener(listenerAdapter);
+        container.setConcurrentConsumers(5);
         return container;
     }
 

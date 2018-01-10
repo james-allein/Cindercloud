@@ -24,6 +24,9 @@ spring:
       virtual-host: cindercloud
       host: cindercloud-rabbitmq
       port: 5672
+      listener:
+        simple:
+          concurrency: 10
 #logging
 logging:
   level:
