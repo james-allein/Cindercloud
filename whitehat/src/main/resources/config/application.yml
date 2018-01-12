@@ -36,3 +36,9 @@ cloud:
     whitehat:
       gasPrice: 20000000000
       address: '0x08101434C81e868DcF1E428F49118239B7022AC4'
+
+
+endpoints:
+  prometheus:
+    path: /prometheus
+    sensitive: false

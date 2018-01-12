@@ -28,6 +28,8 @@ dependencies {
     compile 'org.springframework.cloud:spring-cloud-starter-aws'
     compile 'org.springframework.cloud:spring-cloud-aws-messaging'
 
+    compile "com.moelholm:prometheus-spring-boot-starter:1.0.1"
+
     compile("commons-collections:commons-collections:${collectionCommonsVersion}")
     compile "net.sargue:mailgun:${mailgunVersion}"
     compile group: 'org.web3j', name: 'core', version: "${theWeb3jVersion}"

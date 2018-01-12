@@ -39,3 +39,9 @@ cloud:
   cinder:
     transactions:
       historic-threshold: 500000
+
+
+endpoints:
+  prometheus:
+    path: /prometheus
+    sensitive: false
