@@ -40,5 +40,7 @@ cloud:
 
 endpoints:
   prometheus:
-    path: /prometheus
+    path: /metrics
     sensitive: false
+  metrics:
+    path: /actuator-metrics
