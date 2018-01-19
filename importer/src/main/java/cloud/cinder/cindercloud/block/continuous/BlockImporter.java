@@ -104,6 +104,7 @@ public class BlockImporter {
                 }
             } catch (final Exception exc) {
                 log.debug("unable to get block");
+            } finally {
                 historicBlockImportMeter.mark();
             }
         }
