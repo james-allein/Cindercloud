@@ -15,7 +15,6 @@ import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import org.web3j.protocol.Web3j;
 import rx.Observable;
 
 import java.time.LocalDateTime;
@@ -50,7 +49,6 @@ public class TransactionService {
         return Observable.just(result);
     }
 
-
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public Transaction save(final Transaction transaction) {
         return transactionRepository.save(transaction);
@@ -58,7 +56,7 @@ public class TransactionService {
 
     @Transactional(readOnly = true)
     public Observable<Slice<Transaction>> getTransactionsForBlock(final String blockHash, final Pageable pageable) {
-        final Slice<Transaction> result = transactionRepository.findAllByBlockHash(blockHash, pageable);
+        final Slice<Transaction> result = transactionRepository.findAllByBlockHashOrderByBlockHeightDesc(blockHash, pageable);
         result.getContent().forEach(this::enrichWithSpecialAddresses);
         return Observable.just(result);
     }
@@ -133,7 +131,11 @@ public class TransactionService {
         }
     }
 
-    public Slice<Transaction> find(final String block, final Pageable pageable) {
+    public Slice<Transaction> findByBlock(final String block, final Pageable pageable) {
         return transactionRepository.findByBlockHash(block, pageable);
+    }
+
+    public Slice<Transaction> findByBlockAndAddress(final String block, final String address, final Pageable pageable) {
+        return transactionRepository.findByAddressFromOrToAndBlockHash(address, block, pageable);
     }
 }
