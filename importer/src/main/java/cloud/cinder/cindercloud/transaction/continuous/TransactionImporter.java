@@ -46,7 +46,7 @@ public class TransactionImporter {
                     .filter(tx -> tx.get() != null && tx.get() instanceof EthBlock.TransactionObject && ((EthBlock.TransactionObject) tx.get()).get() != null)
                     .map(tx -> ((EthBlock.TransactionObject) tx.get()).get())
                     .map(tx -> {
-                        log.debug("importing transaction {}", tx.getHash());
+                        log.trace("importing transaction {}", tx.getHash());
                         return Transaction.builder()
                                 .blockHash(tx.getBlockHash())
                                 .blockHeight(convertedBlock.getHeight())
