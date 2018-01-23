@@ -4,45 +4,22 @@
 >
 
 <div th:fragment="blocks">
-    <h2>Last Blocks</h2>
+    <h2>Blocks</h2>
     <hr />
-
-    <div th:each="block : ${blocks}">
-
-        <article>
-            <h2 class="h4 g-mb-15">
-                <a class="u-link-v5 g-color-gray-dark-v1 g-color-primary--hover" href="#"
-                   th:href="@{/blocks/} + ${block.hash}"
-                   th:text="${block.height}">Hash</a>
-            </h2>
-
-            <div class="d-lg-flex justify-content-between align-items-center g-mb-15">
-                <!-- Search Info -->
-                <ul class="list-inline g-mb-10 g-mb-0--lg">
-                    <li class="list-inline-item g-mr-30">
-                        <i class="icon-clock g-pos-rel g-top-1 g-color-gray-dark-v5 g-mr-5"></i> <span
-                            th:text="${block.prettyTimestamp()}">2 weeks ago</span>
-                    </li>
-                </ul>
-                <!-- End Search Info -->
-
-                <!-- Share, Print and More -->
-                <ul class="list-inline mb-0">
-                    <li class="list-inline-item g-mr-20">
-                        <a class="u-link-v5 g-color-gray-dark-v5 g-color-primary--hover"
-                           th:href="@{/blocks/} + ${block.hash}" href="#">
-                            <i class="icon-check g-pos-rel g-top-1 g-mr-5"></i> View
-                        </a>
-                    </li>
-
-                </ul>
-                <!-- End Share, Print and More -->
+    <ul class="list-unstyled">
+        <li th:each="block : ${blocks}" class="media g-brd-around g-brd-gray-light-v4 g-brd-left-3 g-brd-blue-left rounded g-pa-20 g-mb-10">
+            <div class="d-flex g-mt-2 g-mr-15">
             </div>
-        </article>
-        <hr class="g-brd-gray-light-v4 g-my-20" />
-    </div>
-
-
+            <div class="media-body">
+                <div class="d-flex justify-content-between">
+                    <h5 class="h6 g-font-weight-600 g-color-black" th:text="${block.height}">elf</h5>
+                    <span class="small text-nowrap g-color-blue" th:text="${block.prettyTimestamp()}">2 min ago</span>
+                </div>
+                <p>miner: <a th:href="@{/address/} + ${block.minedBy}"><b th:text="${block.prettyMinedBy()}"></b></a></p>
+                <span class="u-label u-label--sm g-bg-gray-light-v4 g-color-main g-rounded-20 g-px-10"><b th:text="${block.gasUsedPercentage()}"></b></span>
+            </div>
+        </li>
+    </ul>
 </div>
 
 <div th:fragment="transactions">

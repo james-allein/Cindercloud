@@ -5,5 +5,5 @@ cloud:
         token:
         url: https://parity.cinder.cloud
         local-url: https://mainnet.infura.io
-    sqs:
-      name: cindercloud_mainnet
+    queue:
+      block-added: cindercloud_mainnet

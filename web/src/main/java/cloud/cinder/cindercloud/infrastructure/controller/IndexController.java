@@ -24,7 +24,8 @@ public class IndexController {
 
     @RequestMapping(method = GET)
     public String index(final ModelMap modelMap) {
-        modelMap.put("ethPrice", priceService.getPriceAsString(Currency.USD));
+        modelMap.put("ethPriceUsd", priceService.getPriceAsString(Currency.USD));
+        modelMap.put("ethPriceEur", priceService.getPriceAsString(Currency.EUR));
         modelMap.put("lastBlock", blockService.getLastBlock().toBlocking().first().getBlockNumber().longValue());
         return "index";
     }

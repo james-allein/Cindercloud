@@ -54,8 +54,9 @@ public class BlockImporter {
             if (this.liveSubscription == null) {
                 this.liveSubscription = subscribe();
             } else {
+                final Subscription newSubscription = subscribe();
                 this.liveSubscription.unsubscribe();
-                this.liveSubscription = subscribe();
+                this.liveSubscription = newSubscription;
             }
         }
     }
@@ -80,7 +81,7 @@ public class BlockImporter {
                 });
     }
 
-    public void execute(final BlockImportJob job) {
+    void execute(final BlockImportJob job) {
         log.debug("Starting job {}", job.getId());
         job.setActive(true);
         job.setStartTime(new Date());

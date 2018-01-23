@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 @Slf4j
 public class QueueSender {
 
-    @Value("${cloud.cinder.sqs.name}")
+    @Value("${cloud.cinder.queue.block-added}")
     private String blockQueue;
     @Autowired
     private RabbitTemplate rabbitTemplate;

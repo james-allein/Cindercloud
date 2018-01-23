@@ -13,10 +13,10 @@ import org.springframework.context.annotation.Configuration;
 public class JmsConfig {
 
     @Bean
-    @ConditionalOnProperty(name = "cloud.cinder.ethereum.sqs-transaction-import", havingValue = "true")
+    @ConditionalOnProperty(name = "cloud.cinder.ethereum.queue-block-added-transaction-import", havingValue = "true")
     SimpleMessageListenerContainer container(ConnectionFactory connectionFactory,
                                              MessageListenerAdapter listenerAdapter,
-                                             @Value("${cloud.cinder.sqs.name}") final String queueName) {
+                                             @Value("${cloud.cinder.queue.block-added}") final String queueName) {
         SimpleMessageListenerContainer container = new SimpleMessageListenerContainer();
         container.setConnectionFactory(connectionFactory);
         container.setQueueNames(queueName);
@@ -26,7 +26,7 @@ public class JmsConfig {
     }
 
     @Bean
-    @ConditionalOnProperty(name = "cloud.cinder.ethereum.sqs-transaction-import", havingValue = "true")
+    @ConditionalOnProperty(name = "cloud.cinder.ethereum.queue-block-added-transaction-import", havingValue = "true")
     MessageListenerAdapter listenerAdapter(BlockAddedListener receiver) {
         return new MessageListenerAdapter(receiver, "receiveMessage");
     }

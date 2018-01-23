@@ -17,7 +17,7 @@ public class QueueSender {
     @Autowired
     private ObjectMapper objectMapper;
 
-    @Value("${cloud.cinder.sqs.name}")
+    @Value("${cloud.cinder.queue.block-added}")
     private String blockQueue;
 
     public void send(String message, String eventType) {

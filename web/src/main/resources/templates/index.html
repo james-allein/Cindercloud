@@ -4,12 +4,13 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorator="decorator/normal/decorator">
 <div layout:fragment="header-content">
+    <link rel="stylesheet" th:href="@{/assets/vendor/icon-material/material-icons.css}"/>
 </div>
 
 <body>
 <div layout:fragment="main-content">
 
-    <section  class="g-bg-secondary  g-py-50">
+    <section class="g-bg-secondary  g-py-50">
         <div class="row">
             <div class="col-lg-2"></div>
             <div class="col-lg-8">
@@ -26,7 +27,8 @@
                             </span>
                         </div>
                         <div class="media-body">
-                            <p class="m-0">We're currently <b>importing</b> historic blocks. Some transaction history might <b>not be available yet</b>.</p>
+                            <p class="m-0">We're currently <b>importing</b> historic blocks. Some transaction history
+                                might <b>not be available yet</b>.</p>
                             <span class="g-font-size-12 g-color-gray">Cindercloud</span>
                         </div>
                     </div>
@@ -40,16 +42,25 @@
         <h1 style="display: none;">Cindercloud Blockchain Explorer</h1>
         <div class="container">
             <div class="row text-center">
-                <div class="col-md-6 col-sm-6 g-mb-30">
+                <div class="col-md-4 col-sm-6 g-mb-30">
                       <span class="u-icon-v3 u-icon-size--xl g-bg-primary-opacity-0_1 rounded-circle g-mb-10">
-                        <i class="et-icon-wallet g-color-primary"></i>
+                        <i class="material-icons">attach_money</i>
                       </span>
 
-                    <div class="js-counter g-color-primary g-font-size-40 g-font-weight-300 g-mb-7">$ <span
-                            th:text="${ethPrice}" id="ethPrice">0</span></div>
+                    <div class="g-color-primary g-font-size-40 g-font-weight-300 g-mb-7">$ <span
+                            th:text="${ethPriceUsd}" id="ethPriceUsd">0</span></div>
                 </div>
 
-                <div class="col-md-6 col-sm-6 g-mb-30">
+                <div class="col-md-4 col-sm-6 g-mb-30">
+                      <span class="u-icon-v3 u-icon-size--xl g-bg-primary-opacity-0_1 rounded-circle g-mb-10">
+                          <i class="material-icons">euro_symbol</i>
+                      </span>
+
+                    <div class="g-color-primary g-font-size-40 g-font-weight-300 g-mb-7">$ <span
+                            th:text="${ethPriceEur}" id="ethPriceEur">0</span></div>
+                </div>
+
+                <div class="col-md-4 col-sm-6 g-mb-30">
                       <span class="u-icon-v3 u-icon-size--xl g-bg-cyan-opacity-0_1 rounded-circle g-mb-10">
                         <i class="icon-organization g-color-cyan"></i>
                       </span>
@@ -87,8 +98,11 @@
 
 		var updateEthPrice = function () {
 			$.get('/rest/price', function (result) {
-				$("#ethPrice").html(result);
+				$("#ethPriceUsd").html(result);
 				setTimeout(updateEthPrice, 10000);
+			});
+			$.get('/rest/price?currency=EUR', function (result) {
+				$("#ethPriceEur").html(result);
 			});
 		};
 

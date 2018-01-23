@@ -16,7 +16,6 @@ buildscript {
 dependencyManagement {
     imports {
         mavenBom "org.springframework.cloud:spring-cloud-dependencies:${theSpringCloudVersion}"
-        mavenBom "org.springframework.cloud:spring-cloud-aws:${theSpringCloudAwsVersion}"
         mavenBom("org.springframework.boot:spring-boot-dependencies:${theSpringBootVersion}")
     }
 }
@@ -35,7 +34,6 @@ dependencies {
     compile("org.springframework.cloud:spring-cloud-starter-feign")
     compile('org.thymeleaf.extras:thymeleaf-extras-springsecurity4:2.1.2.RELEASE')
 
-    compile 'org.springframework.cloud:spring-cloud-starter-aws'
     compile 'org.springframework.boot:spring-boot-starter-amqp'
 
     compile group: 'org.bitcoinj', name: 'bitcoinj-core', version: "${bitcoinJVersion}"

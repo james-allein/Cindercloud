@@ -81,6 +81,10 @@ public class Block {
         return hash.substring(0, 25) + "...";
     }
 
+    public String prettyMinedBy() {
+        return minedBy.substring(0, 15) + "...";
+    }
+
     public String prettyTimestamp() {
         final LocalDateTime localDateTime = LocalDateTime.ofEpochSecond(timestamp.longValue(), 0, ZoneOffset.UTC);
         final PrettyTime prettyTime = new PrettyTime(Date.from(LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant()));
@@ -102,7 +106,7 @@ public class Block {
                 .nonce(block.getNonceRaw() != null ? block.getNonce() : BigInteger.ZERO)
                 .size(block.getSize())
                 .timestamp(block.getTimestamp())
-                .txCount((long)block.getTransactions().size())
+                .txCount((long) block.getTransactions().size())
                 .parentHash(block.getParentHash())
                 .receiptsRoot(block.getReceiptsRoot())
                 .height(block.getNumber())
