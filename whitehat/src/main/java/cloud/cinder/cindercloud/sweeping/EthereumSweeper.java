@@ -44,7 +44,6 @@ public class EthereumSweeper {
     @PostConstruct
     public void init() {
         this.GAS_PRICE = BigInteger.valueOf(gasPrice);
-        this.GAS_COST = this.GAS_PRICE.multiply(ETHER_TRANSACTION_GAS_LIMIT);
     }
 
 
