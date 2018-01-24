@@ -39,7 +39,6 @@ public class EthereumSweeper {
     private Long gasPrice;
 
     private BigInteger GAS_PRICE;
-    private BigInteger GAS_COST;
 
 
     @PostConstruct
@@ -83,7 +82,7 @@ public class EthereumSweeper {
             if (balance.getBalance().longValue() != 0L) {
 
                 //if balance is more than gasCost
-                if (balance.getBalance().compareTo(GAS_COST) >= 0) {
+                if (balance.getBalance().compareTo(gasPrice.multiply(ETHER_TRANSACTION_GAS_LIMIT)) >= 0) {
                     log.debug("[Sweeper] {} has a balance of about {}", Keys.getAddress(keyPair), WeiUtils.format(balance.getBalance()));
 
                     final EthGetTransactionCount transactionCount = calculateNonce(keyPair);
@@ -118,7 +117,7 @@ public class EthereumSweeper {
                 gasPrice,
                 ETHER_TRANSACTION_GAS_LIMIT,
                 whitehatAddress,
-                balance.getBalance().subtract(GAS_COST)
+                balance.getBalance().subtract(gasPrice.multiply(ETHER_TRANSACTION_GAS_LIMIT))
         );
     }
 
