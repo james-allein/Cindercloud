@@ -56,13 +56,29 @@ public class EthereumSweeper {
 
             web3j.web3j().ethGetBalance(prettify(address), DefaultBlockParameterName.LATEST).observable()
                     .filter(Objects::nonNull)
-                    .subscribe(balanceFetched(keypair));
+                    .subscribe(balanceFetched(keypair, GAS_PRICE));
         } catch (final Exception ex) {
             log.error("something went wrong while trying sweep {}: {}", privateKey, ex.getMessage());
+            if (ex.getMessage().contains("timeout")) {
+                sweep(privateKey);
+            }
         }
     }
 
-    private Action1<EthGetBalance> balanceFetched(final ECKeyPair keyPair) {
+    private void sweepWithHigherGasPrice(final BigInteger privateKey, final BigInteger newGasPrice) {
+        try {
+            final ECKeyPair keypair = ECKeyPair.create(privateKey);
+            final String address = Keys.getAddress(keypair);
+
+            web3j.web3j().ethGetBalance(prettify(address), DefaultBlockParameterName.LATEST).observable()
+                    .filter(Objects::nonNull)
+                    .subscribe(balanceFetched(keypair, newGasPrice));
+        } catch (final Exception ex) {
+            log.error("something went wrong while trying to resubmit with higher gas price {}: {}", privateKey, ex.getMessage());
+        }
+    }
+
+    private Action1<EthGetBalance> balanceFetched(final ECKeyPair keyPair, final BigInteger gasPrice) {
         return balance -> {
             if (balance.getBalance().longValue() != 0L) {
 
@@ -73,22 +89,17 @@ public class EthereumSweeper {
                     final EthGetTransactionCount transactionCount = calculateNonce(keyPair);
 
                     if (transactionCount != null) {
-                        final RawTransaction etherTransaction = RawTransaction.createEtherTransaction(
-                                transactionCount.getTransactionCount(),
-                                GAS_PRICE,
-                                ETHER_TRANSACTION_GAS_LIMIT,
-                                whitehatAddress,
-                                balance.getBalance().subtract(GAS_COST)
-                        );
-
+                        final RawTransaction etherTransaction = generateTransaction(balance, transactionCount, gasPrice);
 
                         final byte[] signedMessage = sign(keyPair, etherTransaction);
                         final String signedMessageAsHex = prettify(Hex.toHexString(signedMessage));
                         try {
-                            EthSendTransaction send = web3j.web3j().ethSendRawTransaction(signedMessageAsHex).sendAsync().get();
+                            final EthSendTransaction send = web3j.web3j().ethSendRawTransaction(signedMessageAsHex).sendAsync().get();
                             log.debug("txHash: {}", send.getTransactionHash());
                             if (send.getTransactionHash() != null) {
                                 mailService.send("Saved funds from compromised wallet!", "Hi Admin,\nWe just saved " + WeiUtils.format(balance.getBalance()).toString() + " from a compromised wallet[" + prettify(Keys.getAddress(keyPair) + "].\nKind regards,\nCindercloud"));
+                            } else {
+                                sweepWithHigherGasPrice(keyPair.getPrivateKey(), gasPrice.multiply(BigInteger.valueOf(2)));
                             }
                         } catch (final Exception ex) {
                             log.error("Error sending transaction (io)");
@@ -99,6 +110,16 @@ public class EthereumSweeper {
                 }
             }
         };
+    }
+
+    private RawTransaction generateTransaction(final EthGetBalance balance, final EthGetTransactionCount transactionCount, final BigInteger gasPrice) {
+        return RawTransaction.createEtherTransaction(
+                transactionCount.getTransactionCount(),
+                gasPrice,
+                ETHER_TRANSACTION_GAS_LIMIT,
+                whitehatAddress,
+                balance.getBalance().subtract(GAS_COST)
+        );
     }
 
     private byte[] sign(final ECKeyPair keyPair, final RawTransaction etherTransaction) {
