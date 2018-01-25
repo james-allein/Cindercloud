@@ -5,9 +5,10 @@
 
 <div th:fragment="blocks">
     <h2>Blocks</h2>
-    <hr />
+    <hr/>
     <ul class="list-unstyled">
-        <li th:each="block : ${blocks}" class="media g-brd-around g-brd-gray-light-v4 g-brd-left-3 g-brd-blue-left rounded g-pa-20 g-mb-10">
+        <li th:each="block : ${blocks}"
+            class="media g-brd-around g-brd-gray-light-v4 g-brd-left-3 g-brd-blue-left rounded g-pa-20 g-mb-10">
             <div class="d-flex g-mt-2 g-mr-15">
             </div>
             <div class="media-body">
@@ -15,58 +16,44 @@
                     <h5 class="h6 g-font-weight-600 g-color-black" th:text="${block.height}">elf</h5>
                     <span class="small text-nowrap g-color-blue" th:text="${block.prettyTimestamp()}">2 min ago</span>
                 </div>
-                <p>miner: <a th:href="@{/address/} + ${block.minedBy}"><b th:text="${block.prettyMinedBy()}"></b></a></p>
-                <span class="u-label u-label--sm g-bg-gray-light-v4 g-color-main g-rounded-20 g-px-10"><b th:text="${block.gasUsedPercentage()}"></b></span>
+                <p>miner: <a th:href="@{/address/} + ${block.minedBy}"><b th:text="${block.prettyMinedBy()}"></b></a>
+                </p>
+                <span class="u-label u-label--sm g-bg-gray-light-v4 g-color-main g-rounded-20 g-px-10"><b
+                        th:text="${block.gasUsedPercentage()}"></b></span>
             </div>
         </li>
     </ul>
 </div>
 
 <div th:fragment="transactions">
-    <h2>Last Transactions</h2>
-    <hr />
-        <div class="table-responsive">
-            <table class="table table-striped">
-                <thead>
-                <tr>
-                    <th>Hash</th>
-                    <th>Block</th>
-                    <th>From</th>
-                    <th>To</th>
-                    <th>Value</th>
-                </tr>
-                </thead>
+    <h2>Transactions</h2>
+    <hr/>
+    <ul class="list-unstyled">
+        <li th:each="tx : ${transactions}"
+            class="media g-brd-around g-brd-gray-light-v4 g-brd-left-3 g-brd-orange-left rounded g-pa-20 g-mb-10">
+            <div class="d-flex g-mt-2 g-mr-15">
+            </div>
+            <div class="media-body">
+                <div class="d-flex justify-content-between">
+                    <h5 class="h6 g-font-weight-600 g-color-black" th:text="${tx.prettyHash()}">elf</h5>
+                    <span class="small text-nowrap g-color-blue" th:text="${tx.blockHeight}">2 min ago</span>
+                </div>
 
-                <tbody>
-                <tr th:each="tx : ${transactions}">
-                    <td><a th:href="@{'/tx/' + ${tx.hash}}"><span th:text="${tx.prettyHash()}"></span></a></td>
-                    <td><a th:href="@{'/blocks/' + ${tx.blockHash}}"><span th:text="${tx.blockHeight}"></span></a>
-                    </td>
-                    <td>
-                        <a th:href="@{'/address/' + ${tx.fromAddress}}"
-                           th:if="${tx.direction(hash) == T(cloud.cinder.cindercloud.transaction.model.Transaction.Direction).IN}"><span
-                                th:text="${tx.prettyFromAddress()}"></span></a>
-                        <span th:unless="${tx.direction(hash) == T(cloud.cinder.cindercloud.transaction.model.Transaction.Direction).IN}"
-                              th:text="${tx.prettyFromAddress()}"></span>
-                    </td>
-                    <td>
-                        <div th:if="${tx.isContractCreation()}">
-                            <a th:href="@{'/address/' + ${tx.creates}}"><span
-                                    th:text="${tx.prettyToAddress()}"></span></a>
-                        </div>
-                        <div th:unless="${tx.isContractCreation()}">
-                            <a th:href="@{'/address/' + ${tx.toAddress}}"><span
-                                    th:text="${tx.prettyToAddress()}"></span></a>
-                        </div>
-                    </td>
-                    <td>
-                            <span class="u-label u-label-success g-color-white"
-                                  th:text="${tx.formattedValue()}">0</span>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
-        </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <p>from: <a th:href="@{/address/} + ${tx.fromAddress}"><b
+                                th:text="${tx.prettyFromAddress()}"></b></a></p>
+                    </div>
+                    <div class="col-md-6">
+                        <p>to: <a th:href="@{/address/} + ${tx.toAddress}"><b th:text="${tx.prettyToAddress()}"></b></a>
+                        </p>
+                    </div>
+                </div>
+                <span class="u-label u-label--sm g-bg-gray-light-v4 g-color-main g-rounded-20 g-px-10"><b
+                        th:text="${tx.formattedValue()}"></b></span>
+            </div>
+        </li>
+    </ul>
 </div>
 
 </html>
