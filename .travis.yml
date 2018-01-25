@@ -25,6 +25,6 @@ after_success:
   - docker build -t cindercloud/whitehat:"$TRAVIS_BRANCH" whitehat
   - docker build -t cindercloud/importer:"$TRAVIS_BRANCH" importer
   - docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD"
-  - docker push fundrequestio/web:"$TRAVIS_BRANCH"
-  - docker push fundrequestio/whitehat:"$TRAVIS_BRANCH"
-  - docker push fundrequestio/importer:"$TRAVIS_BRANCH"
+  - docker push cindercloud/web:"$TRAVIS_BRANCH"
+  - docker push cindercloud/whitehat:"$TRAVIS_BRANCH"
+  - docker push cindercloud/importer:"$TRAVIS_BRANCH"
