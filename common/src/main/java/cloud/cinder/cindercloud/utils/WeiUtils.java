@@ -5,11 +5,12 @@ import org.web3j.utils.Convert;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.math.RoundingMode;
 
 public class WeiUtils {
 
     public static double asEth(final BigInteger weiBalance) {
-        return weiBalance.divide(BigInteger.valueOf((long) Math.pow(10, 18))).doubleValue();
+        return new BigDecimal(weiBalance).divide(BigDecimal.valueOf(Math.pow(10, 18)), 8, RoundingMode.HALF_DOWN).doubleValue();
     }
 
     public static PrettyAmount format(final BigInteger value) {
