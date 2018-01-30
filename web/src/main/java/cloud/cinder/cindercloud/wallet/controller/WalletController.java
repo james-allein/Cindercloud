@@ -4,8 +4,10 @@ import cloud.cinder.cindercloud.address.service.AddressService;
 import cloud.cinder.cindercloud.coinmarketcap.dto.Currency;
 import cloud.cinder.cindercloud.coinmarketcap.service.PriceService;
 import cloud.cinder.cindercloud.security.domain.PrivateKeyAuthentication;
+import cloud.cinder.cindercloud.security.domain.Web3Authentication;
 import cloud.cinder.cindercloud.transaction.service.TransactionService;
 import cloud.cinder.cindercloud.utils.WeiUtils;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -19,6 +21,7 @@ import java.text.DecimalFormat;
 
 @Controller
 @RequestMapping("/wallet")
+@Slf4j
 public class WalletController {
 
     private static final DecimalFormat currencyFormat = new DecimalFormat("#.00");
@@ -57,7 +60,11 @@ public class WalletController {
     }
 
     private void requireAuthenticated() {
-        if (!(SecurityContextHolder.getContext().getAuthentication() instanceof PrivateKeyAuthentication)) {
+        if ((SecurityContextHolder.getContext().getAuthentication() instanceof PrivateKeyAuthentication)) {
+            log.trace("Logged in using private key");
+        } else if ((SecurityContextHolder.getContext().getAuthentication() instanceof Web3Authentication)) {
+            log.trace("Logged in using web3 authentication");
+        } else {
             throw new IllegalArgumentException("Not authenticated");
         }
     }
