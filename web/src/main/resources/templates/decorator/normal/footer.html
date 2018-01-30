@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+>
 <body>
 
 <div th:fragment="scripts2">
@@ -62,6 +62,7 @@
 		});
     </script>
 
+    <th:block th:replace="components/web3js :: footer"></th:block>
     <div layout:fragment="footer-content" th:remove="tag"></div>
 
 </div>
@@ -112,7 +113,7 @@
 
                     <address class="g-bg-no-repeat g-line-height-2 g-mt-minus-4"
                              style="background-image: url(/assets/img/maps/map2.png);">
-                        <br /><br />
+                        <br/><br/>
                         Blockchain
                         <br/> Email: <a href="mailto:info@ikzoekaannemers.be" class="">info@cinder.cloud</a>
                     </address>
@@ -126,7 +127,8 @@
             <div class="row">
                 <div class="col-md-8 text-center text-md-left g-mb-15 g-mb-0--md">
                     <div class="d-lg-flex">
-                        <small class="d-block g-font-size-default g-mr-10 g-mb-10 g-mb-0--md">2017 © Cindercloud.</small>
+                        <small class="d-block g-font-size-default g-mr-10 g-mb-10 g-mb-0--md">2017 © Cindercloud.
+                        </small>
                     </div>
                 </div>
             </div>
