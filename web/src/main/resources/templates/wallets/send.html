@@ -67,7 +67,7 @@
                     <!-- Balance Info -->
                     <div class="row justify-content-between">
                         <div class="col-md-12">
-                            <form th:object="${createEtherTransactionCommand}" class="g-pa-30 g-mb-30">
+                            <form th:object="${createEtherTransactionCommand}" th:action="@{/wallet/send}" method="POST" class="g-pa-30 g-mb-30">
                                 <div class="form-group row g-mb-25">
                                     <label class="col-sm-3 col-form-label g-mb-10">To</label>
 
@@ -104,6 +104,8 @@
                                              data-max="100"></div>
                                     </div>
                                 </div>
+
+                                <button type="submit" class="btn btn-md u-btn-primary pull-right rounded-0">Next</button>
                             </form>
                         </div>
                     </div>

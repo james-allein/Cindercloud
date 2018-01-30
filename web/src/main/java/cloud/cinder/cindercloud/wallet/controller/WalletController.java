@@ -3,10 +3,9 @@ package cloud.cinder.cindercloud.wallet.controller;
 import cloud.cinder.cindercloud.address.service.AddressService;
 import cloud.cinder.cindercloud.coinmarketcap.dto.Currency;
 import cloud.cinder.cindercloud.coinmarketcap.service.PriceService;
-import cloud.cinder.cindercloud.security.domain.PrivateKeyAuthentication;
-import cloud.cinder.cindercloud.security.domain.Web3Authentication;
 import cloud.cinder.cindercloud.transaction.service.TransactionService;
 import cloud.cinder.cindercloud.utils.WeiUtils;
+import cloud.cinder.cindercloud.wallet.service.AuthenticationService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -29,13 +28,15 @@ public class WalletController {
     @Autowired
     private AddressService addressService;
     @Autowired
+    private AuthenticationService authenticationService;
+    @Autowired
     private PriceService priceService;
     @Autowired
     private TransactionService transactionService;
 
     @RequestMapping(method = RequestMethod.GET)
     public String index(final ModelMap modelMap) {
-        requireAuthenticated();
+        authenticationService.requireAuthenticated();
         final String address = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         final BigInteger balance = addressService.getBalance(address).toBlocking().first();
         modelMap.put("balance", WeiUtils.format(balance));
@@ -48,7 +49,7 @@ public class WalletController {
 
     @RequestMapping(method = RequestMethod.GET, value = "/transactions")
     public String transactions(final ModelMap modelMap) {
-        requireAuthenticated();
+        authenticationService.requireAuthenticated();
         final String address = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         modelMap.put("transactions", transactionService.findByAddress(address, new PageRequest(0, 25)).toBlocking().first());
         modelMap.put("address", address);
@@ -57,16 +58,6 @@ public class WalletController {
 
     private String formatCurrency(final double v) {
         return currencyFormat.format(v);
-    }
-
-    private void requireAuthenticated() {
-        if ((SecurityContextHolder.getContext().getAuthentication() instanceof PrivateKeyAuthentication)) {
-            log.trace("Logged in using private key");
-        } else if ((SecurityContextHolder.getContext().getAuthentication() instanceof Web3Authentication)) {
-            log.trace("Logged in using web3 authentication");
-        } else {
-            throw new IllegalArgumentException("Not authenticated");
-        }
     }
 
 }
