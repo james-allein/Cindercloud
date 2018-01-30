@@ -30,6 +30,17 @@ public class WalletService {
         }
     }
 
+    public String web3Login(final String address) {
+        validateAddress(address);
+        return address;
+    }
+
+    private void validateAddress(final String address) {
+        if (address == null || (address.length() != 40 && address.length() != 42)) {
+            throw new IllegalArgumentException("The address you provided is not valid");
+        }
+    }
+
     public Credentials login(final String password, final String wallet) {
         try {
             final WalletFile walletFile = walletmapper.readValue(wallet, WalletFile.class);
