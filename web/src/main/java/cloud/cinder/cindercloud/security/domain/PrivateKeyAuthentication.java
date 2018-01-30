@@ -1,6 +1,7 @@
 package cloud.cinder.cindercloud.security.domain;
 
 import org.springframework.security.authentication.AbstractAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.web3j.crypto.ECKeyPair;
 
 import static java.util.Collections.emptyList;
@@ -9,6 +10,7 @@ public class PrivateKeyAuthentication extends AbstractAuthenticationToken {
 
     final ECKeyPair keyPair;
     final String address;
+    final AuthenticationType type = AuthenticationType.CINDERCLOUD;
 
     public PrivateKeyAuthentication(final ECKeyPair keyPair, final String address) {
         super(emptyList());
@@ -24,5 +26,9 @@ public class PrivateKeyAuthentication extends AbstractAuthenticationToken {
     @Override
     public Object getPrincipal() {
         return address;
+    }
+
+    public AuthenticationType getType() {
+        return type;
     }
 }
