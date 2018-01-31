@@ -62,53 +62,53 @@
             <div class="col-lg-9 g-mb-50">
                 <!-- Balance & Rewards -->
                 <div class="g-brd-around g-brd-gray-light-v4 rounded g-px-30 g-pt-30">
-                    <h3 class="h5 mb-3">Create a transaction</h3>
+                    <h3 class="h5 mb-3">Confirm your transaction</h3>
 
                     <!-- Balance Info -->
                     <div class="row justify-content-between">
                         <div class="col-md-12">
-                            <form th:object="${createEtherTransactionCommand}" id="frmSendTransaction" th:action="@{/wallet/send}" method="POST" class="g-pa-30 g-mb-30">
-                                <div class="form-group row g-mb-25">
-                                    <label class="col-sm-3 col-form-label g-mb-10">To</label>
-
-                                    <div class="col-sm-9">
-                                        <input th:field="*{to}" class="form-control u-form-control rounded-0" type="text"
-                                               placeholder="0xEeb7dF8C260f7DE30b41A981D52b4573CB5dFe2f"/>
+                            <ul class="list-unstyled g-mb-30">
+                                <li class="d-flex align-items-center justify-content-between g-brd-bottom g-brd-gray-light-v4 g-py-15">
+                                    <div class="g-pr-10">
+                                        <strong class="d-block d-md-inline-block g-color-gray-dark-v2 g-width-200 g-pr-10">To</strong>
+                                        <span class="align-top" th:text="${confirm.to}"></span>
                                     </div>
-                                </div>
-                                <div class="form-group row g-mb-20">
-                                    <label class="col-sm-3 col-form-label g-mb-10">Amount to send</label>
-                                    <div class="col-sm-9">
-                                        <input th:field="*{amount}" class="form-control u-form-control rounded-0" type="number"
-                                               placeholder="amount"/>
+                                </li>
+
+                                <!-- Your ID -->
+                                <li class="d-flex align-items-center justify-content-between g-brd-bottom g-brd-gray-light-v4 g-py-15">
+                                    <div class="g-pr-10">
+                                        <strong class="d-block d-md-inline-block g-color-gray-dark-v2 g-width-200 g-pr-10">Gas
+                                            Price</strong>
+                                        <span class="align-top"><span th:text="${confirm.gasPrice}"></span> <b>gwei</b></span>
                                     </div>
-                                </div>
-                                <div class="form-group row g-mb-20">
-                                    <label class="col-sm-3 col-form-label g-mb-10">Gas Limit</label>
-                                    <div class="col-sm-9">
-                                        <input th:field="*{gasLimit}" value="21000" class="form-control u-form-control rounded-0" type="number"
-                                               placeholder="amount"/>
+                                    <span>
+                      </span>
+                                </li>
+                                <!-- End Your ID -->
+
+                                <!-- Company Name -->
+                                <li class="d-flex align-items-center justify-content-between g-brd-bottom g-brd-gray-light-v4 g-py-15">
+                                    <div class="g-pr-10">
+                                        <strong class="d-block d-md-inline-block g-color-gray-dark-v2 g-width-200 g-pr-10">Gas
+                                            Limit</strong>
+                                        <span class="align-top" th:text="${confirm.gasLimit}"></span>
                                     </div>
-                                </div>
+                                </li>
+                                <!-- End Company Name -->
 
-                                <div class="form-group row g-mb-40">
-                                    <label class="col-sm-3 col-form-label g-mb-10">
-                                        Gas Price
-                                        <span class="g-color-primary">(<span
-                                                id="regularSliderAmount3">25</span> GWEI)</span>
-                                    </label>
-                                    <div class="col-sm-9">
-
-                                        <div id="regularSlider3" class="u-slider-v1-3"
-                                             data-result-container="regularSliderAmount3" data-default="25" data-min="0"
-                                             data-max="100"></div>
+                                <!-- Position -->
+                                <li class="d-flex align-items-center justify-content-between g-brd-bottom g-brd-gray-light-v4 g-py-15">
+                                    <div class="g-pr-10">
+                                        <strong class="d-block d-md-inline-block g-color-gray-dark-v2 g-width-200 g-pr-10">Amount</strong>
+                                        <span class="align-top" th:text="${confirm.amount}">moneyz</span>
                                     </div>
-                                </div>
-
-                                <input type="hidden" id="gasPrice" th:field="*{gasPrice}" value="25" />
-
-                                <button type="submit" id="sendTransaction" class="btn btn-md u-btn-primary pull-right rounded-0">Next</button>
-                            </form>
+                                    <span>
+                      </span>
+                                </li>
+                            </ul>
+                            <button type="submit" id="btnConfirm" class="btn btn-md u-btn-primary pull-right rounded-0">Confirm</button>
+                            <button type="submit" id="btnCancel" class="btn btn-md u-btn-red pull-right rounded-0">Cancel</button>
                         </div>
                     </div>
                     <!-- End Balance Info -->
@@ -140,12 +140,12 @@
 			// initialization of forms
 			$.HSCore.components.HSSlider.init('#regularSlider3');
 
-			$("#frmSendTransaction").submit(function(ev) {
-                ev.preventDefault();
-                var gasPrice = $('#regularSliderAmount3').html();
-                $('#gasPrice').val(gasPrice);
-                this.submit();
-            });
+			$("#frmSendTransaction").submit(function (ev) {
+				ev.preventDefault();
+				var gasPrice = $('#regularSliderAmount3').html();
+				$('#gasPrice').val(gasPrice);
+				this.submit();
+			});
 		});
     </script>
 </div>

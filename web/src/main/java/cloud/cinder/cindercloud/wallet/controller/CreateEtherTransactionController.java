@@ -1,5 +1,6 @@
 package cloud.cinder.cindercloud.wallet.controller;
 
+import cloud.cinder.cindercloud.wallet.controller.command.ConfirmEtherTransactionCommand;
 import cloud.cinder.cindercloud.wallet.controller.command.CreateEtherTransactionCommand;
 import cloud.cinder.cindercloud.wallet.service.AuthenticationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,10 +32,18 @@ public class CreateEtherTransactionController {
 
     @RequestMapping(method = RequestMethod.POST, value = "/send")
     public String createTransaction(@Valid @ModelAttribute("createEtherTransactionCommand") final CreateEtherTransactionCommand createEtherTransactionCommand,
-                                    final BindingResult bindingResult) {
+                                    final BindingResult bindingResult,
+                                    final ModelMap modelMap) {
         if (bindingResult.hasErrors()) {
             return "wallets/send";
         } else {
+            modelMap.addAttribute("authenticationType", authenticationService.getType());
+            modelMap.put("confirm", new ConfirmEtherTransactionCommand(
+                    createEtherTransactionCommand.getTo(),
+                    createEtherTransactionCommand.getGasPrice(),
+                    createEtherTransactionCommand.getGasLimit(),
+                    createEtherTransactionCommand.getAmount()
+            ));
             return "wallets/confirm";
         }
     }

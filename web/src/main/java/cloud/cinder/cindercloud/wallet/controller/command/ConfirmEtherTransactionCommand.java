@@ -3,16 +3,14 @@ package cloud.cinder.cindercloud.wallet.controller.command;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.validation.constraints.Min;
 
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
-public class CreateEtherTransactionCommand {
+public class ConfirmEtherTransactionCommand {
 
-    @NotEmpty
     private String to;
     @Min(1)
     private long gasPrice;
