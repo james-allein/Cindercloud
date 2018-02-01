@@ -80,19 +80,25 @@ public class AccidentalPrivateSharingListener {
                 try {
                     final ECKeyPair keypair = ECKeyPair.create(Numeric.decodeQuantity(x.getInput().replace("\uFEFF", "")));
                     final String address = Keys.getAddress(keypair);
-                    credentialService.saveLeakedCredential(
-                            LeakedCredential.builder()
-                                    .address(prettifyAddress(address))
-                                    .privateKey(x.getInput())
-                                    .dateAdded(new Date())
-                                    .build()
-                    );
+                    if (notBlacklisted(address)) {
+                        credentialService.saveLeakedCredential(
+                                LeakedCredential.builder()
+                                        .address(prettifyAddress(address))
+                                        .privateKey(x.getInput())
+                                        .dateAdded(new Date())
+                                        .build()
+                        );
+                    }
                 } catch (final Exception ex) {
                     log.error("unable to save {} because: {}", x.getInput(), ex.getMessage());
                 }
             }
             sweepToIfKnown(x);
         };
+    }
+
+    private boolean notBlacklisted(final String address) {
+        return !address.equalsIgnoreCase("3f17f1962b36e491b30a40b2405849e597ba5fb5");
     }
 
     private void sweepToIfKnown(final Transaction x) {
