@@ -4,7 +4,9 @@ import cloud.cinder.cindercloud.security.domain.AuthenticationType;
 import cloud.cinder.cindercloud.wallet.controller.command.ConfirmEtherTransactionCommand;
 import cloud.cinder.cindercloud.wallet.controller.command.CreateEtherTransactionCommand;
 import cloud.cinder.cindercloud.wallet.service.AuthenticationService;
+import cloud.cinder.cindercloud.wallet.service.Web3TransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -22,6 +24,8 @@ public class CreateEtherTransactionController {
 
     @Autowired
     private AuthenticationService authenticationService;
+    @Autowired
+    private Web3TransactionService web3TransactionService;
 
     @RequestMapping(method = RequestMethod.GET, value = "/send")
     public String index(final ModelMap modelMap) {
@@ -63,9 +67,11 @@ public class CreateEtherTransactionController {
             if (authenticationService.getType().equals(AuthenticationType.CINDERCLOUD)) {
                 //do transaction
                 try {
-                    System.out.println("Transacting");
-                    redirectAttributes.addFlashAttribute("success", "Your transaction has been submitted to the network");
+                    final String transactionHash = web3TransactionService.submitTransaction(confirmEtherTransactionCommand);
+                    redirectAttributes.addFlashAttribute("success", "Your transaction has been submitted to the network: " + transactionHash);
                     return "redirect:/wallet/send";
+                } catch (final AuthenticationException e) {
+                    throw e;
                 } catch (final Exception ex) {
                     redirectAttributes.addFlashAttribute("error", "Something went wrong while trying to execute your transaction, please try again");
                     return "redirect:/wallet/send";

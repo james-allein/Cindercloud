@@ -7,6 +7,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.validation.constraints.Min;
 import java.math.BigDecimal;
+import java.math.BigInteger;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -16,9 +17,9 @@ public class CreateEtherTransactionCommand {
     @NotEmpty
     private String to;
     @Min(1)
-    private long gasPrice;
+    private BigInteger gasPrice;
     @Min(21000)
-    private long gasLimit = 31000;
+    private BigInteger gasLimit = BigInteger.valueOf(31000);
     private double amount;
 
     public String amountInWei() {

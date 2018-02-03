@@ -14,10 +14,10 @@ public class ConfirmEtherTransactionCommand {
 
     private String to;
     @Min(1)
-    private long gasPrice;
+    private BigInteger gasPrice;
     private String gasPriceInWei;
     @Min(21000)
-    private long gasLimit = 31000;
+    private BigInteger gasLimit = BigInteger.valueOf(31000);
     private double amount;
     private String amountInWei;
 }
