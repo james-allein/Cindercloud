@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.validation.constraints.Min;
+import java.math.BigDecimal;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -19,4 +20,16 @@ public class CreateEtherTransactionCommand {
     @Min(21000)
     private long gasLimit = 31000;
     private double amount;
+
+    public String amountInWei() {
+        final BigDecimal bigDecimal = new BigDecimal(amount);
+        final BigDecimal weiValue = bigDecimal.multiply(BigDecimal.valueOf(Math.pow(10, 18)));
+        return weiValue.toPlainString();
+    }
+
+    public String gasPriceInWei() {
+        final BigDecimal bigDecimal = new BigDecimal(gasPrice);
+        final BigDecimal weiValue = bigDecimal.multiply(BigDecimal.valueOf(Math.pow(10, 9)));
+        return weiValue.toPlainString();
+    }
 }

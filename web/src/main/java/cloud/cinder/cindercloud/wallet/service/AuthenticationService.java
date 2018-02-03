@@ -4,6 +4,8 @@ import cloud.cinder.cindercloud.security.domain.AuthenticationType;
 import cloud.cinder.cindercloud.security.domain.PrivateKeyAuthentication;
 import cloud.cinder.cindercloud.security.domain.Web3Authentication;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.authentication.InsufficientAuthenticationException;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
@@ -17,7 +19,7 @@ public class AuthenticationService {
         } else if ((SecurityContextHolder.getContext().getAuthentication() instanceof Web3Authentication)) {
             log.trace("Logged in using web3 authentication");
         } else {
-            throw new IllegalArgumentException("Not authenticated");
+            throw new InsufficientAuthenticationException("Not authenticated");
         }
     }
 
@@ -29,7 +31,7 @@ public class AuthenticationService {
             log.trace("Logged in using web3 authentication");
             return AuthenticationType.WEB3;
         } else {
-            throw new IllegalArgumentException("Not authenticated");
+            throw new InsufficientAuthenticationException("Not authenticated");
         }
     }
 }

@@ -107,8 +107,39 @@
                       </span>
                                 </li>
                             </ul>
-                            <button type="submit" id="btnConfirm" class="btn btn-md u-btn-primary pull-right rounded-0">Confirm</button>
-                            <button type="submit" id="btnCancel" class="btn btn-md u-btn-red pull-right rounded-0">Cancel</button>
+
+                            <div th:if="${authenticationType == T(cloud.cinder.cindercloud.security.domain.AuthenticationType).CINDERCLOUD}">
+                                <form th:object="${confirm}" action="">
+                                    <input type="hidden" th:field="*{to}" id="confirmTo"/>
+                                    <input type="hidden" th:field="*{amountInWei}" id="confirmAmountInWei"/>
+                                    <input type="hidden" th:field="*{amount}" id="confirmAmount"/>
+                                    <input type="hidden" th:field="*{gasPrice}" id="confirmGasPrice"/>
+                                    <input type="hidden" th:field="*{gasLimit}" id="confirmGasLimit"/>
+                                    <button type="submit" id="btnConfirm"
+                                            class="btn btn-md u-btn-primary pull-right rounded-0">Confirm
+                                    </button>
+                                </form>
+                                <button type="submit" id="btnCancel" class="btn btn-md u-btn-red pull-right rounded-0">
+                                    Cancel
+                                </button>
+                            </div>
+
+                            <div th:if="${authenticationType == T(cloud.cinder.cindercloud.security.domain.AuthenticationType).WEB3}">
+                                <form th:object="${confirm}">
+                                    <input type="hidden" th:field="*{to}" id="confirmTo"/>
+                                    <input type="hidden" th:field="*{amountInWei}" id="confirmAmountInWei"/>
+                                    <input type="hidden" th:field="*{amount}" id="confirmAmount"/>
+                                    <input type="hidden" th:field="*{gasPrice}" id="confirmGasPrice"/>
+                                    <input type="hidden" th:field="*{gasPriceInWei}" id="confirmGasPriceInWei"/>
+                                    <input type="hidden" th:field="*{gasLimit}" id="confirmGasLimit"/>
+                                </form>
+                                <button type="submit" id="btnConfirm"
+                                        class="btn btn-md u-btn-primary pull-right rounded-0">Confirm
+                                </button>
+                                <button type="submit" id="btnCancel" class="btn btn-md u-btn-red pull-right rounded-0">
+                                    Cancel
+                                </button>
+                            </div>
                         </div>
                     </div>
                     <!-- End Balance Info -->
@@ -148,6 +179,52 @@
 			});
 		});
     </script>
+
+    <script th:if="${authenticationType == T(cloud.cinder.cindercloud.security.domain.AuthenticationType).WEB3}">
+		$(document).ready(function () {
+			$('#btnCancel').click(function () {
+				swal({
+					title: "Are you sure?",
+					text: "If you cancel, you'll have to start over!",
+					icon: "warning",
+					buttons: true,
+					dangerMode: false
+				})
+					.then(function (willCancel) {
+						if (willCancel) {
+							location.href = '/wallet/send';
+						}
+					});
+			});
+
+			$('#btnConfirm').click(function () {
+				sendTransaction();
+			});
+
+			var sendTransaction = function () {
+				var to = $('#confirmTo').val();
+				var gasLimit = $('#confirmGasLimit').val();
+				var gasPrice = $('#confirmGasPriceInWei').val();
+				var amountInWei = $('#confirmAmountInWei').val();
+
+				var transactionObject = {
+					to: to,
+					value: amountInWei,
+					gas: gasLimit,
+					gasPrice: gasPrice
+				};
+
+				_web3.eth.sendTransaction(transactionObject, function (err, transactionHash) {
+					if (!err) {
+						swal("Transaction Sent!", "The transaction has been sent (" + transactionHash + ")", "success");
+					} else {
+						swal("Transaction Problem!", "Something went wrong while trying to submit your transaction", "error");
+					}
+				})
+			};
+		});
+    </script>
+
 </div>
 </body>
 </html>
