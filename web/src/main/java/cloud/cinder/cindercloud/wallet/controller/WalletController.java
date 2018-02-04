@@ -3,12 +3,14 @@ package cloud.cinder.cindercloud.wallet.controller;
 import cloud.cinder.cindercloud.address.service.AddressService;
 import cloud.cinder.cindercloud.coinmarketcap.dto.Currency;
 import cloud.cinder.cindercloud.coinmarketcap.service.PriceService;
+import cloud.cinder.cindercloud.transaction.model.Transaction;
 import cloud.cinder.cindercloud.transaction.service.TransactionService;
 import cloud.cinder.cindercloud.utils.WeiUtils;
 import cloud.cinder.cindercloud.wallet.service.AuthenticationService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Slice;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -51,7 +53,8 @@ public class WalletController {
     public String transactions(final ModelMap modelMap) {
         authenticationService.requireAuthenticated();
         final String address = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        modelMap.put("transactions", transactionService.findByAddress(address, new PageRequest(0, 25)).toBlocking().first());
+        final Slice<Transaction> transactions = transactionService.findByAddress(address, new PageRequest(0, 10)).toBlocking().first();
+        modelMap.put("transactions", transactions);
         modelMap.put("address", address);
         return "wallets/transactions";
     }
