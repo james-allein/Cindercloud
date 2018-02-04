@@ -73,7 +73,7 @@ public class CreateEtherTransactionController {
                 } catch (final AuthenticationException e) {
                     throw e;
                 } catch (final Exception ex) {
-                    redirectAttributes.addFlashAttribute("error", "Something went wrong while trying to execute your transaction, please try again");
+                    redirectAttributes.addFlashAttribute("error", ex.getMessage());
                     return "redirect:/wallet/send";
                 }
             } else {

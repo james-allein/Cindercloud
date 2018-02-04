@@ -16,21 +16,20 @@ public class CreateEtherTransactionCommand {
 
     @NotEmpty
     private String to;
-    @Min(1)
-    private BigInteger gasPrice;
+    private String gasPrice;
     @Min(21000)
     private BigInteger gasLimit = BigInteger.valueOf(31000);
     private double amount;
 
-    public String amountInWei() {
+    public BigInteger amountInWei() {
         final BigDecimal bigDecimal = new BigDecimal(amount);
         final BigDecimal weiValue = bigDecimal.multiply(BigDecimal.valueOf(Math.pow(10, 18)));
-        return weiValue.toPlainString();
+        return new BigInteger(weiValue.toPlainString());
     }
 
-    public String gasPriceInWei() {
+    public BigInteger gasPriceInWei() {
         final BigDecimal bigDecimal = new BigDecimal(gasPrice);
         final BigDecimal weiValue = bigDecimal.multiply(BigDecimal.valueOf(Math.pow(10, 9)));
-        return weiValue.toPlainString();
+        return new BigInteger(weiValue.toPlainString());
     }
 }

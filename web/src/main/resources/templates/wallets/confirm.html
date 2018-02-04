@@ -109,9 +109,10 @@
                             </ul>
 
                             <div th:if="${authenticationType == T(cloud.cinder.cindercloud.security.domain.AuthenticationType).CINDERCLOUD}">
-                                <form th:object="${confirm}" action="">
+                                <form th:object="${confirm}" method="POST" th:action="@{/wallet/confirm}">
                                     <input type="hidden" th:field="*{to}" id="confirmTo"/>
                                     <input type="hidden" th:field="*{amountInWei}" id="confirmAmountInWei"/>
+                                    <input type="hidden" th:field="*{gasPriceInWei}" id="gasPriceInWei"/>
                                     <input type="hidden" th:field="*{amount}" id="confirmAmount"/>
                                     <input type="hidden" th:field="*{gasPrice}" id="confirmGasPrice"/>
                                     <input type="hidden" th:field="*{gasLimit}" id="confirmGasLimit"/>

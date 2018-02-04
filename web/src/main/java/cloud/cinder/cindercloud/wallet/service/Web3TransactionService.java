@@ -33,7 +33,7 @@ public class Web3TransactionService {
         if (hasEnoughBalance(balance, etherTransactionCommand)) {
             final EthGetTransactionCount ethGetTransactionCount = calculateNonce(address);
             if (ethGetTransactionCount != null) {
-                final RawTransaction etherTransaction = generateTransaction(balance, ethGetTransactionCount, etherTransactionCommand);
+                final RawTransaction etherTransaction = generateTransaction(ethGetTransactionCount, etherTransactionCommand);
 
                 final byte[] signedMessage = sign(etherTransaction);
                 final String signedMessageAsHex = prettify(Hex.toHexString(signedMessage));
@@ -44,17 +44,17 @@ public class Web3TransactionService {
                         return send.getTransactionHash();
                     } else {
                         log.error(send.getError().getMessage());
-                        return send.getError().getMessage();
+                        throw new IllegalArgumentException(send.getError().getMessage());
                     }
                 } catch (final Exception ex) {
-                    log.error("Error sending transaction (io)");
-                    return "Error trying to submit a transaction, please try again later.";
+                    //TODO: handle "already imported" transactions
+                    throw new IllegalArgumentException("Error trying to submit a transaction, please try again later.");
                 }
             } else {
-                return "Error trying to submit a transaction, please try again later";
+                throw new IllegalArgumentException("Error trying to submit a transaction, please try again later");
             }
         } else {
-            throw new IllegalArgumentException("Not enough balance");
+            throw new IllegalArgumentException("Your balance isn't high enough to submit this transaction.");
         }
     }
 
@@ -64,18 +64,20 @@ public class Web3TransactionService {
     }
 
 
-    private RawTransaction generateTransaction(final BigInteger balance, final EthGetTransactionCount transactionCount, final ConfirmEtherTransactionCommand etherTransactionCommand) {
+    private RawTransaction generateTransaction(final EthGetTransactionCount transactionCount, final ConfirmEtherTransactionCommand etherTransactionCommand) {
         return RawTransaction.createEtherTransaction(
                 transactionCount.getTransactionCount(),
-                etherTransactionCommand.getGasPrice(),
+                etherTransactionCommand.getGasPriceInWei(),
                 etherTransactionCommand.getGasLimit(),
                 etherTransactionCommand.getTo(),
-                balance.subtract(etherTransactionCommand.getGasPrice().multiply(etherTransactionCommand.getGasLimit()))
+                etherTransactionCommand.getAmountInWei()
         );
     }
 
     private boolean hasEnoughBalance(final BigInteger balance, final ConfirmEtherTransactionCommand etherTransactionCommand) {
-        return (balance.compareTo(etherTransactionCommand.getGasPrice().multiply(etherTransactionCommand.getGasLimit())) >= 0);
+        final BigInteger totalGas = etherTransactionCommand.getGasPriceInWei().multiply(etherTransactionCommand.getGasLimit());
+        final BigInteger totalPrice = etherTransactionCommand.getAmountInWei().add(totalGas);
+        return (balance.compareTo(totalPrice) >= 0);
     }
 
     private EthGetTransactionCount calculateNonce(final String address) {

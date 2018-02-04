@@ -13,11 +13,10 @@ import java.math.BigInteger;
 public class ConfirmEtherTransactionCommand {
 
     private String to;
-    @Min(1)
-    private BigInteger gasPrice;
-    private String gasPriceInWei;
+    private String gasPrice;
+    private BigInteger gasPriceInWei;
     @Min(21000)
     private BigInteger gasLimit = BigInteger.valueOf(31000);
     private double amount;
-    private String amountInWei;
+    private BigInteger amountInWei;
 }

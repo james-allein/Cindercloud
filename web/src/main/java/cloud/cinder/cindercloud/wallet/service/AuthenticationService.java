@@ -8,8 +8,12 @@ import org.springframework.security.authentication.InsufficientAuthenticationExc
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.web3j.crypto.Credentials;
+import org.web3j.crypto.ECKeyPair;
 import org.web3j.crypto.RawTransaction;
 import org.web3j.crypto.TransactionEncoder;
+
+import java.math.BigInteger;
+import java.security.interfaces.ECKey;
 
 @Service
 @Slf4j
@@ -35,9 +39,9 @@ public class AuthenticationService {
         }
     }
 
-    private String getKey() {
+    private ECKeyPair getPrivateKey() {
         if ((SecurityContextHolder.getContext().getAuthentication() instanceof PrivateKeyAuthentication)) {
-            return ((PrivateKeyAuthentication) SecurityContextHolder.getContext()).getCredentials().toString();
+            return ((ECKeyPair)SecurityContextHolder.getContext().getAuthentication().getCredentials());
         } else if ((SecurityContextHolder.getContext().getAuthentication() instanceof Web3Authentication)) {
             throw new InsufficientAuthenticationException("Authenticated with Web3");
         } else {
@@ -58,6 +62,6 @@ public class AuthenticationService {
     }
 
     public byte[] sign(final RawTransaction etherTransaction) {
-        return TransactionEncoder.signMessage(etherTransaction, Credentials.create(getKey()));
+        return TransactionEncoder.signMessage(etherTransaction, Credentials.create(getPrivateKey()));
     }
 }
