@@ -3,8 +3,8 @@ spring:
         name: Cindercloud-whitehat
     datasource:
         url: jdbc:postgresql://localhost:5432/cindercloud
-        username: cindercloud-web
-        password: cindercloud-web
+        username: cindercloud
+        password: cindercloud
         driver-class-name: org.postgresql.Driver
         type: com.zaxxer.hikari.HikariDataSource
         hikari:
