@@ -1,0 +1,444 @@
+<!DOCTYPE html >
+<html lang="en"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="decorator/normal/decorator">
+<div layout:fragment="header-content">
+</div>
+
+<body>
+<div layout:fragment="main-content">
+    <section class="breadcrumbs g-bg-gray-light-v5 g-py-50">
+        <div class="container">
+            <div class="d-sm-flex ">
+                <div class="align-self-center">
+                    <h2 class="h3 g-font-weight-300 w-100 g-mb-10 g-mb-0--md">Token: <br/>
+                        <b> <span th:text="${token.address}"></span> <span>( <span
+                                th:text="${token.name}"></span> )</span></b>
+                    </h2>
+                </div>
+
+                <div class="align-self-center ml-auto">
+                    <ul class="u-list-inline">
+                        <li class="list-inline-item g-mr-5">
+                            <a class="u-link-v5 g-color-main g-color-primary--hover" href="#">Home</a>
+                            <i class="g-color-gray-light-v2 g-ml-5">/</i>
+                        </li>
+                        <li class="list-inline-item g-mr-5">
+                            <a class="u-link-v5 g-color-main g-color-primary--hover" href="#">Addresses</a>
+                            <i class="g-color-gray-light-v2 g-ml-5">/</i>
+                        </li>
+                        <li class="list-inline-item g-color-primary">
+                            <span>Token</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="container g-pt-10 g-pb-30">
+
+        <h1 style="display: none;">Ethereum Address: <span th:text="${token.address}"></span></h1>
+
+        <!-- Nav tabs -->
+        <ul class="nav u-nav-v8-1" role="tablist" data-target="nav-8-1-default-hor-left"
+            data-tabs-mobile-type="slide-up-down"
+            data-btn-classes="btn btn-md btn-block rounded-0 u-btn-outline-lightgray">
+            <li class="nav-item">
+                <a class="nav-link active" data-toggle="tab" href="#blockInformation" role="tab">
+      <span class="u-nav-v8__icon u-icon-v3 u-icon-size--lg g-rounded-50x g-brd-around g-brd-4 g-brd-white">
+        <i class="fa fa-binoculars"></i>
+      </span>
+                    <strong class="text-uppercase u-nav-v8__title">Information</strong>
+                    <em class="u-nav-v8__description">General information about this token.</em>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" href="#blockComments" role="tab">
+                          <span class="u-nav-v8__icon u-icon-v3 u-icon-size--lg g-rounded-50x g-brd-around g-brd-4 g-brd-white">
+                            <i class="fa fa-comments-o"></i>
+                          </span>
+                    <strong class="text-uppercase u-nav-v8__title">Comments</strong>
+                    <em class="u-nav-v8__description">Join the conversation.</em>
+                </a>
+            </li>
+        </ul>
+        <!-- End Nav tabs -->
+
+        <!-- Tab panes -->
+        <div id="nav-8-1-default-hor-left" class="tab-content g-pt-20">
+            <div class="tab-pane fade show active" id="blockInformation" role="tabpanel">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="g-brd-around g-brd-primary g-pa-20">
+                            <div class="g-font-size-35 g-font-weight-300 g-mb-7" th:text="${token.name}">Name</div>
+                            <h4 class="h5 g-color-gray-dark-v4 g-mb-5" id="erc20Name">Name</h4>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="g-brd-around g-brd-primary g-pa-20">
+                            <div class="g-font-size-35 g-font-weight-300 g-mb-7" th:text="${token.decimals}">Decimals
+                            </div>
+                            <h4 class="h5 g-color-gray-dark-v4 g-mb-5" id="erc20Decimals">Decimals</h4>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="g-brd-around g-brd-primary g-pa-20">
+                            <div class="g-font-size-35 g-font-weight-300 g-mb-7" th:text="${token.symbol}">Symbol</div>
+                            <h4 class="h5 g-color-gray-dark-v4 g-mb-5" id="erc20Symbol">Symbol</h4>
+                        </div>
+                    </div>
+                </div>
+                <br/>
+                <div class="row">
+                    <div class="col-md-1"></div>
+                    <div class="col-md-10">
+                        <div class="g-brd-around g-brd-primary g-pa-20">
+                            <div class="g-font-size-35 g-font-weight-300 g-mb-7">Check Balance</div>
+                            <div class="input-group g-rounded-left-3">
+                                <span class="input-group-addon g-width-45 g-brd-gray-light-v3 g-color-gray-dark-v5">
+                                  <i class="icon-media-095 u-line-icon-pro"></i>
+                                </span>
+                                <input id="erc20BalanceCheck" autocomplete="off"
+                                       class="form-control form-control-md rounded-0"
+                                       type="text" placeholder="address"/>
+                                <div class="input-group-btn">
+                                    <button id="erc20CheckBalanceBtn" class="btn btn-md u-btn-primary rounded-0" type="button">Check</button>
+                                </div>
+                            </div>
+                            <div style="text-align: center;" >
+                                <h4 class="g-font-size-35 g-font-weight-300 g-mb-7" id="balanceOfResult"></h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <br />
+                <div class="row">
+                    <div class="col-md-1"></div>
+                    <div class="col-md-10">
+                        <div class="g-brd-around g-brd-primary g-pa-20">
+                            <div class="g-font-size-35 g-font-weight-300 g-mb-7" id="erc20TotalSupply">?</div>
+                            <h4 class="h5 g-color-gray-dark-v4 g-mb-5" >Total Supply</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tab-pane fade" id="blockComments" role="tabpanel">
+                <div id="disqus_thread"></div>
+            </div>
+        </div>
+        <!-- End Tab panes -->
+    </section>
+</div>
+
+<div layout:fragment="footer-content">
+    <!-- JS Implementing Plugins -->
+    <script th:src="@{/assets/vendor/appear.js}"></script>
+
+    <span id="currentAddress" th:attr="data-hash=${token.address}"></span>
+
+    <script type="application/javascript">
+		$(document).ready(function () {
+			$.get('/address/' + $("#currentAddress").data('hash') + '/tokens', function (result) {
+				$("#tokenSection").html(result);
+			});
+		});
+    </script>
+
+    <script type="application/javascript">
+		$(document).ready(function () {
+
+			var erc20Abi = [
+				{
+					"constant": true,
+					"inputs": [],
+					"name": "name",
+					"outputs": [
+						{
+							"name": "",
+							"type": "string"
+						}
+					],
+					"payable": false,
+					"type": "function"
+				},
+				{
+					"constant": false,
+					"inputs": [
+						{
+							"name": "_spender",
+							"type": "address"
+						},
+						{
+							"name": "_value",
+							"type": "uint256"
+						}
+					],
+					"name": "approve",
+					"outputs": [
+						{
+							"name": "success",
+							"type": "bool"
+						}
+					],
+					"payable": false,
+					"type": "function"
+				},
+				{
+					"constant": true,
+					"inputs": [],
+					"name": "totalSupply",
+					"outputs": [
+						{
+							"name": "",
+							"type": "uint256"
+						}
+					],
+					"payable": false,
+					"type": "function"
+				},
+				{
+					"constant": false,
+					"inputs": [
+						{
+							"name": "_from",
+							"type": "address"
+						},
+						{
+							"name": "_to",
+							"type": "address"
+						},
+						{
+							"name": "_value",
+							"type": "uint256"
+						}
+					],
+					"name": "transferFrom",
+					"outputs": [
+						{
+							"name": "success",
+							"type": "bool"
+						}
+					],
+					"payable": false,
+					"type": "function"
+				},
+				{
+					"constant": true,
+					"inputs": [],
+					"name": "decimals",
+					"outputs": [
+						{
+							"name": "",
+							"type": "uint8"
+						}
+					],
+					"payable": false,
+					"type": "function"
+				},
+				{
+					"constant": true,
+					"inputs": [],
+					"name": "version",
+					"outputs": [
+						{
+							"name": "",
+							"type": "string"
+						}
+					],
+					"payable": false,
+					"type": "function"
+				},
+				{
+					"constant": true,
+					"inputs": [
+						{
+							"name": "_owner",
+							"type": "address"
+						}
+					],
+					"name": "balanceOf",
+					"outputs": [
+						{
+							"name": "balance",
+							"type": "uint256"
+						}
+					],
+					"payable": false,
+					"type": "function"
+				},
+				{
+					"constant": true,
+					"inputs": [],
+					"name": "symbol",
+					"outputs": [
+						{
+							"name": "",
+							"type": "string"
+						}
+					],
+					"payable": false,
+					"type": "function"
+				},
+				{
+					"constant": false,
+					"inputs": [
+						{
+							"name": "_to",
+							"type": "address"
+						},
+						{
+							"name": "_value",
+							"type": "uint256"
+						}
+					],
+					"name": "transfer",
+					"outputs": [
+						{
+							"name": "success",
+							"type": "bool"
+						}
+					],
+					"payable": false,
+					"type": "function"
+				},
+				{
+					"constant": false,
+					"inputs": [
+						{
+							"name": "_spender",
+							"type": "address"
+						},
+						{
+							"name": "_value",
+							"type": "uint256"
+						},
+						{
+							"name": "_extraData",
+							"type": "bytes"
+						}
+					],
+					"name": "approveAndCall",
+					"outputs": [
+						{
+							"name": "success",
+							"type": "bool"
+						}
+					],
+					"payable": false,
+					"type": "function"
+				},
+				{
+					"constant": true,
+					"inputs": [
+						{
+							"name": "_owner",
+							"type": "address"
+						},
+						{
+							"name": "_spender",
+							"type": "address"
+						}
+					],
+					"name": "allowance",
+					"outputs": [
+						{
+							"name": "remaining",
+							"type": "uint256"
+						}
+					],
+					"payable": false,
+					"type": "function"
+				},
+				{
+					"inputs": [
+						{
+							"name": "_initialAmount",
+							"type": "uint256"
+						},
+						{
+							"name": "_tokenName",
+							"type": "string"
+						},
+						{
+							"name": "_decimalUnits",
+							"type": "uint8"
+						},
+						{
+							"name": "_tokenSymbol",
+							"type": "string"
+						}
+					],
+					"type": "constructor"
+				},
+				{
+					"payable": false,
+					"type": "fallback"
+				},
+				{
+					"anonymous": false,
+					"inputs": [
+						{
+							"indexed": true,
+							"name": "_from",
+							"type": "address"
+						},
+						{
+							"indexed": true,
+							"name": "_to",
+							"type": "address"
+						},
+						{
+							"indexed": false,
+							"name": "_value",
+							"type": "uint256"
+						}
+					],
+					"name": "Transfer",
+					"type": "event"
+				},
+				{
+					"anonymous": false,
+					"inputs": [
+						{
+							"indexed": true,
+							"name": "_owner",
+							"type": "address"
+						},
+						{
+							"indexed": true,
+							"name": "_spender",
+							"type": "address"
+						},
+						{
+							"indexed": false,
+							"name": "_value",
+							"type": "uint256"
+						}
+					],
+					"name": "Approval",
+					"type": "event"
+				}
+			];
+
+
+			if (_globalWeb3 !== null) {
+				var erc20 = _globalWeb3.eth.contract(erc20Abi).at($("#currentAddress").data('hash'));
+				var decimals = erc20.decimals();
+				var totalSupply = erc20.totalSupply();
+				$("#erc20TotalSupply").html(totalSupply.toNumber() / Math.pow(10, decimals.toNumber()));
+				$("#erc20CheckBalanceBtn").click(function(){
+					var balanceOf = erc20.balanceOf($('#erc20BalanceCheck').val());
+					$("#balanceOfResult").html(balanceOf.toNumber() / Math.pow(10, decimals.toNumber()));
+                });
+			}
+		});
+    </script>
+
+    <th:block th:replace="components/disqus :: footer"></th:block>
+
+</div>
+</body>
+</html>

@@ -2,6 +2,7 @@ package cloud.cinder.cindercloud.address.service;
 
 import cloud.cinder.cindercloud.address.model.SpecialAddress;
 import cloud.cinder.cindercloud.address.repository.SpecialAddressRepository;
+import cloud.cinder.cindercloud.token.repository.TokenRepository;
 import cloud.cinder.cindercloud.web3j.Web3jGateway;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -22,6 +23,8 @@ public class AddressService {
 
     @Autowired
     private SpecialAddressRepository specialAddressRepository;
+    @Autowired
+    private TokenRepository tokenRepository;
 
     public Observable<String> getCode(final String hash) {
         return web3j.web3j().ethGetCode(hash, DefaultBlockParameterName.LATEST).observable().map(EthGetCode::getCode);

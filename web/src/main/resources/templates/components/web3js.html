@@ -12,6 +12,7 @@
     <script type="application/javascript">
 
 		var _web3;
+		var _globalWeb3;
 
 		$(document).ready(function () {
 			initiateWeb3();
@@ -26,8 +27,10 @@
 			} else {
 				$("#btnWeb3NotEnabled").show();
 				console.log("no web3, injecting different provider");
-				_web3 = new Web3(new Web3.providers.HttpProvider('https://parity.cinder.cloud'));
+				_web3 = new Web3(new Web3.providers.HttpProvider('https://mainnet.fundrequest.io'));
 			}
+
+			_globalWeb3 = new Web3(new Web3.providers.HttpProvider('https://mainnet.fundrequest.io'));
 		};
     </script>
 

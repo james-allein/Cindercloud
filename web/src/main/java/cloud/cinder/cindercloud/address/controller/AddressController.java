@@ -7,11 +7,11 @@ import cloud.cinder.cindercloud.block.model.Block;
 import cloud.cinder.cindercloud.block.service.BlockService;
 import cloud.cinder.cindercloud.coinmarketcap.dto.Currency;
 import cloud.cinder.cindercloud.coinmarketcap.service.PriceService;
+import cloud.cinder.cindercloud.token.service.TokenService;
 import cloud.cinder.cindercloud.transaction.model.Transaction;
 import cloud.cinder.cindercloud.transaction.service.TransactionService;
 import cloud.cinder.cindercloud.utils.WeiUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Controller;
@@ -22,7 +22,6 @@ import org.springframework.web.servlet.ModelAndView;
 import rx.Observable;
 
 import java.math.BigInteger;
-import java.util.List;
 import java.util.Optional;
 
 import static cloud.cinder.cindercloud.utils.WeiUtils.format;
@@ -40,12 +39,21 @@ public class AddressController {
     private AddressService addressService;
     @Autowired
     private PriceService priceService;
+    @Autowired
+    private TokenService tokenService;
 
     @RequestMapping("/{hash}")
     public DeferredResult<ModelAndView> getAddress(@PathVariable("hash") final String hash) {
         if (hash == null || hash.isEmpty() || noValidAddress(hash)) {
             throw new IllegalArgumentException("Not a valid address");
         }
+
+        if (isToken(hash)) {
+            final DeferredResult<ModelAndView> result = new DeferredResult<>();
+            result.setResult(new ModelAndView("redirect:/token/" + hash));
+            return result;
+        }
+
         final String address = prettifyAddress(hash);
         final DeferredResult<ModelAndView> result = new DeferredResult<>();
         final ModelAndView modelAndView = new ModelAndView("addresses/address");
@@ -65,6 +73,10 @@ public class AddressController {
             return modelAndView;
         }).subscribe(result::setResult);
         return result;
+    }
+
+    private boolean isToken(final String hash) {
+        return tokenService.findByAddress(hash).isPresent();
     }
 
     private boolean noValidAddress(final String hash) {
