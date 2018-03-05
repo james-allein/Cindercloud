@@ -46,18 +46,19 @@
     <section class="container g-pt-100 g-pb-20">
         <div class="row justify-content-between">
 
-            <th:block th:replace="components/login :: keystore"></th:block>
-            <th:block th:replace="components/login :: privateKey"></th:block>
 
-            <div class="col-md-6 order-lg-1 g-mb-80">
-                <div class="mb-5">
+            <div class="col-md-12 order-lg-1 g-mb-80">
+                <div class="5">
                     <h2 class="h1 g-font-weight-400 mb-3">Choose your preferenced login method</h2>
                     <p class="g-color-gray-dark-v4">We support a variety of login methods. Below you can see a list of
                         what we support, sorted by level of security.</p>
                 </div>
 
                 <div class="row">
-                    <div class="col-lg-9">
+                    <th:block th:replace="components/login :: privateKey"></th:block>
+                    <th:block th:replace="components/login :: keystore"></th:block>
+
+                    <div class="col-lg-4">
                         <!-- Icon Blocks -->
                         <div class="media mb-5">
                             <div class="d-flex mr-3">
@@ -67,9 +68,9 @@
                             </div>
                             <div class="media-body align-self-center">
                                 <h3 class="h5 g-font-weight-400">
-                                    <a onclick="keystore()">Use your Keystore</a>
+                                    <p>Use your Keystore</p>
                                 </h3>
-                                <p class="g-color-gray-dark-v5 mb-0">Login using your keystore file and a password.</p>
+                                <p class="g-color-gray-dark-v5 mb-0">Login using your keystore file and a password. This is the recommended way to login.</p>
                             </div>
                         </div>
                         <!-- End Icon Blocks -->
@@ -83,9 +84,9 @@
                             </div>
                             <div class="media-body align-self-center">
                                 <h3 class="h5 g-font-weight-400">
-                                    <a onclick="privateKey()">Use Your Private Key</a>
+                                    <p>Use your private key</p>
                                 </h3>
-                                <p class="g-color-gray-dark-v5 mb-0">Login using your private key.</p>
+                                <p class="g-color-gray-dark-v5 mb-0">Login using your private key. This method might be the easiest, but is not the recommended way to login.</p>
                             </div>
                         </div>
                         <!-- End Icon Blocks -->
@@ -99,18 +100,6 @@
 
 </div>
 <div layout:fragment="footer-content">
-
-    <script type="application/javascript">
-		keystore = function () {
-			$("#keystoreComponent").show();
-			$("#privateKeyComponent").hide();
-		};
-
-		privateKey = function () {
-			$("#privateKeyComponent").show();
-			$("#keystoreComponent").hide();
-		};
-    </script>
 
 </div>
 </body>
