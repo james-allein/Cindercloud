@@ -20,6 +20,8 @@ dependencies {
     compileOnly 'org.projectlombok:lombok:1.16.18'
     compile("org.ocpsoft.prettytime:prettytime:3.2.7.Final")
 
+    compile group: 'org.bitcoinj', name: 'bitcoinj-core', version: "${bitcoinJVersion}"
+
 
     testCompile("org.springframework.boot:spring-boot-starter-test")
     testCompile 'org.assertj:assertj-core:3.4.1'
