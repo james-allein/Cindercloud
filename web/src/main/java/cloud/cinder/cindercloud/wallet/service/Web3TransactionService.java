@@ -1,6 +1,7 @@
 package cloud.cinder.cindercloud.wallet.service;
 
-import cloud.cinder.cindercloud.wallet.controller.command.ConfirmEtherTransactionCommand;
+import cloud.cinder.cindercloud.wallet.controller.command.confirm.ConfirmEtherTransactionCommand;
+import cloud.cinder.cindercloud.wallet.controller.command.confirm.ConfirmTokenTransactionCommand;
 import lombok.extern.slf4j.Slf4j;
 import org.bouncycastle.util.encoders.Hex;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +23,7 @@ public class Web3TransactionService {
     @Autowired
     private Web3j web3j;
 
-    public String submitTransaction(final ConfirmEtherTransactionCommand etherTransactionCommand) {
+    public String submitEtherTransaction(final ConfirmEtherTransactionCommand etherTransactionCommand) {
         final String address = authenticationService.getAddress();
         final BigInteger balance = web3j.ethGetBalance(address, DefaultBlockParameterName.LATEST)
                 .observable()
@@ -56,6 +57,10 @@ public class Web3TransactionService {
         } else {
             throw new IllegalArgumentException("Your balance isn't high enough to submit this transaction.");
         }
+    }
+
+    public String submitTokenTransaction(final ConfirmTokenTransactionCommand confirmTokenTransactionCommand) {
+        return "0x0";
     }
 
 

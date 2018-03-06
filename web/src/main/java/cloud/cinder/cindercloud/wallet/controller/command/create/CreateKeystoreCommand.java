@@ -1,4 +1,4 @@
-package cloud.cinder.cindercloud.wallet.controller.command;
+package cloud.cinder.cindercloud.wallet.controller.command.create;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

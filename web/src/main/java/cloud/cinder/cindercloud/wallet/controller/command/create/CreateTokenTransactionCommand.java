@@ -1,4 +1,4 @@
-package cloud.cinder.cindercloud.wallet.controller.command;
+package cloud.cinder.cindercloud.wallet.controller.command.create;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -12,11 +12,12 @@ import java.math.BigInteger;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class CreateEtherTransactionCommand {
+public class CreateTokenTransactionCommand {
 
     @NotEmpty
     private String to;
     private String gasPrice;
+    private String tokenAddress;
     @Min(21000)
     private BigInteger gasLimit = BigInteger.valueOf(31000);
     private double amount;

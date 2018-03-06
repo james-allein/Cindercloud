@@ -1,8 +1,8 @@
 package cloud.cinder.cindercloud.wallet.controller;
 
 import cloud.cinder.cindercloud.security.domain.PrivateKeyAuthentication;
-import cloud.cinder.cindercloud.wallet.controller.command.KeystoreLoginCommand;
-import cloud.cinder.cindercloud.wallet.controller.command.PrivateKeyLoginCommand;
+import cloud.cinder.cindercloud.wallet.controller.command.login.KeystoreLoginCommand;
+import cloud.cinder.cindercloud.wallet.controller.command.login.PrivateKeyLoginCommand;
 import cloud.cinder.cindercloud.wallet.service.WalletService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,6 +1,6 @@
 package cloud.cinder.cindercloud.wallet.controller;
 
-import cloud.cinder.cindercloud.wallet.controller.command.CreateKeystoreCommand;
+import cloud.cinder.cindercloud.wallet.controller.command.create.CreateKeystoreCommand;
 import cloud.cinder.cindercloud.wallet.domain.GeneratedCredentials;
 import cloud.cinder.cindercloud.wallet.service.WalletService;
 import org.apache.commons.lang.StringUtils;
@@ -10,7 +10,6 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 @RequestMapping(value = "/wallet/create")
