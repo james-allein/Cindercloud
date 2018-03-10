@@ -90,6 +90,18 @@
                         <ul class="list-unstyled g-mt-minus-10 mb-0">
                             <li class="g-pos-rel g-brd-bottom g-brd-white-opacity-0_1 g-py-10">
                                 <h4 class="h6 g-pr-20 mb-0">
+                                    <a class="g-color-white-opacity-0_8 g-color-white--hover" th:href="@{/wallet/create}">Create Wallet</a>
+                                    <i class="fa fa-angle-right g-absolute-centered--y g-right-0"></i>
+                                </h4>
+                            </li>
+                            <li class="g-pos-rel g-brd-bottom g-brd-white-opacity-0_1 g-py-10">
+                                <h4 class="h6 g-pr-20 mb-0">
+                                    <a class="g-color-white-opacity-0_8 g-color-white--hover" th:href="@{/wallet/access}">Access Wallet</a>
+                                    <i class="fa fa-angle-right g-absolute-centered--y g-right-0"></i>
+                                </h4>
+                            </li>
+                            <li class="g-pos-rel g-brd-bottom g-brd-white-opacity-0_1 g-py-10">
+                                <h4 class="h6 g-pr-20 mb-0">
                                     <a class="g-color-white-opacity-0_8 g-color-white--hover" th:href="@{/blocks}">Blocks</a>
                                     <i class="fa fa-angle-right g-absolute-centered--y g-right-0"></i>
                                 </h4>
@@ -127,7 +139,7 @@
             <div class="row">
                 <div class="col-md-8 text-center text-md-left g-mb-15 g-mb-0--md">
                     <div class="d-lg-flex">
-                        <small class="d-block g-font-size-default g-mr-10 g-mb-10 g-mb-0--md">2017 © Cindercloud.
+                        <small class="d-block g-font-size-default g-mr-10 g-mb-10 g-mb-0--md"><span th:text="${#dates.year(#dates.createNow())}"></span> © Cindercloud.
                         </small>
                     </div>
                 </div>
