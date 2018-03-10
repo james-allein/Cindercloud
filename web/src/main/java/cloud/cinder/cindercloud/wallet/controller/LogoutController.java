@@ -15,5 +15,4 @@ public class LogoutController {
         httpServletRequest.getSession(false).invalidate();
         return "redirect:/wallet/login";
     }
-
 }
