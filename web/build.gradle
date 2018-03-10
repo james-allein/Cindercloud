@@ -47,6 +47,10 @@ dependencies {
     compileOnly "org.projectlombok:lombok:${lombokVersion}"
     compile("org.ocpsoft.prettytime:prettytime:${prettyTimeVersion}")
 
+    //telegram bots
+    compile('org.telegram:telegrambots:3.6')
+    compile('org.telegram:telegrambots-abilities:3.6')
+
     compile("org.flywaydb:flyway-core")
     compile("org.postgresql:postgresql:${postgresVersion}")
     compile("com.zaxxer:HikariCP:${hikariCPVersion}")
