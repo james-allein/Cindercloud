@@ -7,6 +7,9 @@
 <div th:fragment="keystore" id="keystoreComponent" class="col-md-4 col-lg-4 order-lg-2 g-mb-80">
     <div class="g-brd-around g-brd-gray-light-v3 g-bg-white rounded g-px-30 g-py-50 mb-4">
         <header class="text-center mb-4">
+                <span class="align-self-center u-icon-v1 u-icon-size--lg g-color-primary">
+                      <i class="icon-finance-168 u-line-icon-pro"></i>
+                    </span>
             <h1 class="h4 g-color-black g-font-weight-400">Use your keystore file</h1>
         </header>
 
@@ -14,7 +17,8 @@
         <form method="POST" th:action="@{/wallet/login?type=keystore}" th:object="${keystoreLoginCommand}"
               class="g-py-15">
 
-            <div th:if="${error != null}" class="alert alert-dismissible fade show g-bg-red g-color-white rounded-0" role="alert">
+            <div th:if="${error != null}" class="alert alert-dismissible fade show g-bg-red g-color-white rounded-0"
+                 role="alert">
                 <button type="button" class="close u-alert-close--light" data-dismiss="alert" aria-label="Close">
                     <span aria-hidden="true">×</span>
                 </button>
@@ -23,7 +27,7 @@
                     <span class="d-flex g-mr-10 g-mt-5">
                       <i class="icon-ban g-font-size-25"></i>
                     </span>
-                                <span th:text="${error}" class="media-body align-self-center">
+                    <span th:text="${error}" class="media-body align-self-center">
                       Change a few things up and try submitting again.
                     </span>
                 </div>
@@ -82,6 +86,9 @@
 <div id="privateKeyComponent" class="col-md-4 col-lg-4 order-lg-2 g-mb-80" th:fragment="privateKey">
     <div class="g-brd-around g-brd-gray-light-v3 g-bg-white rounded g-px-30 g-py-50 mb-4">
         <header class="text-center mb-4">
+                    <span class="align-self-center u-icon-v1 u-icon-size--lg g-color-primary">
+                      <i class="icon-finance-193 u-line-icon-pro"></i>
+                    </span>
             <h1 class="h4 g-color-black g-font-weight-400">Use your Private Key</h1>
         </header>
 
@@ -89,7 +96,8 @@
         <form method="POST" th:action="@{/wallet/login?type=privatekey}" th:object="${privatekeyLoginCommand}"
               class="g-py-15">
 
-            <div th:if="${error != null}" class="alert alert-dismissible fade show g-bg-red g-color-white rounded-0" role="alert">
+            <div th:if="${error != null}" class="alert alert-dismissible fade show g-bg-red g-color-white rounded-0"
+                 role="alert">
                 <button type="button" class="close u-alert-close--light" data-dismiss="alert" aria-label="Close">
                     <span aria-hidden="true">×</span>
                 </button>
@@ -125,4 +133,23 @@
     </div>
 
 </div>
+
+<div id="web3Component" class="col-md-4 col-lg-4 order-lg-2 g-mb-80" th:fragment="web3">
+    <div class="g-brd-around g-brd-gray-light-v3 g-bg-white rounded g-px-30 g-py-50 mb-4">
+        <header class="text-center mb-4">
+                    <span class="align-self-center u-icon-v1 u-icon-size--lg g-color-primary">
+                      <i class="icon-communication-104 u-line-icon-pro"></i>
+                    </span>
+            <h1 class="h4 g-color-black g-font-weight-400">Use Web3</h1>
+        </header>
+
+        <p>Whether you're using a DApp Browser like Mist, Parity or Trust Wallet or Metamask environment, Cindercloud can provide you easy access to your Cryptocurrency and tokens.</p>
+        <br />
+        <br />
+
+       <a class="btn btn-block u-btn-primary g-font-size-12 text-uppercase g-py-12 g-px-25" th:href="@{/web3/login}">Login</a>
+    </div>
+
+</div>
+
 </html>
