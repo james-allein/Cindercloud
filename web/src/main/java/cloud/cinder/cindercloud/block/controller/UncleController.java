@@ -62,7 +62,7 @@ public class UncleController {
     @RequestMapping(value = "/{hash}/transactions")
     public DeferredResult<ModelAndView> getTransactionsForBlock(@PathVariable("hash") final String hash) {
         final DeferredResult<ModelAndView> result = new DeferredResult<>();
-        transactionService.getTransactionsForBlock(hash, new PageRequest(0, 20))
+        transactionService.getTransactionsForBlock(hash, PageRequest.of(0, 20))
                 .map(x -> {
                     final ModelAndView modelAndView = new ModelAndView("blocks/transactions :: blockTransactions");
                     modelAndView.addObject("transactions", x);
