@@ -2,21 +2,25 @@ package cloud.cinder.cindercloud.block.controller;
 
 import cloud.cinder.cindercloud.address.model.SpecialAddress;
 import cloud.cinder.cindercloud.address.service.AddressService;
+import cloud.cinder.cindercloud.block.model.Block;
 import cloud.cinder.cindercloud.block.service.BlockService;
+import cloud.cinder.cindercloud.transaction.model.Transaction;
 import cloud.cinder.cindercloud.transaction.service.TransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.context.request.async.DeferredResult;
-import org.springframework.web.servlet.ModelAndView;
+import reactor.core.publisher.Mono;
 
 import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
 
 @Controller
 @RequestMapping(value = "/blocks")
@@ -47,32 +51,24 @@ public class BlockController {
     }
 
     @RequestMapping(value = "/{hash}")
-    public DeferredResult<ModelAndView> getBlock(@PathVariable("hash") final String hash) {
-        final DeferredResult<ModelAndView> result = new DeferredResult<>();
-        blockService.getBlock(hash).subscribe(block -> {
-            ModelAndView modelAndView = new ModelAndView("blocks/block");
-            modelAndView.addObject("block", block);
+    public Mono<String> getBlock(@PathVariable("hash") final String hash,
+                                 final Model model) {
+        return Mono.fromFuture(CompletableFuture.supplyAsync(() -> {
+            final Block block = blockService.getBlock(hash).single().toBlocking().first();
+            model.addAttribute("block", block);
             final Optional<SpecialAddress> specialMinedBy = addressService.findByAddress(block.getMinedBy());
-            modelAndView.addObject("isMinedBySpecialName", specialMinedBy.isPresent());
-            modelAndView.addObject("minedBySpecialName", specialMinedBy.map(SpecialAddress::getName).orElse(""));
-            result.setResult(
-                    modelAndView
-            );
-        });
-        return result;
+            model.addAttribute("isMinedBySpecialName", specialMinedBy.isPresent());
+            model.addAttribute("minedBySpecialName", specialMinedBy.map(SpecialAddress::getName).orElse(""));
+            return "blocks/block";
+        }));
     }
 
     @RequestMapping(value = "/{hash}/transactions")
-    public DeferredResult<ModelAndView> getTransactionsForUncle(@PathVariable("hash") final String hash) {
-        final DeferredResult<ModelAndView> result = new DeferredResult<>();
-        transactionService.getTransactionsForBlock(hash, new PageRequest(0, 20))
-                .map(x -> {
-                    final ModelAndView modelAndView = new ModelAndView("blocks/transactions :: blockTransactions");
-                    modelAndView.addObject("transactions", x);
-                    modelAndView.addObject("hash", hash);
-                    return modelAndView;
-                })
-                .subscribe(result::setResult);
-        return result;
+    public String getTransactionsForUncle(@PathVariable("hash") final String hash,
+                                          final Model model) {
+        final Slice<Transaction> transactions = transactionService.getTransactionsForBlock(hash, PageRequest.of(0, 20)).toBlocking().first();
+        model.addAttribute("transactions", transactions);
+        model.addAttribute("hash", hash);
+        return "blocks/transactions :: blockTransactions";
     }
 }
