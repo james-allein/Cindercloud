@@ -53,7 +53,7 @@ public class WalletController {
     public String transactions(final ModelMap modelMap) {
         authenticationService.requireAuthenticated();
         final String address = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        final Slice<Transaction> transactions = transactionService.findByAddress(address, new PageRequest(0, 10)).toBlocking().first();
+        final Slice<Transaction> transactions = transactionService.findByAddress(address, PageRequest.of(0, 10)).toBlocking().first();
         modelMap.put("transactions", transactions);
         modelMap.put("address", address);
         return "wallets/transactions";
