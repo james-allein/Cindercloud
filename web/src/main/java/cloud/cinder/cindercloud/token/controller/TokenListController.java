@@ -17,7 +17,7 @@ public class TokenListController {
 
     @RequestMapping(method = RequestMethod.GET)
     public String index(final ModelMap modelMap) {
-        modelMap.put("tokens", tokenService.findAll(new PageRequest(0, 25)));
+        modelMap.put("tokens", tokenService.findAll(PageRequest.of(0, 25)));
         return "tokens/index";
     }
 }
