@@ -1,0 +1,59 @@
+<!DOCTYPE html >
+<html lang="en"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org"
+      layout:decorator="decorator/normal/decorator">
+<div layout:fragment="header-content">
+
+</div>
+
+<body>
+<div layout:fragment="main-content">
+    <div class="container g-pt-70 g-pb-30">
+        <div class="row">
+            <!-- Profile Settings -->
+            <div class="col-lg-3 g-mb-50">
+                <th:block th:replace="/components/profile :: sidenav(active='address-book')"></th:block>
+            </div>
+            <!-- End Profile Settings -->
+
+            <!-- Wallet -->
+            <div class="col-lg-9 g-mb-50">
+                <!-- Balance & Rewards -->
+                <div class="g-brd-around g-brd-gray-light-v4 rounded g-px-30 g-pt-30">
+                    <h3 class="h5 mb-3">Address Book</h3>
+
+                    <!-- Add Balance -->
+                    <div class="g-mb-50" th:if="${contacts == null || transactions.isEmpty()}">
+                        <div class="alert fade show g-brd-around g-brd-primary rounded-0" role="alert">
+                            <div class="media">
+                                <div class="d-flex g-mr-10">
+          <span class="u-icon-v3 u-icon-size--sm g-bg-orange g-color-white g-rounded-50x">
+            <i class="fa fa-users"></i>
+          </span>
+                                </div>
+                                <div class="media-body">
+                                    <div class="d-flex justify-content-between">
+                                        Empty Address Book
+                                    </div>
+                                    <p class="m-0 g-font-size-14">No contacts were found for this account.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <!-- End Balance & Rewards -->
+            </div>
+            <!-- End Wallet -->
+        </div>
+    </div>
+
+
+</div>
+<div layout:fragment="footer-content">
+
+</div>
+</body>
+</html>
