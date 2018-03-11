@@ -1,4 +1,4 @@
-package cloud.cinder.cindercloud.erc20.model;
+package cloud.cinder.cindercloud.erc20.domain;
 
 import java.math.BigInteger;
 

@@ -2,7 +2,7 @@ package cloud.cinder.cindercloud.wallet.service;
 
 import cloud.cinder.cindercloud.security.domain.AuthenticationType;
 import cloud.cinder.cindercloud.security.domain.PrivateKeyAuthentication;
-import cloud.cinder.cindercloud.security.domain.Web3Authentication;
+import cloud.cinder.cindercloud.security.domain.ClientSideAuthentication;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.InsufficientAuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -12,9 +12,6 @@ import org.web3j.crypto.ECKeyPair;
 import org.web3j.crypto.RawTransaction;
 import org.web3j.crypto.TransactionEncoder;
 
-import java.math.BigInteger;
-import java.security.interfaces.ECKey;
-
 @Service
 @Slf4j
 public class AuthenticationService {
@@ -22,7 +19,7 @@ public class AuthenticationService {
     public void requireAuthenticated() {
         if ((SecurityContextHolder.getContext().getAuthentication() instanceof PrivateKeyAuthentication)) {
             log.trace("Logged in using private key");
-        } else if ((SecurityContextHolder.getContext().getAuthentication() instanceof Web3Authentication)) {
+        } else if ((SecurityContextHolder.getContext().getAuthentication() instanceof ClientSideAuthentication)) {
             log.trace("Logged in using web3 authentication");
         } else {
             throw new InsufficientAuthenticationException("Not authenticated");
@@ -32,7 +29,7 @@ public class AuthenticationService {
     public String getAddress() {
         if ((SecurityContextHolder.getContext().getAuthentication() instanceof PrivateKeyAuthentication)) {
             return (SecurityContextHolder.getContext().getAuthentication()).getPrincipal().toString();
-        } else if ((SecurityContextHolder.getContext().getAuthentication() instanceof Web3Authentication)) {
+        } else if ((SecurityContextHolder.getContext().getAuthentication() instanceof ClientSideAuthentication)) {
             return (SecurityContextHolder.getContext().getAuthentication()).getPrincipal().toString();
         } else {
             throw new InsufficientAuthenticationException("Not authenticated");
@@ -42,7 +39,7 @@ public class AuthenticationService {
     private ECKeyPair getPrivateKey() {
         if ((SecurityContextHolder.getContext().getAuthentication() instanceof PrivateKeyAuthentication)) {
             return ((ECKeyPair)SecurityContextHolder.getContext().getAuthentication().getCredentials());
-        } else if ((SecurityContextHolder.getContext().getAuthentication() instanceof Web3Authentication)) {
+        } else if ((SecurityContextHolder.getContext().getAuthentication() instanceof ClientSideAuthentication)) {
             throw new InsufficientAuthenticationException("Authenticated with Web3");
         } else {
             throw new InsufficientAuthenticationException("Not authenticated");
@@ -53,7 +50,7 @@ public class AuthenticationService {
         if ((SecurityContextHolder.getContext().getAuthentication() instanceof PrivateKeyAuthentication)) {
             log.trace("Logged in using private key");
             return AuthenticationType.CINDERCLOUD;
-        } else if ((SecurityContextHolder.getContext().getAuthentication() instanceof Web3Authentication)) {
+        } else if ((SecurityContextHolder.getContext().getAuthentication() instanceof ClientSideAuthentication)) {
             log.trace("Logged in using web3 authentication");
             return AuthenticationType.WEB3;
         } else {

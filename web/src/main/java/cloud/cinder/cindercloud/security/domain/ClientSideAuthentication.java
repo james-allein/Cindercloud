@@ -4,12 +4,12 @@ import org.springframework.security.authentication.AbstractAuthenticationToken;
 
 import java.util.Collections;
 
-public class Web3Authentication extends AbstractAuthenticationToken {
+public class ClientSideAuthentication extends AbstractAuthenticationToken {
 
     private String address;
     final AuthenticationType type = AuthenticationType.WEB3;
 
-    public Web3Authentication(final String address) {
+    public ClientSideAuthentication(final String address) {
         super(Collections.emptyList());
         this.address = address;
     }

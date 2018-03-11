@@ -1,9 +1,7 @@
 package cloud.cinder.cindercloud.wallet.controller;
 
-import cloud.cinder.cindercloud.security.domain.Web3Authentication;
+import cloud.cinder.cindercloud.login.handler.LoginHandler;
 import cloud.cinder.cindercloud.wallet.service.WalletService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -16,9 +14,14 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
 @RequestMapping(value = "/web3/login")
 public class Web3LoginController {
 
-
-    @Autowired
     private WalletService walletService;
+    private LoginHandler loginHandler;
+
+    public Web3LoginController(final WalletService walletService,
+                               final LoginHandler loginHandler) {
+        this.walletService = walletService;
+        this.loginHandler = loginHandler;
+    }
 
     @RequestMapping(method = GET)
     public String index() {
@@ -29,12 +32,7 @@ public class Web3LoginController {
     public @ResponseBody
     String login(@RequestParam("address") final String address) {
         final String validatedAddress = walletService.web3Login(address);
-        populateSecurityContext(validatedAddress);
+        loginHandler.clientsideLogin(validatedAddress);
         return "OK";
-    }
-
-    private void populateSecurityContext(final String address) {
-        SecurityContextHolder.getContext().setAuthentication(new Web3Authentication(address));
-        SecurityContextHolder.getContext().getAuthentication().setAuthenticated(true);
     }
 }
