@@ -17,10 +17,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import reactor.core.publisher.Mono;
 
 import java.util.Optional;
-import java.util.concurrent.CompletableFuture;
 
 @Controller
 @RequestMapping(value = "/blocks")
@@ -51,22 +49,20 @@ public class BlockController {
     }
 
     @RequestMapping(value = "/{hash}")
-    public Mono<String> getBlock(@PathVariable("hash") final String hash,
-                                 final Model model) {
-        return Mono.fromFuture(CompletableFuture.supplyAsync(() -> {
-            final Block block = blockService.getBlock(hash).single().toBlocking().first();
-            model.addAttribute("block", block);
-            final Optional<SpecialAddress> specialMinedBy = addressService.findByAddress(block.getMinedBy());
-            model.addAttribute("isMinedBySpecialName", specialMinedBy.isPresent());
-            model.addAttribute("minedBySpecialName", specialMinedBy.map(SpecialAddress::getName).orElse(""));
-            return "blocks/block";
-        }));
+    public String getBlock(@PathVariable("hash") final String hash,
+                           final Model model) {
+        final Block block = blockService.getBlock(hash).single().toBlocking().first();
+        model.addAttribute("block", block);
+        final Optional<SpecialAddress> specialMinedBy = addressService.findByAddress(block.getMinedBy());
+        model.addAttribute("isMinedBySpecialName", specialMinedBy.isPresent());
+        model.addAttribute("minedBySpecialName", specialMinedBy.map(SpecialAddress::getName).orElse(""));
+        return "blocks/block";
     }
 
     @RequestMapping(value = "/{hash}/transactions")
     public String getTransactionsForUncle(@PathVariable("hash") final String hash,
                                           final Model model) {
-        final Slice<Transaction> transactions = transactionService.getTransactionsForBlock(hash, PageRequest.of(0, 20)).toBlocking().first();
+        final Slice<Transaction> transactions = transactionService.getTransactionsForBlock(hash, new PageRequest(0, 20)).toBlocking().first();
         model.addAttribute("transactions", transactions);
         model.addAttribute("hash", hash);
         return "blocks/transactions :: blockTransactions";

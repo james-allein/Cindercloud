@@ -7,6 +7,7 @@ buildscript {
         mavenLocal()
         mavenCentral()
         maven { url "http://repo.spring.io/release" }
+        maven { url "https://repo.spring.io/libs-milestone" }
     }
     dependencies {
         classpath("org.springframework.boot:spring-boot-gradle-plugin:${theSpringBootVersion}")
@@ -46,7 +47,7 @@ subprojects {
             url "https://github.com/stil4m/maven-repository/raw/master/releases/"
         }
         maven {
-            url 'https://repo.spring.io/libs-milestone'
+            url "https://repo.spring.io/libs-milestone"
         }
     }
 }
