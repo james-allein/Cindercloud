@@ -35,7 +35,6 @@ subprojects {
     dependencyManagement {
         imports {
             mavenBom("org.springframework.boot:spring-boot-dependencies:${theSpringBootVersion}")
-            mavenBom "org.springframework.cloud:spring-cloud-aws:${theSpringCloudAwsVersion}"
         }
     }
 
@@ -45,6 +44,9 @@ subprojects {
         maven { url "http://repo.spring.io/release" }
         maven {
             url "https://github.com/stil4m/maven-repository/raw/master/releases/"
+        }
+        maven {
+            url 'https://repo.spring.io/libs-milestone'
         }
     }
 }
