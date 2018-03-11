@@ -5,19 +5,17 @@ import cloud.cinder.cindercloud.etherscan.EtherscanClient;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import feign.Feign;
 import feign.Logger;
-import org.springframework.beans.factory.ObjectFactory;
+import feign.codec.Decoder;
+import feign.codec.Encoder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.autoconfigure.web.HttpMessageConverters;
-import org.springframework.cloud.netflix.feign.support.ResponseEntityDecoder;
-import org.springframework.cloud.netflix.feign.support.SpringDecoder;
-import org.springframework.cloud.netflix.feign.support.SpringEncoder;
+import org.springframework.cloud.netflix.feign.FeignClientsConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.converter.HttpMessageConverter;
-import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.context.annotation.Import;
 
 @Configuration
+@Import(FeignClientsConfiguration.class)
 public class FeignConfiguration {
 
     @Autowired
@@ -29,24 +27,17 @@ public class FeignConfiguration {
     private String etherscanApiKey;
 
     @Bean
-    public CoinMarketCapClient provideCoinMarketcapClient() {
-        final HttpMessageConverter jacksonConverter = new MappingJackson2HttpMessageConverter(objectMapper);
-        final ObjectFactory<HttpMessageConverters> objectFactory = () -> new HttpMessageConverters(jacksonConverter);
-        final ResponseEntityDecoder decoder = new ResponseEntityDecoder(new SpringDecoder(objectFactory));
+    public CoinMarketCapClient provideCoinMarketcapClient(final Decoder decoder) {
         return Feign.builder()
                 .decoder(decoder)
                 .target(CoinMarketCapClient.class, "https://api.coinmarketcap.com/v1");
     }
 
     @Bean
-    public EtherscanClient provideEtherscanClient() {
-        final HttpMessageConverter jacksonConverter = new MappingJackson2HttpMessageConverter(objectMapper);
-        final ObjectFactory<HttpMessageConverters> objectFactory = () -> new HttpMessageConverters(jacksonConverter);
-        final ResponseEntityDecoder decoder = new ResponseEntityDecoder(new SpringDecoder(objectFactory));
-
+    public EtherscanClient provideEtherscanClient(final Encoder encoder, final Decoder decoder) {
         return Feign.builder()
                 .decoder(decoder)
-                .encoder(new SpringEncoder(objectFactory))
+                .encoder(encoder)
                 .logLevel(Logger.Level.FULL)
                 .logger(new Logger.JavaLogger())
                 .requestInterceptor(template -> template.query("apikey", etherscanApiKey))
