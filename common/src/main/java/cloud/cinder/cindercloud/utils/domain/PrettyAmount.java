@@ -1,4 +1,4 @@
-package cloud.cinder.cindercloud.utils.dto;
+package cloud.cinder.cindercloud.utils.domain;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

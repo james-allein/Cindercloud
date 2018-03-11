@@ -1,6 +1,6 @@
 package cloud.cinder.cindercloud.utils;
 
-import cloud.cinder.cindercloud.utils.dto.PrettyAmount;
+import cloud.cinder.cindercloud.utils.domain.PrettyAmount;
 import org.web3j.utils.Convert;
 
 import java.math.BigDecimal;

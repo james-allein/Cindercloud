@@ -2,7 +2,7 @@ package cloud.cinder.cindercloud.transaction.domain;
 
 import cloud.cinder.cindercloud.address.domain.SpecialAddress;
 import cloud.cinder.cindercloud.utils.WeiUtils;
-import cloud.cinder.cindercloud.utils.dto.PrettyAmount;
+import cloud.cinder.cindercloud.utils.domain.PrettyAmount;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
