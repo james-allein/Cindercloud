@@ -14,7 +14,6 @@ buildscript {
 
 dependencyManagement {
     imports {
-        mavenBom "org.springframework.cloud:spring-cloud-aws:${theSpringCloudAwsVersion}"
         mavenBom "org.springframework.cloud:spring-cloud-dependencies:${theSpringCloudVersion}"
         mavenBom("org.springframework.boot:spring-boot-dependencies:${theSpringBootVersion}")
     }
@@ -44,13 +43,4 @@ dependencies {
 jar {
     baseName = 'whitehat'
     version = null
-}
-
-springBoot {
-    executable = true
-}
-
-bootRun {
-    systemProperties System.properties
-    addResources = true
 }
