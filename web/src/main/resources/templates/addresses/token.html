@@ -75,15 +75,14 @@
 
                             <div class="g-font-size-35 g-font-weight-300 g-mb-7">
                                 <div class="row">
-                                    <div class="col-md-4">
+                                    <div class="col-md-2">
                                         <img style="height: 80px;"
-                                             th:src="@{https://raw.githubusercontent.com/TrustWallet/tokens/master/images/} + ${token.address} + .png"/>
+                                             th:src="@{https://raw.githubusercontent.com/TrustWallet/tokens/master/images/} + ${#strings.toLowerCase(token.address)} + .png"/>
 
                                     </div>
-                                    <div class="col-md-8">
+                                    <div class="col-md-10">
                                         <span th:text="${token.name}"></span>
                                         <h4 class="h5 g-color-gray-dark-v4 g-mb-5" id="erc20Name">Name</h4>
-
                                     </div>
                                 </div>
                                 </div>
