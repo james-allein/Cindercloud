@@ -58,8 +58,8 @@ public class AddressController {
         final DeferredResult<ModelAndView> result = new DeferredResult<>();
         final ModelAndView modelAndView = new ModelAndView("addresses/address");
         final Observable<String> code = addressService.getCode(address);
-        final Observable<Slice<Transaction>> transactions = transactionService.findByAddress(address, new PageRequest(0, 10));
-        final Observable<Slice<Block>> minedBlocks = blockService.findByMiner(address, new PageRequest(0, 10));
+        final Observable<Slice<Transaction>> transactions = transactionService.findByAddress(address, PageRequest.of(0, 10));
+        final Observable<Slice<Block>> minedBlocks = blockService.findByMiner(address, PageRequest.of(0, 10));
         final Observable<BigInteger> transactionCount = addressService.getTransactionCount(address);
         final Observable<BigInteger> balance = addressService.getBalance(address);
         final Optional<SpecialAddress> specialAddress = addressService.findByAddress(address);
