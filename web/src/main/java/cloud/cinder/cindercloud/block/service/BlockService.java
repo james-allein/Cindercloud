@@ -133,7 +133,7 @@ public class BlockService {
 
     @Transactional(readOnly = true)
     public List<Block> getLast10IndexedBlocks() {
-        return blockRepository.findAllBlocksOrderByHeightDescAsList(new PageRequest(0, 10));
+        return blockRepository.findAllBlocksOrderByHeightDescAsList(PageRequest.of(0, 10));
     }
 
     @Transactional(readOnly = true)
