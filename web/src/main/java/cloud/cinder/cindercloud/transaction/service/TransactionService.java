@@ -86,7 +86,7 @@ public class TransactionService {
 
     @Transactional(readOnly = true)
     public List<Transaction> getLast10Transactions() {
-        return transactionRepository.findAllOrOrderByBlockTimestampAsList(new PageRequest(0, 10));
+        return transactionRepository.findAllOrOrderByBlockTimestampAsList(PageRequest.of(0, 10));
     }
 
     private Observable<Transaction> getInternalTransaction(final String transactionHash) {
