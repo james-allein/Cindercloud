@@ -1,6 +1,6 @@
 package cloud.cinder.cindercloud.token.rest;
 
-import cloud.cinder.cindercloud.token.model.Token;
+import cloud.cinder.cindercloud.token.domain.Token;
 import cloud.cinder.cindercloud.token.service.TokenService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;

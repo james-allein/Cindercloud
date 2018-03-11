@@ -1,4 +1,4 @@
-package cloud.cinder.cindercloud.token.model;
+package cloud.cinder.cindercloud.token.domain;
 
 import lombok.Data;
 

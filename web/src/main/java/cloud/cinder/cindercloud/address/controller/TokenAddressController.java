@@ -1,6 +1,6 @@
 package cloud.cinder.cindercloud.address.controller;
 
-import cloud.cinder.cindercloud.token.model.Token;
+import cloud.cinder.cindercloud.token.domain.Token;
 import cloud.cinder.cindercloud.token.service.TokenService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
