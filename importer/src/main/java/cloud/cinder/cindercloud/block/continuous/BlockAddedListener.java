@@ -1,6 +1,6 @@
 package cloud.cinder.cindercloud.block.continuous;
 
-import cloud.cinder.cindercloud.block.model.Block;
+import cloud.cinder.cindercloud.block.domain.Block;
 import cloud.cinder.cindercloud.transaction.continuous.TransactionImporter;
 import com.codahale.metrics.Meter;
 import com.codahale.metrics.MetricRegistry;

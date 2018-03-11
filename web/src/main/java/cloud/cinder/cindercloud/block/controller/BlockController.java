@@ -2,7 +2,7 @@ package cloud.cinder.cindercloud.block.controller;
 
 import cloud.cinder.cindercloud.address.domain.SpecialAddress;
 import cloud.cinder.cindercloud.address.service.AddressService;
-import cloud.cinder.cindercloud.block.model.Block;
+import cloud.cinder.cindercloud.block.domain.Block;
 import cloud.cinder.cindercloud.block.service.BlockService;
 import cloud.cinder.cindercloud.transaction.domain.Transaction;
 import cloud.cinder.cindercloud.transaction.service.TransactionService;

@@ -1,4 +1,4 @@
-package cloud.cinder.cindercloud.block.model;
+package cloud.cinder.cindercloud.block.domain;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

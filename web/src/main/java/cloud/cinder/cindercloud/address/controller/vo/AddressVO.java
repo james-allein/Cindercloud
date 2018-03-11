@@ -1,6 +1,6 @@
 package cloud.cinder.cindercloud.address.controller.vo;
 
-import cloud.cinder.cindercloud.block.model.Block;
+import cloud.cinder.cindercloud.block.domain.Block;
 import cloud.cinder.cindercloud.transaction.domain.Transaction;
 import cloud.cinder.cindercloud.utils.dto.PrettyAmount;
 import lombok.AllArgsConstructor;

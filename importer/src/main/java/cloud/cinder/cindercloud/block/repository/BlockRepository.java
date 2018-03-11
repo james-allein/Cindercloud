@@ -1,12 +1,10 @@
 package cloud.cinder.cindercloud.block.repository;
 
-import cloud.cinder.cindercloud.block.model.Block;
+import cloud.cinder.cindercloud.block.domain.Block;
 import cloud.cinder.cindercloud.infrastructure.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-import java.util.Date;
-import java.util.List;
 import java.util.Optional;
 
 public interface BlockRepository extends JpaRepository<Block, String> {

@@ -1,6 +1,6 @@
 package cloud.cinder.cindercloud.block.rest;
 
-import cloud.cinder.cindercloud.block.model.Block;
+import cloud.cinder.cindercloud.block.domain.Block;
 import cloud.cinder.cindercloud.block.service.BlockService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;

@@ -1,6 +1,6 @@
 package cloud.cinder.cindercloud.block.continuous;
 
-import cloud.cinder.cindercloud.block.continuous.model.BlockImportJob;
+import cloud.cinder.cindercloud.block.domain.BlockImportJob;
 import cloud.cinder.cindercloud.block.continuous.repository.BlockImportJobRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.ListUtils;

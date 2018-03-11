@@ -1,6 +1,6 @@
 package cloud.cinder.cindercloud.statistics;
 
-import cloud.cinder.cindercloud.block.model.Block;
+import cloud.cinder.cindercloud.block.domain.Block;
 import cloud.cinder.cindercloud.block.repository.BlockRepository;
 import cloud.cinder.cindercloud.statistics.dto.MiningStatistics;
 import cloud.cinder.cindercloud.transaction.domain.Transaction;
