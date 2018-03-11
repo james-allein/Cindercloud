@@ -3,7 +3,9 @@ package cloud.cinder.cindercloud;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
-import org.springframework.boot.actuate.autoconfigure.*;
+import org.springframework.boot.actuate.autoconfigure.endpoint.EndpointAutoConfiguration;
+import org.springframework.boot.actuate.autoconfigure.health.HealthIndicatorAutoConfiguration;
+import org.springframework.boot.actuate.autoconfigure.info.InfoContributorAutoConfiguration;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.loadbalancer.LoadBalancerAutoConfiguration;
@@ -28,8 +30,6 @@ import java.net.UnknownHostException;
         HealthIndicatorAutoConfiguration.class,
         InfoContributorAutoConfiguration.class,
         LoadBalancerAutoConfiguration.class,
-        MetricExportAutoConfiguration.class,
-        PublicMetricsAutoConfiguration.class,
         RibbonAutoConfiguration.class,
         ServoMetricsAutoConfiguration.class
 })
