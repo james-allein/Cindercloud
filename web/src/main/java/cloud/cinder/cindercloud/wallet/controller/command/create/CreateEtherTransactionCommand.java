@@ -3,9 +3,9 @@ package cloud.cinder.cindercloud.wallet.controller.command.create;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.validation.constraints.Min;
+import javax.validation.constraints.NotEmpty;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 
