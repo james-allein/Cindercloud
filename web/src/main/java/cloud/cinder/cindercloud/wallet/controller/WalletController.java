@@ -3,7 +3,7 @@ package cloud.cinder.cindercloud.wallet.controller;
 import cloud.cinder.cindercloud.address.service.AddressService;
 import cloud.cinder.cindercloud.coinmarketcap.dto.Currency;
 import cloud.cinder.cindercloud.coinmarketcap.service.PriceService;
-import cloud.cinder.cindercloud.transaction.model.Transaction;
+import cloud.cinder.cindercloud.transaction.domain.Transaction;
 import cloud.cinder.cindercloud.transaction.service.TransactionService;
 import cloud.cinder.cindercloud.utils.WeiUtils;
 import cloud.cinder.cindercloud.wallet.service.AuthenticationService;

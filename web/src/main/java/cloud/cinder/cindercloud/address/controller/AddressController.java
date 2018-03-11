@@ -8,7 +8,7 @@ import cloud.cinder.cindercloud.block.service.BlockService;
 import cloud.cinder.cindercloud.coinmarketcap.dto.Currency;
 import cloud.cinder.cindercloud.coinmarketcap.service.PriceService;
 import cloud.cinder.cindercloud.token.service.TokenService;
-import cloud.cinder.cindercloud.transaction.model.Transaction;
+import cloud.cinder.cindercloud.transaction.domain.Transaction;
 import cloud.cinder.cindercloud.transaction.service.TransactionService;
 import cloud.cinder.cindercloud.utils.WeiUtils;
 import org.springframework.beans.factory.annotation.Autowired;

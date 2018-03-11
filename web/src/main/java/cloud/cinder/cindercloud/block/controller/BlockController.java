@@ -4,7 +4,7 @@ import cloud.cinder.cindercloud.address.model.SpecialAddress;
 import cloud.cinder.cindercloud.address.service.AddressService;
 import cloud.cinder.cindercloud.block.model.Block;
 import cloud.cinder.cindercloud.block.service.BlockService;
-import cloud.cinder.cindercloud.transaction.model.Transaction;
+import cloud.cinder.cindercloud.transaction.domain.Transaction;
 import cloud.cinder.cindercloud.transaction.service.TransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;

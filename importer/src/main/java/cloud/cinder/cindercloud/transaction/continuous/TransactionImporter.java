@@ -1,7 +1,7 @@
 package cloud.cinder.cindercloud.transaction.continuous;
 
 import cloud.cinder.cindercloud.block.model.Block;
-import cloud.cinder.cindercloud.transaction.model.Transaction;
+import cloud.cinder.cindercloud.transaction.domain.Transaction;
 import cloud.cinder.cindercloud.transaction.service.TransactionService;
 import cloud.cinder.cindercloud.web3j.Web3jGateway;
 import com.fasterxml.jackson.databind.DeserializationFeature;

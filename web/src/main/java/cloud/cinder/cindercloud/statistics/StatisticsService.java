@@ -3,7 +3,7 @@ package cloud.cinder.cindercloud.statistics;
 import cloud.cinder.cindercloud.block.model.Block;
 import cloud.cinder.cindercloud.block.repository.BlockRepository;
 import cloud.cinder.cindercloud.statistics.dto.MiningStatistics;
-import cloud.cinder.cindercloud.transaction.model.Transaction;
+import cloud.cinder.cindercloud.transaction.domain.Transaction;
 import cloud.cinder.cindercloud.transaction.repository.TransactionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

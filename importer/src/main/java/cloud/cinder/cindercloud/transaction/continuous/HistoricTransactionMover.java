@@ -1,6 +1,6 @@
 package cloud.cinder.cindercloud.transaction.continuous;
 
-import cloud.cinder.cindercloud.transaction.model.Transaction;
+import cloud.cinder.cindercloud.transaction.domain.Transaction;
 import cloud.cinder.cindercloud.transaction.repository.HistoricTransactionRepository;
 import cloud.cinder.cindercloud.transaction.repository.TransactionRepository;
 import lombok.extern.slf4j.Slf4j;

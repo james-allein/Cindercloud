@@ -4,7 +4,7 @@ import cloud.cinder.cindercloud.address.service.AddressService;
 import cloud.cinder.cindercloud.block.model.Block;
 import cloud.cinder.cindercloud.block.service.BlockService;
 import cloud.cinder.cindercloud.etherscan.EtherscanService;
-import cloud.cinder.cindercloud.transaction.model.Transaction;
+import cloud.cinder.cindercloud.transaction.domain.Transaction;
 import cloud.cinder.cindercloud.transaction.repository.TransactionRepository;
 import cloud.cinder.cindercloud.web3j.Web3jGateway;
 import lombok.extern.slf4j.Slf4j;
