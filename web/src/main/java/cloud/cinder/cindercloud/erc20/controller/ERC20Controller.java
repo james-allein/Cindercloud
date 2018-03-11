@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
 @RequestMapping(value = "/address/{address}")
 public class ERC20Controller {
 
-    final DecimalFormat formatter = new DecimalFormat("##.######");
+    private final DecimalFormat formatter = new DecimalFormat("##.######");
 
     @Autowired
     private ERC20Service erc20Service;
@@ -39,5 +39,4 @@ public class ERC20Controller {
         modelmap.put("tokens", tokens);
         return "addresses/tokens :: tokenlist";
     }
-
 }
