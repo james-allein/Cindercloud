@@ -1,7 +1,7 @@
 package cloud.cinder.cindercloud.address.controller;
 
 import cloud.cinder.cindercloud.address.controller.vo.AddressVO;
-import cloud.cinder.cindercloud.address.model.SpecialAddress;
+import cloud.cinder.cindercloud.address.domain.SpecialAddress;
 import cloud.cinder.cindercloud.address.service.AddressService;
 import cloud.cinder.cindercloud.block.model.Block;
 import cloud.cinder.cindercloud.block.service.BlockService;

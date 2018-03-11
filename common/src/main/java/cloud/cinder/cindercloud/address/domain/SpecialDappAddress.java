@@ -1,4 +1,4 @@
-package cloud.cinder.cindercloud.address.model;
+package cloud.cinder.cindercloud.address.domain;
 
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;

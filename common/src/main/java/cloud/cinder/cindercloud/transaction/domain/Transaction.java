@@ -1,6 +1,6 @@
 package cloud.cinder.cindercloud.transaction.domain;
 
-import cloud.cinder.cindercloud.address.model.SpecialAddress;
+import cloud.cinder.cindercloud.address.domain.SpecialAddress;
 import cloud.cinder.cindercloud.utils.WeiUtils;
 import cloud.cinder.cindercloud.utils.dto.PrettyAmount;
 import lombok.AllArgsConstructor;
