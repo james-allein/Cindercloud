@@ -47,12 +47,3 @@ jar {
     baseName = 'importer'
     version = null
 }
-
-springBoot {
-    executable = true
-}
-
-bootRun {
-    systemProperties System.properties
-    addResources = true
-}
