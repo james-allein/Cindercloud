@@ -29,7 +29,39 @@
 
                     <!-- Add Balance -->
                     <div class="g-mb-50" th:if="${contacts == null || contacts.isEmpty()}">
-                        <th:block th:replace="/components/alerts :: warning"/>
+                        <th:block
+                                th:replace="/components/alerts :: warning(title='Empty Address Book', body='No contacts were found for this account.')"/>
+                    </div>
+                    <br/>
+                    <div class="g-mb-50" th:unless="${contacts == null || contacts.isEmpty()}">
+                        <li class="media g-brd-around g-brd-gray-light-v4 g-brd-left-3 g-brd-blue-left g-rounded-3 g-pa-20 g-mb-7"
+                            th:each="contact : ${contacts}">
+                            <div class="media-body">
+                                <div class="d-flex justify-content-between">
+                                    <h5 class="h6 g-font-weight-600 g-color-black" th:text="${contact.nickname}">James
+                                        Coolman</h5>
+
+                                    <form th:action="@{/wallet/address-book/} + ${contact.id} + '/delete'" method="POST">
+                                        <button type="submit" class="btn btn-xs u-btn-red g-rounded-50 g-mr-10 g-mb-15"><i
+                                                class="fa fa-remove"></i></button>
+                                    </form>
+
+
+                                </div>
+                                <p th:text="${contact.address}">0x0</p>
+
+                                <br/>
+                                <a th:href="@{/address/} + ${contact.address}"
+                                   class="btn btn-xs u-btn-primary  g-rounded-50 g-mr-10">view</a>
+                                <!--<a th:href="@{/}" class="btn btn-xs u-btn-blue  g-rounded-50 g-mr-10">send tokens</a>-->
+                                <a th:href="@{/wallet/send}" class="btn btn-xs u-btn-orange g-rounded-50 g-mr-10">send
+                                    ether</a>
+
+                                <span class="small pull-right text-nowrap g-color-blue">modified <span
+                                        th:text="${contact.getPrettyLastModified()}">2 min ago</span></span>
+
+                            </div>
+                        </li>
                     </div>
                 </div>
                 <!-- End Balance & Rewards -->
@@ -48,12 +80,13 @@
             <div class="col-md-12">
                 <h4 class="g-mb-20">New Contact</h4>
 
-                <form th:object="${newContactModel}" th:action="@{/wallet/address-book}">
+                <form th:object="${newContactModel}" th:action="@{/wallet/address-book/new}" method="POST">
                     <div class="form-group row g-mb-25">
                         <label class="col-sm-3 col-form-label g-mb-10">Address:</label>
 
                         <div class="col-sm-12">
-                            <input th:field="*{address}" class="form-control u-form-control rounded-0"
+                            <input required="required" th:field="*{address}"
+                                   class="form-control u-form-control rounded-0"
                                    type="text"
                                    placeholder="0xEeb7dF8C260f7DE30b41A981D52b4573CB5dFe2f"/>
                         </div>
@@ -62,7 +95,8 @@
                         <label class="col-sm-3 col-form-label g-mb-10">Nickname:</label>
 
                         <div class="col-sm-12">
-                            <input th:field="${nickname}" class="form-control u-form-control rounded-0"
+                            <input required="required" th:field="*{nickname}"
+                                   class="form-control u-form-control rounded-0"
                                    type="text"
                                    placeholder="Savings Account"/>
                         </div>

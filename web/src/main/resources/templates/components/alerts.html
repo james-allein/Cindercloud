@@ -4,26 +4,40 @@
 >
 
 <th:block th:fragment="success">
-
-</th:block>
-
-<th:block th:fragment="warning">
-
-</th:block>
-
-<th:block th:fragment="warning">
     <div class="alert fade show g-brd-around g-brd-primary rounded-0" role="alert">
         <div class="media">
             <div class="d-flex g-mr-10">
-          <span class="u-icon-v3 u-icon-size--sm g-bg-orange g-color-white g-rounded-50x">
-            <i class="fa fa-users"></i>
+          <span class="u-icon-v3 u-icon-size--sm g-bg-primary g-color-white g-rounded-50x">
+            <i class="fa fa-thumbs-up"></i>
           </span>
             </div>
             <div class="media-body">
                 <div class="d-flex justify-content-between">
-                    Empty Address Book
+                    <span th:if="${title}" th:text="${title}"></span>
                 </div>
-                <p class="m-0 g-font-size-14">No contacts were found for this account.</p>
+                <p th:if="${body}" th:text="${body}" class="m-0 g-font-size-14"></p>
+            </div>
+        </div>
+    </div>
+</th:block>
+
+<th:block th:fragment="error">
+
+</th:block>
+
+<th:block th:fragment="warning">
+    <div class="alert fade show g-brd-around g-brd-orange rounded-0" role="alert">
+        <div class="media">
+            <div class="d-flex g-mr-10">
+          <span class="u-icon-v3 u-icon-size--sm g-bg-orange g-color-white g-rounded-50x">
+            <i class="fa fa-warning"></i>
+          </span>
+            </div>
+            <div class="media-body">
+                <div class="d-flex justify-content-between">
+                    <span th:if="${title}" th:text="${title}"></span>
+                </div>
+                <p th:if="${body}" th:text="${body}" class="m-0 g-font-size-14"></p>
             </div>
         </div>
     </div>

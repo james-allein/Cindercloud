@@ -3,20 +3,19 @@ package cloud.cinder.cindercloud.addressbook.controller;
 import cloud.cinder.cindercloud.addressbook.controller.model.NewContactModel;
 import cloud.cinder.cindercloud.addressbook.service.AddressBookService;
 import cloud.cinder.cindercloud.wallet.service.AuthenticationService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
 
 @Controller
 @RequestMapping("/wallet/address-book")
+@Slf4j
 public class AddressBookController {
 
     private final AuthenticationService authenticationService;
@@ -38,7 +37,7 @@ public class AddressBookController {
         return "wallets/address-book";
     }
 
-    @PostMapping("/wallet/address-book/new")
+    @PostMapping("/new")
     public String newContact(@ModelAttribute("newContactModel") @Valid final NewContactModel newContactModel,
                              final BindingResult bindingResult,
                              final ModelMap modelMap,
@@ -58,4 +57,14 @@ public class AddressBookController {
         }
     }
 
+    @PostMapping("/{id}/delete")
+    public String deleteContact(@PathVariable("id") final Long id) {
+        authenticationService.requireAuthenticated();
+        try {
+            addressBookService.deleteContact(authenticationService.getAddress(), id);
+        } catch (final Exception ex) {
+            log.error("Something went wrong while trying to delete contact", ex);
+        }
+        return "redirect:/wallet/address-book";
+    }
 }

@@ -3,15 +3,19 @@ package cloud.cinder.cindercloud.addressbook.domain;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.ocpsoft.prettytime.PrettyTime;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.Locale;
 
 @Table(name = "addressbook_contacts")
 @Entity
 @Data
 @NoArgsConstructor
 public class Contact {
+
+    private final static PrettyTime prettytime = new PrettyTime(Locale.ENGLISH);
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,5 +36,9 @@ public class Contact {
         this.address = address;
         this.nickname = nickname;
         this.lastModified = new Date();
+    }
+
+    public String getPrettyLastModified() {
+        return prettytime.format(lastModified);
     }
 }
