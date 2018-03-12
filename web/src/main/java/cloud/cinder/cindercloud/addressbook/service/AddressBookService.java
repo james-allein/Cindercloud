@@ -8,6 +8,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Optional;
 
+import static org.web3j.crypto.WalletUtils.isValidAddress;
+
 @Service
 public class AddressBookService {
 
@@ -24,16 +26,20 @@ public class AddressBookService {
 
     @Transactional
     public void addContact(final String owner, final String address, final String nickname) {
-        if (contactRepository.existsByOwnerAndAddress(owner, address)) {
-            throw new IllegalArgumentException("This address is already a contact of yours");
+        if (isValidAddress(address)) {
+            if (contactRepository.existsByOwnerAndAddress(owner.toLowerCase(), address.toLowerCase())) {
+                throw new IllegalArgumentException("The provided address is already a contact of yours.");
+            }
+            contactRepository.save(
+                    Contact.builder()
+                            .address(address.toLowerCase())
+                            .owner(owner.toLowerCase())
+                            .nickname(nickname)
+                            .build()
+            );
+        } else {
+            throw new IllegalArgumentException("The provided address was not valid.");
         }
-        contactRepository.save(
-                Contact.builder()
-                        .address(address)
-                        .owner(owner)
-                        .nickname(nickname)
-                        .build()
-        );
     }
 
     @Transactional

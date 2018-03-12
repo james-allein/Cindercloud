@@ -15,7 +15,6 @@ import java.util.Locale;
 @NoArgsConstructor
 public class Contact {
 
-    private final static PrettyTime prettytime = new PrettyTime(Locale.ENGLISH);
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -36,9 +35,5 @@ public class Contact {
         this.address = address;
         this.nickname = nickname;
         this.lastModified = new Date();
-    }
-
-    public String getPrettyLastModified() {
-        return prettytime.format(lastModified);
     }
 }

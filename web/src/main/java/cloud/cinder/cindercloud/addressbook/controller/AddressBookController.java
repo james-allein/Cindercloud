@@ -1,9 +1,15 @@
 package cloud.cinder.cindercloud.addressbook.controller;
 
+import cloud.cinder.cindercloud.address.service.AddressService;
 import cloud.cinder.cindercloud.addressbook.controller.model.NewContactModel;
+import cloud.cinder.cindercloud.addressbook.controller.vo.ContactVO;
 import cloud.cinder.cindercloud.addressbook.service.AddressBookService;
+import cloud.cinder.cindercloud.coinmarketcap.dto.Currency;
+import cloud.cinder.cindercloud.coinmarketcap.service.PriceService;
+import cloud.cinder.cindercloud.utils.WeiUtils;
 import cloud.cinder.cindercloud.wallet.service.AuthenticationService;
 import lombok.extern.slf4j.Slf4j;
+import org.ocpsoft.prettytime.PrettyTime;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -12,6 +18,13 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
+import java.math.BigInteger;
+import java.text.DecimalFormat;
+import java.util.Locale;
+import java.util.stream.Collectors;
+
+import static cloud.cinder.cindercloud.utils.WeiUtils.format;
+
 
 @Controller
 @RequestMapping("/wallet/address-book")
@@ -20,11 +33,21 @@ public class AddressBookController {
 
     private final AuthenticationService authenticationService;
     private final AddressBookService addressBookService;
+    private PriceService priceService;
+    private AddressService addressService;
+
+    private DecimalFormat decimalFormat = new DecimalFormat("0.00");
+    private final static PrettyTime prettytime = new PrettyTime(Locale.ENGLISH);
+
 
     public AddressBookController(final AuthenticationService authenticationService,
-                                 final AddressBookService addressBookService) {
+                                 final AddressBookService addressBookService,
+                                 final PriceService priceService,
+                                 final AddressService addressService) {
         this.authenticationService = authenticationService;
         this.addressBookService = addressBookService;
+        this.priceService = priceService;
+        this.addressService = addressService;
     }
 
     @GetMapping
@@ -32,9 +55,28 @@ public class AddressBookController {
         authenticationService.requireAuthenticated();
         final String address = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         modelMap.put("address", address);
-        modelMap.put("contacts", addressBookService.getContacts(authenticationService.getAddress()));
+        modelMap.put("contacts", addressBookService.getContacts(authenticationService.getAddress())
+                .stream()
+                .map(x -> {
+                    final BigInteger bal = addressService.getBalance(x.getAddress()).toBlocking().first();
+                    return ContactVO.builder()
+                            .address(x.getAddress())
+                            .nickname(x.getNickname())
+                            .balance(format(bal))
+                            .lastModified(prettytime.format(x.getLastModified()))
+                            .balEur(getBalance(bal, Currency.EUR))
+                            .balUsd(getBalance(bal, Currency.USD))
+                            .id(x.getId())
+                            .build();
+                })
+                .collect(Collectors.toList())
+        );
         modelMap.put("newContactModel", new NewContactModel());
         return "wallets/address-book";
+    }
+
+    private String getBalance(final BigInteger bal, final Currency eur) {
+        return decimalFormat.format(priceService.getPrice(eur) * WeiUtils.asEth(bal));
     }
 
     @PostMapping("/new")
@@ -44,7 +86,7 @@ public class AddressBookController {
                              final RedirectAttributes redirectAttributes) {
         authenticationService.requireAuthenticated();
         if (bindingResult.hasErrors()) {
-            return "wallets/address-book";
+            return index(modelMap);
         } else {
             try {
                 addressBookService.addContact(authenticationService.getAddress(), newContactModel.getAddress(), newContactModel.getNickname());
@@ -52,7 +94,7 @@ public class AddressBookController {
                 return "redirect:/wallet/address-book";
             } catch (final Exception ex) {
                 modelMap.put("error", ex.getMessage());
-                return "wallets/address-book";
+                return index(modelMap);
             }
         }
     }

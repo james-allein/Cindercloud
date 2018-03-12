@@ -22,10 +22,14 @@
             <div class="col-lg-9 g-mb-50">
                 <!-- Balance & Rewards -->
                 <div class="g-brd-around g-brd-gray-light-v4 rounded g-px-30 g-pt-30">
-                    <h3 class="h5 mb-3">Address Book <a class="btn pull-right u-btn-primary" href="#addContact"
-                                                        data-modal-target="#addContact" data-modal-effect="fadein">New
-                        Contact</a>
+                    <h3 class="h5 mb-3">Address Book <a
+                            class="btn pull-right u-btn-primary text-uppercase g-letter-spacing-0_5  g-font-weight-600"
+                            href="#addContact"
+                            data-modal-target="#addContact" data-modal-effect="fadein">New</a>
                     </h3>
+
+                    <th:block th:if="${error != null}"
+                              th:include="/components/alerts :: error(title='Error', body=${error})"/>
 
                     <!-- Add Balance -->
                     <div class="g-mb-50" th:if="${contacts == null || contacts.isEmpty()}">
@@ -36,14 +40,42 @@
                     <div class="g-mb-50" th:unless="${contacts == null || contacts.isEmpty()}">
                         <li class="media g-brd-around g-brd-gray-light-v4 g-brd-left-3 g-brd-blue-left g-rounded-3 g-pa-20 g-mb-7"
                             th:each="contact : ${contacts}">
+                            <div class="d-flex g-mt-2 g-mr-15">
+                                <div>
+                                    <a href="#!" th:href="@{/address/} + ${contact.address}"
+                                       class="btn g-width-160 btn-sm u-btn-inset u-btn-inset--rounded u-btn-primary g-font-weight-600 g-letter-spacing-0_5 text-uppercase g-brd-2 g-rounded-50 g-mr-10 g-mb-15">
+                                        <small>
+                                            <i class="fa fa-check-circle g-mr-3"></i>
+                                            View
+                                        </small>
+                                    </a>
+                                    <br/>
+                                    <a href="#!" th:href="@{/wallet/send}"
+                                       class="btn g-width-160 btn-sm u-btn-inset u-btn-inset--rounded u-btn-primary g-font-weight-600 g-letter-spacing-0_5 text-uppercase g-brd-2 g-rounded-50 g-mr-10 g-mb-15">
+                                        <small>
+                                            <i class="fa fa-send g-mr-3"></i>
+                                            Send Ether
+                                        </small>
+                                    </a>
+                                    <br/>
+                                    <a href="#!"
+                                       class="btn disabled g-width-160 btn-sm u-btn-inset u-btn-inset--rounded u-btn-orange g-font-weight-600 g-letter-spacing-0_5 text-uppercase g-brd-2 g-rounded-50 g-mr-10 g-mb-15">
+
+                                        <small><i class="fa fa-send-o g-mr-3"></i> Send Tokens</small>
+                                    </a>
+                                </div>
+                            </div>
                             <div class="media-body">
+
                                 <div class="d-flex justify-content-between">
                                     <h5 class="h6 g-font-weight-600 g-color-black" th:text="${contact.nickname}">James
                                         Coolman</h5>
 
-                                    <form th:action="@{/wallet/address-book/} + ${contact.id} + '/delete'" method="POST">
-                                        <button type="submit" class="btn btn-xs u-btn-red g-rounded-50 g-mr-10 g-mb-15"><i
-                                                class="fa fa-remove"></i></button>
+                                    <form th:action="@{/wallet/address-book/} + ${contact.id} + '/delete'"
+                                          method="POST">
+                                        <button type="submit" class="btn btn-xs u-btn-red g-rounded-50 g-mr-10 g-mb-15">
+                                            <i
+                                                    class="fa fa-remove"></i></button>
                                     </form>
 
 
@@ -51,14 +83,19 @@
                                 <p th:text="${contact.address}">0x0</p>
 
                                 <br/>
-                                <a th:href="@{/address/} + ${contact.address}"
-                                   class="btn btn-xs u-btn-primary  g-rounded-50 g-mr-10">view</a>
-                                <!--<a th:href="@{/}" class="btn btn-xs u-btn-blue  g-rounded-50 g-mr-10">send tokens</a>-->
-                                <a th:href="@{/wallet/send}" class="btn btn-xs u-btn-orange g-rounded-50 g-mr-10">send
-                                    ether</a>
+
+                                <span class="u-label u-label--sm g-bg-blue g-rounded-20 g-px-10">
+                                    <span th:text="${contact.balance}"></span>
+                                </span>
+                                <span class="u-label u-label--sm g-bg-primary g-rounded-20 g-px-10">
+                                    <i class="fa fa-dollar"></i> <span th:text="${contact.balUsd}"></span>
+                                </span>
+                                <span class="u-label u-label--sm g-bg-orange g-rounded-20 g-px-10">
+                                    <i class="fa fa-eur"></i> <span th:text="${contact.balEur}"></span>
+                                </span>
 
                                 <span class="small pull-right text-nowrap g-color-blue">modified <span
-                                        th:text="${contact.getPrettyLastModified()}">2 min ago</span></span>
+                                        th:text="${contact.lastModified}">2 min ago</span></span>
 
                             </div>
                         </li>
