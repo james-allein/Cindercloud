@@ -1,7 +1,6 @@
 package cloud.cinder.cindercloud;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.actuate.autoconfigure.EndpointAutoConfiguration;
 import org.springframework.boot.actuate.autoconfigure.HealthIndicatorAutoConfiguration;
@@ -33,9 +32,8 @@ import java.net.UnknownHostException;
         ServoMetricsAutoConfiguration.class
 })
 @EnableScheduling
+@Slf4j
 public class Cindercloud {
-
-    private static final Logger log = LoggerFactory.getLogger(Cindercloud.class);
 
     public static void main(String[] args) throws UnknownHostException {
         SpringApplication app = new SpringApplication(Cindercloud.class);

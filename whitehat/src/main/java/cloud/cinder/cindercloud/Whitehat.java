@@ -1,7 +1,6 @@
 package cloud.cinder.cindercloud;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -12,10 +11,9 @@ import java.net.UnknownHostException;
 
 @SpringBootApplication
 @EnableAutoConfiguration
+@Slf4j
 @EnableScheduling
 public class Whitehat {
-
-    private static final Logger log = LoggerFactory.getLogger(Whitehat.class);
 
     public static void main(String[] args) throws UnknownHostException {
         final SpringApplication app = new SpringApplication(Whitehat.class);
