@@ -31,4 +31,9 @@ public class TokenService {
     public Page<Token> findAll(Pageable pageable) {
         return tokenRepository.findAll(pageable);
     }
+
+    @Transactional(readOnly = true)
+    public Long count() {
+        return tokenRepository.count();
+    }
 }

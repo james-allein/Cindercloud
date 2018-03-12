@@ -19,8 +19,10 @@ public class TransactionService {
     private TransactionRepository transactionRepository;
 
     @Transactional
-    public Transaction save(final Transaction transaction) {
-        return transactionRepository.save(transaction);
+    public void save(final Transaction transaction) {
+        if (!transactionRepository.exists(transaction.getHash())) {
+            transactionRepository.save(transaction);
+        }
     }
 
     @Transactional

@@ -75,7 +75,7 @@ public class TransactionImporter {
             try {
                 transactionService.save(e);
             } catch (final Exception ex) {
-                log.debug("Couldn't save, tx already in db");
+                log.debug("Couldn't save, tx already in db: {}", e.getHash());
             }
         };
     }

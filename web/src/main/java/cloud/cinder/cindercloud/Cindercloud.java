@@ -15,7 +15,6 @@ import org.springframework.cloud.netflix.feign.ribbon.FeignRibbonClientAutoConfi
 import org.springframework.cloud.netflix.metrics.servo.ServoMetricsAutoConfiguration;
 import org.springframework.cloud.netflix.ribbon.RibbonAutoConfiguration;
 import org.springframework.core.env.Environment;
-import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
 import java.net.InetAddress;
@@ -33,7 +32,6 @@ import java.net.UnknownHostException;
         RibbonAutoConfiguration.class,
         ServoMetricsAutoConfiguration.class
 })
-@EnableAsync
 @EnableScheduling
 public class Cindercloud {
 

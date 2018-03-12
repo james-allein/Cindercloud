@@ -1,10 +1,13 @@
 package cloud.cinder.cindercloud.wallet.service;
 
+import cloud.cinder.cindercloud.event.domain.Event;
+import cloud.cinder.cindercloud.event.domain.EventType;
 import cloud.cinder.cindercloud.wallet.domain.GeneratedCredentials;
 import cloud.cinder.cindercloud.wallet.domain.PrivateKey;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.web3j.crypto.*;
 
@@ -15,6 +18,11 @@ import java.util.Objects;
 public class WalletService {
 
     private static final ObjectMapper walletmapper = new ObjectMapper();
+    private ApplicationEventPublisher $;
+
+    public WalletService(final ApplicationEventPublisher _$) {
+        this.$ = _$;
+    }
 
     static {
         walletmapper.configure(JsonParser.Feature.ALLOW_UNQUOTED_FIELD_NAMES, true);
@@ -57,6 +65,12 @@ public class WalletService {
             Objects.requireNonNull(password);
             final ECKeyPair ecKeyPair = Keys.createEcKeyPair();
             final WalletFile walletFile = strong ? Wallet.createStandard(password, ecKeyPair) : Wallet.createLight(password, ecKeyPair);
+            $.publishEvent(
+                    Event.builder()
+                            .message(walletFile.getAddress())
+                            .type(EventType.WALLET_CREATED)
+                            .build(
+                            ));
             return new GeneratedCredentials(walletmapper.writeValueAsString(walletFile), new PrivateKey(ecKeyPair.getPrivateKey()));
         } catch (final Exception ex) {
             throw new IllegalArgumentException("Unable to generate wallet at this point");

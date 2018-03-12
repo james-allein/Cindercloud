@@ -19,7 +19,7 @@ public class CreateTokenTransactionCommand {
     private String gasPrice;
     private String tokenAddress;
     @Min(21000)
-    private BigInteger gasLimit = BigInteger.valueOf(31000);
+    private BigInteger gasLimit = BigInteger.valueOf(70000);
     private double amount;
 
     public BigInteger amountInWei() {
