@@ -10,6 +10,8 @@ import org.web3j.crypto.Credentials;
 
 import java.util.Date;
 
+import static cloud.cinder.cindercloud.utils.AddressUtils.prettifyAddress;
+
 @Component
 public class LoginHandler {
 
@@ -20,13 +22,13 @@ public class LoginHandler {
     }
 
     public void login(final Credentials credentials) {
-        SecurityContextHolder.getContext().setAuthentication(new PrivateKeyAuthentication(credentials.getEcKeyPair(), credentials.getAddress()));
+        SecurityContextHolder.getContext().setAuthentication(new PrivateKeyAuthentication(credentials.getEcKeyPair(), prettifyAddress(credentials.getAddress())));
         SecurityContextHolder.getContext().getAuthentication().setAuthenticated(true);
         throwEvent(credentials.getAddress(), "CINDERCLOUD");
     }
 
     public void clientsideLogin(final String address) {
-        SecurityContextHolder.getContext().setAuthentication(new ClientSideAuthentication(address));
+        SecurityContextHolder.getContext().setAuthentication(new ClientSideAuthentication(prettifyAddress(address)));
         SecurityContextHolder.getContext().getAuthentication().setAuthenticated(true);
         throwEvent(address, "WEB3");
     }

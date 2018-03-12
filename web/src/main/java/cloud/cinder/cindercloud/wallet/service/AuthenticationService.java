@@ -1,8 +1,8 @@
 package cloud.cinder.cindercloud.wallet.service;
 
 import cloud.cinder.cindercloud.security.domain.AuthenticationType;
-import cloud.cinder.cindercloud.security.domain.PrivateKeyAuthentication;
 import cloud.cinder.cindercloud.security.domain.ClientSideAuthentication;
+import cloud.cinder.cindercloud.security.domain.PrivateKeyAuthentication;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.InsufficientAuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -11,6 +11,8 @@ import org.web3j.crypto.Credentials;
 import org.web3j.crypto.ECKeyPair;
 import org.web3j.crypto.RawTransaction;
 import org.web3j.crypto.TransactionEncoder;
+
+import static cloud.cinder.cindercloud.utils.AddressUtils.prettifyAddress;
 
 @Service
 @Slf4j
@@ -28,9 +30,9 @@ public class AuthenticationService {
 
     public String getAddress() {
         if ((SecurityContextHolder.getContext().getAuthentication() instanceof PrivateKeyAuthentication)) {
-            return (SecurityContextHolder.getContext().getAuthentication()).getPrincipal().toString();
+            return prettifyAddress(SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString());
         } else if ((SecurityContextHolder.getContext().getAuthentication() instanceof ClientSideAuthentication)) {
-            return (SecurityContextHolder.getContext().getAuthentication()).getPrincipal().toString();
+            return prettifyAddress((SecurityContextHolder.getContext().getAuthentication()).getPrincipal().toString());
         } else {
             throw new InsufficientAuthenticationException("Not authenticated");
         }
@@ -38,7 +40,7 @@ public class AuthenticationService {
 
     private ECKeyPair getPrivateKey() {
         if ((SecurityContextHolder.getContext().getAuthentication() instanceof PrivateKeyAuthentication)) {
-            return ((ECKeyPair)SecurityContextHolder.getContext().getAuthentication().getCredentials());
+            return ((ECKeyPair) SecurityContextHolder.getContext().getAuthentication().getCredentials());
         } else if ((SecurityContextHolder.getContext().getAuthentication() instanceof ClientSideAuthentication)) {
             throw new InsufficientAuthenticationException("Authenticated with Web3");
         } else {

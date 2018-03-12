@@ -1,0 +1,32 @@
+<html lang="en"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+>
+
+<th:block th:fragment="success">
+
+</th:block>
+
+<th:block th:fragment="warning">
+
+</th:block>
+
+<th:block th:fragment="warning">
+    <div class="alert fade show g-brd-around g-brd-primary rounded-0" role="alert">
+        <div class="media">
+            <div class="d-flex g-mr-10">
+          <span class="u-icon-v3 u-icon-size--sm g-bg-orange g-color-white g-rounded-50x">
+            <i class="fa fa-users"></i>
+          </span>
+            </div>
+            <div class="media-body">
+                <div class="d-flex justify-content-between">
+                    Empty Address Book
+                </div>
+                <p class="m-0 g-font-size-14">No contacts were found for this account.</p>
+            </div>
+        </div>
+    </div>
+</th:block>
+
+</html>

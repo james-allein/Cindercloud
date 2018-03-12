@@ -24,6 +24,7 @@ import rx.Observable;
 import java.math.BigInteger;
 import java.util.Optional;
 
+import static cloud.cinder.cindercloud.utils.AddressUtils.prettifyAddress;
 import static cloud.cinder.cindercloud.utils.WeiUtils.format;
 
 @Controller
@@ -81,13 +82,5 @@ public class AddressController {
 
     private boolean noValidAddress(final String hash) {
         return !(hash.length() == 40 || hash.length() == 42);
-    }
-
-    private String prettifyAddress(final String address) {
-        if (!address.startsWith("0x")) {
-            return String.format("0x%s", address);
-        } else {
-            return address;
-        }
     }
 }

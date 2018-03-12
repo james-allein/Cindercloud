@@ -16,6 +16,8 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+import static cloud.cinder.cindercloud.utils.AddressUtils.prettifyAddress;
+
 @Component
 public class PrivateKeyService {
 
@@ -47,13 +49,5 @@ public class PrivateKeyService {
                     }
                 }).filter(Objects::nonNull)
                 .collect(Collectors.toList());
-    }
-
-    private String prettifyAddress(final String address) {
-        if (!address.startsWith("0x")) {
-            return String.format("0x%s", address);
-        } else {
-            return address;
-        }
     }
 }

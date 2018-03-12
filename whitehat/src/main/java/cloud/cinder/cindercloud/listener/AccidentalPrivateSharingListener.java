@@ -17,6 +17,8 @@ import rx.functions.Action1;
 
 import java.util.Date;
 
+import static cloud.cinder.cindercloud.utils.AddressUtils.prettifyAddress;
+
 @Component
 @Slf4j
 public class AccidentalPrivateSharingListener {
@@ -104,15 +106,6 @@ public class AccidentalPrivateSharingListener {
     private void sweepToIfKnown(final Transaction x) {
         if (x != null && x.getTo() != null) {
             ethereumSweeperConfiguration.sweepEthereum(x.getTo());
-        }
-    }
-
-
-    private String prettifyAddress(final String address) {
-        if (!address.startsWith("0x")) {
-            return String.format("0x%s", address);
-        } else {
-            return address;
         }
     }
 }

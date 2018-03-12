@@ -12,6 +12,8 @@ import org.web3j.utils.Numeric;
 
 import java.util.Date;
 
+import static cloud.cinder.cindercloud.utils.AddressUtils.prettifyAddress;
+
 @Component
 @Slf4j
 public class CredentialService {
@@ -33,15 +35,6 @@ public class CredentialService {
             }
         } catch (final Exception exc) {
             log.error("unable to save {}", privateKey);
-        }
-    }
-
-
-    private String prettifyAddress(final String address) {
-        if (!address.startsWith("0x")) {
-            return String.format("0x%s", address);
-        } else {
-            return address;
         }
     }
 }
