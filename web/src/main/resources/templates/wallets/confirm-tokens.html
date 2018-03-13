@@ -378,19 +378,25 @@
 					var amountInWei = $('#confirmAmountInWei').val();
 					var erc20 = _web3.eth.contract(erc20abi).at(tokenAddress);
 					var transactionObject = {
+						from: '0xdc71b72db51e227e65a45004ab2798d31e8934c9',
 						to: tokenAddress,
 						value: '0x0',
 						data: erc20.transfer.getData(to, amountInWei),
-						gas: gasLimit,
 						gasPrice: gasPrice
 					};
-					_web3.eth.sendTransaction(transactionObject, function (err, transactionHash) {
-						if (!err) {
-							swal("Transaction Sent!", "The transaction has been sent (" + transactionHash + ")", "success");
-						} else {
-							swal("Transaction Problem!", "Something went wrong while trying to submit your transaction", "error");
-						}
-					});
+					_web3.eth.estimateGas(transactionObject, function (err, result){
+						if(!err) {
+							transactionObject.gas = result;
+							_web3.eth.sendTransaction(transactionObject, function (err, transactionHash) {
+								if (!err) {
+									swal("Transaction Sent!", "The transaction has been sent (" + transactionHash + ")", "success");
+								} else {
+									swal("Transaction Problem!", "Something went wrong while trying to submit your transaction", "error");
+								}
+							});
+                        }
+                    });
+
 				}
 			}
 		);
