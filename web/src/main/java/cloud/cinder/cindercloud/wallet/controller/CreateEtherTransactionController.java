@@ -41,7 +41,7 @@ public class CreateEtherTransactionController {
                                     final BindingResult bindingResult,
                                     final ModelMap modelMap) {
         if (bindingResult.hasErrors()) {
-            return "wallets/send";
+            return index(modelMap);
         } else {
             modelMap.addAttribute("authenticationType", authenticationService.getType());
             modelMap.put("confirm", new ConfirmEtherTransactionCommand(

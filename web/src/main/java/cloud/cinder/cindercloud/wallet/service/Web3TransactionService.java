@@ -1,11 +1,17 @@
 package cloud.cinder.cindercloud.wallet.service;
 
+import cloud.cinder.cindercloud.erc20.domain.HumanStandardToken;
 import cloud.cinder.cindercloud.wallet.controller.command.confirm.ConfirmEtherTransactionCommand;
 import cloud.cinder.cindercloud.wallet.controller.command.confirm.ConfirmTokenTransactionCommand;
 import lombok.extern.slf4j.Slf4j;
 import org.bouncycastle.util.encoders.Hex;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.jetbrains.annotations.NotNull;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
+import org.web3j.abi.FunctionEncoder;
+import org.web3j.abi.datatypes.Function;
+import org.web3j.crypto.Credentials;
+import org.web3j.crypto.ECKeyPair;
 import org.web3j.crypto.RawTransaction;
 import org.web3j.protocol.Web3j;
 import org.web3j.protocol.core.DefaultBlockParameterName;
@@ -14,14 +20,24 @@ import org.web3j.protocol.core.methods.response.EthSendTransaction;
 
 import java.math.BigInteger;
 
+import static java.util.Arrays.asList;
+import static java.util.Collections.emptyList;
+
 @Service
 @Slf4j
 public class Web3TransactionService {
 
-    @Autowired
     private AuthenticationService authenticationService;
-    @Autowired
     private Web3j web3j;
+    private ApplicationEventPublisher $;
+
+    public Web3TransactionService(final AuthenticationService authenticationService,
+                                  final Web3j web3j,
+                                  final ApplicationEventPublisher applicationEventPublisher) {
+        this.authenticationService = authenticationService;
+        this.web3j = web3j;
+        this.$ = applicationEventPublisher;
+    }
 
     public String submitEtherTransaction(final ConfirmEtherTransactionCommand etherTransactionCommand) {
         final String address = authenticationService.getAddress();
@@ -30,27 +46,10 @@ public class Web3TransactionService {
                 .toBlocking()
                 .first()
                 .getBalance();
-
         if (hasEnoughBalance(balance, etherTransactionCommand)) {
             final EthGetTransactionCount ethGetTransactionCount = calculateNonce(address);
             if (ethGetTransactionCount != null) {
-                final RawTransaction etherTransaction = generateTransaction(ethGetTransactionCount, etherTransactionCommand);
-
-                final byte[] signedMessage = sign(etherTransaction);
-                final String signedMessageAsHex = prettify(Hex.toHexString(signedMessage));
-                try {
-                    final EthSendTransaction send = web3j.ethSendRawTransaction(signedMessageAsHex).sendAsync().get();
-                    log.debug("txHash: {}", send.getTransactionHash());
-                    if (send.getTransactionHash() != null) {
-                        return send.getTransactionHash();
-                    } else {
-                        log.error(send.getError().getMessage());
-                        throw new IllegalArgumentException(send.getError().getMessage());
-                    }
-                } catch (final Exception ex) {
-                    //TODO: handle "already imported" transactions
-                    throw new IllegalArgumentException("Error trying to submit a transaction, please try again later.");
-                }
+                return generateAndSendEther(etherTransactionCommand, ethGetTransactionCount);
             } else {
                 throw new IllegalArgumentException("Error trying to submit a transaction, please try again later");
             }
@@ -59,17 +58,95 @@ public class Web3TransactionService {
         }
     }
 
-    public String submitTokenTransaction(final ConfirmTokenTransactionCommand confirmTokenTransactionCommand) {
+    public String submitTokenTransaction(final ConfirmTokenTransactionCommand command) {
+        final String owner = authenticationService.getAddress();
+        final BigInteger balance = web3j.ethGetBalance(owner, DefaultBlockParameterName.LATEST)
+                .observable()
+                .toBlocking()
+                .first()
+                .getBalance();
+        if (hasEnoughBalance(balance, command)) {
+            final EthGetTransactionCount ethGetTransactionCount = calculateNonce(owner);
+            if (ethGetTransactionCount != null) {
+                return generateAndSendToken(command, ethGetTransactionCount, owner);
+            } else {
+                throw new IllegalArgumentException("Error trying to submit a transaction, please try again later");
+            }
+        } else {
+            throw new IllegalArgumentException("Your balance isn't high enough to submit this transaction.");
+        }
+    }
+
+    private String generateAndSendEther(final ConfirmEtherTransactionCommand etherTransactionCommand, final EthGetTransactionCount ethGetTransactionCount) {
+        final RawTransaction etherTransaction = generateEtherTransaction(ethGetTransactionCount, etherTransactionCommand);
+
+        final byte[] signedMessage = sign(etherTransaction);
+        final String signedMessageAsHex = prettify(Hex.toHexString(signedMessage));
+        try {
+            final EthSendTransaction send = web3j.ethSendRawTransaction(signedMessageAsHex).sendAsync().get();
+            log.debug("txHash: {}", send.getTransactionHash());
+            if (send.getTransactionHash() != null) {
+                return send.getTransactionHash();
+            } else {
+                log.error(send.getError().getMessage());
+                throw new IllegalArgumentException(send.getError().getMessage());
+            }
+        } catch (final Exception ex) {
+            //TODO: handle "already imported" transactions
+            throw new IllegalArgumentException("Error trying to submit a transaction, please try again later.");
+        }
+    }
+
+    private String generateAndSendToken(final ConfirmTokenTransactionCommand command,
+                                        final EthGetTransactionCount ethGetTransactionCount,
+                                        final String owner) {
+        try {
+            final HumanStandardToken token = HumanStandardToken.load(command.getTokenAddress(), web3j, Credentials.create(ECKeyPair.create(BigInteger.ZERO)), BigInteger.ZERO, BigInteger.ZERO);
+            final BigInteger balance = token.balanceOf(owner).send();
+            if (hasEnoughTokens(balance, command)) {
+                log.debug("User did not have any tokens");
+                throw new IllegalArgumentException("You do not have enough tokens to send.");
+            } else {
+
+                final RawTransaction transaction = generateTokenTransaction(command, ethGetTransactionCount);
+
+                final byte[] signedMessage = sign(transaction);
+                final String signedMessageAsHex = prettify(Hex.toHexString(signedMessage));
+                final EthSendTransaction send = web3j.ethSendRawTransaction(signedMessageAsHex).send();
+                log.debug("txHash: {}", send.getTransactionHash());
+                if (send.getTransactionHash() != null) {
+                    return send.getTransactionHash();
+                } else {
+                    log.error(send.getError().getMessage());
+                    throw new IllegalArgumentException(send.getError().getMessage());
+                }
+            }
+        } catch (final Exception ex) {
+            log.error("unable to send tokens", ex);
+        }
         return "0x0";
     }
 
+    @NotNull
+    private RawTransaction generateTokenTransaction(final ConfirmTokenTransactionCommand command, final EthGetTransactionCount ethGetTransactionCount) {
+        final Function function = new Function(
+                "transfer",
+                asList(new org.web3j.abi.datatypes.Address(command.getTo()),
+                        new org.web3j.abi.datatypes.generated.Uint256(command.getAmountInWei())),
+                emptyList());
+        final String encodedFunction = FunctionEncoder.encode(function);
+        return RawTransaction.createTransaction(
+                ethGetTransactionCount.getTransactionCount(),
+                command.getGasPriceInWei(),
+                command.getGasLimit(),
+                command.getTokenAddress(), encodedFunction);
+    }
 
     private byte[] sign(final RawTransaction etherTransaction) {
         return authenticationService.sign(etherTransaction);
     }
 
-
-    private RawTransaction generateTransaction(final EthGetTransactionCount transactionCount, final ConfirmEtherTransactionCommand etherTransactionCommand) {
+    private RawTransaction generateEtherTransaction(final EthGetTransactionCount transactionCount, final ConfirmEtherTransactionCommand etherTransactionCommand) {
         return RawTransaction.createEtherTransaction(
                 transactionCount.getTransactionCount(),
                 etherTransactionCommand.getGasPriceInWei(),
@@ -84,6 +161,17 @@ public class Web3TransactionService {
         final BigInteger totalPrice = etherTransactionCommand.getAmountInWei().add(totalGas);
         return (balance.compareTo(totalPrice) >= 0);
     }
+
+
+    private boolean hasEnoughBalance(final BigInteger balance, final ConfirmTokenTransactionCommand etherTransactionCommand) {
+        final BigInteger totalGas = etherTransactionCommand.getGasPriceInWei().multiply(etherTransactionCommand.getGasLimit());
+        return (balance.compareTo(totalGas) >= 0);
+    }
+
+    private boolean hasEnoughTokens(final BigInteger balance, final ConfirmTokenTransactionCommand etherTransactionCommand) {
+        return (balance.compareTo(etherTransactionCommand.getAmountInWei()) >= 0);
+    }
+
 
     private EthGetTransactionCount calculateNonce(final String address) {
         return web3j.ethGetTransactionCount(

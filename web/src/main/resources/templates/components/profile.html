@@ -67,7 +67,7 @@
         <div class="col-md-4" th:each="token : ${availableTokens}">
             <label class="u-check w-100 g-mb-25">
                 <strong class="d-block g-color-gray-dark-v2 g-font-weight-700 g-mb-10" ><span th:text="${token.balance}"></span> <span th:text="${token.token.symbol}"></span></strong>
-                <input class="g-hidden-xs-up g-pos-abs g-top-10 g-right-10" type="radio" name="token" checked="" />
+                <input class="g-hidden-xs-up g-pos-abs g-top-10 g-right-10" type="radio" th:value="${token.token.address}" name="tokenAddress" checked="" />
 
                 <div style="width: 100%;" class="g-brd-primary--checked g-bg-primary-opacity-0_2--checked g-brd-around g-brd-gray-light-v2 g-rounded-5">
                     <div class="media g-pa-12">

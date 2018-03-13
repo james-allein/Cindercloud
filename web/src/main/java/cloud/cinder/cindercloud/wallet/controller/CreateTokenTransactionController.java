@@ -50,7 +50,7 @@ public class CreateTokenTransactionController {
         authenticationService.requireAuthenticated();
         final String address = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         modelMap.put("address", address);
-        modelMap.put("createTokenTransactionCommand", new CreateTokenTransactionCommand());
+        modelMap.putIfAbsent("createTokenTransactionCommand", new CreateTokenTransactionCommand());
         return "wallets/send-tokens";
     }
 
@@ -71,11 +71,11 @@ public class CreateTokenTransactionController {
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/send")
-    public String createTransaction(@Valid @ModelAttribute("createEtherTransactionCommand") final CreateTokenTransactionCommand createEtherTransactionCommand,
+    public String createTransaction(@Valid @ModelAttribute("createTokenTransactionCommand") final CreateTokenTransactionCommand createEtherTransactionCommand,
                                     final BindingResult bindingResult,
                                     final ModelMap modelMap) {
         if (bindingResult.hasErrors()) {
-            return "wallets/sendTokens";
+            return index(modelMap);
         } else {
             modelMap.addAttribute("authenticationType", authenticationService.getType());
             modelMap.put("confirm", new ConfirmTokenTransactionCommand(
@@ -87,7 +87,7 @@ public class CreateTokenTransactionController {
                     createEtherTransactionCommand.getAmount(),
                     createEtherTransactionCommand.amountInWei()
             ));
-            return "wallets/confirmTokens";
+            return "wallets/confirm-tokens";
         }
     }
 
