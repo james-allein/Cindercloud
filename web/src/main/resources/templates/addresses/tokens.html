@@ -6,13 +6,14 @@
 <div th:fragment="tokenlist">
 
     <div class="row">
-        <div th:each="token : ${tokens}" class="col-lg-4 g-mb-30">
+        <div th:each="token : ${tokens}" class="col-lg-3 g-mb-30">
             <!-- Figure -->
             <figure class="u-block-hover u-shadow-v19 g-bg-white g-rounded-4 g-pa-15">
                 <div class="d-flex justify-content-start text-center">
-
+                    <img class="g-width-50 g-height-50 g-mr-15"
+                         th:src="@{https://raw.githubusercontent.com/TrustWallet/tokens/master/images/} + ${#strings.toLowerCase(token.token.address)} + .png"/>
                     <!-- Figure Info -->
-                    <div class="col-md-12">
+                    <div class="d-block">
                         <div class="g-mb-5">
                             <h4 class="h5 g-mb-0" th:text="${token.token.name}">Mikel Andrews</h4>
                             <em class="d-block g-color-primary g-font-style-normal g-font-size-default"><span th:text="${token.balance}"></span> <span th:text="${token.token.symbol}"></span></em>
@@ -21,24 +22,19 @@
                     </div>
                     <!-- End Figure Info -->
 
-                    <!-- Figure Caption -->
                     <figcaption class="u-block-hover__additional--fade g-bg-white-opacity-0_9 g-pa-30">
                         <div class="u-block-hover__additional--fade u-block-hover__additional--fade-down g-flex-middle">
                             <!-- Figure Social Icons -->
                             <ul class="list-inline text-center g-flex-middle-item">
-
                                 <li class="list-inline-item align-middle g-mx-7">
-                                    <a class="u-icon-v1 u-icon-size--lg g-color-gray-dark-v5 g-color-primary--hover"
-                                       th:href="@{/address/} + ${token.token.address}">
-                                        <img style="height: 50px;"
-                                             th:src="@{https://raw.githubusercontent.com/TrustWallet/tokens/master/images/} + ${#strings.toLowerCase(token.token.address)} + .png"/>
+                                    <a class="u-icon-v1 u-icon-size--md g-color-gray-dark-v5 g-color-primary--hover" th:href="@{/address/} + ${token.token.address}">
+                                        <i class="fa fa-search"></i>
                                     </a>
                                 </li>
                             </ul>
                             <!-- End Figure Social Icons -->
                         </div>
                     </figcaption>
-                    <!-- End Figure Caption -->
                 </div>
             </figure>
             <!-- End Figure -->
