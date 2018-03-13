@@ -387,14 +387,16 @@
 					_web3.eth.estimateGas(transactionObject, function (err, result){
 						if(!err) {
 							transactionObject.gas = result;
-							_web3.eth.sendTransaction(transactionObject, function (err, transactionHash) {
-								if (!err) {
-									swal("Transaction Sent!", "The transaction has been sent (" + transactionHash + ")", "success");
-								} else {
-									swal("Transaction Problem!", "Something went wrong while trying to submit your transaction", "error");
-								}
-							});
-                        }
+                        } else {
+							transactionObject.gas = gasLimit;
+						}
+						_web3.eth.sendTransaction(transactionObject, function (err, transactionHash) {
+							if (!err) {
+								swal("Transaction Sent!", "The transaction has been sent (" + transactionHash + ")", "success");
+							} else {
+								swal("Transaction Problem!", "Something went wrong while trying to submit your transaction", "error");
+							}
+						});
                     });
 
 				}
