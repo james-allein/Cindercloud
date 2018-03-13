@@ -16,7 +16,7 @@ public class CacheConfiguration {
 
     @Bean
     public ConcurrentMapCacheManager cacheManager() {
-        ConcurrentMapCacheManager cacheManager = new ConcurrentMapCacheManager() {
+        return new ConcurrentMapCacheManager() {
 
             @Override
             protected Cache createConcurrentMapCache(final String name) {
@@ -24,6 +24,5 @@ public class CacheConfiguration {
                         CacheBuilder.newBuilder().expireAfterWrite(5, TimeUnit.MINUTES).build().asMap(), false);
             }
         };
-        return cacheManager;
     }
 }

@@ -71,7 +71,7 @@
                 <!-- End Red Alert -->
 
                 <div class="g-brd-around g-brd-gray-light-v4 rounded g-px-30 g-pt-30">
-                    <h3 class="h5 mb-3">Create a token transaction</h3>
+                    <h3 class="h5 mb-3">Create a token transaction <i style="display: none;" id="refreshSpinner" class="pull-right btn g-color-primary fa spinner fa-refresh"></i></h3>
 
                     <!-- Balance Info -->
                     <div class="row justify-content-between">
@@ -99,9 +99,9 @@
                                                placeholder="0xEeb7dF8C260f7DE30b41A981D52b4573CB5dFe2f"/>
                                     </div>
                                 </div>
-                                <div class="form-group row g-mb-20">
+                                <div class="form-group  row g-mb-20">
                                     <label class="col-sm-3 col-form-label g-mb-10">Amount to send</label>
-                                    <div class="col-sm-9">
+                                    <div class="col-sm-9"  th:classappend="${#fields.hasErrors('amount')} ? u-has-error-v1 : ''">
                                         <input th:field="*{amount}" class="form-control u-form-control rounded-0"
                                                type="number" step="any"
                                                placeholder="amount"/>
@@ -167,6 +167,19 @@
 			// initialization of forms
 			$.HSCore.components.HSSlider.init('#regularSlider3');
 
+			$('#refreshSpinner').click(function(){
+				var spinner = $(this);
+				spinner.addClass('fa-spin');
+				$('#sendTransaction').hide();
+				$.get('/rest/erc20/refresh', function(_) {
+					$.get('/wallet/tokens/list', function(result) {
+						$('#tokenSelectionComponent').html(result);
+						$('#sendTransaction').show();
+						spinner.removeClass('fa-spin');
+					});
+                })
+            });
+
 			$("#frmSendTransaction").submit(function (ev) {
 				ev.preventDefault();
 				var gasPrice = $('#regularSliderAmount3').html();
@@ -177,6 +190,7 @@
 			$.get('/wallet/tokens/list', function(result) {
 				$('#tokenSelectionComponent').html(result);
 				$('#sendTransaction').show();
+				$('#refreshSpinner').show();
             });
 		});
     </script>

@@ -1,25 +1,41 @@
 package cloud.cinder.cindercloud.erc20.rest;
 
 import cloud.cinder.cindercloud.token.service.ERC20Service;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import cloud.cinder.cindercloud.token.service.TokenService;
+import cloud.cinder.cindercloud.wallet.service.AuthenticationService;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.text.DecimalFormat;
 
 @RestController
-@RequestMapping(value = "/rest/erc20/{tokenAddress}")
+@RequestMapping(value = "/rest/erc20")
 public class ERC20RestController {
 
     private final DecimalFormat formatter = new DecimalFormat("##.######");
 
-    @Autowired
-    private ERC20Service erc20Service;
+    private final ERC20Service erc20Service;
+    private final TokenService tokenService;
+    private AuthenticationService authenticationService;
 
-    @RequestMapping(value = "/balance")
+    public ERC20RestController(final ERC20Service erc20Service,
+                               final TokenService tokenService,
+                               final AuthenticationService authenticationService) {
+        this.erc20Service = erc20Service;
+        this.tokenService = tokenService;
+        this.authenticationService = authenticationService;
+    }
+
+    @RequestMapping(value = "/{tokenAddress}/balance")
     public String balanceOf(final @RequestParam("address") String address, final @PathVariable("tokenAddress") String tokenAddress) {
         return formatter.format(erc20Service.balanceOf(address, tokenAddress).doubleValue());
+    }
+
+    @GetMapping(value = "/refresh")
+    public ResponseEntity<String> refresh() {
+        authenticationService.requireAuthenticated();
+        tokenService.findAll()
+                .forEach(x -> erc20Service.evictBalanceOf(authenticationService.getAddress(), x.getAddress()));
+        return ResponseEntity.ok("refreshed");
     }
 }

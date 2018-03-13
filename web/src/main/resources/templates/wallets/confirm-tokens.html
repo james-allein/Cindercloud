@@ -77,38 +77,39 @@
 
                             <div th:if="${authenticationType == T(cloud.cinder.cindercloud.security.domain.AuthenticationType).CINDERCLOUD}">
                                 <!--<form th:object="${confirm}" method="POST" th:action="@{/wallet/tokens/confirm}">-->
-                                    <!--<input type="hidden" th:field="*{to}" id="confirmTo"/>-->
-                                    <!--<input type="hidden" th:field="*{amountInWei}" id="confirmAmountInWei"/>-->
-                                    <!--<input type="hidden" th:field="*{gasPriceInWei}" id="gasPriceInWei"/>-->
-                                    <!--<input type="hidden" th:field="*{amount}" id="confirmAmount"/>-->
-                                    <!--<input type="hidden" th:field="*{gasPrice}" id="confirmGasPrice"/>-->
-                                    <!--<input type="hidden" th:field="*{gasLimit}" id="confirmGasLimit"/>-->
-                                    <!--<button type="submit" id="btnConfirm"-->
-                                            <!--class="btn btn-md u-btn-primary pull-right rounded-0">Confirm-->
-                                    <!--</button>-->
+                                <!--<input type="hidden" th:field="*{to}" id="confirmTo"/>-->
+                                <!--<input type="hidden" th:field="*{amountInWei}" id="confirmAmountInWei"/>-->
+                                <!--<input type="hidden" th:field="*{gasPriceInWei}" id="gasPriceInWei"/>-->
+                                <!--<input type="hidden" th:field="*{amount}" id="confirmAmount"/>-->
+                                <!--<input type="hidden" th:field="*{gasPrice}" id="confirmGasPrice"/>-->
+                                <!--<input type="hidden" th:field="*{gasLimit}" id="confirmGasLimit"/>-->
+                                <!--<button type="submit" id="btnConfirm"-->
+                                <!--class="btn btn-md u-btn-primary pull-right rounded-0">Confirm-->
+                                <!--</button>-->
                                 <!--</form>-->
                                 <!--<button type="submit" id="btnCancel" class="btn btn-md u-btn-red pull-right rounded-0">-->
-                                    <!--Cancel-->
+                                <!--Cancel-->
                                 <!--</button>-->
                             </div>
 
                             <div th:if="${authenticationType == T(cloud.cinder.cindercloud.security.domain.AuthenticationType).WEB3}">
 
                                 <h4>Not Supported yet</h4>
-                                <!--<form th:object="${confirm}">-->
-                                    <!--<input type="hidden" th:field="*{to}" id="confirmTo"/>-->
-                                    <!--<input type="hidden" th:field="*{amountInWei}" id="confirmAmountInWei"/>-->
-                                    <!--<input type="hidden" th:field="*{amount}" id="confirmAmount"/>-->
-                                    <!--<input type="hidden" th:field="*{gasPrice}" id="confirmGasPrice"/>-->
-                                    <!--<input type="hidden" th:field="*{gasPriceInWei}" id="confirmGasPriceInWei"/>-->
-                                    <!--<input type="hidden" th:field="*{gasLimit}" id="confirmGasLimit"/>-->
-                                <!--</form>-->
-                                <!--<button type="submit" id="btnConfirm"-->
-                                        <!--class="btn btn-md u-btn-primary pull-right rounded-0">Confirm-->
-                                <!--</button>-->
-                                <!--<button type="submit" id="btnCancel" class="btn btn-md u-btn-red pull-right rounded-0">-->
-                                    <!--Cancel-->
-                                <!--</button>-->
+                                <form th:object="${confirm}">
+                                <input type="hidden" th:field="*{to}" id="confirmTo"/>
+                                <input type="hidden" th:field="*{tokenAddress}" id="confirmTokenAddress"/>
+                                <input type="hidden" th:field="*{amountInWei}" id="confirmAmountInWei"/>
+                                <input type="hidden" th:field="*{amount}" id="confirmAmount"/>
+                                <input type="hidden" th:field="*{gasPrice}" id="confirmGasPrice"/>
+                                <input type="hidden" th:field="*{gasPriceInWei}" id="confirmGasPriceInWei"/>
+                                <input type="hidden" th:field="*{gasLimit}" id="confirmGasLimit"/>
+                                </form>
+                                <button type="submit" id="btnConfirm"
+                                        class="btn btn-md u-btn-primary pull-right rounded-0">Confirm
+                                </button>
+                                <button type="submit" id="btnCancel" class="btn btn-md u-btn-red pull-right rounded-0">
+                                    Cancel
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -152,47 +153,247 @@
 
     <script th:if="${authenticationType == T(cloud.cinder.cindercloud.security.domain.AuthenticationType).WEB3}">
 		$(document).ready(function () {
-			$('#btnCancel').click(function () {
-				swal({
-					title: "Are you sure?",
-					text: "If you cancel, you'll have to start over!",
-					icon: "warning",
-					buttons: true,
-					dangerMode: false
-				})
-					.then(function (willCancel) {
-						if (willCancel) {
-							location.href = '/wallet/send';
+
+				const erc20abi = [
+					{
+						"constant": false,
+						"inputs": [
+							{
+								"name": "spender",
+								"type": "address"
+							},
+							{
+								"name": "value",
+								"type": "uint256"
+							}
+						],
+						"name": "approve",
+						"outputs": [
+							{
+								"name": "",
+								"type": "bool"
+							}
+						],
+						"payable": false,
+						"type": "function"
+					},
+					{
+						"constant": true,
+						"inputs": [],
+						"name": "totalSupply",
+						"outputs": [
+							{
+								"name": "",
+								"type": "uint256"
+							}
+						],
+						"payable": false,
+						"type": "function"
+					},
+					{
+						"constant": false,
+						"inputs": [
+							{
+								"name": "from",
+								"type": "address"
+							},
+							{
+								"name": "to",
+								"type": "address"
+							},
+							{
+								"name": "value",
+								"type": "uint256"
+							}
+						],
+						"name": "transferFrom",
+						"outputs": [
+							{
+								"name": "",
+								"type": "bool"
+							}
+						],
+						"payable": false,
+						"type": "function"
+					},
+					{
+						"constant": true,
+						"inputs": [
+							{
+								"name": "who",
+								"type": "address"
+							}
+						],
+						"name": "balanceOf",
+						"outputs": [
+							{
+								"name": "",
+								"type": "uint256"
+							}
+						],
+						"payable": false,
+						"type": "function"
+					},
+					{
+						"constant": false,
+						"inputs": [
+							{
+								"name": "to",
+								"type": "address"
+							},
+							{
+								"name": "value",
+								"type": "uint256"
+							}
+						],
+						"name": "transfer",
+						"outputs": [
+							{
+								"name": "",
+								"type": "bool"
+							}
+						],
+						"payable": false,
+						"type": "function"
+					},
+					{
+						"constant": false,
+						"inputs": [
+							{
+								"name": "spender",
+								"type": "address"
+							},
+							{
+								"name": "value",
+								"type": "uint256"
+							},
+							{
+								"name": "extraData",
+								"type": "bytes"
+							}
+						],
+						"name": "approveAndCall",
+						"outputs": [
+							{
+								"name": "",
+								"type": "bool"
+							}
+						],
+						"payable": false,
+						"type": "function"
+					},
+					{
+						"constant": true,
+						"inputs": [
+							{
+								"name": "owner",
+								"type": "address"
+							},
+							{
+								"name": "spender",
+								"type": "address"
+							}
+						],
+						"name": "allowance",
+						"outputs": [
+							{
+								"name": "",
+								"type": "uint256"
+							}
+						],
+						"payable": false,
+						"type": "function"
+					},
+					{
+						"anonymous": false,
+						"inputs": [
+							{
+								"indexed": true,
+								"name": "owner",
+								"type": "address"
+							},
+							{
+								"indexed": true,
+								"name": "spender",
+								"type": "address"
+							},
+							{
+								"indexed": false,
+								"name": "value",
+								"type": "uint256"
+							}
+						],
+						"name": "Approval",
+						"type": "event"
+					},
+					{
+						"anonymous": false,
+						"inputs": [
+							{
+								"indexed": true,
+								"name": "from",
+								"type": "address"
+							},
+							{
+								"indexed": true,
+								"name": "to",
+								"type": "address"
+							},
+							{
+								"indexed": false,
+								"name": "value",
+								"type": "uint256"
+							}
+						],
+						"name": "Transfer",
+						"type": "event"
+					}
+				];
+
+
+				$('#btnCancel').click(function () {
+					swal({
+						title: "Are you sure?",
+						text: "If you cancel, you'll have to start over!",
+						icon: "warning",
+						buttons: true,
+						dangerMode: false
+					})
+						.then(function (willCancel) {
+							if (willCancel) {
+								location.href = '/wallet/tokens/send';
+							}
+						});
+				});
+
+				$('#btnConfirm').click(function () {
+					sendTransaction();
+				});
+
+				var sendTransaction = function () {
+					var to = $('#confirmTo').val();
+					var gasLimit = $('#confirmGasLimit').val();
+					var tokenAddress = $('#confirmTokenAddress').val();
+					var gasPrice = $('#confirmGasPriceInWei').val();
+					var amountInWei = $('#confirmAmountInWei').val();
+					var erc20 = _web3.eth.contract(erc20abi).at(tokenAddress);
+					var transactionObject = {
+						to: tokenAddress,
+						value: '0x0',
+						data: erc20.transfer.getData(to, amountInWei),
+						gas: gasLimit,
+						gasPrice: gasPrice
+					};
+					_web3.eth.sendTransaction(transactionObject, function (err, transactionHash) {
+						if (!err) {
+							swal("Transaction Sent!", "The transaction has been sent (" + transactionHash + ")", "success");
+						} else {
+							swal("Transaction Problem!", "Something went wrong while trying to submit your transaction", "error");
 						}
 					});
-			});
-
-			$('#btnConfirm').click(function () {
-				sendTransaction();
-			});
-
-			var sendTransaction = function () {
-				var to = $('#confirmTo').val();
-				var gasLimit = $('#confirmGasLimit').val();
-				var gasPrice = $('#confirmGasPriceInWei').val();
-				var amountInWei = $('#confirmAmountInWei').val();
-
-				var transactionObject = {
-					to: to,
-					value: amountInWei,
-					gas: gasLimit,
-					gasPrice: gasPrice
-				};
-
-				_web3.eth.sendTransaction(transactionObject, function (err, transactionHash) {
-					if (!err) {
-						swal("Transaction Sent!", "The transaction has been sent (" + transactionHash + ")", "success");
-					} else {
-						swal("Transaction Problem!", "Something went wrong while trying to submit your transaction", "error");
-					}
-				})
-			};
-		});
+				}
+			}
+		);
     </script>
 
 </div>
