@@ -8,6 +8,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 import javax.validation.constraints.Min;
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.math.MathContext;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -22,10 +23,10 @@ public class CreateTokenTransactionCommand {
     private BigInteger gasLimit = BigInteger.valueOf(70000);
     private double amount;
 
-    public BigInteger amountInWei() {
-        final BigDecimal bigDecimal = new BigDecimal(amount);
-        final BigDecimal weiValue = bigDecimal.multiply(BigDecimal.valueOf(Math.pow(10, 18)));
-        return new BigInteger(weiValue.toPlainString());
+    public BigInteger amountInWei(final int decimals) {
+        final BigDecimal bigDecimal = new BigDecimal(amount, MathContext.DECIMAL64);
+        final BigDecimal weiValue = bigDecimal.multiply(BigDecimal.valueOf(Math.pow(10, decimals)));
+        return weiValue.toBigInteger();
     }
 
     public BigInteger gasPriceInWei() {

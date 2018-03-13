@@ -35,6 +35,16 @@ public class ERC20Service {
         }
     }
 
+    @Cacheable(cacheNames = "erc20.tokens.decimals", key = "#token")
+    public int decimals(final String token) {
+        final HumanStandardToken erc20 = getERC20(token);
+        try {
+            return erc20.decimals().send().intValue();
+        } catch (final Exception e) {
+            return 18;
+        }
+    }
+
     @CacheEvict(cacheNames = "wallets.tokens.amount", key = "#address+'-'+#token")
     public void evictBalanceOf(final String address, final String token) {
     }

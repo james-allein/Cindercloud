@@ -3,6 +3,7 @@ package cloud.cinder.cindercloud.wallet.service;
 import cloud.cinder.cindercloud.erc20.domain.HumanStandardToken;
 import cloud.cinder.cindercloud.wallet.controller.command.confirm.ConfirmEtherTransactionCommand;
 import cloud.cinder.cindercloud.wallet.controller.command.confirm.ConfirmTokenTransactionCommand;
+import cloud.cinder.cindercloud.web3j.Web3jGateway;
 import lombok.extern.slf4j.Slf4j;
 import org.bouncycastle.util.encoders.Hex;
 import org.jetbrains.annotations.NotNull;
@@ -13,7 +14,6 @@ import org.web3j.abi.datatypes.Function;
 import org.web3j.crypto.Credentials;
 import org.web3j.crypto.ECKeyPair;
 import org.web3j.crypto.RawTransaction;
-import org.web3j.protocol.Web3j;
 import org.web3j.protocol.core.DefaultBlockParameterName;
 import org.web3j.protocol.core.methods.response.EthGetTransactionCount;
 import org.web3j.protocol.core.methods.response.EthSendTransaction;
@@ -28,20 +28,20 @@ import static java.util.Collections.emptyList;
 public class Web3TransactionService {
 
     private AuthenticationService authenticationService;
-    private Web3j web3j;
+    private Web3jGateway web3jGateway;
     private ApplicationEventPublisher $;
 
     public Web3TransactionService(final AuthenticationService authenticationService,
-                                  final Web3j web3j,
+                                  final Web3jGateway web3j,
                                   final ApplicationEventPublisher applicationEventPublisher) {
         this.authenticationService = authenticationService;
-        this.web3j = web3j;
+        this.web3jGateway = web3j;
         this.$ = applicationEventPublisher;
     }
 
     public String submitEtherTransaction(final ConfirmEtherTransactionCommand etherTransactionCommand) {
         final String address = authenticationService.getAddress();
-        final BigInteger balance = web3j.ethGetBalance(address, DefaultBlockParameterName.LATEST)
+        final BigInteger balance = web3jGateway.web3j().ethGetBalance(address, DefaultBlockParameterName.LATEST)
                 .observable()
                 .toBlocking()
                 .first()
@@ -60,7 +60,7 @@ public class Web3TransactionService {
 
     public String submitTokenTransaction(final ConfirmTokenTransactionCommand command) {
         final String owner = authenticationService.getAddress();
-        final BigInteger balance = web3j.ethGetBalance(owner, DefaultBlockParameterName.LATEST)
+        final BigInteger balance = web3jGateway.web3j().ethGetBalance(owner, DefaultBlockParameterName.LATEST)
                 .observable()
                 .toBlocking()
                 .first()
@@ -83,7 +83,7 @@ public class Web3TransactionService {
         final byte[] signedMessage = sign(etherTransaction);
         final String signedMessageAsHex = prettify(Hex.toHexString(signedMessage));
         try {
-            final EthSendTransaction send = web3j.ethSendRawTransaction(signedMessageAsHex).sendAsync().get();
+            final EthSendTransaction send = web3jGateway.web3j().ethSendRawTransaction(signedMessageAsHex).sendAsync().get();
             log.debug("txHash: {}", send.getTransactionHash());
             if (send.getTransactionHash() != null) {
                 return send.getTransactionHash();
@@ -101,9 +101,9 @@ public class Web3TransactionService {
                                         final EthGetTransactionCount ethGetTransactionCount,
                                         final String owner) {
         try {
-            final HumanStandardToken token = HumanStandardToken.load(command.getTokenAddress(), web3j, Credentials.create(ECKeyPair.create(BigInteger.ZERO)), BigInteger.ZERO, BigInteger.ZERO);
+            final HumanStandardToken token = HumanStandardToken.load(command.getTokenAddress(), web3jGateway.web3j(), Credentials.create(ECKeyPair.create(BigInteger.ZERO)), BigInteger.ZERO, BigInteger.ZERO);
             final BigInteger balance = token.balanceOf(owner).send();
-            if (hasEnoughTokens(balance, command)) {
+            if (!hasEnoughTokens(balance, command)) {
                 log.debug("User did not have any tokens");
                 throw new IllegalArgumentException("You do not have enough tokens to send.");
             } else {
@@ -112,7 +112,7 @@ public class Web3TransactionService {
 
                 final byte[] signedMessage = sign(transaction);
                 final String signedMessageAsHex = prettify(Hex.toHexString(signedMessage));
-                final EthSendTransaction send = web3j.ethSendRawTransaction(signedMessageAsHex).send();
+                final EthSendTransaction send = web3jGateway.web3j().ethSendRawTransaction(signedMessageAsHex).send();
                 log.debug("txHash: {}", send.getTransactionHash());
                 if (send.getTransactionHash() != null) {
                     return send.getTransactionHash();
@@ -123,8 +123,8 @@ public class Web3TransactionService {
             }
         } catch (final Exception ex) {
             log.error("unable to send tokens", ex);
+            throw new IllegalArgumentException(ex.getMessage());
         }
-        return "0x0";
     }
 
     @NotNull
@@ -174,7 +174,7 @@ public class Web3TransactionService {
 
 
     private EthGetTransactionCount calculateNonce(final String address) {
-        return web3j.ethGetTransactionCount(
+        return web3jGateway.web3j().ethGetTransactionCount(
                 prettify(address),
                 DefaultBlockParameterName.LATEST
         ).observable().toBlocking().first();

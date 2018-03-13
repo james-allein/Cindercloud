@@ -14,15 +14,18 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
-import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.math.BigInteger;
 import java.text.DecimalFormat;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Controller
@@ -48,11 +51,11 @@ public class CreateTokenTransactionController {
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/send")
-    public String index(final ModelMap modelMap) {
+    public String index(final ModelMap modelMap, final HttpServletRequest httpServletRequest) {
         authenticationService.requireAuthenticated();
         final String address = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         modelMap.put("address", address);
-        modelMap.putIfAbsent("createTokenTransactionCommand", new CreateTokenTransactionCommand());
+        modelMap.putIfAbsent("createTokenTransactionCommand", fillPreferences(new CreateTokenTransactionCommand(), httpServletRequest));
         return "wallets/send-tokens";
     }
 
@@ -75,13 +78,15 @@ public class CreateTokenTransactionController {
     @RequestMapping(method = RequestMethod.POST, value = "/send")
     public String createTransaction(@Valid @ModelAttribute("createTokenTransactionCommand") final CreateTokenTransactionCommand createEtherTransactionCommand,
                                     final BindingResult bindingResult,
-                                    final ModelMap modelMap) {
+                                    final ModelMap modelMap,
+                                    final HttpServletRequest httpServletRequest) {
         if (createEtherTransactionCommand.getAmount() <= 0) {
             bindingResult.addError(new FieldError("createTokenTransactionCommand", "amount", "Amount should be bigger than 0"));
         }
         if (bindingResult.hasErrors()) {
-            return index(modelMap);
+            return index(modelMap, httpServletRequest);
         } else {
+            savePreferences(createEtherTransactionCommand, httpServletRequest);
             modelMap.addAttribute("authenticationType", authenticationService.getType());
             modelMap.put("confirm", new ConfirmTokenTransactionCommand(
                     createEtherTransactionCommand.getTo(),
@@ -90,10 +95,31 @@ public class CreateTokenTransactionController {
                     createEtherTransactionCommand.getTokenAddress(),
                     createEtherTransactionCommand.getGasLimit(),
                     createEtherTransactionCommand.getAmount(),
-                    createEtherTransactionCommand.amountInWei()
+                    createEtherTransactionCommand.amountInWei(erc20Service.decimals(createEtherTransactionCommand.getTokenAddress()))
             ));
             return "wallets/confirm-tokens";
         }
+    }
+
+    private void savePreferences(final CreateTokenTransactionCommand createEtherTransactionCommand,
+                                 final HttpServletRequest httpServletRequest) {
+        final HttpSession session = httpServletRequest.getSession(true);
+        session.setAttribute("preferences.token.gaslimit", createEtherTransactionCommand.getGasLimit());
+        session.setAttribute("preferences.token.gasPrice", createEtherTransactionCommand.getGasPrice());
+    }
+
+    private CreateTokenTransactionCommand fillPreferences(final CreateTokenTransactionCommand createTokenTransactionCommand,
+                                                          final HttpServletRequest httpServletRequest) {
+        final HttpSession session = httpServletRequest.getSession(true);
+        Optional.ofNullable(session.getAttribute("preferences.token.gaslimit"))
+                .ifPresent(x -> {
+                    createTokenTransactionCommand.setGasLimit((BigInteger) x);
+                });
+        Optional.ofNullable(session.getAttribute("preferences.token.gasPrice"))
+                .ifPresent(x -> {
+                    createTokenTransactionCommand.setGasPrice((String) x);
+                });
+        return createTokenTransactionCommand;
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/confirm")

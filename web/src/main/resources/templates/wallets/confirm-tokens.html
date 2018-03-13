@@ -76,33 +76,33 @@
                             </ul>
 
                             <div th:if="${authenticationType == T(cloud.cinder.cindercloud.security.domain.AuthenticationType).CINDERCLOUD}">
-                                <!--<form th:object="${confirm}" method="POST" th:action="@{/wallet/tokens/confirm}">-->
-                                <!--<input type="hidden" th:field="*{to}" id="confirmTo"/>-->
-                                <!--<input type="hidden" th:field="*{amountInWei}" id="confirmAmountInWei"/>-->
-                                <!--<input type="hidden" th:field="*{gasPriceInWei}" id="gasPriceInWei"/>-->
-                                <!--<input type="hidden" th:field="*{amount}" id="confirmAmount"/>-->
-                                <!--<input type="hidden" th:field="*{gasPrice}" id="confirmGasPrice"/>-->
-                                <!--<input type="hidden" th:field="*{gasLimit}" id="confirmGasLimit"/>-->
-                                <!--<button type="submit" id="btnConfirm"-->
-                                <!--class="btn btn-md u-btn-primary pull-right rounded-0">Confirm-->
-                                <!--</button>-->
-                                <!--</form>-->
-                                <!--<button type="submit" id="btnCancel" class="btn btn-md u-btn-red pull-right rounded-0">-->
-                                <!--Cancel-->
-                                <!--</button>-->
+                                <form th:object="${confirm}" method="POST" th:action="@{/wallet/tokens/confirm}">
+                                    <input type="hidden" th:field="*{to}" id="confirmTo"/>
+                                    <input type="hidden" th:field="*{amountInWei}" id="confirmAmountInWei"/>
+                                    <input type="hidden" th:field="*{tokenAddress}" id="confirmTokenAddress"/>
+                                    <input type="hidden" th:field="*{gasPriceInWei}" id="gasPriceInWei"/>
+                                    <input type="hidden" th:field="*{amount}" id="confirmAmount"/>
+                                    <input type="hidden" th:field="*{gasPrice}" id="confirmGasPrice"/>
+                                    <input type="hidden" th:field="*{gasLimit}" id="confirmGasLimit"/>
+                                    <button type="submit" id="btnConfirm"
+                                            class="btn btn-md u-btn-primary pull-right rounded-0">Confirm
+                                    </button>
+                                </form>
+                                <button type="submit" id="btnCancel" class="btn btn-md u-btn-red pull-right rounded-0">
+                                    Cancel
+                                </button>
                             </div>
 
                             <div th:if="${authenticationType == T(cloud.cinder.cindercloud.security.domain.AuthenticationType).WEB3}">
 
-                                <h4>Not Supported yet</h4>
                                 <form th:object="${confirm}">
-                                <input type="hidden" th:field="*{to}" id="confirmTo"/>
-                                <input type="hidden" th:field="*{tokenAddress}" id="confirmTokenAddress"/>
-                                <input type="hidden" th:field="*{amountInWei}" id="confirmAmountInWei"/>
-                                <input type="hidden" th:field="*{amount}" id="confirmAmount"/>
-                                <input type="hidden" th:field="*{gasPrice}" id="confirmGasPrice"/>
-                                <input type="hidden" th:field="*{gasPriceInWei}" id="confirmGasPriceInWei"/>
-                                <input type="hidden" th:field="*{gasLimit}" id="confirmGasLimit"/>
+                                    <input type="hidden" th:field="*{to}" id="confirmTo"/>
+                                    <input type="hidden" th:field="*{tokenAddress}" id="confirmTokenAddress"/>
+                                    <input type="hidden" th:field="*{amountInWei}" id="confirmAmountInWei"/>
+                                    <input type="hidden" th:field="*{amount}" id="confirmAmount"/>
+                                    <input type="hidden" th:field="*{gasPrice}" id="confirmGasPrice"/>
+                                    <input type="hidden" th:field="*{gasPriceInWei}" id="confirmGasPriceInWei"/>
+                                    <input type="hidden" th:field="*{gasLimit}" id="confirmGasLimit"/>
                                 </form>
                                 <button type="submit" id="btnConfirm"
                                         class="btn btn-md u-btn-primary pull-right rounded-0">Confirm
@@ -384,10 +384,10 @@
 						data: erc20.transfer.getData(to, amountInWei),
 						gasPrice: gasPrice
 					};
-					_web3.eth.estimateGas(transactionObject, function (err, result){
-						if(!err) {
+					_web3.eth.estimateGas(transactionObject, function (err, result) {
+						if (!err) {
 							transactionObject.gas = result;
-                        } else {
+						} else {
 							transactionObject.gas = gasLimit;
 						}
 						_web3.eth.sendTransaction(transactionObject, function (err, transactionHash) {
@@ -397,8 +397,7 @@
 								swal("Transaction Problem!", "Something went wrong while trying to submit your transaction", "error");
 							}
 						});
-                    });
-
+					});
 				}
 			}
 		);
