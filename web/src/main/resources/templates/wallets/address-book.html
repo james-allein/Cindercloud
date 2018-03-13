@@ -14,7 +14,7 @@
         <div class="row">
             <!-- Profile Settings -->
             <div class="col-lg-3 g-mb-50">
-                <th:block th:replace="/components/profile :: sidenav(active='address-book')"></th:block>
+                <th:block th:replace="components/profile :: sidenav(active='address-book')"></th:block>
             </div>
             <!-- End Profile Settings -->
 
@@ -29,12 +29,12 @@
                     </h3>
 
                     <th:block th:if="${error != null}"
-                              th:include="/components/alerts :: error(title='Error', body=${error})"/>
+                              th:include="components/alerts :: error(title='Error', body=${error})"/>
 
                     <!-- Add Balance -->
                     <div class="g-mb-50" th:if="${contacts == null || contacts.isEmpty()}">
                         <th:block
-                                th:replace="/components/alerts :: warning(title='Empty Address Book', body='No contacts were found for this account.')"/>
+                                th:replace="components/alerts :: warning(title='Empty Address Book', body='No contacts were found for this account.')"/>
                     </div>
                     <br/>
                     <div class="g-mb-50" th:unless="${contacts == null || contacts.isEmpty()}">
