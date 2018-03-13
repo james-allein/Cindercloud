@@ -30,8 +30,8 @@
                                 <table class="table table-striped">
                                     <thead>
                                     <tr>
+                                        <th>Time</th>
                                         <th>Hash</th>
-                                        <th>Block</th>
                                         <th>From</th>
                                         <th>To</th>
                                         <th>Value</th>
@@ -40,11 +40,9 @@
 
                                     <tbody>
                                     <tr th:each="tx : ${transactions.getContent()}">
+                                        <td><a th:href="@{'/blocks/' + ${tx.blockHash}}"  th:text="${tx.prettyBlockTimestamp()}"></a></td>
                                         <td><a th:href="@{'/tx/' + ${tx.hash}}"><span
                                                 th:text="${tx.prettyHash()}"></span></a></td>
-                                        <td><a th:href="@{'/blocks/' + ${tx.blockHash}}"><span
-                                                th:text="${tx.blockHeight}"></span></a>
-                                        </td>
                                         <td>
                                             <a th:href="@{'/address/' + ${tx.fromAddress}}"
                                                th:if="${tx.direction(hash) == T(cloud.cinder.cindercloud.transaction.domain.Transaction.Direction).IN}"><span
