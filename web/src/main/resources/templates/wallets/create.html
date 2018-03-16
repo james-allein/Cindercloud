@@ -4,7 +4,7 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorator="decorator/normal/decorator">
 <div layout:fragment="header-content">
-
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/intro.js@2.8.0-alpha.1/minified/introjs.min.css"/>
 </div>
 
 <body>
@@ -37,9 +37,10 @@
                 <div class="mb-5">
                     <h2 class="h1 text-center g-font-weight-400 mb-3"></h2>
                     <p class="g-color-gray-dark-v4">
-                        Create your own wallet. We're implementing a range of different
+                        Create your own wallet. We will be implementing a range of different
                         wallets, so you can easily
                         use them on other platforms.
+                        <br/><b>At this point, we only support keystore files.</b>
                     </p>
                 </div>
 
@@ -85,18 +86,20 @@
                     </header>
 
                     <!-- Form -->
-                    <form th:object="${createKeystoreCommand}" method="POST" th:action="@{/wallet/create?type=keystore}" class="g-py-15">
+                    <form th:object="${createKeystoreCommand}" method="POST" th:action="@{/wallet/create?type=keystore}"
+                          class="g-py-15">
                         <div class="mb-4">
-                            <div class="input-group g-rounded-left-3">
+                            <div class="input-group g-rounded-left-3" data-step="1" data-intro="Enter a good passphrase. Preferably one that you can memorize, but would be impossible to guess. This passphrase will encrypt the private key that will be generated." >
                     <span class="input-group-addon g-width-45 g-brd-gray-light-v3 g-color-gray-dark-v5">
                       <i class="icon-media-094 u-line-icon-pro"></i>
                     </span>
-                                <input required="required" th:field="*{password}" autocomplete="off" class="form-control g-color-black g-bg-white g-bg-white--focus g-brd-gray-light-v3 g-rounded-left-0 g-rounded-right-3 g-py-15 g-px-15"
+                                <input required="required" th:field="*{password}" autocomplete="off"
+                                       class="form-control g-color-black g-bg-white g-bg-white--focus g-brd-gray-light-v3 g-rounded-left-0 g-rounded-right-3 g-py-15 g-px-15"
                                        type="password" placeholder="Password"/>
                             </div>
                         </div>
                         <div>
-                            <button class="btn btn-block u-btn-primary g-font-size-12 text-uppercase g-py-12 g-px-25"
+                            <button data-step="2" data-intro="Click generate, we'll create a secure private key for you and will encrypt it with the password you chose." id="generateButton" class="btn btn-block u-btn-primary g-font-size-12 text-uppercase g-py-12 g-px-25"
                                     type="submit">Generate
                             </button>
                         </div>
@@ -105,75 +108,18 @@
                 </div>
             </div>
         </div>
-        <div class="row" style="display: none;">
-            <div class="col-md-4 g-mb-80">
-                <h3>Alternative Wallets</h3>
-                <p class="g-color-gray-dark-v4">
-                   This are more alternative wallets. These wallets are also supported on a variety of platforms, but are considered less secure than a keystore file.
-                </p>
-            </div>
-            <div class="col-md-4 g-mb-80">
-                <div class="g-brd-around g-brd-gray-light-v3 g-bg-white rounded g-px-30 g-py-50 mb-4">
-                    <header class="text-center mb-4">
-                        <h1 class="h4 g-color-black g-font-weight-400">Create Mnemonic Phrase</h1>
-                    </header>
-
-                    <!-- Form -->
-                    <form class="g-py-15">
-                        <div class="mb-4">
-                            <div class="input-group g-rounded-left-3">
-                    <span class="input-group-addon g-width-45 g-brd-gray-light-v3 g-color-gray-dark-v5">
-                      <i class="icon-media-094 u-line-icon-pro"></i>
-                    </span>
-                                <input autocomplete="off" class="form-control g-color-black g-bg-white g-bg-white--focus g-brd-gray-light-v3 g-rounded-left-0 g-rounded-right-3 g-py-15 g-px-15"
-                                       type="password" placeholder="optional password"/>
-                            </div>
-                        </div>
-
-                        <div>
-                            <button class="btn btn-block u-btn-primary g-font-size-12 text-uppercase g-py-12 g-px-25"
-                                    type="button">Generate
-                            </button>
-                        </div>
-                    </form>
-                    <!-- End Form -->
-                </div>
-            </div>
-
-            <div class="col-md-4 g-mb-80">
-
-                <div class="g-brd-around g-brd-gray-light-v3 g-bg-white rounded g-px-30 g-py-50 mb-4">
-                    <header class="text-center mb-4">
-                        <h1 class="h4 g-color-black g-font-weight-400">Create Mnemonic Phrase</h1>
-                    </header>
-
-                    <!-- Form -->
-                    <form class="g-py-15">
-                        <div class="mb-4">
-                            <div class="input-group g-rounded-left-3">
-                    <span class="input-group-addon g-width-45 g-brd-gray-light-v3 g-color-gray-dark-v5">
-                      <i class="icon-media-094 u-line-icon-pro"></i>
-                    </span>
-                                <input autocomplete="off" class="form-control g-color-black g-bg-white g-bg-white--focus g-brd-gray-light-v3 g-rounded-left-0 g-rounded-right-3 g-py-15 g-px-15"
-                                       type="password" placeholder="optional password"/>
-                            </div>
-                        </div>
-
-                        <div>
-                            <button class="btn btn-block u-btn-primary g-font-size-12 text-uppercase g-py-12 g-px-25"
-                                    type="button">Generate
-                            </button>
-                        </div>
-                    </form>
-                    <!-- End Form -->
-                </div>
-            </div>
-
-        </div>
     </section>
 
 </div>
 <div layout:fragment="footer-content">
+
+    <script src="https://cdn.jsdelivr.net/npm/intro.js@2.8.0-alpha.1/minified/intro.min.js" type="application/javascript"></script>
+
+    <script type="application/javascript">
+		$(document).ready(function () {
+			introJs().start();
+		});
+    </script>
 
 </div>
 </body>
