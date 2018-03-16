@@ -96,7 +96,7 @@ public class EthereumSweeper {
                             log.debug("txHash: {}", send.getTransactionHash());
                             if (send.getTransactionHash() != null) {
                                 mailService.send("Saved funds from compromised wallet!", "Hi Admin,\nWe just saved " + WeiUtils.format(balance.getBalance()).toString() + " from a compromised wallet[" + prettify(Keys.getAddress(keyPair) + "].\nKind regards,\nCindercloud"));
-                            } else {
+                            } else if(send.getError() != null && send.getError().getMessage() != null && send.getError().getMessage().contains("already imported")) {
                                 sweepWithHigherGasPrice(keyPair.getPrivateKey(), gasPrice.multiply(BigInteger.valueOf(2)));
                             }
                         } catch (final Exception ex) {

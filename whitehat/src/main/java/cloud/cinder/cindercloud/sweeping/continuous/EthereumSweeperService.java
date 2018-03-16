@@ -10,6 +10,13 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
+import java.time.temporal.ChronoUnit;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+
 @Component
 @Slf4j
 public class EthereumSweeperService {
@@ -19,6 +26,8 @@ public class EthereumSweeperService {
     @Autowired
     private CredentialService leakedCredentialRepository;
     private Meter ethereumSweeperMeter;
+
+    private Map<String, Date> shortTermSweeping = new HashMap<>();
 
 
     @Autowired
@@ -37,7 +46,28 @@ public class EthereumSweeperService {
     public void sweepEthereum(final String address) {
         leakedCredentialRepository.findByAddress(address).ifPresent(credential -> {
             log.debug("[SweepAfterTransaction] Looks like someone sent some eth to {}", address);
+            shortTermSweeping.put(credential.getPrivateKey(), Date.from(LocalDateTime.now().toInstant(ZoneOffset.UTC)));
             ethereumSweeper.sweep(credential.getPrivateKey());
+        });
+    }
+
+    //all transactions that were found
+    @Scheduled(fixedDelay = 2000)
+    public void sweepShortTermFindings() {
+        final HashMap<String, Date> hashmapCopy = new HashMap<>(shortTermSweeping);
+        hashmapCopy.forEach((privateKey, date) -> {
+            ethereumSweeper.sweep(privateKey);
+        });
+    }
+
+    @Scheduled(fixedDelay = 10000)
+    public void removeAgedFindings() {
+        shortTermSweeping.forEach((privateKey, date) -> {
+            final Date fiveMInutesAgo = Date.from(LocalDateTime.now().toInstant(ZoneOffset.UTC).minus(5, ChronoUnit.MINUTES));
+            if (date.before(fiveMInutesAgo)) {
+                log.debug("Removing aged finding: {}", privateKey);
+                shortTermSweeping.remove(privateKey);
+            }
         });
     }
 }
