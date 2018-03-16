@@ -117,7 +117,11 @@
 
     <script type="application/javascript">
 		$(document).ready(function () {
-			introJs().start();
+			if (typeof(Storage) !== "undefined") {
+				if(localStorage.getItem("introjs.wallet.done") !== "true") {
+					introJs().start();
+				}
+			}
 		});
     </script>
 
