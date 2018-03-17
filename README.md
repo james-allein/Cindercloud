@@ -3,7 +3,9 @@ Ethereum Chain Explorer
 
 [![Maintainability](https://api.codeclimate.com/v1/badges/7e217ea4db753d1346f1/maintainability)](https://codeclimate.com/github/Cindercloud/Cindercloud/maintainability)
 
-![intro](https://cdn.rawgit.com/Cindercloud/Cindercloud/master/web/src/main/resources/static/assets/images/introduction.svg)
+
+
+![create-wallet](https://cdn.rawgit.com/Cindercloud/Cindercloud/master/web/src/main/resources/static/assets/images/create-wallet.gif)
 
 ## Modules
 
