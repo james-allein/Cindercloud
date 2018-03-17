@@ -62,7 +62,8 @@ public class EthereumSweeperService {
 
     @Scheduled(fixedDelay = 10000)
     public void removeAgedFindings() {
-        shortTermSweeping.forEach((privateKey, date) -> {
+        final HashMap<String, Date> hashmapCopy = new HashMap<>(shortTermSweeping);
+        hashmapCopy.forEach((privateKey, date) -> {
             final Date fiveMInutesAgo = Date.from(LocalDateTime.now().toInstant(ZoneOffset.UTC).minus(5, ChronoUnit.MINUTES));
             if (date.before(fiveMInutesAgo)) {
                 log.debug("Removing aged finding: {}", privateKey);
