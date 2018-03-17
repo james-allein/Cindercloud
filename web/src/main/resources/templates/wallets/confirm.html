@@ -174,7 +174,7 @@
 					gasPrice: gasPrice
 				};
 
-				_web3.eth.sendTransaction(transactionObject, function (err, transactionHash) {
+				getWeb3().eth.sendTransaction(transactionObject, function (err, transactionHash) {
 					if (!err) {
 						swal("Transaction Sent!", "The transaction has been sent (" + transactionHash + ")", "success");
 					} else {
