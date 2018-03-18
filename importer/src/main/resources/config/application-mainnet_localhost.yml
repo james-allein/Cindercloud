@@ -2,7 +2,7 @@ cloud:
   cinder:
     ethereum:
       endpoint:
-        url: https://parity.cinder.cloud
+        url: https://mainnet.fundrequest.io
         local-url: https://mainnet.infura.io
     queue:
       block-added: cindercloud_mainnet_localhost
