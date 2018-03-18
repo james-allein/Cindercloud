@@ -100,8 +100,8 @@ public class TokenTransferListener {
                         .tokenAddress(log.getAddress())
                         .removed(log.isRemoved())
                         .amount(new BigInteger(eventValues.getNonIndexedValues().get(0).getValue().toString()))
-                        .from(eventValues.getIndexedValues().get(0).toString())
-                        .to(eventValues.getIndexedValues().get(1).getValue().toString())
+                        .fromAddress(eventValues.getIndexedValues().get(0).toString())
+                        .toAddress(eventValues.getIndexedValues().get(1).getValue().toString())
                         .transactionHash(log.getTransactionHash())
                         .build();
                 tokenTransferService.saveTokenTransfer(tokenTransfer);
@@ -115,7 +115,7 @@ public class TokenTransferListener {
     private long getTimestamp(final String blockHash) throws java.io.IOException {
         final EthBlock send = web3jGateway.web3j().ethGetBlockByHash(blockHash, false).send();
         if (send.getBlock() != null) {
-            return send.getBlock().getTimestamp().longValue() * 1000;
+            return send.getBlock().getTimestamp().longValue();
         } else {
             return 0;
         }

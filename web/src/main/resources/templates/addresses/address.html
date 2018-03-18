@@ -54,6 +54,15 @@
                     <em class="u-nav-v8__description">General information about this address.</em>
                 </a>
             </li>
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" href="#tokenTransfers" role="tab">
+      <span class="u-nav-v8__icon u-icon-v3 u-icon-size--lg g-rounded-50x g-brd-around g-brd-4 g-brd-white">
+        <i class="fa fa-binoculars"></i>
+      </span>
+                    <strong class="text-uppercase u-nav-v8__title">Token Transfers</strong>
+                    <em class="u-nav-v8__description">ERC20 Transfers done from and to this account</em>
+                </a>
+            </li>
             <li th:if="${address.isContract()}" class="nav-item">
                 <a class="nav-link" data-toggle="tab" href="#addressCode" role="tab">
       <span class="u-nav-v8__icon u-icon-v3 u-icon-size--lg g-rounded-50x g-brd-around g-brd-4 g-brd-white">
@@ -111,7 +120,6 @@
                         </div>
                     </div>
                 </div>
-
 
 
                 <section th:if="${address.transactions.hasContent()}">
@@ -208,7 +216,15 @@
                         </div>
                     </div>
                 </section>
-                <hr /><br />
+                <hr/>
+                <br/>
+            </div>
+            <div class="tab-pane fade" id="tokenTransfers" role="tabpanel">
+                <div class="row text-center text-uppercase">
+                    <div class="col-lg-12 col-sm-12 g-mb-50">
+                        <div id="tokenTransferDiv"></div>
+                    </div>
+                </div>
             </div>
             <div class="tab-pane fade" id="addressCode" role="tabpanel">
                 <div class="row text-center text-uppercase">
@@ -324,6 +340,10 @@
 			$.get('/address/' + $("#currentAddress").data('hash') + '/tokens', function (result) {
 				$("#tokenSection").html(result);
 			});
+
+			$.get('/address/' + $('#currentAddress').data('hash') + '/token-transfers', function (result) {
+				$('#tokenTransferDiv').html(result);
+			})
 		});
     </script>
 

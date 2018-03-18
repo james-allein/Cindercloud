@@ -39,4 +39,10 @@ public class ERC20Controller {
         modelmap.put("tokens", tokens);
         return "addresses/tokens :: tokenlist";
     }
+
+    @RequestMapping(value = "/token-transfers")
+    public String tokenTransfers(final @PathVariable("address") String address, final ModelMap modelmap) {
+        modelmap.put("tokenTransfers", tokenService.findTransfersByFromOrTo(address));
+        return "addresses/tokens :: transfers";
+    }
 }

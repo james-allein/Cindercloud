@@ -19,10 +19,10 @@ public class TokenTransfer {
     private Long id;
 
     @Column(name = "from_address")
-    private String from;
+    private String fromAddress;
 
     @Column(name = "to_address")
-    private String to;
+    private String toAddress;
 
     @Column(name = "amount")
     private BigInteger amount;
@@ -49,9 +49,9 @@ public class TokenTransfer {
     private String tokenAddress;
 
     @Builder
-    public TokenTransfer(final String from, final String to, final BigInteger amount, final String transactionHash, final BigInteger blockHeight, final String logIndex, final String originAddress, final boolean removed, final Date blockTimestamp, final String tokenAddress) {
-        this.from = from;
-        this.to = to;
+    public TokenTransfer(final String fromAddress, final String toAddress, final BigInteger amount, final String transactionHash, final BigInteger blockHeight, final String logIndex, final String originAddress, final boolean removed, final Date blockTimestamp, final String tokenAddress) {
+        this.fromAddress = fromAddress;
+        this.toAddress = toAddress;
         this.amount = amount;
         this.transactionHash = transactionHash;
         this.blockHeight = blockHeight;
