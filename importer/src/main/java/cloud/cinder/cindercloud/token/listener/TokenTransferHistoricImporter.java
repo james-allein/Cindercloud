@@ -45,13 +45,15 @@ public class TokenTransferHistoricImporter {
                         final EthLog ethLog = web3jGateway.web3j()
                                 .ethGetLogs(contractEventsFilter(token, Optional.of(3289417L), Optional.empty())).send();
                         ethLog.getLogs()
+                                .stream()
+                                .parallel()
                                 .forEach(x -> {
-                                    Log log = (Log) x.get();
+                                    final Log log = (Log) x.get();
                                     tokenTransferService.getEventParameters(TRANSFER_EVENT, log)
                                             .ifPresent(tokenTransferListener.submitTokenTransfer(log));
                                 });
                     } catch (final Exception ex) {
-                       log.debug("Problem trying to import history for tokens", ex);
+                        log.debug("Problem trying to import history for token: {}", token.getName(), ex);
                     }
                 });
     }
@@ -60,7 +62,7 @@ public class TokenTransferHistoricImporter {
         DefaultBlockParameter from = fromOptional.map(x -> (DefaultBlockParameter) new DefaultBlockParameterNumber(x)).orElse(DefaultBlockParameterName.EARLIEST);
         DefaultBlockParameter to = toOptional.map(x -> (DefaultBlockParameter) new DefaultBlockParameterNumber(x)).orElse(DefaultBlockParameterName.LATEST);
         EthFilter ethFilter = new EthFilter(from, to, token.getAddress());
-        ethFilter.addOptionalTopics(EventEncoder.encode(TRANSFER_EVENT));
+        ethFilter.addSingleTopic(EventEncoder.encode(TRANSFER_EVENT));
         return ethFilter;
     }
 }
