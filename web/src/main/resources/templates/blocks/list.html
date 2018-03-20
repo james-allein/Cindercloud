@@ -4,6 +4,7 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorator="decorator/normal/decorator">
 <div layout:fragment="header-content">
+    <title>Ethereum Blocks | Cindercloud </title>
 </div>
 
 <body>
@@ -114,7 +115,8 @@
 
                         <tbody>
                         <tr th:each="block : ${blocks}">
-                            <td><a th:href="@{/blocks/} + ${block.hash}"><span th:text="${block.height}"></span></a></td>
+                            <td><a th:href="@{/blocks/} + ${block.hash}"><span th:text="${block.height}"></span></a>
+                            </td>
                             <td><span th:text="${block.prettyHash()}"></span></td>
                             <td><span th:text="${block.prettyTimestamp()}"></span></td>
 
