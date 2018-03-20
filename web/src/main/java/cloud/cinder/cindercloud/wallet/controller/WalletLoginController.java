@@ -44,7 +44,7 @@ public class WalletLoginController {
             loginHandler.login(creds);
             return "redirect:/wallet";
         } catch (final Exception ex) {
-            log.debug("Error while trying to login with keystore", ex);
+            log.debug("Error while trying to login with keystore: {}", keystoreLoginCommand.getKeystoreValue());
             redirectAttributes.addFlashAttribute("error", ex.getMessage());
             return "redirect:/wallet/login";
         }
@@ -58,7 +58,7 @@ public class WalletLoginController {
             loginHandler.login(creds);
             return "redirect:/wallet";
         } catch (final Exception ex) {
-            log.debug("Error while trying to login with private key", ex);
+            log.debug("Error while trying to login with invalid private key", privateKeyLoginCommand.getPrivateKey());
             redirectAttributes.addFlashAttribute("error", ex.getMessage());
             return "redirect:/wallet/login";
         }
