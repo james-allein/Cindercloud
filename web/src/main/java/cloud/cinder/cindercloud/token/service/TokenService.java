@@ -1,9 +1,12 @@
 package cloud.cinder.cindercloud.token.service;
 
+import cloud.cinder.cindercloud.infrastructure.service.QueueSender;
 import cloud.cinder.cindercloud.token.domain.Token;
 import cloud.cinder.cindercloud.token.dto.TokenTransferDto;
 import cloud.cinder.cindercloud.token.repository.TokenRepository;
 import cloud.cinder.cindercloud.token.repository.TokenTransferRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -15,6 +18,11 @@ import java.util.stream.Collectors;
 
 @Service
 public class TokenService {
+
+    @Value("${cloud.cinder.queue.user-token-import}")
+    private String userTokenImportQueue;
+    @Autowired
+    private QueueSender queueSender;
 
     private TokenRepository tokenRepository;
     private TokenTransferRepository tokenTransferRepository;
@@ -46,6 +54,7 @@ public class TokenService {
 
     @Transactional(readOnly = true)
     public List<TokenTransferDto> findTransfersByFromOrTo(final String address) {
+
         return tokenTransferRepository.findByFromOrTo(address)
                 .stream()
                 .map(transfer -> {

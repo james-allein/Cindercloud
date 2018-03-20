@@ -10,13 +10,11 @@ import org.springframework.stereotype.Component;
 @Slf4j
 public class QueueSender {
 
-    @Value("${cloud.cinder.queue.block-added}")
-    private String blockQueue;
     @Autowired
     private RabbitTemplate rabbitTemplate;
 
-    public void send(String message, String eventType) {
+    public void send(final String queue, final String message) {
         log.trace("sending message on queue");
-        this.rabbitTemplate.convertAndSend(blockQueue, message);
+        this.rabbitTemplate.convertAndSend(queue, message);
     }
 }
