@@ -1,8 +1,8 @@
 package cloud.cinder.cindercloud.token.service;
 
 import cloud.cinder.cindercloud.token.domain.TokenTransfer;
-import cloud.cinder.cindercloud.token.listener.TokenEvent;
-import cloud.cinder.cindercloud.token.listener.TokenEventType;
+import cloud.cinder.cindercloud.token.listener.model.TokenEvent;
+import cloud.cinder.cindercloud.token.listener.model.TokenEventType;
 import cloud.cinder.cindercloud.token.repository.TokenTransferRepository;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;

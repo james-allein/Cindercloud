@@ -1,6 +1,7 @@
 package cloud.cinder.cindercloud.token.listener;
 
 import cloud.cinder.cindercloud.token.domain.Token;
+import cloud.cinder.cindercloud.token.listener.model.UserTokenRequest;
 import cloud.cinder.cindercloud.token.service.TokenService;
 import cloud.cinder.cindercloud.token.service.TokenTransferService;
 import cloud.cinder.cindercloud.web3j.Web3jGateway;
@@ -9,6 +10,8 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.web3j.abi.EventEncoder;
+import org.web3j.abi.TypeEncoder;
+import org.web3j.abi.datatypes.Address;
 import org.web3j.protocol.core.DefaultBlockParameter;
 import org.web3j.protocol.core.DefaultBlockParameterName;
 import org.web3j.protocol.core.DefaultBlockParameterNumber;
@@ -19,6 +22,7 @@ import org.web3j.protocol.core.methods.response.Log;
 import java.util.Optional;
 
 import static cloud.cinder.cindercloud.token.listener.TokenTransferListener.TRANSFER_EVENT;
+import static cloud.cinder.cindercloud.utils.AddressUtils.prettifyAddress;
 
 @Component
 @ConditionalOnProperty(name = "cloud.cinder.ethereum.token-transfer-import", havingValue = "true")
@@ -44,7 +48,7 @@ public class TokenTransferHistoricImporter {
                     try {
                         log.debug("starting importing historic data for {}", token.getName());
                         final EthLog ethLog = web3jGateway.web3j()
-                                .ethGetLogs(contractEventsFilter(token, Optional.of(3289417L), Optional.empty())).send();
+                                .ethGetLogs(contractEventsFilter(token, Optional.empty(), Optional.empty())).send();
                         ethLog.getLogs()
                                 .stream()
                                 .parallel()
@@ -60,10 +64,38 @@ public class TokenTransferHistoricImporter {
                 });
     }
 
+    public void importForUserTokens(final UserTokenRequest userTokenRequest) {
+        tokenService.findAll()
+                .forEach(token -> {
+                    try {
+                        log.debug("starting importing historic data for {}, address:{} ", token.getName(), userTokenRequest.getAddress());
+                        final EthLog ethLog = web3jGateway.web3j()
+                                .ethGetLogs(contractEventsFilter(token, userTokenRequest.getAddress(), Optional.empty(), Optional.empty())).send();
+                        ethLog.getLogs()
+                                .stream()
+                                .parallel()
+                                .forEach(x -> {
+                                    final Log log = (Log) x.get();
+                                    tokenTransferService.getEventParameters(TRANSFER_EVENT, log)
+                                            .ifPresent(tokenTransferListener.submitTokenTransfer(log));
+                                });
+                        log.debug("ended importing historic data for {}, address: {}", token.getName(), userTokenRequest.getAddress());
+                    } catch (final Exception ex) {
+                        log.debug("Problem trying to import history for token: {}, address {}", token.getName(), userTokenRequest.getAddress());
+                    }
+                });
+    }
+
+    private EthFilter contractEventsFilter(final Token token, final String address, final Optional<Long> fromOptional, final Optional<Long> toOptional) {
+        final EthFilter ethFilter = contractEventsFilter(token, fromOptional, toOptional);
+        ethFilter.addOptionalTopics(prettifyAddress(TypeEncoder.encode(new Address(address))));
+        return ethFilter;
+    }
+
     private EthFilter contractEventsFilter(final Token token, Optional<Long> fromOptional, Optional<Long> toOptional) {
-        DefaultBlockParameter from = fromOptional.map(x -> (DefaultBlockParameter) new DefaultBlockParameterNumber(x)).orElse(DefaultBlockParameterName.EARLIEST);
-        DefaultBlockParameter to = toOptional.map(x -> (DefaultBlockParameter) new DefaultBlockParameterNumber(x)).orElse(DefaultBlockParameterName.LATEST);
-        EthFilter ethFilter = new EthFilter(from, to, token.getAddress());
+        final DefaultBlockParameter from = fromOptional.map(x -> (DefaultBlockParameter) new DefaultBlockParameterNumber(x)).orElse(DefaultBlockParameterName.EARLIEST);
+        final DefaultBlockParameter to = toOptional.map(x -> (DefaultBlockParameter) new DefaultBlockParameterNumber(x)).orElse(DefaultBlockParameterName.LATEST);
+        final EthFilter ethFilter = new EthFilter(from, to, token.getAddress());
         ethFilter.addSingleTopic(EventEncoder.encode(TRANSFER_EVENT));
         return ethFilter;
     }

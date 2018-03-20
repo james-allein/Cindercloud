@@ -1,4 +1,4 @@
-package cloud.cinder.cindercloud.token.listener;
+package cloud.cinder.cindercloud.token.listener.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
