@@ -89,25 +89,32 @@ public class TokenTransferListener {
 
     public Consumer<TokenEvent> submitTokenTransfer(final Log log) {
         return tokenEvent -> {
-            try {
-                final long timestamp = getTimestamp(log.getBlockHash());
-                final EventValues eventValues = tokenEvent.getEventValues();
-                final TokenTransfer tokenTransfer = TokenTransfer.builder()
-                        .blockHeight(log.getBlockNumber())
-                        .logIndex(log.getLogIndex().toString())
-                        .blockTimestamp(Date.from(LocalDateTime.ofEpochSecond(timestamp, 0, ZoneOffset.UTC).atOffset(ZoneOffset.UTC).toInstant()))
-                        .blockHeight(log.getBlockNumber())
-                        .tokenAddress(log.getAddress())
-                        .removed(log.isRemoved())
-                        .amount(new BigInteger(eventValues.getNonIndexedValues().get(0).getValue().toString()))
-                        .fromAddress(eventValues.getIndexedValues().get(0).toString())
-                        .toAddress(eventValues.getIndexedValues().get(1).getValue().toString())
-                        .transactionHash(log.getTransactionHash())
-                        .build();
-                tokenTransferService.saveTokenTransfer(tokenTransfer);
-            } catch (final Exception ex) {
-                LOG.error("something went wrong while trying to save the transfer event");
-                ex.printStackTrace();
+            boolean succeeded = false;
+            int attempts = 0;
+            while (!succeeded && attempts < 5) {
+                try {
+                    final long timestamp = getTimestamp(log.getBlockHash());
+                    final EventValues eventValues = tokenEvent.getEventValues();
+                    final TokenTransfer tokenTransfer = TokenTransfer.builder()
+                            .blockHeight(log.getBlockNumber())
+                            .logIndex(log.getLogIndex().toString())
+                            .blockTimestamp(Date.from(LocalDateTime.ofEpochSecond(timestamp, 0, ZoneOffset.UTC).atOffset(ZoneOffset.UTC).toInstant()))
+                            .blockHeight(log.getBlockNumber())
+                            .tokenAddress(log.getAddress())
+                            .removed(log.isRemoved())
+                            .amount(new BigInteger(eventValues.getNonIndexedValues().get(0).getValue().toString()))
+                            .fromAddress(eventValues.getIndexedValues().get(0).toString())
+                            .toAddress(eventValues.getIndexedValues().get(1).getValue().toString())
+                            .transactionHash(log.getTransactionHash())
+                            .build();
+                    tokenTransferService.saveTokenTransfer(tokenTransfer);
+                    succeeded = true;
+                } catch (final Exception ex) {
+                    LOG.error("something went wrong while trying to save the transfer event");
+                    ex.printStackTrace();
+                } finally {
+                    attempts++;
+                }
             }
         };
     }

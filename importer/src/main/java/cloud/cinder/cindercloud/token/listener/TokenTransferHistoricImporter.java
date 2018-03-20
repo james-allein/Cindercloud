@@ -4,6 +4,7 @@ import cloud.cinder.cindercloud.token.domain.Token;
 import cloud.cinder.cindercloud.token.service.TokenService;
 import cloud.cinder.cindercloud.token.service.TokenTransferService;
 import cloud.cinder.cindercloud.web3j.Web3jGateway;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -21,6 +22,7 @@ import static cloud.cinder.cindercloud.token.listener.TokenTransferListener.TRAN
 
 @Component
 @ConditionalOnProperty(name = "cloud.cinder.ethereum.token-transfer-import", havingValue = "true")
+@Slf4j
 public class TokenTransferHistoricImporter {
 
     private final Web3jGateway web3jGateway;
@@ -40,8 +42,8 @@ public class TokenTransferHistoricImporter {
         tokenService.findAll()
                 .forEach(token -> {
                     try {
-                        EthLog ethLog = web3jGateway.web3j()
-                                .ethGetLogs(contractEventsFilter(token, Optional.empty(), Optional.empty())).send();
+                        final EthLog ethLog = web3jGateway.web3j()
+                                .ethGetLogs(contractEventsFilter(token, Optional.of(3289417L), Optional.empty())).send();
                         ethLog.getLogs()
                                 .forEach(x -> {
                                     Log log = (Log) x.get();
@@ -49,7 +51,7 @@ public class TokenTransferHistoricImporter {
                                             .ifPresent(tokenTransferListener.submitTokenTransfer(log));
                                 });
                     } catch (final Exception ex) {
-                        System.out.println(ex);
+                       log.debug("Problem trying to import history for tokens", ex);
                     }
                 });
     }
