@@ -8,6 +8,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 import javax.validation.constraints.Min;
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.math.MathContext;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -22,13 +23,13 @@ public class CreateEtherTransactionCommand {
     private double amount;
 
     public BigInteger amountInWei() {
-        final BigDecimal bigDecimal = new BigDecimal(amount);
+        final BigDecimal bigDecimal = new BigDecimal(amount, MathContext.DECIMAL64);
         final BigDecimal weiValue = bigDecimal.multiply(BigDecimal.valueOf(Math.pow(10, 18)));
-        return new BigInteger(weiValue.toPlainString());
+        return weiValue.toBigInteger();
     }
 
     public BigInteger gasPriceInWei() {
-        final BigDecimal bigDecimal = new BigDecimal(gasPrice);
+        final BigDecimal bigDecimal = new BigDecimal(String.valueOf(gasPrice));
         final BigDecimal weiValue = bigDecimal.multiply(BigDecimal.valueOf(Math.pow(10, 9)));
         return new BigInteger(weiValue.toPlainString());
     }
