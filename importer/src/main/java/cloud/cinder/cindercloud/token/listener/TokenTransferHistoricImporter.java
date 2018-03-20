@@ -42,6 +42,7 @@ public class TokenTransferHistoricImporter {
         tokenService.findAll()
                 .forEach(token -> {
                     try {
+                        log.debug("starting importing historic data for {}", token.getName());
                         final EthLog ethLog = web3jGateway.web3j()
                                 .ethGetLogs(contractEventsFilter(token, Optional.of(3289417L), Optional.empty())).send();
                         ethLog.getLogs()
@@ -52,6 +53,7 @@ public class TokenTransferHistoricImporter {
                                     tokenTransferService.getEventParameters(TRANSFER_EVENT, log)
                                             .ifPresent(tokenTransferListener.submitTokenTransfer(log));
                                 });
+                        log.debug("ended importing historic data for {}", token.getName());
                     } catch (final Exception ex) {
                         log.debug("Problem trying to import history for token: {}", token.getName(), ex);
                     }
