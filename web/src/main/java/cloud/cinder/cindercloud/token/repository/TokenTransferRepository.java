@@ -10,6 +10,6 @@ import java.util.List;
 
 public interface TokenTransferRepository extends JpaRepository<TokenTransfer, Long> {
 
-    @Query("select transfer from TokenTransfer transfer where fromAddress LIKE :address or toAddress LIKE :address order by blockTimestamp")
+    @Query("select transfer from TokenTransfer transfer where fromAddress LIKE :address or toAddress LIKE :address order by blockTimestamp DESC")
     List<TokenTransfer> findByFromOrTo(@Param("address") final String address);
 }
