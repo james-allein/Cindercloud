@@ -27,10 +27,10 @@ public class TransactionController {
                                   final ModelMap modelMap,
                                   @RequestParam(name = "q", required = false) final Optional<String> searchKey,
                                   @RequestParam(name = "block", required = false) final Optional<String> block) {
-        if (searchKey.isPresent() || block.isPresent()) {
-            if (searchKey.isPresent() && block.isPresent()) {
+        if (containsParameter(searchKey) || containsParameter(block)) {
+            if (containsParameter(searchKey) && containsParameter(block)) {
                 modelMap.put("transactions", transactionService.findByBlockAndAddress(block.get(), searchKey.get(), pageable));
-            } else if (searchKey.isPresent()) {
+            } else if (containsParameter(searchKey)) {
                 modelMap.put("transactions", transactionService.findByAddress(searchKey.get(), pageable).toBlocking().first());
             } else {
                 modelMap.put("transactions", transactionService.findByBlock(block.get(), pageable));
@@ -43,6 +43,12 @@ public class TransactionController {
             modelMap.put("block", "");
         }
         return "transactions/list";
+    }
+
+    private boolean containsParameter(final @RequestParam(name = "q", required = false) Optional<String> searchKey) {
+        return searchKey
+                .filter(x -> !x.isEmpty())
+                .isPresent();
     }
 
     @RequestMapping(value = "/{hash}", method = GET)
