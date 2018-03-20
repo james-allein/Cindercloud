@@ -3,8 +3,11 @@ package cloud.cinder.cindercloud.token.service;
 import cloud.cinder.cindercloud.infrastructure.service.QueueSender;
 import cloud.cinder.cindercloud.token.domain.Token;
 import cloud.cinder.cindercloud.token.dto.TokenTransferDto;
+import cloud.cinder.cindercloud.token.dto.UserTokenRequest;
 import cloud.cinder.cindercloud.token.repository.TokenRepository;
 import cloud.cinder.cindercloud.token.repository.TokenTransferRepository;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
@@ -17,12 +20,15 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
+@Slf4j
 public class TokenService {
 
     @Value("${cloud.cinder.queue.user-token-import}")
     private String userTokenImportQueue;
     @Autowired
-    private QueueSender queueSender;
+    private QueueSender $;
+    @Autowired
+    private ObjectMapper objectMapper;
 
     private TokenRepository tokenRepository;
     private TokenTransferRepository tokenTransferRepository;
@@ -54,7 +60,7 @@ public class TokenService {
 
     @Transactional(readOnly = true)
     public List<TokenTransferDto> findTransfersByFromOrTo(final String address) {
-
+        importAddress(address);
         return tokenTransferRepository.findByFromOrTo(address)
                 .stream()
                 .map(transfer -> {
@@ -72,5 +78,13 @@ public class TokenService {
                             .tokenName(tokenByAddress.map(Token::getName).orElse("Unknown"))
                             .build();
                 }).collect(Collectors.toList());
+    }
+
+    private void importAddress(final String address) {
+        try {
+            $.send(userTokenImportQueue, objectMapper.writeValueAsString(new UserTokenRequest(address)));
+        } catch (final Exception ex) {
+            log.debug("Unable to send to user token import queue", ex);
+        }
     }
 }
