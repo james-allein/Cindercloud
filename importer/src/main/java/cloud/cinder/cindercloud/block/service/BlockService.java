@@ -7,6 +7,7 @@ import cloud.cinder.cindercloud.web3j.Web3jGateway;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,6 +31,9 @@ public class BlockService {
     @Autowired
     private ObjectMapper objectMapper;
 
+    @Value("${cloud.cinder.queue.block-added}")
+    private String blockQueue;
+
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public Block save(final Block block) {
         final Block savedBlock = blockRepository.save(block);
@@ -52,7 +56,7 @@ public class BlockService {
                 .filter(txCount -> txCount.compareTo(BigInteger.ZERO) != 0)
                 .subscribe(txCount -> {
                     try {
-                        $.send(objectMapper.writeValueAsString(savedBlock), "block_with_transactions_imported");
+                        $.send(blockQueue, objectMapper.writeValueAsString(savedBlock), "block_with_transactions_imported");
                     } catch (final Exception ex) {
                         log.error("Problem while trying to send block with transactions to queue", ex);
                     }
