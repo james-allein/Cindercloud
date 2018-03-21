@@ -31,7 +31,7 @@ public class Web3LoginController {
     @RequestMapping(method = POST)
     public @ResponseBody
     String login(@RequestParam("address") final String address) {
-        final String validatedAddress = walletService.web3Login(address);
+        final String validatedAddress = walletService.loginWithWeb3(address);
         loginHandler.clientsideLogin(validatedAddress);
         return "OK";
     }

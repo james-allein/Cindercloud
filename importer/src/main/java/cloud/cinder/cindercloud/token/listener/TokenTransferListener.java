@@ -112,7 +112,6 @@ public class TokenTransferListener {
                     succeeded = true;
                 } catch (final Exception ex) {
                     LOG.error("something went wrong while trying to save the transfer event");
-                    ex.printStackTrace();
                 } finally {
                     attempts++;
                 }
@@ -121,7 +120,7 @@ public class TokenTransferListener {
     }
 
     private long getTimestamp(final String blockHash) throws java.io.IOException {
-        final EthBlock send = web3jGateway.local().ethGetBlockByHash(blockHash, false).send();
+        final EthBlock send = web3jGateway.web3j().ethGetBlockByHash(blockHash, false).send();
         if (send.getBlock() != null) {
             return send.getBlock().getTimestamp().longValue();
         } else {
