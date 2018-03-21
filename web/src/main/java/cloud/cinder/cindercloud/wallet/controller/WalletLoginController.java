@@ -40,7 +40,7 @@ public class WalletLoginController {
     public String loginWithKeystore(final @ModelAttribute("keystoreLoginCommand") KeystoreLoginCommand keystoreLoginCommand,
                                     final RedirectAttributes redirectAttributes) {
         try {
-            final Credentials creds = walletService.login(keystoreLoginCommand.getPassword(), keystoreLoginCommand.getKeystoreValue());
+            final Credentials creds = walletService.loginWithWallet(keystoreLoginCommand.getPassword(), keystoreLoginCommand.getKeystoreValue());
             loginHandler.login(creds);
             return "redirect:/wallet";
         } catch (final Exception ex) {
@@ -54,7 +54,7 @@ public class WalletLoginController {
     public String loginWithPrivateKey(final @ModelAttribute("keystoreLoginCommand") PrivateKeyLoginCommand privateKeyLoginCommand,
                                       final RedirectAttributes redirectAttributes) {
         try {
-            final Credentials creds = walletService.login(privateKeyLoginCommand.getPrivateKey());
+            final Credentials creds = walletService.loginWithPrivateKey(privateKeyLoginCommand.getPrivateKey());
             loginHandler.login(creds);
             return "redirect:/wallet";
         } catch (final Exception ex) {

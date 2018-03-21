@@ -29,7 +29,7 @@ public class WalletService {
         walletmapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
     }
 
-    public Credentials login(final String privateKey) {
+    public Credentials loginWithPrivateKey(final String privateKey) {
         validatePrivateKey(privateKey);
         try {
             return Credentials.create(privateKey);
@@ -38,18 +38,7 @@ public class WalletService {
         }
     }
 
-    public String web3Login(final String address) {
-        validateAddress(address);
-        return address;
-    }
-
-    private void validateAddress(final String address) {
-        if (address == null || (address.length() != 40 && address.length() != 42)) {
-            throw new IllegalArgumentException("The address you provided is not valid");
-        }
-    }
-
-    public Credentials login(final String password, final String wallet) {
+    public Credentials loginWithWallet(final String password, final String wallet) {
         try {
             final WalletFile walletFile = walletmapper.readValue(wallet, WalletFile.class);
             return Credentials.create(Wallet.decrypt(password, walletFile));
@@ -57,6 +46,19 @@ public class WalletService {
             throw new IllegalArgumentException("The keystore you provided is not valid");
         } catch (final CipherException cip) {
             throw new IllegalArgumentException("Unable to decrypt wallet. Is your password correct?");
+        }
+    }
+
+    public String loginWithWeb3(final String address) {
+        validateAddress(address);
+        return address;
+    }
+
+
+
+    private void validateAddress(final String address) {
+        if (address == null || (address.length() != 40 && address.length() != 42)) {
+            throw new IllegalArgumentException("The address you provided is not valid");
         }
     }
 
