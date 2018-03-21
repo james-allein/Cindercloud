@@ -19,9 +19,12 @@ public class WalletService {
 
     private static final ObjectMapper walletmapper = new ObjectMapper();
     private ApplicationEventPublisher $;
+    private BIP44Service bip44Service;
 
-    public WalletService(final ApplicationEventPublisher _$) {
+    public WalletService(final ApplicationEventPublisher _$,
+                         final BIP44Service bip44Service) {
         this.$ = _$;
+        this.bip44Service = bip44Service;
     }
 
     static {
@@ -54,7 +57,14 @@ public class WalletService {
         return address;
     }
 
-
+    public Credentials loginWithMnemonic(final String mnemonic, final int index) {
+        try {
+            final ECKeyPair keypair = bip44Service.fromMnemonic(mnemonic, index);
+            return Credentials.create(keypair);
+        } catch (final Exception e) {
+            throw new IllegalArgumentException("Unable to login using the mnemonic phrase. Please try again or contact an admin.");
+        }
+    }
 
     private void validateAddress(final String address) {
         if (address == null || (address.length() != 40 && address.length() != 42)) {
