@@ -5,7 +5,7 @@
 
 
 <div th:fragment="keystore" id="keystoreComponent" class="col-md-4 col-lg-4 order-lg-2 g-mb-80">
-    <div class="g-brd-around g-brd-gray-light-v3 g-bg-white rounded g-px-30 g-py-50 mb-4">
+    <div style="height: 100%;" class="g-brd-around g-brd-gray-light-v3 g-bg-white rounded g-px-30 g-py-50 mb-4">
         <header class="text-center mb-4">
                 <span class="align-self-center u-icon-v1 u-icon-size--lg g-color-primary">
                       <i class="icon-finance-168 u-line-icon-pro"></i>
@@ -83,17 +83,17 @@
     </div>
 </div>
 
-<div id="mnemonicComponent" class="col-md-6 col align-self-center g-mb-80" th:fragment="mnemonic">
-    <div class="g-brd-around g-brd-gray-light-v3 g-bg-white rounded g-px-30 g-py-50 mb-4">
+<div id="mnemonicComponent" class="col-md-8 col align-self-center g-mb-80" th:fragment="mnemonic">
+    <div style="height: 100%;" class="g-brd-around g-brd-gray-light-v3 g-bg-white rounded g-px-30 g-py-50 mb-4">
         <header class="text-center mb-4">
                     <span class="align-self-center u-icon-v1 u-icon-size--lg g-color-primary">
                       <i class="icon-finance-193 u-line-icon-pro"></i>
                     </span>
-            <h1 class="h4 g-color-black g-font-weight-400">Use your Private Key</h1>
+            <h1 class="h4 g-color-black g-font-weight-400">Use your mnemonic</h1>
         </header>
 
         <!-- Form -->
-        <form method="POST" th:action="@{/wallet/mnemonic}" th:object="${mnemonicAddressRequest}"
+        <form id="mnemonicForm" method="POST" th:action="@{/wallet/mnemonic}" th:object="${mnemonicAddressRequest}"
               class="g-py-15">
 
             <div th:if="${error != null}" class="alert alert-dismissible fade show g-bg-red g-color-white rounded-0"
@@ -118,25 +118,46 @@
                     <span class="input-group-addon g-width-45 g-brd-gray-light-v3 g-color-gray-dark-v5">
                       <i class="icon-media-094 u-line-icon-pro"></i>
                     </span>
-                    <input th:field="*{mnemonic}" autocomplete="off"
+                    <input id="mnemonicField" th:field="*{mnemonic}" autocomplete="off"
                            class="form-control g-color-black g-bg-white g-bg-white--focus g-brd-gray-light-v3 g-rounded-left-0 g-rounded-right-3 g-py-15 g-px-15"
-                           type="text" placeholder="0x000"/>
+                           type="text"
+                           placeholder="fame volume crack load minimum pony prosper soap adjust sick ordinary scan"/>
                 </div>
             </div>
 
 
-            <button class="btn btn-block u-btn-primary g-font-size-12 text-uppercase g-py-12 g-px-25" type="submit">
+            <button id="submitMnemonic"
+                    class="btn btn-block u-btn-primary g-font-size-12 text-uppercase g-py-12 g-px-25" type="submit">
                 Login
             </button>
+
+
         </form>
+
+        <div id="result" class="g-mt-50">
+
+        </div>
+
         <!-- End Form -->
     </div>
 
 </div>
 
+<script type="application/javascript" th:fragment="mnemonicJs">
+	$(document).ready(function () {
+		$('#mnemonicForm').submit(function (e) {
+			e.preventDefault();
+			$.post('/wallet/mnemonic', $('#mnemonicForm').serialize(), function(result, _) {
+				console.log(_);
+                $("#result").html(result);
+            });
+		});
+	});
+</script>
+
 
 <div id="privateKeyComponent" class="col-md-4 col-lg-4 order-lg-2 g-mb-80" th:fragment="privateKey">
-    <div class="g-brd-around g-brd-gray-light-v3 g-bg-white rounded g-px-30 g-py-50 mb-4">
+    <div style="height: 100%;" class="g-brd-around g-brd-gray-light-v3 g-bg-white rounded g-px-30 g-py-50 mb-4">
         <header class="text-center mb-4">
                     <span class="align-self-center u-icon-v1 u-icon-size--lg g-color-primary">
                       <i class="icon-finance-193 u-line-icon-pro"></i>
@@ -187,7 +208,7 @@
 </div>
 
 <div id="web3Component" class="col-md-4 col-lg-4 order-lg-2 g-mb-80" th:fragment="web3">
-    <div class="g-brd-around g-brd-gray-light-v3 g-bg-white rounded g-px-30 g-py-50 mb-4">
+    <div style="height: 100%;" class="g-brd-around g-brd-gray-light-v3 g-bg-white rounded g-px-30 g-py-50 mb-4">
         <header class="text-center mb-4">
                     <span class="align-self-center u-icon-v1 u-icon-size--lg g-color-primary">
                       <i class="icon-communication-104 u-line-icon-pro"></i>
@@ -195,11 +216,11 @@
             <h1 class="h4 g-color-black g-font-weight-400">Use Web3</h1>
         </header>
 
-        <p>Whether you're using a DApp Browser like Mist, Parity or Trust Wallet or Metamask environment, Cindercloud can provide you easy access to your Cryptocurrency and tokens.</p>
-        <br />
-        <br />
+        <p>Whether you're using a DApp Browser like Mist, Parity or Trust Wallet or Metamask environment, Cindercloud
+            can provide you easy access to your Cryptocurrency and tokens.</p>
+        <br/>
 
-       <a class="btn btn-block u-btn-primary g-font-size-12 text-uppercase g-py-12 g-px-25" th:href="@{/web3/login}">Login</a>
+        <a class="btn btn-block u-btn-primary g-font-size-12 text-uppercase g-py-12 g-px-25" th:href="@{/web3/login}">Login</a>
     </div>
 
 </div>
