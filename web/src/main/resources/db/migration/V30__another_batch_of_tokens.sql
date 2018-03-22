@@ -15,10 +15,6 @@ VALUES ('BinanceCoin', 'binance_coin', '0xB8c77482e45F1F44dE1745F52C74426C631bDD
         'https://twitter.com/binance_2017', 'BNB', 18, 'binance-coin');
 
 INSERT INTO tokens (name, slug, address, website, social, symbol, decimals, coinmarketcap_name)
-VALUES ('BinanceCoin', 'binance_coin', '0xB8c77482e45F1F44dE1745F52C74426C631bDD52', 'https://www.binance.com/',
-        'https://twitter.com/binance_2017', 'BNB', 18, 'binance-coin');
-
-INSERT INTO tokens (name, slug, address, website, social, symbol, decimals, coinmarketcap_name)
 VALUES ('Rchain', 'rchain', '0x168296bb09e24a88805cb9c33356536b980d3fc5', 'https://www.rchain.coop/',
         'https://twitter.com/rchain_coop/', 'RHOC', 8, 'rchain');
 
