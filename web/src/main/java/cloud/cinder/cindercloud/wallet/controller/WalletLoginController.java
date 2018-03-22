@@ -76,19 +76,26 @@ public class WalletLoginController {
     @PostMapping(value = "/mnemonic")
     public String requestAddresses(final @ModelAttribute("mnemonicAddressRequest") MnemonicAddressesRequest mnemonicAddressesRequest,
                                    final ModelMap modelMap) {
-        modelMap.put("mnemonicAddresses", getAddresses(mnemonicAddressesRequest));
-        return "wallets/mnemonic :: choose";
+        try {
+            modelMap.put("mnemonicAddresses", getAddresses(mnemonicAddressesRequest));
+            final MnemonicLoginCommand mnemonicLoginCommand = new MnemonicLoginCommand();
+            mnemonicLoginCommand.setMnemonic(mnemonicAddressesRequest.getMnemonic());
+            modelMap.put("mnemonicLoginCommand", mnemonicLoginCommand);
+            return "wallets/mnemonic :: choose";
+        } catch (final Exception ex) {
+            return "redirect:/";
+        }
     }
 
     private List<MnemonicAddressDto> getAddresses(final @ModelAttribute("mnemonicAddressRequest") MnemonicAddressesRequest mnemonicAddressesRequest) {
-        return IntStream.range(mnemonicAddressesRequest.getPage(), 9 + mnemonicAddressesRequest.getPage())
+        return IntStream.rangeClosed(mnemonicAddressesRequest.getPage(), 9 + mnemonicAddressesRequest.getPage())
                 .mapToObj(index -> new MnemonicAddressDto(walletService.loginWithMnemonic(mnemonicAddressesRequest.getMnemonic(), index).getAddress(), index))
                 .collect(Collectors.toList());
     }
 
     @RequestMapping(method = POST, value = "/login", params = "type=mnemonic")
-    public String loginWithPrivateKey(final @ModelAttribute("mnemonicLoginCommand") MnemonicLoginCommand mnemonicLoginCommand,
-                                      final RedirectAttributes redirectAttributes) {
+    public String loginWithMnemonic(final @ModelAttribute("mnemonicLoginCommand") MnemonicLoginCommand mnemonicLoginCommand,
+                                    final RedirectAttributes redirectAttributes) {
         try {
             final Credentials creds = walletService.loginWithMnemonic(mnemonicLoginCommand.getMnemonic(), mnemonicLoginCommand.getIndex());
             loginHandler.login(creds);
