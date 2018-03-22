@@ -85,7 +85,7 @@
                                         <h4 class="h5 g-color-gray-dark-v4 g-mb-5" id="erc20Name">Name</h4>
                                     </div>
                                 </div>
-                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="col-md-2">
@@ -440,14 +440,21 @@
 
 
 			if (_globalWeb3 !== null) {
-				var erc20 = _globalWeb3.eth.contract(erc20Abi).at($("#currentAddress").data('hash'));
-				var decimals = erc20.decimals();
-				var totalSupply = erc20.totalSupply();
-				$("#erc20TotalSupply").html(totalSupply.toNumber() / Math.pow(10, decimals.toNumber()));
-				$("#erc20CheckBalanceBtn").click(function () {
-					var balanceOf = erc20.balanceOf($('#erc20BalanceCheck').val());
-					$("#balanceOfResult").html(balanceOf.toNumber() / Math.pow(10, decimals.toNumber()));
+				var erc20 = getWeb3().eth.contract(erc20Abi).at($("#currentAddress").data('hash'));
+				erc20.decimals(function (_, _decimals) {
+					erc20.totalSupply(function (_, _totalSupply) {
+						console.log(_totalSupply);
+						$("#erc20TotalSupply").html(_totalSupply.toNumber() / Math.pow(10, _decimals.toNumber()));
+
+
+						$("#erc20CheckBalanceBtn").click(function () {
+							erc20.balanceOf($('#erc20BalanceCheck').val(), function (_, result) {
+								$("#balanceOfResult").html(result.toNumber() / Math.pow(10, _decimals.toNumber()));
+							});
+						});
+					});
 				});
+
 			}
 		});
     </script>

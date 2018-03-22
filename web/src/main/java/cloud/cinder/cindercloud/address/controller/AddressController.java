@@ -3,7 +3,6 @@ package cloud.cinder.cindercloud.address.controller;
 import cloud.cinder.cindercloud.address.controller.vo.AddressVO;
 import cloud.cinder.cindercloud.address.domain.SpecialAddress;
 import cloud.cinder.cindercloud.address.service.AddressService;
-import cloud.cinder.cindercloud.block.domain.Block;
 import cloud.cinder.cindercloud.block.service.BlockService;
 import cloud.cinder.cindercloud.coinmarketcap.dto.Currency;
 import cloud.cinder.cindercloud.coinmarketcap.service.PriceService;
@@ -15,8 +14,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.request.async.DeferredResult;
 import org.springframework.web.servlet.ModelAndView;
 import rx.Observable;
@@ -45,9 +46,7 @@ public class AddressController {
 
     @RequestMapping("/{hash}")
     public DeferredResult<ModelAndView> getAddress(@PathVariable("hash") final String hash) {
-        if (hash == null || hash.isEmpty() || noValidAddress(hash)) {
-            throw new IllegalArgumentException("Not a valid address");
-        }
+        validateAddress(hash);
 
         if (isToken(hash)) {
             final DeferredResult<ModelAndView> result = new DeferredResult<>();
@@ -60,12 +59,11 @@ public class AddressController {
         final ModelAndView modelAndView = new ModelAndView("addresses/address");
         final Observable<String> code = addressService.getCode(address);
         final Observable<Slice<Transaction>> transactions = transactionService.findByAddress(address, new PageRequest(0, 10));
-        final Observable<Slice<Block>> minedBlocks = blockService.findByMiner(address, new PageRequest(0, 10));
         final Observable<BigInteger> transactionCount = addressService.getTransactionCount(address);
         final Observable<BigInteger> balance = addressService.getBalance(address);
         final Optional<SpecialAddress> specialAddress = addressService.findByAddress(address);
-        Observable.zip(code, transactions, minedBlocks, transactionCount, balance, (cde, tx, blocks, count, bal) -> {
-            modelAndView.addObject("address", new AddressVO(cde, format(bal), count, tx, blocks));
+        Observable.zip(code, transactions, transactionCount, balance, (cde, tx, count, bal) -> {
+            modelAndView.addObject("address", new AddressVO(cde, format(bal), count, tx));
             modelAndView.addObject("balEUR", priceService.getPrice(Currency.EUR) * WeiUtils.asEth(bal));
             modelAndView.addObject("balUSD", priceService.getPrice(Currency.USD) * WeiUtils.asEth(bal));
             modelAndView.addObject("isSpecial", specialAddress.isPresent());
@@ -75,6 +73,27 @@ public class AddressController {
         }).subscribe(result::setResult);
         return result;
     }
+
+    @RequestMapping("/{hash}/has-mined-blocks")
+    @ResponseBody
+    public boolean hasMinedblocks(@PathVariable("hash") String hash) {
+        return blockService.findByMiner(prettifyAddress(hash), new PageRequest(0, 10)).first().toBlocking().first().hasContent();
+    }
+
+
+    @RequestMapping("/{hash}/mined-blocks")
+    public String minedBlocks(@PathVariable("hash") String hash,
+                              final ModelMap modelMap) {
+        modelMap.put("minedBlocks", blockService.findByMiner(prettifyAddress(hash), new PageRequest(0, 10)).first().toBlocking().first());
+        return "components/addresses :: mined_blocks";
+    }
+
+    private void validateAddress(final @PathVariable("hash") String hash) {
+        if (hash == null || hash.isEmpty() || noValidAddress(hash)) {
+            throw new IllegalArgumentException("Not a valid address");
+        }
+    }
+
 
     private boolean isToken(final String hash) {
         return tokenService.findByAddress(hash).isPresent();

@@ -80,6 +80,11 @@ public class TokenService {
                 }).collect(Collectors.toList());
     }
 
+    @Transactional(readOnly = true)
+    public boolean hasTokenTransfersFromOrTo(final String address) {
+        return tokenTransferRepository.existsByFromOrTo(address);
+    }
+
     private void importAddress(final String address) {
         try {
             $.send(userTokenImportQueue, objectMapper.writeValueAsString(new UserTokenRequest(address)));
