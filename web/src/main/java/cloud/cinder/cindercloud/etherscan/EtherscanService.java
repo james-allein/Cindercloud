@@ -4,21 +4,30 @@ import cloud.cinder.cindercloud.block.service.BlockService;
 import cloud.cinder.cindercloud.etherscan.dto.EtherscanResponse;
 import cloud.cinder.cindercloud.etherscan.dto.EtherscanTransaction;
 import cloud.cinder.cindercloud.login.domain.LoginEvent;
+import cloud.cinder.cindercloud.transaction.service.TransactionService;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.event.EventListener;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
+
+import static cloud.cinder.cindercloud.utils.AddressUtils.prettifyAddress;
 
 @Service
 @Slf4j
 public class EtherscanService {
 
-    @Autowired
-    private EtherscanClient etherscanClient;
-    @Autowired
-    private BlockService blockService;
+    private final EtherscanClient etherscanClient;
+    private final BlockService blockService;
+    private final TransactionService transactionService;
+
+    public EtherscanService(final EtherscanClient etherscanClient, final BlockService blockService, final TransactionService transactionService) {
+        this.etherscanClient = etherscanClient;
+        this.blockService = blockService;
+        this.transactionService = transactionService;
+    }
+
     @Value("${cloud.cinder.etherscan-enabled:false}")
     private boolean enabled;
 
@@ -31,6 +40,7 @@ public class EtherscanService {
                     transactions.getResult()
                             .stream()
                             .map(EtherscanTransaction::getBlockHash)
+                            .filter(blockHash -> !transactionService.findByBlock(prettifyAddress(blockHash), new PageRequest(0, 1)).hasContent())
                             .forEach(x -> {
                                 try {
                                     log.trace("importing block {}", x);

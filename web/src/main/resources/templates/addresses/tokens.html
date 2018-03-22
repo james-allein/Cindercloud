@@ -23,17 +23,20 @@
                     <tr th:each="transfer : ${tokenTransfers}">
                         <td><a th:href="@{'/tx/' + ${transfer.transactionHash}}"><span
                                 th:text="${transfer.prettyTransactionHash()}"></span></a></td>
-                        <td th:text="${transfer.prettyBlockTimestamp()}"></td>
-                        <td th:text="${transfer.prettyFrom()}"></td>
-                        <td th:text="${transfer.prettyTo()}"></td>
+                        <td>
+                            <span th:text="${transfer.prettyBlockTimestamp()}"></span>
+                        </td>
+                        <td><a th:href="@{'/address/' + ${transfer.from}}"><span
+                                th:text="${transfer.prettyFrom()}"></span></a></td>
+                        <td><a th:href="@{'/address/' + ${transfer.to}}"><span th:text="${transfer.prettyTo()}"></span></a>
+                        </td>
                         <td th:text="${transfer.prettyAmount()}"></td>
                         <td>
-
-                            <img class="g-width-25 g-height-25"
-                                 th:src="@{https://raw.githubusercontent.com/TrustWallet/tokens/master/images/} + ${#strings.toLowerCase(transfer.tokenAddress)} + .png"/>
-                            <span th:text="${transfer.tokenName}">
-                                FundRequest
-                            </span>
+                            <a th:href="@{'/token/' + ${transfer.tokenAddress}}">
+                                <img th:alt="${transfer.tokenName}" th:title="${transfer.tokenName}"
+                                     th:alt-title="${transfer.tokenName}" class="g-width-25 g-height-25"
+                                     th:src="@{https://raw.githubusercontent.com/TrustWallet/tokens/master/images/} + ${#strings.toLowerCase(transfer.tokenAddress)} + .png"/>
+                            </a>
                         </td>
                     </tr>
                     </tbody>

@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.text.DecimalFormat;
 import java.util.List;
@@ -44,5 +45,11 @@ public class ERC20Controller {
     public String tokenTransfers(final @PathVariable("address") String address, final ModelMap modelmap) {
         modelmap.put("tokenTransfers", tokenService.findTransfersByFromOrTo(address));
         return "addresses/tokens :: transfers";
+    }
+
+    @RequestMapping(value = "/has-token-transfers")
+    @ResponseBody
+    public boolean hasTokenTransfers(final @PathVariable("address") String address) {
+        return tokenService.hasTokenTransfersFromOrTo(address);
     }
 }

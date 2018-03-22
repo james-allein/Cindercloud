@@ -54,7 +54,7 @@
                     <em class="u-nav-v8__description">General information about this address.</em>
                 </a>
             </li>
-            <li class="nav-item">
+            <li id="tokenTransferTab" style="display:none;" class="nav-item">
                 <a class="nav-link" data-toggle="tab" href="#tokenTransfers" role="tab">
       <span class="u-nav-v8__icon u-icon-v3 u-icon-size--lg g-rounded-50x g-brd-around g-brd-4 g-brd-white">
         <i class="fa fa-binoculars"></i>
@@ -72,7 +72,7 @@
                     <em class="u-nav-v8__description">This is a smart contract.</em>
                 </a>
             </li>
-            <li th:if="${address.minedBlocks.hasContent()}" class="nav-item">
+            <li id="minedTab" style="display:none;" class="nav-item">
                 <a class="nav-link" data-toggle="tab" href="#blockMined" role="tab">
                           <span class="u-nav-v8__icon u-icon-v3 u-icon-size--lg g-rounded-50x g-brd-around g-brd-4 g-brd-white">
                             <i class="fa fa-th"></i>
@@ -255,71 +255,7 @@
                     </div>
                 </div>
             </div>
-            <div th:if="${address.minedBlocks.hasContent()}" class="tab-pane fade" id="blockMined" role="tabpanel">
-
-                <div th:if="${address.minedBlocks.hasNext()}"
-                     class="alert alert-dismissible fade show g-bg-teal g-color-white rounded-0" role="alert">
-                    <button type="button" class="close u-alert-close--light" data-dismiss="alert" aria-label="Close">
-                        <span aria-hidden="true">×</span>
-                    </button>
-                    <div class="media">
-                        <span class="d-flex g-mr-10 g-mt-5">
-                          <i class="icon-check g-font-size-25"></i>
-                        </span>
-                        <span class="media-body align-self-center">
-                          <strong>More blocks!</strong> <a th:href="@{/blocks?mined_by=} + ${hash}"
-                                                           style="color:white;">Find out all blocks this account has mined.</a>
-                        </span>
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="table-responsive">
-                            <table class="table table-striped">
-                                <thead>
-                                <tr>
-                                    <th>Height</th>
-                                    <th>Hash</th>
-                                    <th>Age</th>
-                                    <th>TxCount</th>
-                                    <th>Gas Used</th>
-                                    <th>Gas Limit</th>
-                                </tr>
-                                </thead>
-
-                                <tbody>
-                                <tr th:each="block : ${address.minedBlocks.getContent()}">
-                                    <td>
-                                        <a th:href="@{'/blocks/' + ${block.hash}}">
-                                            <span th:text="${block.height}"></span>
-                                        </a>
-                                    </td>
-                                    <td>
-                                        <a th:href="@{'/blocks/' + ${block.hash}}">
-                                            <span th:text="${block.prettyHash()}"></span>
-                                        </a>
-                                    </td>
-                                    <td><span th:text="${block.prettyTimestamp()}"></span></td>
-
-                                    <td>
-                                        <span th:text="${block.txCount}"></span>
-                                    </td>
-                                    <td>
-                                        <span th:text="${block.gasUsed}"></span> <b>(
-                                        <span th:text="${block.gasUsedPercentage()}"></span>)</b>
-                                    </td>
-                                    <td>
-                                        <span th:text="${block.gasLimit}"></span>
-                                    </td>
-                                </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
+            <div class="tab-pane fade" id="blockMined" role="tabpanel"></div>
 
             <div class="tab-pane fade" id="blockComments" role="tabpanel">
                 <div id="disqus_thread"></div>
@@ -337,13 +273,36 @@
 
     <script type="application/javascript">
 		$(document).ready(function () {
-			$.get('/address/' + $("#currentAddress").data('hash') + '/tokens', function (result) {
-				$("#tokenSection").html(result);
-			});
+			var populateTokens = function () {
+				$.get('/address/' + $("#currentAddress").data('hash') + '/tokens', function (result) {
+					$("#tokenSection").html(result);
+				});
+			};
+			var populateTokenTransfers = function () {
+				$.get('/address/' + $('#currentAddress').data('hash') + '/has-token-transfers', function (result) {
+					if (result === true) {
+						$.get('/address/' + $('#currentAddress').data('hash') + '/token-transfers', function (result) {
+							$('#tokenTransferDiv').html(result);
+							$('#tokenTransferTab').show();
+						});
+					}
+				});
+			};
+			var populateMinedBlocks = function () {
+				$.get('/address/' + $('#currentAddress').data('hash') + '/has-mined-blocks', function (result) {
+					console.log(result);
+					if (result === true) {
+						$.get('/address/' + $('#currentAddress').data('hash') + '/mined-blocks', function (result) {
+							$('#blockMined').html(result);
+							$('#minedTab').show();
+						})
+					}
+				})
+			};
 
-			$.get('/address/' + $('#currentAddress').data('hash') + '/token-transfers', function (result) {
-				$('#tokenTransferDiv').html(result);
-			})
+			populateTokens();
+			populateTokenTransfers();
+			populateMinedBlocks();
 		});
     </script>
 
