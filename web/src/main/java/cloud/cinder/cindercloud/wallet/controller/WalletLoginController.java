@@ -41,6 +41,7 @@ public class WalletLoginController {
     public String index(final ModelMap modelMap) {
         modelMap.put("keystoreLoginCommand", new KeystoreLoginCommand());
         modelMap.put("privatekeyLoginCommand", new PrivateKeyLoginCommand());
+        modelMap.put("mnemonicAddressRequest", new MnemonicAddressesRequest());
         return "wallets/login";
     }
 
@@ -80,7 +81,6 @@ public class WalletLoginController {
     }
 
     private List<MnemonicAddressDto> getAddresses(final @ModelAttribute("mnemonicAddressRequest") MnemonicAddressesRequest mnemonicAddressesRequest) {
-
         return IntStream.range(mnemonicAddressesRequest.getPage(), 9 + mnemonicAddressesRequest.getPage())
                 .mapToObj(index -> new MnemonicAddressDto(walletService.loginWithMnemonic(mnemonicAddressesRequest.getMnemonic(), index).getAddress(), index))
                 .collect(Collectors.toList());
