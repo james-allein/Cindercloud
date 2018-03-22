@@ -118,7 +118,7 @@
                     <span class="input-group-addon g-width-45 g-brd-gray-light-v3 g-color-gray-dark-v5">
                       <i class="icon-media-094 u-line-icon-pro"></i>
                     </span>
-                    <input id="mnemonicField" th:field="*{mnemonic}" autocomplete="off"
+                    <input required="required" id="mnemonicField" th:field="*{mnemonic}" autocomplete="off"
                            class="form-control g-color-black g-bg-white g-bg-white--focus g-brd-gray-light-v3 g-rounded-left-0 g-rounded-right-3 g-py-15 g-px-15"
                            type="text"
                            placeholder="fame volume crack load minimum pony prosper soap adjust sick ordinary scan"/>
@@ -148,7 +148,6 @@
 		$('#mnemonicForm').submit(function (e) {
 			e.preventDefault();
 			$.post('/wallet/mnemonic', $('#mnemonicForm').serialize(), function(result, _) {
-				console.log(_);
                 $("#result").html(result);
             });
 		});
