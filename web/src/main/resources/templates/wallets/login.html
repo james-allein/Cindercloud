@@ -32,13 +32,16 @@
         </div>
     </section>
 
-    <section class="clientSideWeb3Enabled g-bg-primary g-color-white g-pa-30 " style="display: none; background-image: url(/assets/img/bg/pattern5.png);">
+    <section class="clientSideWeb3Enabled g-bg-primary g-color-white g-pa-30 "
+             style="display: none; background-image: url(/assets/img/bg/pattern5.png);">
         <div class="d-md-flex justify-content-md-center text-center">
             <div class="align-self-md-center">
-                <p class="lead g-font-weight-400 g-mr-20--md g-mb-15 g-mb-0--md">It would appear your browser is web3-enabled!</p>
+                <p class="lead g-font-weight-400 g-mr-20--md g-mb-15 g-mb-0--md">It would appear your browser is
+                    web3-enabled!</p>
             </div>
             <div class="align-self-md-center">
-                <a th:href="@{/web3/login}" class="btn btn-lg u-btn-white text-uppercase g-font-weight-600 g-font-size-12">Login With Web3</a>
+                <a th:href="@{/web3/login}"
+                   class="btn btn-lg u-btn-white text-uppercase g-font-weight-600 g-font-size-12">Login With Web3</a>
             </div>
         </div>
     </section>
@@ -59,6 +62,10 @@
                     <th:block th:replace="components/login :: keystore"></th:block>
                     <th:block th:replace="components/login :: privateKey"></th:block>
                 </div>
+                <div class="row">
+                    <div class="col-md-2"></div>
+                    <th:block th:replace="components/login :: mnemonic"></th:block>
+                </div>
             </div>
         </div>
     </section>
@@ -67,6 +74,7 @@
 
 </div>
 <div layout:fragment="footer-content">
+    <th:block th:replace="components/login :: mnemonicJs"></th:block>
 
 </div>
 </body>

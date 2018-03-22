@@ -2,20 +2,28 @@ package cloud.cinder.cindercloud.wallet.controller;
 
 import cloud.cinder.cindercloud.login.handler.LoginHandler;
 import cloud.cinder.cindercloud.wallet.controller.command.login.KeystoreLoginCommand;
+import cloud.cinder.cindercloud.wallet.controller.command.login.MnemonicLoginCommand;
 import cloud.cinder.cindercloud.wallet.controller.command.login.PrivateKeyLoginCommand;
+import cloud.cinder.cindercloud.wallet.controller.command.mnemonic.MnemonicAddressesRequest;
+import cloud.cinder.cindercloud.wallet.controller.dto.MnemonicAddressDto;
 import cloud.cinder.cindercloud.wallet.service.WalletService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.web3j.crypto.Credentials;
 
-import static org.springframework.web.bind.annotation.RequestMethod.GET;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
-@RequestMapping(value = "/wallet/login")
+@RequestMapping(value = "/wallet")
 @Controller
 @Slf4j
 public class WalletLoginController {
@@ -29,18 +37,19 @@ public class WalletLoginController {
         this.loginHandler = loginHandler;
     }
 
-    @RequestMapping(method = GET)
+    @GetMapping(value = "/login")
     public String index(final ModelMap modelMap) {
         modelMap.put("keystoreLoginCommand", new KeystoreLoginCommand());
         modelMap.put("privatekeyLoginCommand", new PrivateKeyLoginCommand());
+        modelMap.put("mnemonicAddressRequest", new MnemonicAddressesRequest());
         return "wallets/login";
     }
 
-    @RequestMapping(method = POST, params = "type=keystore")
+    @RequestMapping(method = POST, value = "/login", params = "type=keystore")
     public String loginWithKeystore(final @ModelAttribute("keystoreLoginCommand") KeystoreLoginCommand keystoreLoginCommand,
                                     final RedirectAttributes redirectAttributes) {
         try {
-            final Credentials creds = walletService.login(keystoreLoginCommand.getPassword(), keystoreLoginCommand.getKeystoreValue());
+            final Credentials creds = walletService.loginWithWallet(keystoreLoginCommand.getPassword(), keystoreLoginCommand.getKeystoreValue());
             loginHandler.login(creds);
             return "redirect:/wallet";
         } catch (final Exception ex) {
@@ -50,15 +59,49 @@ public class WalletLoginController {
         }
     }
 
-    @RequestMapping(method = POST, params = "type=privatekey")
+    @RequestMapping(method = POST, value = "/login", params = "type=privatekey")
     public String loginWithPrivateKey(final @ModelAttribute("keystoreLoginCommand") PrivateKeyLoginCommand privateKeyLoginCommand,
                                       final RedirectAttributes redirectAttributes) {
         try {
-            final Credentials creds = walletService.login(privateKeyLoginCommand.getPrivateKey());
+            final Credentials creds = walletService.loginWithPrivateKey(privateKeyLoginCommand.getPrivateKey());
             loginHandler.login(creds);
             return "redirect:/wallet";
         } catch (final Exception ex) {
             log.debug("Error while trying to login with invalid private key", privateKeyLoginCommand.getPrivateKey());
+            redirectAttributes.addFlashAttribute("error", ex.getMessage());
+            return "redirect:/wallet/login";
+        }
+    }
+
+    @PostMapping(value = "/mnemonic")
+    public String requestAddresses(final @ModelAttribute("mnemonicAddressRequest") MnemonicAddressesRequest mnemonicAddressesRequest,
+                                   final ModelMap modelMap) {
+        try {
+            modelMap.put("mnemonicAddresses", getAddresses(mnemonicAddressesRequest));
+            final MnemonicLoginCommand mnemonicLoginCommand = new MnemonicLoginCommand();
+            mnemonicLoginCommand.setMnemonic(mnemonicAddressesRequest.getMnemonic());
+            modelMap.put("mnemonicLoginCommand", mnemonicLoginCommand);
+            return "wallets/mnemonic :: choose";
+        } catch (final Exception ex) {
+            return "redirect:/";
+        }
+    }
+
+    private List<MnemonicAddressDto> getAddresses(final @ModelAttribute("mnemonicAddressRequest") MnemonicAddressesRequest mnemonicAddressesRequest) {
+        return IntStream.rangeClosed(mnemonicAddressesRequest.getPage(), 9 + mnemonicAddressesRequest.getPage())
+                .mapToObj(index -> new MnemonicAddressDto(walletService.loginWithMnemonic(mnemonicAddressesRequest.getMnemonic(), index).getAddress(), index))
+                .collect(Collectors.toList());
+    }
+
+    @RequestMapping(method = POST, value = "/login", params = "type=mnemonic")
+    public String loginWithMnemonic(final @ModelAttribute("mnemonicLoginCommand") MnemonicLoginCommand mnemonicLoginCommand,
+                                    final RedirectAttributes redirectAttributes) {
+        try {
+            final Credentials creds = walletService.loginWithMnemonic(mnemonicLoginCommand.getMnemonic(), mnemonicLoginCommand.getIndex());
+            loginHandler.login(creds);
+            return "redirect:/wallet";
+        } catch (final Exception ex) {
+            log.debug("Error while trying to login with invalid private key", mnemonicLoginCommand.getMnemonic());
             redirectAttributes.addFlashAttribute("error", ex.getMessage());
             return "redirect:/wallet/login";
         }
