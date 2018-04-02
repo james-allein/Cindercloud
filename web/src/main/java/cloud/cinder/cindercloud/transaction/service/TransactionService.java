@@ -4,6 +4,8 @@ import cloud.cinder.cindercloud.address.service.AddressService;
 import cloud.cinder.cindercloud.block.domain.Block;
 import cloud.cinder.cindercloud.block.service.BlockService;
 import cloud.cinder.cindercloud.etherscan.EtherscanService;
+import cloud.cinder.cindercloud.parity.registry.signature.MethodSignatureService;
+import cloud.cinder.cindercloud.parity.registry.signature.domain.MethodSignature;
 import cloud.cinder.cindercloud.transaction.domain.Transaction;
 import cloud.cinder.cindercloud.transaction.repository.TransactionRepository;
 import cloud.cinder.cindercloud.web3j.Web3jGateway;
@@ -22,6 +24,7 @@ import java.time.ZoneOffset;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 @Service
 @Slf4j
@@ -37,7 +40,8 @@ public class TransactionService {
     private AddressService addressService;
     @Autowired
     private EtherscanService etherscanService;
-
+    @Autowired
+    private MethodSignatureService methodSignatureService;
 
     @Transactional
     public Observable<Slice<Transaction>> findByAddress(final String address, final Pageable pageable) {
@@ -67,6 +71,18 @@ public class TransactionService {
                 .map(Observable::just)
                 .orElse(getInternalTransaction(transactionHash)
                         .map(this::enrichWithSpecialAddresses));
+    }
+
+    @Transactional(readOnly = true)
+    public Optional<MethodSignature> getMethodSignature(final String transactionHash) {
+        return getTransaction(transactionHash)
+                .map(x -> {
+                    if (x.hasInput()) {
+                        return methodSignatureService.findSignature(x.getInput());
+                    } else {
+                        return Optional.<MethodSignature>empty();
+                    }
+                }).toBlocking().firstOrDefault(Optional.empty());
     }
 
     private Transaction enrichWithSpecialAddresses(final Transaction tx) {

@@ -176,6 +176,14 @@
                             <h4 class="h5 g-color-gray-dark-v4 g-mb-5">Input Data</h4>
                         </div>
                     </div>
+                    <div id="methodSignatureDiv" class="col-lg-12 col-sm-12 g-mb-50" style="display: none;" th:if="${tx.hasInput()}">
+                        <div class="g-bg-white g-rounded-4 g-brd-bottom g-brd-2 g-brd-gray-light-v3 g-pa-20">
+                            <div class="g-font-size-18 g-font-weight-300 g-mb-7">
+                                <span id="methodSignature" style="word-wrap: break-word;"></span>
+                            </div>
+                            <h4 class="h5 g-color-gray-dark-v4 g-mb-5">Method Signature</h4>
+                        </div>
+                    </div>
                     <div class="col-lg-1" th:unless="${tx.hasInput()}"></div>
                     <div class="col-lg-10" th:unless="${tx.hasInput()}">
                         <div class="g-mb-50">
@@ -207,6 +215,9 @@
 </div>
 
 <div layout:fragment="footer-content">
+
+    <span id="currentTransaction" th:attr="data-hash=${tx.hash}"></span>
+
     <!-- JS Implementing Plugins -->
     <script th:src="@{/assets/vendor/appear.js}"></script>
 
@@ -215,6 +226,20 @@
 
     <!-- JS Unify -->
     <script th:src="@{/assets/js/components/hs.chart-pie.js}"></script>
+
+    <script type="application/javascript">
+        $(document).ready(function(){
+        	var transactionHash = $('#currentTransaction').data('hash');
+        	console.log(transactionHash);
+        	$.get('/tx/' + transactionHash + '/method-signature', function(result) {
+        		if(result) {
+        			$('#methodSignature').html(result.signature);
+        			$('#methodSignatureDiv').show();
+        			console.log(result);
+                }
+            })
+        });
+    </script>
 
     <th:block th:replace="components/disqus :: footer"></th:block>
 </div>
