@@ -11,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -56,6 +57,27 @@ public class TokenService {
     @Transactional(readOnly = true)
     public Long count() {
         return tokenRepository.count();
+    }
+
+    @Transactional(readOnly = true)
+    public List<TokenTransferDto> findByToken(final String tokenHash) {
+        return tokenTransferRepository.findByTokenAddress(tokenHash, new PageRequest(0, 20))
+                .stream()
+                .map(transfer -> {
+                    final Optional<Token> tokenByAddress = findByAddress(transfer.getTokenAddress());
+                    return TokenTransferDto.builder()
+                            .blockHeight(transfer.getBlockHeight())
+                            .blockTimestamp(transfer.getBlockTimestamp())
+                            .from(transfer.getFromAddress())
+                            .to(transfer.getToAddress())
+                            .transactionHash(transfer.getTransactionHash())
+                            .amount(transfer.getAmount())
+                            .tokenAddress(transfer.getTokenAddress())
+                            .decimals(tokenByAddress.map(Token::getDecimals).orElse(18))
+                            .tokenSymbol(tokenByAddress.map(Token::getSymbol).orElse("UNKNOWN"))
+                            .tokenName(tokenByAddress.map(Token::getName).orElse("Unknown"))
+                            .build();
+                }).collect(Collectors.toList());
     }
 
     @Transactional(readOnly = true)
