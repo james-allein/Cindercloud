@@ -8,8 +8,10 @@ import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
 import org.web3j.crypto.ECKeyPair;
 
+import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class BIP44Service {
@@ -35,6 +37,12 @@ public class BIP44Service {
         childNumbers.add(new ChildNumber(index));
         final byte[] privKey = deterministicKeyChain.getKeyByPath(childNumbers, true).getPrivKeyBytes();
         return ECKeyPair.create(privKey);
+    }
+
+    public String generateMnemonicCode() {
+        return new DeterministicSeed(new SecureRandom(), 128, "", 0).getMnemonicCode()
+                .stream()
+                .collect(Collectors.joining(" "));
     }
 
     @NotNull
