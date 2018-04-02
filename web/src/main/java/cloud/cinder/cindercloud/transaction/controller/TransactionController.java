@@ -1,5 +1,6 @@
 package cloud.cinder.cindercloud.transaction.controller;
 
+import cloud.cinder.cindercloud.parity.registry.signature.domain.MethodSignature;
 import cloud.cinder.cindercloud.transaction.service.TransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
@@ -8,6 +9,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.request.async.DeferredResult;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -62,4 +64,9 @@ public class TransactionController {
         return result;
     }
 
+    @RequestMapping(value = "/{hash}/method-signature")
+    public @ResponseBody
+    MethodSignature getMethodSignature(@PathVariable("hash") final String hash) {
+        return transactionService.getMethodSignature(hash).orElse(null);
+    }
 }

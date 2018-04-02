@@ -60,6 +60,27 @@ public class TokenService {
     }
 
     @Transactional(readOnly = true)
+    public List<TokenTransferDto> findByToken(final String tokenHash) {
+        return tokenTransferRepository.findByTokenAddress(tokenHash, new PageRequest(0, 20))
+                .stream()
+                .map(transfer -> {
+                    final Optional<Token> tokenByAddress = findByAddress(transfer.getTokenAddress());
+                    return TokenTransferDto.builder()
+                            .blockHeight(transfer.getBlockHeight())
+                            .blockTimestamp(transfer.getBlockTimestamp())
+                            .from(transfer.getFromAddress())
+                            .to(transfer.getToAddress())
+                            .transactionHash(transfer.getTransactionHash())
+                            .amount(transfer.getAmount())
+                            .tokenAddress(transfer.getTokenAddress())
+                            .decimals(tokenByAddress.map(Token::getDecimals).orElse(18))
+                            .tokenSymbol(tokenByAddress.map(Token::getSymbol).orElse("UNKNOWN"))
+                            .tokenName(tokenByAddress.map(Token::getName).orElse("Unknown"))
+                            .build();
+                }).collect(Collectors.toList());
+    }
+
+    @Transactional(readOnly = true)
     public List<TokenTransferDto> findTransfersByFromOrTo(final String address) {
         importAddress(address);
         return tokenTransferRepository.findByFromOrTo(address, new PageRequest(0, 30))
