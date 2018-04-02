@@ -2,7 +2,7 @@ cloud:
   cinder:
     ethereum:
       endpoint:
-        url: https://mainnet.fundrequest.io
+        url: https://fullnode.fundrequest.io
         local-url: https://mainnet.infura.io
     queue:
       block-added: cindercloud_mainnet

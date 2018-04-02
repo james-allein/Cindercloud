@@ -29,6 +29,10 @@ public class Web3jGateway {
         return currentProvider;
     }
 
+    public Web3j local() {
+        return localWeb3j;
+    }
+
     private Web3j updateCurrentProvider() {
         try {
             cindercloud.ethBlockNumber().send();
