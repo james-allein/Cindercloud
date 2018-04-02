@@ -11,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -61,7 +62,7 @@ public class TokenService {
     @Transactional(readOnly = true)
     public List<TokenTransferDto> findTransfersByFromOrTo(final String address) {
         importAddress(address);
-        return tokenTransferRepository.findByFromOrTo(address)
+        return tokenTransferRepository.findByFromOrTo(address, new PageRequest(0, 30))
                 .stream()
                 .map(transfer -> {
                     final Optional<Token> tokenByAddress = findByAddress(transfer.getTokenAddress());
