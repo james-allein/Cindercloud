@@ -13,9 +13,10 @@ buildscript {
 }
 
 plugins {
-    id 'org.springframework.boot'
     id 'net.ltgt.apt' version '0.8'
 }
+
+apply plugin: 'org.springframework.boot'
 
 dependencyManagement {
     imports {
