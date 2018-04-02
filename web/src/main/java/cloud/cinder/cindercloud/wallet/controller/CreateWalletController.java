@@ -37,11 +37,9 @@ public class CreateWalletController {
     }
 
     @RequestMapping(method = RequestMethod.POST, params = "type=mnemonic")
-    public String createMnemonic(final ModelMap modelMap,
-                                 @ModelAttribute("createKeystore") final CreateKeystoreCommand createKeystoreCommand) {
-        final GeneratedCredentials mnemonic = walletService.generateWallet(createKeystoreCommand.getPassword(), createKeystoreCommand.isSecure());
-        modelMap.put("mnemonic", mnemonic);
-        return "wallets/created_wallet";
+    public String createMnemonic(final ModelMap modelMap) {
+        modelMap.put("mnemonic", walletService.generateMnemonic());
+        return "wallets/created_mnemonic";
     }
 
 

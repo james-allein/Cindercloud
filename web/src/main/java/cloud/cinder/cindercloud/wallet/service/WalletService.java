@@ -89,6 +89,9 @@ public class WalletService {
         }
     }
 
+    public String generateMnemonic() {
+        return bip44Service.generateMnemonicCode();
+    }
 
     private void validatePrivateKey(final String privateKey) {
         if (privateKey == null || (privateKey.length() != 64 && privateKey.length() != 66)) {

@@ -26,7 +26,7 @@ public class BIP44Service {
     }
 
     public ECKeyPair fromMnemonic(final String mnemonic, final int index) {
-        final DeterministicSeed deterministicSeed = createSeed(mnemonic);
+        final DeterministicSeed deterministicSeed = createSeed(mnemonic.trim());
         final DeterministicKeyChain deterministicKeyChain = DeterministicKeyChain.builder().seed(deterministicSeed).build();
 
         final List<ChildNumber> childNumbers = new ArrayList<>();
