@@ -14,9 +14,11 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/wallet")
@@ -28,11 +30,14 @@ public class CreateEtherTransactionController {
     private Web3TransactionService web3TransactionService;
 
     @RequestMapping(method = RequestMethod.GET, value = "/send")
-    public String index(final ModelMap modelMap) {
+    public String index(final ModelMap modelMap,
+                        @RequestParam("to") final Optional<String> to) {
         authenticationService.requireAuthenticated();
         final String address = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         modelMap.put("address", address);
-        modelMap.put("createEtherTransactionCommand", new CreateEtherTransactionCommand());
+        final CreateEtherTransactionCommand createCommand = new CreateEtherTransactionCommand();
+        createCommand.setTo(to.orElse(""));
+        modelMap.put("createEtherTransactionCommand", createCommand);
         return "wallets/send";
     }
 
@@ -41,7 +46,7 @@ public class CreateEtherTransactionController {
                                     final BindingResult bindingResult,
                                     final ModelMap modelMap) {
         if (bindingResult.hasErrors()) {
-            return index(modelMap);
+            return index(modelMap, Optional.empty());
         } else {
             modelMap.addAttribute("authenticationType", authenticationService.getType());
             modelMap.put("confirm", new ConfirmEtherTransactionCommand(
