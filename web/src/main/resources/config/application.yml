@@ -49,6 +49,10 @@ logging:
       springframework: info
 cloud:
   cinder:
+    mailgun:
+      api-key: 'api-xxx'
+      domain: cinder.cloud
+      default-to: info@cinder.cloud
     etherscan-api-key: 'na-ah'
     etherscan-enabled: true
     etherscan-api: 'https://api.etherscan.io/api'

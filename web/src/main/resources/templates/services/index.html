@@ -5,6 +5,7 @@
       layout:decorator="decorator/normal/decorator">
 <div layout:fragment="header-content">
     <link rel="stylesheet" th:href="@{/assets/vendor/icon-material/material-icons.css}"/>
+    <title>Blockchain Services | Cindercloud</title>
 </div>
 
 <body>
@@ -32,6 +33,12 @@
     </section>
 
     <section class="container g-pt-100 g-pb-40">
+        <div class="row">
+            <div class="col-md-12">
+                <th:block th:if="${success != null}"
+                          th:include="components/alerts :: success(title='Message has been sent', body=${success})"/>
+            </div>
+        </div>
         <div class="row">
             <div class="col-lg-6 g-mb-60">
                 <div class="mb-4">
@@ -99,9 +106,6 @@
                                     We're in contact with quite some investors, startups and people in blockchain in
                                     general. We helped launch various startups and ICOs. We give advise.
                                 </p>
-                                <br/>
-                                <a class="btn btn-md btn-block u-btn-outline-black g-mt-10 text-uppercase g-font-size-default mr-2"
-                                   href="#!">Pitch us your project</a>
                             </div>
                         </div>
                     </div>
@@ -121,9 +125,6 @@
                                 <h3 class="h5 g-color-black mb-20">Security Review</h3>
                                 <div class="g-width-30 g-brd-bottom g-brd-gray-dark-v5 g-my-15"></div>
                                 <p class="g-color-gray-dark-v4 g-mb-0">Whether it's us doing a security review or one of our partners, we'll make sure you get bang for your buck. Fill in the form and we'll get back to you.</p>
-                                <br/>
-                                <a class="btn btn-md btn-block u-btn-outline-black g-mt-10 text-uppercase g-font-size-default mr-2"
-                                   th:href="@{/services/smart-contract-development-and-security}">Contact us</a>
                             </div>
                         </div>
                     </div>

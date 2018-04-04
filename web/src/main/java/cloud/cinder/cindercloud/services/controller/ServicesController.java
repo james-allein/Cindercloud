@@ -1,6 +1,8 @@
 package cloud.cinder.cindercloud.services.controller;
 
+import cloud.cinder.cindercloud.mail.MailService;
 import cloud.cinder.cindercloud.services.controller.dto.RequestDevelopmentCommand;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -8,14 +10,16 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import javax.validation.Valid;
 
 @Controller
 @RequestMapping("/services")
 public class ServicesController {
 
-
-    public ServicesController() {
-    }
+    @Autowired
+    private MailService mailService;
 
     @GetMapping
     public String index() {
@@ -34,13 +38,16 @@ public class ServicesController {
     }
 
     @PostMapping("/smart-contract-development-and-security")
-    public String doRequestDevelopment(@ModelAttribute("requestDevelopmentCommand") final RequestDevelopmentCommand requestDevelopmentCommand,
+    public String doRequestDevelopment(@Valid  @ModelAttribute("requestDevelopmentCommand") final RequestDevelopmentCommand requestDevelopmentCommand,
                                        final BindingResult bindingResult,
-                                       final ModelMap modelMap) {
+                                       final ModelMap modelMap,
+                                       final RedirectAttributes redirectAttributes) {
         if (bindingResult.hasErrors()) {
             return requestDevelopment(modelMap);
+        } else {
+            mailService.send(requestDevelopmentCommand.getName() + " just messaged you on cindercloud", requestDevelopmentCommand.toContent());
+            redirectAttributes.addFlashAttribute("success", "Your message has been sent to Cindercloud");
+            return "redirect:/services";
         }
-
-        return "";
     }
 }

@@ -12,9 +12,12 @@ public class RequestDevelopmentCommand {
     private String name;
     @NotEmpty
     private String email;
-    private String company;
     @NotEmpty
     private String message;
     @NotNull
     private String title;
+
+    public String toContent() {
+        return "email:\t" + getEmail() + "\ntitle:\t" + getTitle() + "\nmessage:\t" + getMessage();
+    }
 }

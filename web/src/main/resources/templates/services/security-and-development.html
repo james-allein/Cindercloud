@@ -5,17 +5,19 @@
       layout:decorator="decorator/normal/decorator">
 <div layout:fragment="header-content">
     <link rel="stylesheet" th:href="@{/assets/vendor/icon-material/material-icons.css}"/>
+    <title>Smart Contract Security Review - Cindercloud | Blockchain Platform</title>
 </div>
 
 <body>
 <div layout:fragment="main-content">
     <section class="dzsparallaxer auto-init height-is-based-on-content use-loading mode-scroll loaded dzsprx-readyall" data-options="{direction: &quot;fromtop&quot;, animation_duration: 25, direction: &quot;reverse&quot;}">
         <!-- Parallax Image -->
-        <div class="divimage dzsparallaxer--target w-100 g-bg-cover g-bg-size-cover g-bg-pos-top-center g-bg-black-opacity-0_2--after" style="height: 140%; background-image: url('/assets/images/bg1.jpeg'); transform: translate3d(0px, -78.4287px, 0px);"></div>
+        <div class="divimage dzsparallaxer--target w-100 g-bg-cover g-bg-size-cover g-bg-pos-top-center g-bg-black-opacity-0_2--after" style="height: 200%; background-image: url('/assets/images/security-bg.jpg'); transform: translate3d(0px, -78.4287px, 0px);"></div>
         <!-- End Parallax Image -->
 
         <!-- Promo Block Content -->
         <div class="container g-color-white text-center g-pt-150 g-pb-200">
+            <h1 style="display: none;">Smart Contract Security Review </h1>
             <h3 class="h2 g-font-weight-300 mb-0">You came to the right place</h3>
             <h2 class="g-font-weight-700 g-font-size-80 text-uppercase">Let's Talk</h2>
         </div>
@@ -29,10 +31,10 @@
                 <!-- Icon Blocks -->
                 <div class="g-bg-white text-center g-py-100">
             <span class="u-icon-v1 u-icon-size--xl g-color-primary mb-3">
-                <i class="icon-real-estate-027 u-line-icon-pro"></i>
+                <i class="fa fa-twitter-square"></i>
               </span>
-                    <h4 class="h5 g-font-weight-600 g-mb-5">Address</h4>
-                    <span class="d-block">61 Oxford str., London, 3DG</span>
+                    <h4 class="h5 g-font-weight-600 g-mb-5">Twitter</h4>
+                    <span class="d-block"><a href="http://twitter.com/cindercloudapp" target="_blank">Cindercloud</a></span>
                 </div>
                 <!-- End Icon Blocks -->
             </div>
@@ -41,10 +43,10 @@
                 <!-- Icon Blocks -->
                 <div class="g-bg-white text-center g-py-100">
             <span class="u-icon-v1 u-icon-size--xl g-color-primary mb-3">
-                <i class="icon-communication-062 u-line-icon-pro"></i>
+                <i class="fa-mail-reply fa"></i>
               </span>
-                    <h4 class="h5 g-font-weight-600 g-mb-5">Phone Number</h4>
-                    <span class="d-block">1-800-643-4500</span>
+                    <h4 class="h5 g-font-weight-600 g-mb-5">email</h4>
+                    <span class="d-block"><a href="mailto:info@cinder.cloud">info[at]cinder.cloud</a> </span>
                 </div>
                 <!-- End Icon Blocks -->
             </div>
@@ -53,10 +55,10 @@
                 <!-- Icon Blocks -->
                 <div class="g-bg-white text-center g-py-100">
             <span class="u-icon-v1 u-icon-size--xl g-color-primary mb-3">
-                <i class="icon-electronics-005 u-line-icon-pro"></i>
+                <i class="fa fa-telegram"></i>
               </span>
-                    <h4 class="h5 g-font-weight-600 g-mb-5">Email</h4>
-                    <span class="d-block">mail@htmlstream.com</span>
+                    <h4 class="h5 g-font-weight-600 g-mb-5">Telegram</h4>
+                    <span class="d-block"><a href="https://telegram.me/quintendes" target="_blank">@QuintenDes</a></span>
                 </div>
                 <!-- End Icon Blocks -->
             </div>
@@ -76,26 +78,21 @@
 
             <div class="row justify-content-center">
                 <div class="col-lg-9">
-                    <form>
+                    <form method="POST" th:action="@{/services/smart-contract-development-and-security}" th:object="${requestDevelopmentCommand}">
                         <div class="row">
                             <div class="col-md-6 form-group g-mb-20">
-                                <input class="form-control g-color-black g-bg-white g-bg-white--focus g-brd-gray-light-v3 g-brd-primary--hover rounded-3 g-py-13 g-px-15" type="text" placeholder="Name" />
+                                <input th:field="*{name}" class="form-control g-color-black g-bg-white g-bg-white--focus g-brd-gray-light-v3 g-brd-primary--hover rounded-3 g-py-13 g-px-15" type="text" placeholder="Name" />
                             </div>
 
                             <div class="col-md-6 form-group g-mb-20">
-                                <input class="form-control g-color-black g-bg-white g-bg-white--focus g-brd-gray-light-v3 g-brd-primary--hover rounded-3 g-py-13 g-px-15" type="email" placeholder="Email" />
+                                <input th:field="*{email}" class="form-control g-color-black g-bg-white g-bg-white--focus g-brd-gray-light-v3 g-brd-primary--hover rounded-3 g-py-13 g-px-15" required="required" type="email" placeholder="Email" />
                             </div>
 
-                            <div class="col-md-6 form-group g-mb-20">
-                                <input class="form-control g-color-black g-bg-white g-bg-white--focus g-brd-gray-light-v3 g-brd-primary--hover rounded-3 g-py-13 g-px-15" type="text" placeholder="Subject" />
+                            <div class="col-md-12 form-group g-mb-20">
+                                <input th:field="*{title}" class="form-control g-color-black g-bg-white g-bg-white--focus g-brd-gray-light-v3 g-brd-primary--hover rounded-3 g-py-13 g-px-15" type="text" placeholder="Subject" />
                             </div>
-
-                            <div class="col-md-6 form-group g-mb-20">
-                                <input class="form-control g-color-black g-bg-white g-bg-white--focus g-brd-gray-light-v3 g-brd-primary--hover rounded-3 g-py-13 g-px-15" type="tel" placeholder="Phone" />
-                            </div>
-
                             <div class="col-md-12 form-group g-mb-40">
-                                <textarea class="form-control g-color-black g-bg-white g-bg-white--focus g-brd-gray-light-v3 g-brd-primary--hover g-resize-none rounded-3 g-py-13 g-px-15" rows="7" placeholder="Message"></textarea>
+                                <textarea th:field="*{message}" class="form-control g-color-black g-bg-white g-bg-white--focus g-brd-gray-light-v3 g-brd-primary--hover g-resize-none rounded-3 g-py-13 g-px-15" rows="7" placeholder="Message"></textarea>
                             </div>
                         </div>
 
