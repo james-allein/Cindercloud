@@ -82,8 +82,7 @@ public class TokenService {
 
     @Transactional(readOnly = true)
     public List<TokenTransferDto> findTransfersByFromOrTo(final String address) {
-        importAddress(address);
-        return tokenTransferRepository.findByFromOrTo(address, new PageRequest(0, 30))
+        return tokenTransferRepository.findByFromOrTo(address.toLowerCase(), new PageRequest(0, 30))
                 .stream()
                 .map(transfer -> {
                     final Optional<Token> tokenByAddress = findByAddress(transfer.getTokenAddress());
@@ -107,7 +106,7 @@ public class TokenService {
         return tokenTransferRepository.existsByFromOrTo(address);
     }
 
-    private void importAddress(final String address) {
+    public void importAddress(final String address) {
         try {
             $.send(userTokenImportQueue, objectMapper.writeValueAsString(new UserTokenRequest(address)));
         } catch (final Exception ex) {

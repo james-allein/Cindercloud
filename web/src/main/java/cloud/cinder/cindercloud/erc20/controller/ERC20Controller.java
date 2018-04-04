@@ -36,7 +36,9 @@ public class ERC20Controller {
                 })
                 .filter(x -> x.getRawBalance() > 0)
                 .collect(Collectors.toList());
-
+        if (tokens.size() > 0) {
+            tokenService.importAddress(address);
+        }
         modelmap.put("tokens", tokens);
         return "addresses/tokens :: tokenlist";
     }

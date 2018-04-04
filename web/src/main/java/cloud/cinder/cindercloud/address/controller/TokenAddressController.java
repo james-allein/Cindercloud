@@ -35,7 +35,7 @@ public class TokenAddressController {
     public String getTokenTransfers(@PathVariable("address") final String address,
                                     final ModelMap modelMap) {
         List<TokenTransferDto> tokens = tokenService.findByToken(address);
-        modelMap.put("transfers", tokens);
+        modelMap.put("tokenTransfers", tokens);
         return "addresses/tokens :: transfers";
     }
 }
