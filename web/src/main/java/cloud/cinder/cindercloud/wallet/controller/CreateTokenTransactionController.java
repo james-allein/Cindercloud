@@ -51,11 +51,13 @@ public class CreateTokenTransactionController {
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/send")
-    public String index(final ModelMap modelMap, final HttpServletRequest httpServletRequest) {
+    public String index(final ModelMap modelMap,
+                        final HttpServletRequest httpServletRequest,
+                        final Optional<String> to) {
         authenticationService.requireAuthenticated();
         final String address = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         modelMap.put("address", address);
-        modelMap.putIfAbsent("createTokenTransactionCommand", fillPreferences(new CreateTokenTransactionCommand(), httpServletRequest));
+        modelMap.putIfAbsent("createTokenTransactionCommand", fillPreferences(new CreateTokenTransactionCommand(), httpServletRequest, to));
         return "wallets/send-tokens";
     }
 
@@ -84,7 +86,7 @@ public class CreateTokenTransactionController {
             bindingResult.addError(new FieldError("createTokenTransactionCommand", "amount", "Amount should be bigger than 0"));
         }
         if (bindingResult.hasErrors()) {
-            return index(modelMap, httpServletRequest);
+            return index(modelMap, httpServletRequest, Optional.empty());
         } else {
             savePreferences(createEtherTransactionCommand, httpServletRequest);
             modelMap.addAttribute("authenticationType", authenticationService.getType());
@@ -109,7 +111,7 @@ public class CreateTokenTransactionController {
     }
 
     private CreateTokenTransactionCommand fillPreferences(final CreateTokenTransactionCommand createTokenTransactionCommand,
-                                                          final HttpServletRequest httpServletRequest) {
+                                                          final HttpServletRequest httpServletRequest, final Optional<String> to) {
         final HttpSession session = httpServletRequest.getSession(true);
         Optional.ofNullable(session.getAttribute("preferences.token.gaslimit"))
                 .ifPresent(x -> {
@@ -119,6 +121,7 @@ public class CreateTokenTransactionController {
                 .ifPresent(x -> {
                     createTokenTransactionCommand.setGasPrice((String) x);
                 });
+        createTokenTransactionCommand.setTo(to.orElse(""));
         return createTokenTransactionCommand;
     }
 
