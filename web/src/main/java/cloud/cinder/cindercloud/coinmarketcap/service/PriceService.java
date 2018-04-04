@@ -16,11 +16,13 @@ public class PriceService {
     @Autowired
     private CoinMarketCapClient coinMarketCapClient;
 
+    final DecimalFormat df = new DecimalFormat("##.00");
+
     @Cacheable(value = "price_as_string", key = "#currency")
     public String getPriceAsString(final Currency currency) {
         final List<TickerResult> results = coinMarketCapClient.getTickerById("ethereum");
         if (results.size() > 0) {
-            return results.get(0).forCurrency(currency);
+            return df.format(new Double(results.get(0).forCurrency(currency)));
         } else {
             return "unknown";
         }
