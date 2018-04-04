@@ -61,7 +61,7 @@ public class TokenService {
 
     @Transactional(readOnly = true)
     public List<TokenTransferDto> findByToken(final String tokenHash) {
-        return tokenTransferRepository.findByTokenAddress(tokenHash, new PageRequest(0, 20))
+        return tokenTransferRepository.findByTokenAddress(tokenHash.toLowerCase(), new PageRequest(0, 20))
                 .stream()
                 .map(transfer -> {
                     final Optional<Token> tokenByAddress = findByAddress(transfer.getTokenAddress());

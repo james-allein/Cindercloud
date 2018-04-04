@@ -20,7 +20,7 @@
                     </thead>
 
                     <tbody>
-                    <tr th:each="transfer : ${tokenTransfers}">
+                    <tr th:each="transfer : ${transfers}">
                         <td><a th:href="@{'/tx/' + ${transfer.transactionHash}}"><span
                                 th:text="${transfer.prettyTransactionHash()}"></span></a></td>
                         <td>
