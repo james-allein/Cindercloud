@@ -1,0 +1,62 @@
+<html lang="en"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+>
+
+<div th:fragment="generate-ui">
+
+    <div class="row">
+        <div class="col-md-12">
+            <th:block th:each="myOutput : ${element.outputs}">
+                <th:block th:include="components/contract :: outputType(output=${myOutput})"></th:block>
+            </th:block>
+        </div>
+    </div>
+</div>
+
+<div th:fragment="outputType">
+    <th:block th:if="${output.type.equals('string')}">
+        <div class="form-group g-mb-20">
+            <label class="g-mb-10" th:text="${output.type}">Text input</label>
+            <input class="form-control form-control-md rounded-0" type="text" placeholder="Loading..."/>
+        </div>
+    </th:block>
+
+    <th:block th:if="${output.type.equals('bool')}">
+        <div class="form-group g-mb-20">
+            <label class="g-mb-10" th:text="${output.type}">Text input</label>
+            <input class="form-control form-control-md rounded-0" type="text" placeholder="Loading..."/>
+        </div>
+    </th:block>
+
+    <th:block th:if="${output.type.contains('uint')}">
+        <div class="form-group g-mb-20">
+            <label class="g-mb-10" th:text="${output.type}">Text input</label>
+            <input class="form-control form-control-md rounded-0 web3-auto-fetch" type="text" placeholder="Loading..."/>
+        </div>
+    </th:block>
+
+    <input id="elementName" type="hidden" th:attr="data-name=${element.name}"/>
+
+
+    <script type="application/javascript">
+
+		var getValueFromContract = function (address, abi, name) {
+			console.log('getting ' + name + ' from abi for address ' + address);
+		};
+
+		$(document).ready(function () {
+
+			var currentAddress = $('#currentAddress').data('address');
+			var abi = $('#currentAbi').data('abi');
+			var name = $('#elementName').data('name');
+
+			$('.web3-auto-fetch').each(
+				function () {
+					getValueFromContract(currentAddress, abi, name);
+				});
+		});
+    </script>
+</div>
+</html>
+
