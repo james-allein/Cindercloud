@@ -21,7 +21,7 @@ public class MethodSignatureService {
     public Optional<MethodSignature> findSignature(final String input) {
         try {
             final String sanitizedInput = sanitize(input);
-            byte[] bytes = RlpString.create(Arrays.copyOfRange(Hex.decode(sanitizedInput), 0, 4)).getBytes();
+            final byte[] bytes = RlpString.create(Arrays.copyOfRange(Hex.decode(sanitizedInput), 0, 4)).getBytes();
             final String signature = paritySignatureRegistryService.entries(bytes);
             if (StringUtils.isNotBlank(signature)) {
                 return Optional.of(new MethodSignature(input, signature));

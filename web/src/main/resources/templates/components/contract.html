@@ -1,0 +1,159 @@
+<html lang="en"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+>
+
+<div th:fragment="generate-ui">
+
+    <div class="row" th:if="${element.inputs.size() > 0}">
+        <div class="col-md-12">
+            <h3 class="h3 mb-3">Input</h3>
+            <th:block th:each="myInput : ${element.inputs}">
+                <th:block th:include="components/contract :: inputType(input=${myInput})"></th:block>
+            </th:block>
+
+            <div class="text-sm-right">
+                <button id="fetchButton" class="btn u-btn-primary rounded-0 g-py-12 g-px-25">Fetch</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <h3 class="h3 mb-3">Output</h3>
+            <th:block th:each="myOutput : ${element.outputs}">
+                <th:block th:include="components/contract :: outputType(output=${myOutput})"></th:block>
+            </th:block>
+        </div>
+    </div>
+</div>
+
+<div th:fragment="inputType">
+    <th:block th:if="${input.type.equals('string')}">
+        <div class="form-group g-mb-20">
+            <input th:attr="data-inputtype=${input.type},placeholder=${input.name}"
+                   class="form-control contract-input form-control-md rounded-0" type="text"/>
+        </div>
+    </th:block>
+
+    <th:block th:if="${input.type.equals('address')}">
+        <div class="form-group g-mb-20">
+            <input th:attr="data-inputtype=${input.type},placeholder=${input.name}"
+                   class="form-control contract-input form-control-md rounded-0" type="text"/>
+        </div>
+    </th:block>
+
+    <th:block th:if="${input.type.contains('byte')}">
+        <div class="form-group g-mb-20">
+            <input th:attr="data-inputtype=${input.type},placeholder=${input.name}"
+                   class="form-control contract-input form-control-md rounded-0" type="text"/>
+        </div>
+    </th:block>
+
+    <th:block th:if="${input.type.contains('uint')}">
+        <div class="form-group g-mb-20">
+            <input th:attr="data-inputtype=${input.type},placeholder=${input.name}"
+                   class="form-control contract-input form-control-md rounded-0" type="number"/>
+        </div>
+    </th:block>
+</div>
+
+<div th:fragment="outputType">
+    <th:block th:if="${output.type.equals('string')}">
+        <div class="form-group g-mb-20">
+            <label class="g-mb-10" th:text="${output.type}">Text input</label>
+            <input data-outputtype="string" class="form-control form-control-md web3-auto-fetch rounded-0" type="text"
+                   placeholder="Loading..."/>
+        </div>
+    </th:block>
+
+    <th:block th:if="${output.type.equals('address')}">
+        <div class="form-group g-mb-20">
+            <label class="g-mb-10" th:text="${output.type}">Text input</label>
+            <input data-outputtype="string" class="form-control form-control-md web3-auto-fetch rounded-0" type="text"
+                   placeholder="Loading..."/>
+        </div>
+    </th:block>
+
+    <th:block th:if="${output.type.equals('bool')}">
+        <div class="form-group g-mb-20">
+            <label class="g-mb-10" th:text="${output.type}">Text input</label>
+            <input data-outputtype="bool" class="form-control form-control-md web3-auto-fetch rounded-0" type="text"
+                   placeholder="Loading..."/>
+        </div>
+    </th:block>
+
+    <th:block th:if="${output.type.contains('uint')}">
+        <div class="form-group g-mb-20">
+            <label class="g-mb-10" th:text="${output.type}">Text input</label>
+            <input data-outputtype="uint" class="form-control form-control-md rounded-0 web3-auto-fetch" type="text"
+                   placeholder="Loading..."/>
+        </div>
+    </th:block>
+
+    <input id="elementName" type="hidden" th:attr="data-name=${element.name}"/>
+
+    <script type="application/javascript" th:if="${element.inputs.size() > 0}">
+
+
+		var currentAddress = $('#currentAddress').data('address');
+		var abi = $('#currentAbi').data('abi');
+		var name = $('#elementName').data('name');
+
+		var contract = getWeb3().eth.contract(abi).at(currentAddress);
+		var $_element = $('.web3-auto-fetch').first();
+		var type = $_element.data('outputtype');
+
+		$('#fetchButton').click(function () {
+			var data = $.map($('.contract-input'), function (element, i) {
+				return $(element).val();
+			});
+
+			var callback = function (err, result) {
+				if (type === 'string') {
+					$_element.val(result);
+				} else if (type === 'bool') {
+					$_element.val(result);
+				} else if (type === 'uint') {
+					$_element.val(result.toFixed(0));
+				}
+			};
+
+			data.push(callback);
+			console.log(data);
+
+			contract[name].call.apply(this, data, callback);
+		});
+    </script>
+
+    <script type="application/javascript" th:if="${element.inputs.size() == 0}">
+
+		var getValueFromContract = function (_contract, _name, $_element) {
+			var type = $_element.data('outputtype');
+			_contract[_name].call(function (err, result) {
+				if (type === 'string') {
+					$_element.val(result);
+				} else if (type === 'bool') {
+					$_element.val(result);
+				} else if (type === 'uint') {
+					$_element.val(result.toFixed(0));
+				}
+			});
+		};
+
+		$(document).ready(function () {
+
+			var currentAddress = $('#currentAddress').data('address');
+			var abi = $('#currentAbi').data('abi');
+			var name = $('#elementName').data('name');
+
+			var contract = getWeb3().eth.contract(abi).at(currentAddress);
+
+			$('.web3-auto-fetch').each(function () {
+				getValueFromContract(contract, name, $(this));
+			});
+		});
+    </script>
+</div>
+</html>
+

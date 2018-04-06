@@ -41,4 +41,14 @@ public class AddressService {
     public Optional<SpecialAddress> findByAddress(final String address) {
         return specialAddressRepository.findByAddress(address);
     }
+
+    public boolean isContract(final String address) {
+        try {
+            final String code = web3j.web3j().ethGetCode(address, DefaultBlockParameterName.LATEST).observable().map(EthGetCode::getCode)
+                    .toBlocking().first();
+            return code != null && code.length() > 2;
+        } catch (final Exception ex) {
+            return false;
+        }
+    }
 }
