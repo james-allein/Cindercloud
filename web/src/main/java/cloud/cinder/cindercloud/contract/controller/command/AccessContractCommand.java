@@ -11,4 +11,8 @@ public class AccessContractCommand {
 
     private String address;
     private String abi;
+
+    public String getAbi() {
+        return abi == null ? null : abi.trim();
+    }
 }

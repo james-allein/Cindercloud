@@ -2,6 +2,7 @@ package cloud.cinder.cindercloud.contract.controller;
 
 import cloud.cinder.cindercloud.abi.AbiDecoder;
 import cloud.cinder.cindercloud.abi.domain.AbiContractFunction;
+import cloud.cinder.cindercloud.address.service.AddressService;
 import cloud.cinder.cindercloud.contract.controller.command.AccessContractCommand;
 import cloud.cinder.cindercloud.contract.controller.command.GenerateUICommand;
 import org.springframework.stereotype.Controller;
@@ -17,9 +18,12 @@ import java.util.stream.Collectors;
 public class ContractController {
 
     private AbiDecoder abiDecoder;
+    private AddressService addressService;
 
-    public ContractController(final AbiDecoder abiDecoder) {
+    public ContractController(final AbiDecoder abiDecoder,
+                              final AddressService addressService) {
         this.abiDecoder = abiDecoder;
+        this.addressService = addressService;
     }
 
     @GetMapping
@@ -35,13 +39,21 @@ public class ContractController {
         if (bindingResult.hasErrors()) {
             return index(modelMap);
         } else {
-            modelMap.addAttribute("abiContract", abiDecoder.decode(accessContractCommand.getAbi())
-                    .getElements()
-                    .stream()
-                    .filter(x -> x instanceof AbiContractFunction).map(x -> (AbiContractFunction) x)
-                    .filter(AbiContractFunction::isConstant)
-                    .collect(Collectors.toList())
-            );
+            if (!addressService.isContract(accessContractCommand.getAddress())) {
+                modelMap.put("error", "The provided address is not a contract");
+            } else {
+                try {
+                    modelMap.addAttribute("abiContract", abiDecoder.decode(accessContractCommand.getAbi().trim())
+                            .getElements()
+                            .stream()
+                            .filter(x -> x instanceof AbiContractFunction).map(x -> (AbiContractFunction) x)
+                            .filter(AbiContractFunction::isConstant)
+                            .collect(Collectors.toList())
+                    );
+                } catch (final Exception ex) {
+                    modelMap.put("error", "We were not able to decode the provided ABI");
+                }
+            }
             return index(modelMap);
         }
     }

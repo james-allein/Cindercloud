@@ -10,6 +10,10 @@
 <div layout:fragment="main-content">
 
     <section class="container g-pt-20 g-pb-5" th:if="${abiContract == null}">
+
+        <th:block th:if="${error != null}"
+                  th:include="components/alerts :: error(title='Error', body=${error})"/>
+
         <div class="row">
             <div class="col-lg-12 flex-lg-unordered g-pt-20 g-mb-80">
                 <div class="g-brd-around g-brd-gray-light-v3 g-bg-white rounded g-px-30 g-py-50 mb-4">
