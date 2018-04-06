@@ -19,7 +19,7 @@ public class AbiDecoderTest {
         final String example = getExample("TokenWhitelistPrecondition.json");
         AbiContract decode = decoder.decode(example);
 
-        assertThat(decode.getElements()).hasSize(33);
+        assertThat(decode.getElements()).hasSize(13);
 
         assertThat(decode.getElements().stream().filter(x -> x instanceof AbiContractFunction).count()).isEqualTo(9);
         assertThat(decode.getElements().stream().filter(x -> x instanceof AbiContractConstructor).count()).isEqualTo(1);
