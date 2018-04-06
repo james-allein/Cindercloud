@@ -5,7 +5,7 @@
 >
 <body>
 
-<div th:fragment="scripts2">
+<div th:fragment="scripts">
 
 
     <!-- JS Global Compulsory -->
@@ -62,7 +62,10 @@
 		});
     </script>
 
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
     <th:block th:replace="components/web3js :: footer"></th:block>
+
     <div layout:fragment="footer-content" th:remove="tag"></div>
 
     <!--Start of Tawk.to Script-->
@@ -81,7 +84,7 @@
 
 </div>
 
-<div th:fragment="version2">
+<div th:fragment="footTag">
     <div class="g-bg-black-opacity-0_9 g-color-white-opacity-0_8 g-py-60">
         <div class="container">
             <div class="row">
