@@ -111,7 +111,7 @@
 				if (doTour) {
 					intro.addStep({
 						element: '#privateKeyOutput',
-						intro: "This is your private key. This is the key you NEVER share with anyone. Consider it your darkest secret. Access to your private key means controlling your wallet.",
+						intro: "This is your mnemonic phrase. This is the key you NEVER share with anyone. Consider it your darkest secret. Access to your mnemonic means controlling all your wallets.",
 						doneLabel: 'understood'
 					});
 					intro = intro.start().nextStep().start();
@@ -126,7 +126,7 @@
 
 				intro.addStep({
 					element: '#testSetupButton',
-					intro: "Nice, you can now test your setup by logging in using your keystore!",
+					intro: "Nice, you can now test your setup by logging in using your mnemonic!",
 					hideNext: true,
 					hidePrev: true
 				});

@@ -16,7 +16,7 @@ public class PriceService {
     @Autowired
     private CoinMarketCapClient coinMarketCapClient;
 
-    final DecimalFormat df = new DecimalFormat("##.00");
+    final DecimalFormat df = new DecimalFormat("0.00");
 
     @Cacheable(value = "eth_price_as_string", key = "#currency")
     public String getPriceAsString(final Currency currency) {
