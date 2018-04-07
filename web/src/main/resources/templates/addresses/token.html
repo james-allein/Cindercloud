@@ -4,7 +4,7 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorator="decorator/normal/decorator">
 <div layout:fragment="header-content">
-    <title>Token | Cindercloud | The Ethereum Blockchain Interactor and Explorer</title>
+    <title><th:block th:text="${token.name}"></th:block>  Token | Cindercloud | The Ethereum Blockchain Interactor and Explorer</title>
 </div>
 
 <body>
@@ -114,6 +114,33 @@
                     </div>
                 </div>
                 <br/>
+                <div class="row g-mb-20">
+                    <div class="col-md-2">
+                        <div class="g-brd-around g-brd-primary g-pa-20">
+                            <div class="g-font-size-30 g-font-weight-300 g-mb-7" ><span th:text="${price_eur}"></span></div>
+                            <h4 class="h4 g-color-gray-dark-v4 g-mb-5" id="eurPrice">€</h4>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="g-brd-around g-brd-primary g-pa-20">
+                            <div class="g-font-size-30 g-font-weight-300 g-mb-7" ><span th:text="${price_usd}"></span></div>
+                            <h4 class="h4 g-color-gray-dark-v4 g-mb-5" id="usdPrice">$</h4>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="g-brd-around g-brd-primary g-pa-20">
+                            <div class="g-font-size-30 g-font-weight-300 g-mb-7" >
+                                <span th:text="${price_eth}"></span></div>
+                            <h4 class="h4 g-color-gray-dark-v4 g-mb-5" id="ethPrice">Ξ</h4>
+                        </div>
+                    </div>
+                    <div class="col-md-5">
+                        <div class="g-brd-around g-brd-primary g-pa-20">
+                            <div class="g-font-size-30 g-font-weight-300 g-mb-7" id="erc20TotalSupply">?</div>
+                            <h4 class="h4 g-color-gray-dark-v4 g-mb-5">Total Supply</h4>
+                        </div>
+                    </div>
+                </div>
                 <div class="row">
                     <div class="col-md-1"></div>
                     <div class="col-md-10">
@@ -141,12 +168,7 @@
                 <br/>
                 <div class="row">
                     <div class="col-md-1"></div>
-                    <div class="col-md-10">
-                        <div class="g-brd-around g-brd-primary g-pa-20">
-                            <div class="g-font-size-35 g-font-weight-300 g-mb-7" id="erc20TotalSupply">?</div>
-                            <h4 class="h5 g-color-gray-dark-v4 g-mb-5">Total Supply</h4>
-                        </div>
-                    </div>
+
                 </div>
             </div>
 

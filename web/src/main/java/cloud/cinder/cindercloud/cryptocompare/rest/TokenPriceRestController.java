@@ -19,6 +19,6 @@ public class TokenPriceRestController {
 
     @GetMapping
     public String getPrice(@RequestParam("symbol") final String symbol, @RequestParam(value = "currency", defaultValue = "EUR") final Currency currency) {
-        return priceService.getPrice(symbol, currency);
+        return priceService.getPriceAsString(symbol, currency);
     }
 }

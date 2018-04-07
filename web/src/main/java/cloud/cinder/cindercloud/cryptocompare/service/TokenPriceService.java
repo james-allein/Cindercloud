@@ -12,7 +12,13 @@ public class TokenPriceService {
         this.cryptoCompareGateway = cryptoCompareGateway;
     }
 
-    public String getPrice(final String symbol, final Currency currency) {
-        return cryptoCompareGateway.getPrice(symbol).getFor(currency);
+    public String getPriceAsString(final String symbol, final Currency currency) {
+        final String price = cryptoCompareGateway.getPrice(symbol).getFor(currency);
+        return price == null ? "0.00" : price;
+    }
+
+    public double getPrice(final String symbol, final Currency currency) {
+        final String price = cryptoCompareGateway.getPrice(symbol).getFor(currency);
+        return price == null ? 0 : Double.valueOf(price);
     }
 }
