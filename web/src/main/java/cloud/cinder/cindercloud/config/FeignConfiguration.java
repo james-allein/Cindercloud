@@ -1,6 +1,7 @@
 package cloud.cinder.cindercloud.config;
 
 import cloud.cinder.cindercloud.coinmarketcap.client.CoinMarketCapClient;
+import cloud.cinder.cindercloud.cryptocompare.client.CryptoCompareClient;
 import cloud.cinder.cindercloud.etherscan.EtherscanClient;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import feign.Feign;
@@ -31,6 +32,15 @@ public class FeignConfiguration {
         return Feign.builder()
                 .decoder(decoder)
                 .target(CoinMarketCapClient.class, "https://api.coinmarketcap.com/v1");
+    }
+
+    @Bean
+    public CryptoCompareClient provideCryptoCompareClient(final Decoder decoder) {
+        return Feign.builder()
+                .decoder(decoder)
+                .logger(new Logger.JavaLogger())
+                .logLevel(Logger.Level.FULL)
+                .target(CryptoCompareClient.class, "https://min-api.cryptocompare.com");
     }
 
     @Bean
