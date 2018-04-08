@@ -113,7 +113,8 @@
             </div>
 
             <div class="mb-4">
-                <p><span class="badge badge-secondary">!</span> Using your backup phrase or mnemonic isn't a recommended method to access your wallet.</p>
+                <p><span class="badge badge-secondary">!</span> Using your backup phrase or mnemonic isn't a recommended
+                    method to access your wallet.</p>
                 <div class="input-group g-rounded-left-3">
                     <span class="input-group-addon g-width-45 g-brd-gray-light-v3 g-color-gray-dark-v5">
                       <i class="icon-media-094 u-line-icon-pro"></i>
@@ -147,12 +148,68 @@
 	$(document).ready(function () {
 		$('#mnemonicForm').submit(function (e) {
 			e.preventDefault();
-			$.post('/wallet/mnemonic', $('#mnemonicForm').serialize(), function(result, _) {
-                $("#result").html(result);
-            });
+			$.post('/wallet/mnemonic', $('#mnemonicForm').serialize(), function (result, _) {
+				$("#result").html(result);
+			});
 		});
 	});
 </script>
+
+<th:block th:fragment="trezorJs">
+    <input type="hidden" id="randomChallenge" th:value="${randomChallenge}"/>
+    <input type="hidden" id="visualChallenge" th:value="${visualChallenge}"/>
+
+    <script type="application/javascript">
+
+		$(document).ready(function () {
+
+			var randomChallenge = $('#randomChallenge').val();
+			var visualChallenge = $('#visualChallenge').val();
+			var hosticon = 'https://cinder.cloud/assets/images/logo/logo-128x30.png';
+
+			var postLogin = function (data) {
+				$.ajax({
+					type: 'POST',
+					url: '/hwallet/trezor',
+					data: JSON.stringify(data),
+					success: function (data) {
+						if (data === true) {
+							console.log("nice login");
+						} else {
+							console.log('login failed');
+                        }
+ 					},
+					contentType: "application/json"
+				});
+			};
+
+			var login = function () {
+				TrezorConnect.requestLogin(hosticon, randomChallenge, visualChallenge, function (result) {
+					if (result.success) {
+						console.log(result);
+						result.hiddenChallenge = randomChallenge;
+						result.visualChallenge = visualChallenge;
+						postLogin(result);
+					} else {
+						if (result.error === 'Action cancelled by user') {
+							swal({
+								title: "Declined",
+								text: "It appears that you declined the request to login with your trezor.",
+								icon: "info",
+								buttons: false,
+								dangerMode: false
+							});
+						}
+					}
+				});
+			};
+
+			login();
+		});
+
+    </script>
+
+</th:block>
 
 
 <div id="privateKeyComponent" class="col-md-4 col-lg-4 order-lg-2 g-mb-80" th:fragment="privateKey">
