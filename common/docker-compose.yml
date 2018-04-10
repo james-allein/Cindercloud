@@ -2,7 +2,7 @@ version: '2'
 
 services:
   cindercloud-postgres:
-    image: postgres
+    image: postgres:10.3
     ports:
       - 5432:5432
     volumes:
@@ -12,20 +12,8 @@ services:
          POSTGRES_USER: cindercloud
          POSTGRES_PASSWORD: cindercloud
          PGDATA: /data/postgres
-  pgadmin:
-      links:
-        - cindercloud-postgres:postgres
-      image: fenglc/pgadmin4
-      volumes:
-         - ./docker_data/pgadmin:/root/.pgadmin
-      ports:
-        - "5050:5050"
-      networks:
-        - cindercloud
-      restart: unless-stopped
-      container_name: cindercloud-pgadmin
   cindercloud-rabbitmq:
-    image: rabbitmq:3.6.8-management
+    image: rabbitmq:3.7-management
     ports :
       -  "5672:5672"
       -  "9191:15672"

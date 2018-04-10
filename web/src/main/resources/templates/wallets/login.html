@@ -46,25 +46,31 @@
         </div>
     </section>
     <!-- Login -->
-    <section class="container g-pt-100 g-pb-20">
+    <section class="container-fluid g-pt-100">
         <div class="row justify-content-between">
 
 
-            <div class="col-md-12 order-lg-1 g-mb-80">
+            <div class="col-md-12 order-lg-1 g-m-80">
                 <div class="5">
-                    <h2 class="h1 g-font-weight-400 mb-3">Choose your preferenced login method</h2>
-                    <p class="g-color-gray-dark-v4">We support a variety of login methods. Below you can see a list of
+                    <h2 class="h1 g-font-weight-400 mb-3 text-center">Choose your preferenced login method</h2>
+                    <p class="g-color-gray-dark-v4 text-center">We support a variety of login methods. Below you can see a list of
                         what we support, sorted by level of security.</p>
                 </div>
 
-                <div class="row">
+                <div class="row equal">
+                    <th:block th:replace="components/login :: trezor"></th:block>
+                    <th:block th:replace="components/login :: keepkey"></th:block>
+                    <th:block th:replace="components/login :: ledger"></th:block>
+                </div>
+
+                <div class="row equal">
+                    <div class="col-md-2"></div>
                     <th:block th:replace="components/login :: web3"></th:block>
                     <th:block th:replace="components/login :: keystore"></th:block>
-                    <th:block th:replace="components/login :: privateKey"></th:block>
                 </div>
-                <div class="row">
-                    <div class="col-md-2"></div>
+                <div class="row equal">
                     <th:block th:replace="components/login :: mnemonic"></th:block>
+                    <th:block th:replace="components/login :: privateKey"></th:block>
                 </div>
             </div>
         </div>
