@@ -79,6 +79,10 @@
                     </div>
                 </div>
                 <!-- End Balance & Rewards -->
+
+                <div class="g-brd-around g-brd-gray-light-v3 rounded g-px-30 g-mt-20 g-pt-30">
+                    <div id="tokenSection"></div>
+                </div>
             </div>
             <!-- End Wallet -->
         </div>
@@ -88,6 +92,19 @@
 </div>
 <div layout:fragment="footer-content">
 
+    <span id="currentAddress" th:attr="data-hash=${address}"></span>
+
+    <script type="application/javascript">
+		$(document).ready(function () {
+			var populateTokens = function () {
+				$.get('/address/' + $("#currentAddress").data('hash') + '/tokens', function (result) {
+					$("#tokenSection").html(result.replace('col-lg-3', 'col-lg-4'));
+				});
+			};
+
+			populateTokens();
+		});
+    </script>
 </div>
 </body>
 </html>
