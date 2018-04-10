@@ -1,5 +1,7 @@
 package cloud.cinder.cindercloud.erc20.controller;
 
+import cloud.cinder.cindercloud.coinmarketcap.dto.Currency;
+import cloud.cinder.cindercloud.cryptocompare.service.TokenPriceService;
 import cloud.cinder.cindercloud.erc20.controller.dto.AddressTokenDto;
 import cloud.cinder.cindercloud.token.service.ERC20Service;
 import cloud.cinder.cindercloud.token.service.TokenService;
@@ -25,14 +27,22 @@ public class ERC20Controller {
     private ERC20Service erc20Service;
     @Autowired
     private TokenService tokenService;
+    @Autowired
+    private TokenPriceService tokenPriceService;
 
     @RequestMapping(value = "/tokens")
     public String balanceOf(final @PathVariable("address") String address, final ModelMap modelmap) {
         List<AddressTokenDto> tokens = tokenService.findAll()
                 .stream()
                 .map(x -> {
-                    double rawBalance = erc20Service.balanceOf(address, x.getAddress()).doubleValue();
-                    return new AddressTokenDto(x, formatter.format(rawBalance), rawBalance);
+                    final double rawBalance = erc20Service.balanceOf(address, x.getAddress()).doubleValue();
+                    return new AddressTokenDto(
+                            x,
+                            formatter.format(rawBalance),
+                            rawBalance,
+                            tokenPriceService.getPriceAsString(x.getSymbol(), Currency.EUR, rawBalance),
+                            tokenPriceService.getPriceAsString(x.getSymbol(), Currency.USD, rawBalance)
+                    );
                 })
                 .filter(x -> x.getRawBalance() > 0)
                 .collect(Collectors.toList());

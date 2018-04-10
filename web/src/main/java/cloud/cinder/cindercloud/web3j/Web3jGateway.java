@@ -20,7 +20,7 @@ public class Web3jGateway {
     private Web3j currentProvider;
 
     @PostConstruct
-    @Scheduled(fixedDelay = 20000)
+    @Scheduled(fixedDelay = 20_000)
     private void init() {
         currentProvider = updateCurrentProvider();
     }
