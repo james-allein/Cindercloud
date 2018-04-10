@@ -3,6 +3,8 @@ package cloud.cinder.cindercloud.login.handler;
 import cloud.cinder.cindercloud.login.domain.LoginEvent;
 import cloud.cinder.cindercloud.security.domain.ClientSideAuthentication;
 import cloud.cinder.cindercloud.security.domain.PrivateKeyAuthentication;
+import cloud.cinder.cindercloud.security.domain.TrezorAuthentication;
+import com.google.common.base.Preconditions;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
@@ -31,6 +33,19 @@ public class LoginHandler {
         SecurityContextHolder.getContext().setAuthentication(new ClientSideAuthentication(prettifyAddress(address)));
         SecurityContextHolder.getContext().getAuthentication().setAuthenticated(true);
         throwEvent(address, "WEB3");
+    }
+
+    public void trezorLogin(final String xpubkey,
+                            final String publicKey,
+                            final String chainCode,
+                            final String address) {
+        Preconditions.checkNotNull(xpubkey);
+        Preconditions.checkNotNull(publicKey);
+        Preconditions.checkNotNull(chainCode);
+        Preconditions.checkNotNull(address);
+        SecurityContextHolder.getContext().setAuthentication(new TrezorAuthentication(xpubkey, publicKey, chainCode, prettifyAddress(address)));
+        SecurityContextHolder.getContext().getAuthentication().setAuthenticated(true);
+        throwEvent(address, "TREZOR");
     }
 
 

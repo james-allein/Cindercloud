@@ -1,5 +1,7 @@
 package cloud.cinder.cindercloud.wallet.controller;
 
+import cloud.cinder.cindercloud.coinmarketcap.dto.Currency;
+import cloud.cinder.cindercloud.cryptocompare.service.TokenPriceService;
 import cloud.cinder.cindercloud.erc20.controller.dto.AddressTokenDto;
 import cloud.cinder.cindercloud.security.domain.AuthenticationType;
 import cloud.cinder.cindercloud.token.service.ERC20Service;
@@ -39,15 +41,18 @@ public class CreateTokenTransactionController {
     private final Web3TransactionService web3TransactionService;
     private final TokenService tokenService;
     private final ERC20Service erc20Service;
+    private TokenPriceService tokenPriceService;
 
     public CreateTokenTransactionController(final AuthenticationService authenticationService,
                                             final Web3TransactionService web3TransactionService,
                                             final TokenService tokenService,
-                                            final ERC20Service erc20Service) {
+                                            final ERC20Service erc20Service,
+                                            final TokenPriceService tokenPriceService) {
         this.authenticationService = authenticationService;
         this.web3TransactionService = web3TransactionService;
         this.tokenService = tokenService;
         this.erc20Service = erc20Service;
+        this.tokenPriceService = tokenPriceService;
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/send")
@@ -69,7 +74,13 @@ public class CreateTokenTransactionController {
                 .stream()
                 .map(x -> {
                     double rawBalance = erc20Service.balanceOf(address, x.getAddress()).doubleValue();
-                    return new AddressTokenDto(x, formatter.format(rawBalance), rawBalance);
+                    return new AddressTokenDto(
+                            x,
+                            formatter.format(rawBalance),
+                            rawBalance,
+                            tokenPriceService.getPriceAsString(x.getSymbol(), Currency.EUR, rawBalance),
+                            tokenPriceService.getPriceAsString(x.getSymbol(), Currency.USD, rawBalance)
+                    );
                 })
                 .filter(x -> x.getRawBalance() > 0)
                 .collect(Collectors.toList());

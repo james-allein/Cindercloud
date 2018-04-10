@@ -16,9 +16,9 @@ public class PriceService {
     @Autowired
     private CoinMarketCapClient coinMarketCapClient;
 
-    final DecimalFormat df = new DecimalFormat("##.00");
+    final DecimalFormat df = new DecimalFormat("0.00");
 
-    @Cacheable(value = "price_as_string", key = "#currency")
+    @Cacheable(value = "eth_price_as_string", key = "#currency")
     public String getPriceAsString(final Currency currency) {
         final List<TickerResult> results = coinMarketCapClient.getTickerById("ethereum");
         if (results.size() > 0) {
@@ -28,8 +28,7 @@ public class PriceService {
         }
     }
 
-
-    @Cacheable(value = "price", key = "#currency")
+    @Cacheable(value = "eth_price", key = "#currency")
     public double getPrice(final Currency currency) {
         final List<TickerResult> results = coinMarketCapClient.getTickerById("ethereum");
         if (results.size() > 0) {

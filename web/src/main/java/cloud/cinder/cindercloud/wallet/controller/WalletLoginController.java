@@ -8,6 +8,7 @@ import cloud.cinder.cindercloud.wallet.controller.command.mnemonic.MnemonicAddre
 import cloud.cinder.cindercloud.wallet.controller.dto.MnemonicAddressDto;
 import cloud.cinder.cindercloud.wallet.service.WalletService;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.codec.binary.Hex;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,7 +18,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.web3j.crypto.Credentials;
 
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -42,6 +45,8 @@ public class WalletLoginController {
         modelMap.put("keystoreLoginCommand", new KeystoreLoginCommand());
         modelMap.put("privatekeyLoginCommand", new PrivateKeyLoginCommand());
         modelMap.put("mnemonicAddressRequest", new MnemonicAddressesRequest());
+        modelMap.put("randomChallenge", Hex.encodeHexString(UUID.randomUUID().toString().getBytes()));
+        modelMap.put("visualChallenge", "Cindercloud @ " + LocalDateTime.now().toString());
         return "wallets/login";
     }
 

@@ -12,4 +12,6 @@ public class AddressTokenDto {
     private Token token;
     private String balance;
     private double rawBalance;
+    private String eurPrice;
+    private String dollarPrice;
 }
