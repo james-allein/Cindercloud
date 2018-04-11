@@ -96,9 +96,17 @@
 
                     <div class="col-lg-5 col-sm-5 g-mb-50">
                         <div class="g-brd-around g-brd-primary g-pa-20">
-                            <a th:href="@{/address/} + ${tx.toAddress}">
+                            <a th:href="@{/address/} + ${tx.toAddress}" th:unless="${tx.isContractCreation()}">
                                 <div th:if="${tx.specialTo == null}" class="g-font-size-16 g-font-weight-300 g-mb-7"
                                      th:text="${tx.toAddress}">87904
+                                </div>
+                                <div th:unless="${tx.specialTo == null}" class="g-font-size-16 g-font-weight-300 g-mb-7"
+                                     th:text="${tx.specialTo}">87904
+                                </div>
+                            </a>
+                            <a th:href="@{/address/} + ${tx.creates}" th:if="${tx.isContractCreation()}">
+                                <div th:if="${tx.specialTo == null}" class="g-font-size-16 g-font-weight-300 g-mb-7"
+                                     th:text="${tx.creates}">87904
                                 </div>
                                 <div th:unless="${tx.specialTo == null}" class="g-font-size-16 g-font-weight-300 g-mb-7"
                                      th:text="${tx.specialTo}">87904
@@ -176,7 +184,8 @@
                             <h4 class="h5 g-color-gray-dark-v4 g-mb-5">Input Data</h4>
                         </div>
                     </div>
-                    <div id="methodSignatureDiv" class="col-lg-12 col-sm-12 g-mb-50" style="display: none;" th:if="${tx.hasInput()}">
+                    <div id="methodSignatureDiv" class="col-lg-12 col-sm-12 g-mb-50" style="display: none;"
+                         th:if="${tx.hasInput()}">
                         <div class="g-bg-white g-rounded-4 g-brd-bottom g-brd-2 g-brd-gray-light-v3 g-pa-20">
                             <div class="g-font-size-18 g-font-weight-300 g-mb-7">
                                 <span id="methodSignature" style="word-wrap: break-word;"></span>
@@ -228,17 +237,17 @@
     <script th:src="@{/assets/js/components/hs.chart-pie.js}"></script>
 
     <script type="application/javascript">
-        $(document).ready(function(){
-        	var transactionHash = $('#currentTransaction').data('hash');
-        	console.log(transactionHash);
-        	$.get('/tx/' + transactionHash + '/method-signature', function(result) {
-        		if(result) {
-        			$('#methodSignature').html(result.signature);
-        			$('#methodSignatureDiv').show();
-        			console.log(result);
-                }
-            })
-        });
+		$(document).ready(function () {
+			var transactionHash = $('#currentTransaction').data('hash');
+			console.log(transactionHash);
+			$.get('/tx/' + transactionHash + '/method-signature', function (result) {
+				if (result) {
+					$('#methodSignature').html(result.signature);
+					$('#methodSignatureDiv').show();
+					console.log(result);
+				}
+			})
+		});
     </script>
 
     <th:block th:replace="components/disqus :: footer"></th:block>
