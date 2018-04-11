@@ -25,3 +25,8 @@ deploy:
     repo: Cindercloud/Cindercloud
     tags: true
     branch: master
+
+after_success:
+  - docker build -t cindercloud/web:"$TRAVIS_BRANCH" web
+  - docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD"
+  - docker push cindercloud/web:"$TRAVIS_BRANCH"
