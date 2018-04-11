@@ -154,4 +154,12 @@ public class TransactionService {
     public Slice<Transaction> findByBlockAndAddress(final String block, final String address, final Pageable pageable) {
         return transactionRepository.findByAddressFromOrToAndBlockHash(address, block, pageable);
     }
+
+    @Transactional
+    public Transaction reindex(final String txId) {
+        log.info("reindexing " + txId);
+        transactionRepository.findOne(txId)
+                .ifPresent(x -> transactionRepository.delete(x));
+        return getInternalTransaction(txId).toBlocking().first();
+    }
 }

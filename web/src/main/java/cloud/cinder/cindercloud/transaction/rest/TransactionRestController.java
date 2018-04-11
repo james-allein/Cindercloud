@@ -24,4 +24,9 @@ public class TransactionRestController {
         transactionService.getTransaction(transaction).subscribe(transactionDeferredResult::setResult);
         return transactionDeferredResult;
     }
+
+    @RequestMapping(method = GET, value = "/{transaction}/reindex")
+    public Transaction reIndex(@PathVariable("transaction") final String transaction) {
+        return transactionService.reindex(transaction);
+    }
 }
