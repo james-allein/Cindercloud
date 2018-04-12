@@ -7,6 +7,7 @@ import cloud.cinder.cindercloud.etherscan.EtherscanService;
 import cloud.cinder.cindercloud.parity.registry.signature.MethodSignatureService;
 import cloud.cinder.cindercloud.parity.registry.signature.domain.MethodSignature;
 import cloud.cinder.cindercloud.transaction.domain.Transaction;
+import cloud.cinder.cindercloud.transaction.domain.TransactionStatus;
 import cloud.cinder.cindercloud.transaction.repository.TransactionRepository;
 import cloud.cinder.cindercloud.web3j.Web3jGateway;
 import lombok.extern.slf4j.Slf4j;
@@ -17,6 +18,7 @@ import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import org.web3j.protocol.core.methods.response.EthGetTransactionReceipt;
 import rx.Observable;
 
 import java.time.LocalDateTime;
@@ -129,6 +131,7 @@ public class TransactionService {
                                     .s(tx.getS())
                                     .r(tx.getR())
                                     .v(tx.getV())
+                                    .status(getTransactionStatus(tx))
                                     .nonce(tx.getNonce())
                                     .transactionIndex(tx.getTransactionIndex())
                                     .build();
@@ -144,6 +147,30 @@ public class TransactionService {
 
         {
             return Observable.error(ex);
+        }
+    }
+
+
+    private TransactionStatus getTransactionStatus(final org.web3j.protocol.core.methods.response.Transaction tx) {
+        try {
+            final EthGetTransactionReceipt send = web3jGateway.web3j().ethGetTransactionReceipt(tx.getHash()).send();
+
+            if (send.getTransactionReceipt().isPresent()) {
+                if (send.getTransactionReceipt().get().getStatus().equalsIgnoreCase("1") || send.getTransactionReceipt().get().getStatus().equalsIgnoreCase("0x1")) {
+                    return TransactionStatus.SUCCESS;
+                } else {
+                    if (send.getTransactionReceipt().get().getGasUsed().equals(tx.getGas())) {
+                        return TransactionStatus.THROWN;
+                    } else {
+                        return TransactionStatus.REVERTED;
+                    }
+                }
+            } else {
+                return TransactionStatus.UNKNOWN;
+            }
+        } catch (final Exception ex) {
+            log.debug("Unable to fetch transaction receipt");
+            return TransactionStatus.UNKNOWN;
         }
     }
 

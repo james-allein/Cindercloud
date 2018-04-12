@@ -47,7 +47,7 @@ public class Transaction {
 
     @Column(name = "status")
     @Enumerated(EnumType.STRING)
-    private TransactionStatus transactionStatus = TransactionStatus.UNKNOWN;
+    private TransactionStatus status = TransactionStatus.UNKNOWN;
 
     @Column(name = "block_timestamp")
     @Temporal(TemporalType.TIMESTAMP)

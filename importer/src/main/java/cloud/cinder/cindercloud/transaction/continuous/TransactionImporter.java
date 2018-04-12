@@ -2,6 +2,7 @@ package cloud.cinder.cindercloud.transaction.continuous;
 
 import cloud.cinder.cindercloud.block.domain.Block;
 import cloud.cinder.cindercloud.transaction.domain.Transaction;
+import cloud.cinder.cindercloud.transaction.domain.TransactionStatus;
 import cloud.cinder.cindercloud.transaction.service.TransactionService;
 import cloud.cinder.cindercloud.web3j.Web3jGateway;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -10,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.web3j.protocol.core.methods.response.EthBlock;
+import org.web3j.protocol.core.methods.response.EthGetTransactionReceipt;
 import rx.functions.Action1;
 
 import javax.annotation.PostConstruct;
@@ -41,7 +43,7 @@ public class TransactionImporter {
                     .filter(bk -> bk.getBlock() != null)
                     .flatMapIterable(bk -> bk.getBlock().getTransactions())
                     .filter(tx -> tx.get() != null && tx.get() instanceof EthBlock.TransactionObject && ((EthBlock.TransactionObject) tx.get()).get() != null)
-                    .map(tx -> ((EthBlock.TransactionObject) tx.get()).get())
+                    .map(tx -> ((EthBlock.TransactionObject) tx.get()))
                     .map(tx -> {
                         log.trace("importing transaction {}", tx.getHash());
                         return Transaction.builder()
@@ -59,6 +61,7 @@ public class TransactionImporter {
                                 .s(tx.getS())
                                 .r(tx.getR())
                                 .v(tx.getV())
+                                .status(getTransactionStatus(tx))
                                 .nonce(tx.getNonce())
                                 .transactionIndex(tx.getTransactionIndex())
                                 .build();
@@ -67,6 +70,29 @@ public class TransactionImporter {
                     .forEach(save());
         } catch (final Exception e) {
             log.error("Error trying to import transactions from block", e);
+        }
+    }
+
+    private TransactionStatus getTransactionStatus(final EthBlock.TransactionObject tx) {
+        try {
+            final EthGetTransactionReceipt send = web3j.web3j().ethGetTransactionReceipt(tx.getHash()).send();
+
+            if (send.getTransactionReceipt().isPresent()) {
+                if (send.getTransactionReceipt().get().getStatus().equalsIgnoreCase("1")) {
+                    return TransactionStatus.SUCCESS;
+                } else {
+                    if (send.getTransactionReceipt().get().getGasUsed().equals(tx.getGas())) {
+                        return TransactionStatus.THROWN;
+                    } else {
+                        return TransactionStatus.REVERTED;
+                    }
+                }
+            } else {
+                return TransactionStatus.UNKNOWN;
+            }
+        } catch (final Exception ex) {
+            log.debug("Unable to fetch transaction receipt");
+            return TransactionStatus.UNKNOWN;
         }
     }
 
