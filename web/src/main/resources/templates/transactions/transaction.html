@@ -167,23 +167,52 @@
                         </div>
                     </div>
 
+                    <th:block th:if="${!tx.isContractCreation()}">
+                        <div class="col-lg-6 col-sm-6 g-mb-50" th:if="${tx.hasInput()}">
+                            <div class="g-bg-white g-rounded-4 g-brd-bottom g-brd-2 g-brd-gray-light-v3 g-pa-20">
+                                <div class="g-font-size-18 g-font-weight-300 g-mb-7">
+                                    <span th:text="${tx.input}" style="word-wrap: break-word;"></span>
+                                </div>
+                                <h4 class="h5 g-color-gray-dark-v4 g-mb-5">Input Data</h4>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-sm-6 g-mb-50" th:if="${tx.hasInput()}">
+                            <div class="g-bg-white g-rounded-4 g-brd-bottom g-brd-2 g-brd-gray-light-v3 g-pa-20">
+                                <div class="g-font-size-18 g-font-weight-300 g-mb-7">
+                                    <span th:text="${tx.inputString()}" style="word-wrap: break-word;"></span>
+                                </div>
+                                <h4 class="h5 g-color-gray-dark-v4 g-mb-5">Input Data</h4>
+                            </div>
+                        </div>
+                    </th:block>
 
-                    <div class="col-lg-6 col-sm-6 g-mb-50" th:if="${tx.hasInput()}">
-                        <div class="g-bg-white g-rounded-4 g-brd-bottom g-brd-2 g-brd-gray-light-v3 g-pa-20">
-                            <div class="g-font-size-18 g-font-weight-300 g-mb-7">
-                                <span th:text="${tx.input}" style="word-wrap: break-word;"></span>
+                    <th:block th:if="${tx.isContractCreation()}">
+                        <div class="col-lg-12 col-sm-12 g-mb-50">
+                            <div id="accordion-03" class="u-accordion" role="tablist" aria-multiselectable="true">
+                                <!-- Card -->
+                                <div class="card rounded-0 g-mb-5">
+                                    <div id="accordion-03-heading-01" class="u-accordion__header" role="tab">
+                                        <h5 class="mb-0">
+                                            <a class="d-block u-link-v5 g-color-main g-color-primary--hover g-font-size-16 "
+                                               href="#accordion-03-body-01" data-toggle="collapse"
+                                               data-parent="#accordion-03" aria-expanded="true"
+                                               aria-controls="accordion-03-body-01">Data
+                                            </a>
+                                        </h5>
+                                    </div>
+                                    <div id="accordion-03-body-01" class="collapse hide" role="tabpanel"
+                                         aria-labelledby="accordion-03-heading-01">
+                                        <div class="u-accordion__body g-brd-top g-brd-gray-light-v4 g-color-gray-dark-v5">
+                                        <span th:text="${tx.input}"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- End Card -->
                             </div>
-                            <h4 class="h5 g-color-gray-dark-v4 g-mb-5">Input Data</h4>
                         </div>
-                    </div>
-                    <div class="col-lg-6 col-sm-6 g-mb-50" th:if="${tx.hasInput()}">
-                        <div class="g-bg-white g-rounded-4 g-brd-bottom g-brd-2 g-brd-gray-light-v3 g-pa-20">
-                            <div class="g-font-size-18 g-font-weight-300 g-mb-7">
-                                <span th:text="${tx.inputString()}" style="word-wrap: break-word;"></span>
-                            </div>
-                            <h4 class="h5 g-color-gray-dark-v4 g-mb-5">Input Data</h4>
-                        </div>
-                    </div>
+
+                    </th:block>
+
                     <div id="methodSignatureDiv" class="col-lg-12 col-sm-12 g-mb-50" style="display: none;"
                          th:if="${tx.hasInput()}">
                         <div class="g-bg-white g-rounded-4 g-brd-bottom g-brd-2 g-brd-gray-light-v3 g-pa-20">
