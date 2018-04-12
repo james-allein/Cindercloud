@@ -45,6 +45,10 @@ public class Transaction {
     private String toAddress;
     private String creates;
 
+    @Column(name = "status")
+    @Enumerated(EnumType.STRING)
+    private TransactionStatus transactionStatus = TransactionStatus.UNKNOWN;
+
     @Column(name = "block_timestamp")
     @Temporal(TemporalType.TIMESTAMP)
     private Date blockTimestamp;
