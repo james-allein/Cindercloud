@@ -47,6 +47,7 @@ public class Transaction {
 
     @Column(name = "status")
     @Enumerated(EnumType.STRING)
+    @Builder.Default
     private TransactionStatus status = TransactionStatus.UNKNOWN;
 
     @Column(name = "block_timestamp")

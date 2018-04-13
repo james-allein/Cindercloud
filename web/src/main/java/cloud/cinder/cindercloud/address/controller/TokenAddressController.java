@@ -1,5 +1,8 @@
 package cloud.cinder.cindercloud.address.controller;
 
+import cloud.cinder.cindercloud.abi.AbiDecoder;
+import cloud.cinder.cindercloud.abi.AbiService;
+import cloud.cinder.cindercloud.abi.domain.AbiContractFunction;
 import cloud.cinder.cindercloud.coinmarketcap.dto.Currency;
 import cloud.cinder.cindercloud.cryptocompare.service.TokenPriceService;
 import cloud.cinder.cindercloud.token.domain.Token;
@@ -12,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping(value = "/token")
@@ -19,11 +23,18 @@ public class TokenAddressController {
 
     private TokenService tokenService;
     private TokenPriceService tokenPriceService;
+    private AbiDecoder abiDecoder;
+    private AbiService abiService;
+
 
     public TokenAddressController(final TokenService tokenService,
-                                  final TokenPriceService tokenPriceService) {
+                                  final TokenPriceService tokenPriceService,
+                                  final AbiDecoder abiDecoder,
+                                  final AbiService abiService) {
         this.tokenService = tokenService;
         this.tokenPriceService = tokenPriceService;
+        this.abiDecoder = abiDecoder;
+        this.abiService = abiService;
     }
 
     @RequestMapping(value = "/{address}")
@@ -47,5 +58,24 @@ public class TokenAddressController {
         List<TokenTransferDto> tokens = tokenService.findByToken(address);
         modelMap.put("tokenTransfers", tokens);
         return "addresses/tokens :: transfers";
+    }
+
+    @RequestMapping(value = "/{address}/access-contract")
+    public String accessERC20(final ModelMap modelMap, @PathVariable("address") String address) {
+        try {
+            final String erc20Abi = abiService.getERC20Abi();
+            modelMap.addAttribute("abi", erc20Abi);
+            modelMap.addAttribute("address", address);
+            modelMap.addAttribute("abiContract", abiDecoder.decode(erc20Abi.trim())
+                    .getElements()
+                    .stream()
+                    .filter(x -> x instanceof AbiContractFunction).map(x -> (AbiContractFunction) x)
+                    .filter(AbiContractFunction::isConstant)
+                    .collect(Collectors.toList())
+            );
+            return "components/access-contract :: erc20";
+        } catch (final Exception ex) {
+            return "";
+        }
     }
 }

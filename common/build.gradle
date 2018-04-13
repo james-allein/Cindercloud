@@ -17,6 +17,8 @@ dependencies {
     compile group: 'org.web3j', name: 'core', version: "${theWeb3jVersion}"
     compile group: 'org.web3j', name: 'abi', version: "${theWeb3jVersion}"
 
+    compile "commons-io:commons-io:2.6";
+
     compileOnly 'org.projectlombok:lombok:1.16.18'
     compile("org.ocpsoft.prettytime:prettytime:3.2.7.Final")
 
