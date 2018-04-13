@@ -376,7 +376,7 @@
 					var tokenAddress = $('#confirmTokenAddress').val();
 					var gasPrice = $('#confirmGasPriceInWei').val();
 					var amountInWei = $('#confirmAmountInWei').val();
-					var erc20 = getWeb3().eth.contract(erc20abi).at(tokenAddress);
+					var erc20 = CindercloudWeb3.getWeb3().eth.contract(erc20abi).at(tokenAddress);
 					var transactionObject = {
 						from: '0xdc71b72db51e227e65a45004ab2798d31e8934c9',
 						to: tokenAddress,
@@ -384,13 +384,13 @@
 						data: erc20.transfer.getData(to, amountInWei),
 						gasPrice: gasPrice
 					};
-					getWeb3().eth.estimateGas(transactionObject, function (err, result) {
+					CindercloudWeb3.getWeb3().eth.estimateGas(transactionObject, function (err, result) {
 						if (!err) {
 							transactionObject.gas = result;
 						} else {
 							transactionObject.gas = gasLimit;
 						}
-						_web3.eth.sendTransaction(transactionObject, function (err, transactionHash) {
+						CindercloudWeb3.getWeb3().eth.sendTransaction(transactionObject, function (err, transactionHash) {
 							if (!err) {
 								swal("Transaction Sent!", "The transaction has been sent (" + transactionHash + ")", "success");
 							} else {
