@@ -78,30 +78,9 @@
 </th:block>
 
 <th:block th:fragment="access-footer" th:if="${abiContract != null}">
-    <input id="currentAbi" type="hidden" th:attr="data-abi=${accesContractCommand.abi}" />
-    <input id="currentAddress" type="hidden" th:attr="data-address=${accesContractCommand.address}" />
-
-    <script type="application/javascript">
-		$('#functionSelect').change(function (_) {
-
-			var data = {
-				elementName: $(this).val(),
-				elements: $('#currentAbi').data('abi')
-			};
-
-			$.ajax({
-				type: 'POST',
-				url: '/contract/generate-ui',
-				data: JSON.stringify(data), // or JSON.stringify ({name: 'jonas'}),
-				success: function (data) {
-					$('#generatedInput').html(data)
-				},
-				contentType: "application/json",
-				dataType: 'html',
-				accepts: 'html'
-			});
-		});
-    </script>
+    <input id="currentAbi" type="hidden" th:attr="data-abi=${abi}" />
+    <input id="currentAddress" type="hidden" th:attr="data-address=${address}" />
+    <script type="application/javascript" th:src="@{/assets/abi/contract-interaction.js}"></script>
 </th:block>
 
 <th:block th:fragment="erc20">
@@ -129,29 +108,6 @@
     </section>
 
 
-    <input id="currentAbi" type="hidden" th:attr="data-abi=${abi}" />
-    <input id="currentAddress" type="hidden" th:attr="data-address=${address}" />
-
-    <script type="application/javascript">
-		$('#functionSelect').change(function (_) {
-
-			var data = {
-				elementName: $(this).val(),
-				elements: $('#currentAbi').data('abi')
-			};
-
-			$.ajax({
-				type: 'POST',
-				url: '/contract/generate-ui',
-				data: JSON.stringify(data), // or JSON.stringify ({name: 'jonas'}),
-				success: function (data) {
-					$('#generatedInput').html(data)
-				},
-				contentType: "application/json",
-				dataType: 'html',
-				accepts: 'html'
-			});
-		});
-    </script>
+    <th:block th:replace="components/access-contract :: access-footer"></th:block>
 </th:block>
 </html>

@@ -13,12 +13,12 @@
     <h1 style="display: none">Access Ethereum Contract | Metamask</h1>
 
     <th:block th:replace="components/access-contract :: form" ></th:block>
-    <th:block th:replace="components/access-contract :: access" ></th:block>
+    <th:block th:replace="components/access-contract :: access(abi=${accesContractCommand.abi}, address=${accesContractCommand.address})" ></th:block>
 </div>
 
 <div layout:fragment="footer-content">
 
-    <th:block th:replace="components/access-contract :: access-footer"></th:block>
+    <th:block th:replace="components/access-contract :: access-footer(abi=${accesContractCommand.abi}, address=${accesContractCommand.address})"></th:block>
 </div>
 </body>
 </html>
