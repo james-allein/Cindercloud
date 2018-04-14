@@ -30,8 +30,14 @@ var CindercloudWeb3 = (function () {
 				return _globalWeb3
 			}
 		},
+		getClientWeb3: function () {
+			return _web3;
+		},
 		getGlobalWeb3: function () {
 			return _globalWeb3;
+		},
+		isClientWeb3Enabled: function () {
+			return _clientWeb3Enabled;
 		}
 	}
 })();
