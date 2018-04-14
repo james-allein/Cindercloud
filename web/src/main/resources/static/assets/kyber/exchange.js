@@ -28,7 +28,8 @@ var Kyber = (function () {
 				{
 					symbol: 'ETH',
 					address: 'ethereum_1',
-					name: 'Ethereum'
+					name: 'Ethereum',
+					kyber_address: '0x00eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee'
 				}
 			);
 			kyberData.source = kyberData.sources[0];
