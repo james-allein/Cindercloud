@@ -171,6 +171,7 @@
 </div>
 <div layout:fragment="footer-content">
     <input type="hidden" id="currentAddress" th:value="${address}" />
+    <input type="hidden" id="authenticationType" th:value="${authenticationType}" />
     <script type="application/javascript" th:src="@{https://unpkg.com/vue-select@latest}"></script>
     <script type="application/javascript" th:src="@{/assets/abi/abi.js}"></script>
     <script type="application/javascript" th:src="@{/assets/ethereum/bignumber.min.js}"></script>

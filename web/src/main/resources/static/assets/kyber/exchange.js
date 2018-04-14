@@ -1,6 +1,7 @@
 var Kyber = (function () {
 
 	var address = $('#currentAddress').val();
+	var authenticationType = $('#authenticationType').val();
 
 	var kyberMainnet = '0x964F35fAe36d75B1e72770e244F6595B68508CF5';
 
@@ -218,10 +219,18 @@ var Kyber = (function () {
 
 					var kyberNetworkContract = CindercloudWeb3.getClientWeb3().eth.contract(abi.kyber.kyber_network).at(kyberMainnet);
 
+					var value = (function () {
+						if (kyberData.source.symbol === 'ETH') {
+							return kyberData.rawSourceAmount;
+						} else {
+							return 0;
+						}
+					})();
+
 					var transactionObject = {
 						from: address,
 						to: kyberMainnet,
-						value: kyberData.rawSourceAmount,
+						value: value,
 						data: kyberNetworkContract.trade.getData(
 							kyberData.source.address,
 							kyberData.rawSourceAmount,
@@ -234,6 +243,7 @@ var Kyber = (function () {
 					};
 
 					console.log(transactionObject);
+					console.log(authenticationType);
 
 					CindercloudWeb3.getWeb3().eth.estimateGas(transactionObject, function (err, result) {
 						if (!err) {
@@ -241,17 +251,22 @@ var Kyber = (function () {
 						} else {
 							transactionObject.gas = 300000;
 						}
-						CindercloudWeb3.getWeb3().eth.sendTransaction(transactionObject, function (err, transactionHash) {
-							if (!err) {
-								swal("Transaction Sent!", "The transaction has been sent (" + transactionHash + ")", "success");
-							} else {
-								swal("Transaction Problem!", "Something went wrong while trying to submit your transaction", "error");
-							}
-						});
+
+						if (authenticationType === 'WEB3') {
+							CindercloudWeb3.getWeb3().eth.sendTransaction(transactionObject, function (err, transactionHash) {
+								if (!err) {
+									swal("Transaction Sent!", "The transaction has been sent (" + transactionHash + ")", "success");
+								} else {
+									console.log(err);
+									swal("Transaction Problem!", "Something went wrong while trying to submit your transaction", "error");
+								}
+							});
+						} else if(authenticationType === 'CINDERCLOUD') {
+							//TODO: send to server
+						} else {
+							console.log('authenticationtype not supported');
+						}
 					});
-
-
-
 				},
 				updateFromSource: function () {
 					if (kyberData.sourceAmount) {

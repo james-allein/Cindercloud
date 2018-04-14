@@ -36,7 +36,7 @@ public class AuthenticationService {
             return prettifyAddress(SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString());
         } else if ((SecurityContextHolder.getContext().getAuthentication() instanceof ClientSideAuthentication)) {
             return prettifyAddress((SecurityContextHolder.getContext().getAuthentication()).getPrincipal().toString());
-        }else if ((SecurityContextHolder.getContext().getAuthentication() instanceof HardwareWalletAuthentication)) {
+        } else if ((SecurityContextHolder.getContext().getAuthentication() instanceof HardwareWalletAuthentication)) {
             return prettifyAddress((SecurityContextHolder.getContext().getAuthentication()).getPrincipal().toString());
         } else {
             throw new InsufficientAuthenticationException("Not authenticated");
@@ -48,7 +48,7 @@ public class AuthenticationService {
             return ((ECKeyPair) SecurityContextHolder.getContext().getAuthentication().getCredentials());
         } else if ((SecurityContextHolder.getContext().getAuthentication() instanceof ClientSideAuthentication)) {
             throw new InsufficientAuthenticationException("Authenticated with Web3");
-        }  else if ((SecurityContextHolder.getContext().getAuthentication() instanceof HardwareWalletAuthentication)) {
+        } else if ((SecurityContextHolder.getContext().getAuthentication() instanceof HardwareWalletAuthentication)) {
             throw new InsufficientAuthenticationException("Authenticated with Hardware Wallet");
         } else {
             throw new InsufficientAuthenticationException("Not authenticated");
@@ -62,9 +62,9 @@ public class AuthenticationService {
         } else if ((SecurityContextHolder.getContext().getAuthentication() instanceof ClientSideAuthentication)) {
             log.trace("Logged in using web3 authentication");
             return AuthenticationType.WEB3;
-        }else if ((SecurityContextHolder.getContext().getAuthentication() instanceof HardwareWalletAuthentication)) {
+        } else if ((SecurityContextHolder.getContext().getAuthentication() instanceof HardwareWalletAuthentication)) {
             log.trace("Logged in using web3 authentication");
-            return AuthenticationType.WEB3;
+            return AuthenticationType.TREZOR;
         } else {
             throw new InsufficientAuthenticationException("Not authenticated");
         }
