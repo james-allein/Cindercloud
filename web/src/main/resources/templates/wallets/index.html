@@ -67,15 +67,16 @@
                                 </div>
                                 <div class="media-body">
                                     <div class="d-flex justify-content-between">
-                                        <p class="m-0"><strong>Shapeshift</strong>
+                                        <p class="m-0"><strong>Kyber</strong>
                                         </p>
                                     </div>
-                                    <p class="m-0 g-font-size-14">It would appear your balance is empty. Visit an exchange like <a
-                                            href="https://hitbtc.com/?ref_id=5ac74d965c8cd">HitBTC</a> to fill up your balance.</p>
+                                    <p class="m-0 g-font-size-14">It would appear your balance is empty. Visit an
+                                                                  exchange like <a
+                                                href="https://hitbtc.com/?ref_id=5ac74d965c8cd">HitBTC</a> to fill up
+                                                                  your balance.</p>
                                 </div>
                             </div>
                         </div>
-
                     </div>
                 </div>
                 <!-- End Balance & Rewards -->
@@ -96,9 +97,14 @@
 
     <script type="application/javascript">
 		$(document).ready(function () {
+			String.prototype.replaceAll = function(search, replacement) {
+				var target = this;
+				return target.split(search).join(replacement);
+			};
+
 			var populateTokens = function () {
 				$.get('/address/' + $("#currentAddress").data('hash') + '/tokens', function (result) {
-					$("#tokenSection").html(result.replace('col-lg-3', 'col-lg-4'));
+					$("#tokenSection").html(result.replaceAll('col-lg-3', 'col-lg-4'));
 				});
 			};
 
