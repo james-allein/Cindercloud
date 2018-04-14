@@ -90,15 +90,17 @@
                         <div class="row">
                             <div class="col col-md-5">
                                 <h4>Source</h4>
-                                <v-select :options="sources" v-model="source" label="name">
+                                <v-select :options="Object.values(tokens)" v-model="source" label="name">
                                     <template slot="option" slot-scope="option">
                                         <img class="g-width-25 g-height-25 g-mr-15"
-                                             :src="'https://raw.githubusercontent.com/TrustWallet/tokens/master/images/' + option.address.toLowerCase() + '.png'" />
+                                             :src="'https://raw.githubusercontent.com/TrustWallet/tokens/master/images/' + option.image.toLowerCase() + '.png'" />
                                         {{option.symbol}} - {{ option.name }}
                                     </template>
                                 </v-select>
                                 <div class="form-group g-mb-20">
-                                    <input style="text-align: right;" :value="targetAmount" id="sourceAmount" class="form-control form-control-md rounded-0" type="number"  />
+                                    <input v-model="sourceAmount" style="text-align: right;" v-on:input="updateFromSource" id="sourceAmount"
+                                           class="form-control form-control-md rounded-0" type="number" />
+                                    <p class="pull-right">Address Balance {{ balance }} {{ source.symbol }}</p>
                                 </div>
                             </div>
                             <div class="col col-md-2" style="text-align: center; margin-top: 40px;">
@@ -106,16 +108,28 @@
                             </div>
                             <div class="col col-md-5">
                                 <h4>Target</h4>
-                                <v-select :options="availableTargets" v-model="target" label="name">
+                                <v-select :options="targets" v-model="target" label="name">
                                     <template slot="option" slot-scope="option">
                                         <img class="g-width-25 g-height-25 g-mr-15"
-                                             :src="'https://raw.githubusercontent.com/TrustWallet/tokens/master/images/' + option.address.toLowerCase() + '.png'" />
+                                             :src="'https://raw.githubusercontent.com/TrustWallet/tokens/master/images/' + option.image.toLowerCase() + '.png'" />
                                         {{option.symbol}} - {{ option.name }}
                                     </template>
                                 </v-select>
                                 <div class="form-group g-mb-20">
-                                    <input style="text-align: right;" :value="targetAmount" id="targetAmount" class="form-control form-control-md rounded-0" type="number"  />
+                                    <input v-model="targetAmount" style="text-align: right;" v-on:input="updateFromTarget" id="targetAmount"
+                                           class="form-control form-control-md rounded-0" type="number" />
                                 </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col col-md-12 text-center">
+                                <p v-if="target">1 {{ source.symbol }} = {{ slippageRate }} {{ target.symbol }}</p>
+                                <button href="#!"
+                                   class="btn btn-xl u-btn-teal u-btn-hover-v1-3 g-letter-spacing-0_5 text-uppercase g-rounded-50 g-px-30 g-mr-10 g-mb-15">
+  <span class="pull-left text-left">
+    Exchange
+  </span>
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -129,6 +143,7 @@
 <div layout:fragment="footer-content">
     <input type="hidden" id="currentAddress" th:value="${address}" />
     <script type="application/javascript" th:src="@{https://unpkg.com/vue-select@latest}"></script>
+    <script type="application/javascript" th:src="@{/assets/ethereum/bignumber.min.js}"></script>
     <script type="application/javascript" th:src="@{/assets/kyber/exchange.js}"></script>
 </div>
 </body>
