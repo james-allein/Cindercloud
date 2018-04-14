@@ -4,293 +4,19 @@ var Kyber = (function () {
 
 	var kyberMainnet = '0x964F35fAe36d75B1e72770e244F6595B68508CF5';
 
-	var kyberabi = {
-		expected_rate: [{"constant":true,"inputs":[{"name":"src","type":"address"},{"name":"dest","type":"address"},{"name":"srcQty","type":"uint256"}],"name":"getExpectedRate","outputs":[{"name":"expectedRate","type":"uint256"},{"name":"slippageRate","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"}],
-	};
-
-	var erc20ABI = [
-		{
-			"constant": true,
-			"inputs": [],
-			"name": "name",
-			"outputs": [
-				{
-					"name": "",
-					"type": "string"
-				}
-			],
-			"payable": false,
-			"type": "function"
-		},
-		{
-			"constant": false,
-			"inputs": [
-				{
-					"name": "_spender",
-					"type": "address"
-				},
-				{
-					"name": "_value",
-					"type": "uint256"
-				}
-			],
-			"name": "approve",
-			"outputs": [
-				{
-					"name": "success",
-					"type": "bool"
-				}
-			],
-			"payable": false,
-			"type": "function"
-		},
-		{
-			"constant": true,
-			"inputs": [],
-			"name": "totalSupply",
-			"outputs": [
-				{
-					"name": "",
-					"type": "uint256"
-				}
-			],
-			"payable": false,
-			"type": "function"
-		},
-		{
-			"constant": false,
-			"inputs": [
-				{
-					"name": "_from",
-					"type": "address"
-				},
-				{
-					"name": "_to",
-					"type": "address"
-				},
-				{
-					"name": "_value",
-					"type": "uint256"
-				}
-			],
-			"name": "transferFrom",
-			"outputs": [
-				{
-					"name": "success",
-					"type": "bool"
-				}
-			],
-			"payable": false,
-			"type": "function"
-		},
-		{
-			"constant": true,
-			"inputs": [],
-			"name": "decimals",
-			"outputs": [
-				{
-					"name": "",
-					"type": "uint8"
-				}
-			],
-			"payable": false,
-			"type": "function"
-		},
-		{
-			"constant": true,
-			"inputs": [],
-			"name": "version",
-			"outputs": [
-				{
-					"name": "",
-					"type": "string"
-				}
-			],
-			"payable": false,
-			"type": "function"
-		},
-		{
-			"constant": true,
-			"inputs": [
-				{
-					"name": "_owner",
-					"type": "address"
-				}
-			],
-			"name": "balanceOf",
-			"outputs": [
-				{
-					"name": "balance",
-					"type": "uint256"
-				}
-			],
-			"payable": false,
-			"type": "function"
-		},
-		{
-			"constant": true,
-			"inputs": [],
-			"name": "symbol",
-			"outputs": [
-				{
-					"name": "",
-					"type": "string"
-				}
-			],
-			"payable": false,
-			"type": "function"
-		},
-		{
-			"constant": false,
-			"inputs": [
-				{
-					"name": "_to",
-					"type": "address"
-				},
-				{
-					"name": "_value",
-					"type": "uint256"
-				}
-			],
-			"name": "transfer",
-			"outputs": [
-				{
-					"name": "success",
-					"type": "bool"
-				}
-			],
-			"payable": false,
-			"type": "function"
-		},
-		{
-			"constant": false,
-			"inputs": [
-				{
-					"name": "_spender",
-					"type": "address"
-				},
-				{
-					"name": "_value",
-					"type": "uint256"
-				},
-				{
-					"name": "_extraData",
-					"type": "bytes"
-				}
-			],
-			"name": "approveAndCall",
-			"outputs": [
-				{
-					"name": "success",
-					"type": "bool"
-				}
-			],
-			"payable": false,
-			"type": "function"
-		},
-		{
-			"constant": true,
-			"inputs": [
-				{
-					"name": "_owner",
-					"type": "address"
-				},
-				{
-					"name": "_spender",
-					"type": "address"
-				}
-			],
-			"name": "allowance",
-			"outputs": [
-				{
-					"name": "remaining",
-					"type": "uint256"
-				}
-			],
-			"payable": false,
-			"type": "function"
-		},
-		{
-			"inputs": [
-				{
-					"name": "_initialAmount",
-					"type": "uint256"
-				},
-				{
-					"name": "_tokenName",
-					"type": "string"
-				},
-				{
-					"name": "_decimalUnits",
-					"type": "uint8"
-				},
-				{
-					"name": "_tokenSymbol",
-					"type": "string"
-				}
-			],
-			"type": "constructor"
-		},
-		{
-			"payable": false,
-			"type": "fallback"
-		},
-		{
-			"anonymous": false,
-			"inputs": [
-				{
-					"indexed": true,
-					"name": "_from",
-					"type": "address"
-				},
-				{
-					"indexed": true,
-					"name": "_to",
-					"type": "address"
-				},
-				{
-					"indexed": false,
-					"name": "_value",
-					"type": "uint256"
-				}
-			],
-			"name": "Transfer",
-			"type": "event"
-		},
-		{
-			"anonymous": false,
-			"inputs": [
-				{
-					"indexed": true,
-					"name": "_owner",
-					"type": "address"
-				},
-				{
-					"indexed": true,
-					"name": "_spender",
-					"type": "address"
-				},
-				{
-					"indexed": false,
-					"name": "_value",
-					"type": "uint256"
-				}
-			],
-			"name": "Approval",
-			"type": "event"
-		}
-	];
-
 	var kyberData = {
 		sources: [],
 		targets: [],
 		source: null,
 		target: null,
 		targetAmount: 0,
+		rawTargetAmount: 0,
 		sourceAmount: 0,
+		rawSourceAmount: 0,
 		expectedRate: 0,
 		slippageRate: 0,
 		balance: 0,
+		userCap: 0,
 		tokens: {
 			ETH: {
 				name: "Ethereum",
@@ -427,7 +153,12 @@ var Kyber = (function () {
 				decimal: 8,
 				usd_id: "salt"
 			}
-		}
+		},
+		errorMessage: null,
+		warningMessage: null,
+
+		rawExpectedRate: 1,
+		rawSlippageRate: 1
 	};
 
 
@@ -435,12 +166,23 @@ var Kyber = (function () {
 		Vue.component('v-select', VueSelect.VueSelect);
 
 		function updateConversionRate(_callback) {
-			var kyber = CindercloudWeb3.getGlobalWeb3().eth.contract(kyberabi.expected_rate).at(kyberMainnet);
+			var kyber = CindercloudWeb3.getGlobalWeb3().eth.contract(abi.kyber.expected_rate).at(kyberMainnet);
 
 			kyber.getExpectedRate(kyberData.source.address, kyberData.target.address, kyberData.sourceAmount, function (err, result) {
 				kyberData.expectedRate = result[0].div(Math.pow(10, kyberData.target.decimal)).toString(10);
 				kyberData.slippageRate = result[1].div(Math.pow(10, kyberData.target.decimal)).toString(10);
+
+				kyberData.rawSlippageRate = result[1].toNumber();
+				kyberData.rawExpectedRate = result[0].toNumber();
 				_callback();
+			});
+		}
+
+		function updateUserCap() {
+			var kyber = CindercloudWeb3.getGlobalWeb3().eth.contract(abi.kyber.kyber_network).at(kyberMainnet);
+			kyber.getUserCapInWei(address, function (err, _cap) {
+				console.log(_cap.toNumber());
+				kyberData.userCap = _cap;
 			});
 		}
 
@@ -450,7 +192,7 @@ var Kyber = (function () {
 					kyberData.balance = _balance.div(Math.pow(10, 18)).toString(10);
 				});
 			} else {
-				var erc20 = CindercloudWeb3.getGlobalWeb3().eth.contract(erc20ABI).at(sourceElement.address);
+				var erc20 = CindercloudWeb3.getGlobalWeb3().eth.contract(abi.erc20).at(sourceElement.address);
 				erc20.decimals(function (_, _decimals) {
 					erc20.balanceOf(address, function (_, _balance) {
 						kyberData.balance = _balance.div(Math.pow(10, _decimals)).toString(10);
@@ -463,28 +205,84 @@ var Kyber = (function () {
 			el: '#kyberApp',
 			data: kyberData,
 			methods: {
+				exchange: function () {
+					kyberData.warningMessage = null;
+					if (kyberData.sourceAmount === 0) {
+						kyberData.warningMessage = 'Please enter a source-amount first.';
+						return;
+					}
+					if (kyberData.balance <= kyberData.sourceAmount) {
+						kyberData.warningMessage = 'Source amount is too high. Your balance is insufficient';
+						return;
+					}
+
+					var kyberNetworkContract = CindercloudWeb3.getClientWeb3().eth.contract(abi.kyber.kyber_network).at(kyberMainnet);
+
+					var transactionObject = {
+						from: address,
+						to: kyberMainnet,
+						value: kyberData.rawSourceAmount,
+						data: kyberNetworkContract.trade.getData(
+							kyberData.source.address,
+							kyberData.rawSourceAmount,
+							kyberData.target.address,
+							address,
+							8 * Math.pow(10, 63),
+							kyberData.rawSlippageRate,
+							0x0),
+						gasPrice: 20000000000
+					};
+
+					console.log(transactionObject);
+
+					CindercloudWeb3.getWeb3().eth.estimateGas(transactionObject, function (err, result) {
+						if (!err) {
+							transactionObject.gas = result;
+						} else {
+							transactionObject.gas = 300000;
+						}
+						CindercloudWeb3.getWeb3().eth.sendTransaction(transactionObject, function (err, transactionHash) {
+							if (!err) {
+								swal("Transaction Sent!", "The transaction has been sent (" + transactionHash + ")", "success");
+							} else {
+								swal("Transaction Problem!", "Something went wrong while trying to submit your transaction", "error");
+							}
+						});
+					});
+
+
+
+				},
 				updateFromSource: function () {
 					if (kyberData.sourceAmount) {
+						kyberData.rawSourceAmount = (kyberData.sourceAmount * Math.pow(10, kyberData.source.decimal));
 						updateConversionRate(function () {
-							kyberData.targetAmount = (kyberData.sourceAmount *  kyberData.slippageRate);
+							kyberData.targetAmount = (kyberData.sourceAmount * kyberData.expectedRate);
+							kyberData.rawTargetAmount = (kyberData.rawSourceAmount * kyberData.expectedRate);
 						});
 					} else {
 						kyberData.targetAmount = 0;
+						kyberData.rawTargetAmount = 0;à
+						kyberData.rawSourceAmount = 0;à
 					}
 				},
 				updateFromTarget: function () {
 					if (kyberData.targetAmount) {
+						kyberData.rawTargetAmount = (kyberData.targetAmount * Math.pow(10, kyberData.target.decimal));
 						updateConversionRate(function () {
-							kyberData.sourceAmount = (kyberData.targetAmount /  kyberData.slippageRate);
+							kyberData.sourceAmount = (kyberData.targetAmount / kyberData.expectedRate);
+							kyberData.rawSourceAmount = (kyberData.rawTargetAmount / kyberData.expectedRate);
 						});
 					} else {
 						kyberData.sourceAmount = 0;
+						kyberData.rawSourceAmount = 0;
+						kyberData.rawTargetAmount = 0;
 					}
 				}
 			},
 			watch: {
 				source: function (val) {
-					if (val ===  null || val === 'undefined') {
+					if (val === null || val === 'undefined') {
 						this.targets = [];
 					} else {
 						if (kyberData.source.symbol === 'ETH') {
@@ -509,20 +307,18 @@ var Kyber = (function () {
 		});
 
 
-		$.get('/rest/address/' + address + '/balance', function (_balance) {
-			kyberData.sources.push(
-				{
-					symbol: 'ETH',
-					address: 'ethereum_1',
-					name: 'Ethereum',
-					kyber_address: '0x00eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee'
-				}
-			);
-			$.get('/wallet/kyber/' + address + '/sources', function (_tokens) {
-				for (var i = 0; i < _tokens.length; i++) {
-					kyberData.sources.push(_tokens[i]);
-				}
+		setInterval(function () {
+			updateConversionRate(function () {
+				//dont do anything
 			});
+		}, 10000);
+
+		updateUserCap(function () {
+			setInterval(function () {
+				updateUserCap(function () {
+					//dont do anything
+				});
+			}, 20000);
 		});
 	};
 

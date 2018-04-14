@@ -137,6 +137,8 @@
     <script th:src="@{/assets/vendor/jquery-ui/ui/widgets/slider.js}"></script>
     <script th:src="@{/assets/js/components/hs.slider.js}"></script>
 
+    <input type="hidden" id="currentAddress" th:value="${address}" />
+
     <script>
 		$(document).on('ready', function () {
 			// initialization of forms
@@ -154,7 +156,7 @@
     <script th:if="${authenticationType == T(cloud.cinder.cindercloud.security.domain.AuthenticationType).WEB3}">
 		$(document).ready(function () {
 
-				const erc20abi = [
+				var erc20abi = [
 					{
 						"constant": false,
 						"inputs": [
@@ -378,7 +380,7 @@
 					var amountInWei = $('#confirmAmountInWei').val();
 					var erc20 = CindercloudWeb3.getWeb3().eth.contract(erc20abi).at(tokenAddress);
 					var transactionObject = {
-						from: '0xdc71b72db51e227e65a45004ab2798d31e8934c9',
+						from: $('#currentAddress').val(),
 						to: tokenAddress,
 						value: '0x0',
 						data: erc20.transfer.getData(to, amountInWei),
