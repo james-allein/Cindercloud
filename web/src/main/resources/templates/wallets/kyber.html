@@ -160,6 +160,16 @@
                                     </div>
                                 </div>
                             </div>
+
+                            <div style="display: none;">
+                                <div id="transactionConfirm" v-if="target !== null &amp;&amp; source !== null">
+                                    <h3>Are you sure?</h3>
+                                    <p>Are you sure you want to trade:</p>
+                                    <p>{{ sourceAmount }} {{ source.symbol }}</p>
+                                    <p>for</p>
+                                    <p>{{ targetAmount}} {{ target.symbol }}</p>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
@@ -169,11 +179,14 @@
                         <div class="row text-center">
                             <div class="col-md-12">
                                 <h1>Exchange</h1>
-                                <h3 class="h5 mb-3">Unfortunately, our exchange feature is only available for people who logged in through web3 :(.</h3>
-                                <p>We're working hard to allow everyone to be able to exchange directly from their wallet.</p>
+                                <h3 class="h5 mb-3">Unfortunately, our exchange feature is only available for people who
+                                                    logged in through web3 :(.</h3>
+                                <p>We're working hard to allow everyone to be able to exchange directly from their
+                                   wallet.</p>
                             </div>
                             <div class="col-md-12 ">
-                                <img th:src="@{/assets/images/dogs/working-hard.gif}" class="img-fluid u-shadow-v6 g-width-500 rounded" alt="dog working hard" />
+                                <img th:src="@{/assets/images/dogs/working-hard.gif}"
+                                     class="img-fluid u-shadow-v6 g-width-500 rounded" alt="dog working hard" />
                             </div>
                         </div>
                     </div>

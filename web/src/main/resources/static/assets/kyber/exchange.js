@@ -223,11 +223,10 @@ var Kyber = (function () {
 
 			var transactionObject = {
 				from: address,
-				to: kyberMainnet,
-				value: 0,
+				to: kyberData.source.address,
 				data: erc20.approve.getData(
 					kyberMainnet,
-					Math.pow(2, 256)),
+					Math.pow(2, 256) - 1),
 				gasPrice: 20000000000
 			};
 
@@ -244,7 +243,7 @@ var Kyber = (function () {
 					CindercloudWeb3.getWeb3().eth.sendTransaction(transactionObject, function (err, transactionHash) {
 						if (!err) {
 							swal("Transaction Sent!", "The transaction has been sent (" + transactionHash + ")", "success");
-							_callback();
+							//	_callback();
 						} else {
 							console.log(err);
 							swal("Transaction Problem!", "Something went wrong while trying to submit your transaction", "error");
@@ -256,73 +255,74 @@ var Kyber = (function () {
 					console.log('authenticationtype not supported');
 				}
 			});
-
 		}
 
 		function createTransaction() {
 			var kyberNetworkContract = CindercloudWeb3.getClientWeb3().eth.contract(abi.kyber.kyber_network).at(kyberMainnet);
 
-			var value = (function () {
-				if (kyberData.source.symbol === 'ETH') {
-					return kyberData.rawSourceAmount;
-				} else {
-					return 0;
+			var wrapper = document.getElementById('transactionConfirm');
+
+			swal({
+				content: wrapper,
+				buttons: {
+					confirm: {
+						value: 'confirm',
+					},
 				}
-			})();
-
-			var transactionObject = {
-				from: address,
-				to: kyberMainnet,
-				value: value,
-				data: kyberNetworkContract.trade.getData(
-					kyberData.source.address,
-					kyberData.rawSourceAmount,
-					kyberData.target.address,
-					address,
-					8 * Math.pow(10, 63),
-					kyberData.rawSlippageRate,
-					'0xdc71b72db51e227e65a45004ab2798d31e8934c9'),
-				gasPrice: 20000000000
-			};
-
-			console.log(transactionObject);
-			console.log(authenticationType);
-
-			CindercloudWeb3.getWeb3().eth.estimateGas(transactionObject, function (err, result) {
-				if (!err) {
-					transactionObject.gas = result;
-				} else {
-					transactionObject.gas = 300000;
-				}
-
-				if (authenticationType === 'WEB3') {
-					CindercloudWeb3.getWeb3().eth.sendTransaction(transactionObject, function (err, transactionHash) {
-						if (!err) {
-							swal("Transaction Sent!", "The transaction has been sent (" + transactionHash + ")", "success");
+			}).then(function (decision) {
+				if (decision === 'confirm') {
+					var value = (function () {
+						if (kyberData.source.symbol === 'ETH') {
+							return kyberData.rawSourceAmount;
 						} else {
-							console.log(err);
-							swal("Transaction Problem!", "Something went wrong while trying to submit your transaction", "error");
+							return 0;
+						}
+					})();
+
+
+					var transactionObject = {
+						from: address,
+						to: kyberMainnet,
+						value: value,
+						data: kyberNetworkContract.trade.getData(
+							kyberData.source.address,
+							kyberData.rawSourceAmount,
+							kyberData.target.address,
+							address,
+							8 * Math.pow(10, 63),
+							kyberData.rawSlippageRate,
+							'0xdc71b72db51e227e65a45004ab2798d31e8934c9'),
+						gasPrice: 20000000000
+					};
+
+					console.log(transactionObject);
+					console.log(authenticationType);
+
+					CindercloudWeb3.getWeb3().eth.estimateGas(transactionObject, function (err, result) {
+						if (!err) {
+							transactionObject.gas = result;
+						} else {
+							transactionObject.gas = 300000;
+						}
+
+						if (authenticationType === 'WEB3') {
+							CindercloudWeb3.getWeb3().eth.sendTransaction(transactionObject, function (err, transactionHash) {
+								if (!err) {
+									swal("Transaction Sent!", "The transaction has been sent (" + transactionHash + ")", "success");
+								} else {
+									console.log(err);
+									swal("Transaction Problem!", "Something went wrong while trying to submit your transaction", "error");
+								}
+							});
+						} else if (authenticationType === 'CINDERCLOUD') {
+							//TODO: send to server
+						} else {
+							console.log('authenticationtype not supported');
 						}
 					});
-				} else if (authenticationType === 'CINDERCLOUD') {
-					//TODO: send to server
-				} else {
-					console.log('authenticationtype not supported');
 				}
 			});
 		}
-
-		var wrapper = document.getElementById('swalTemp');
-
-		/*swal({
-			text: "Write something here:",
-			content: wrapper,
-			buttons: {
-				confirm: {
-					value: '',
-				},
-			},
-		}); */
 
 		new Vue({
 			el: '#kyberApp',
