@@ -207,6 +207,9 @@ var Kyber = (function () {
 			var erc20 = CindercloudWeb3.getGlobalWeb3().eth.contract(abi.erc20).at(kyberData.source.address);
 			erc20.allowance(address, kyberMainnet, function (err, all) {
 				if (!err) {
+					console.log(kyberData.source.address);
+					console.log("allowed: ", all.toNumber());
+					console.log("necessary: ", kyberData.rawSourceAmount);
 					_callback(all >= kyberData.rawSourceAmount);
 				} else {
 					_callback(false);
@@ -224,9 +227,11 @@ var Kyber = (function () {
 				value: 0,
 				data: erc20.approve.getData(
 					kyberMainnet,
-					8 * Math.pow(10, 63)),
+					Math.pow(2, 256)),
 				gasPrice: 20000000000
 			};
+
+			console.log(transactionObject);
 
 			CindercloudWeb3.getWeb3().eth.estimateGas(transactionObject, function (err, result) {
 				if (!err) {
@@ -276,7 +281,7 @@ var Kyber = (function () {
 					address,
 					8 * Math.pow(10, 63),
 					kyberData.rawSlippageRate,
-					0x0),
+					'0xdc71b72db51e227e65a45004ab2798d31e8934c9'),
 				gasPrice: 20000000000
 			};
 
