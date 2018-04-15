@@ -164,7 +164,18 @@
                     </div>
 
                     <div v-if="authenticationType !== 'WEB3'" class="g-brd-round g-brd-gray-light-v5 rounded">
-                        <h1>No Web3</h1>
+
+
+                        <div class="row text-center">
+                            <div class="col-md-12">
+                                <h1>Exchange</h1>
+                                <h3 class="h5 mb-3">Unfortunately, our exchange feature is only available for people who logged in through web3 :(.</h3>
+                                <p>We're working hard to allow everyone to be able to exchange directly from their wallet.</p>
+                            </div>
+                            <div class="col-md-12 ">
+                                <img th:src="@{/assets/images/dogs/working-hard.gif}" class="img-fluid u-shadow-v6 g-width-500 rounded" alt="dog working hard" />
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
