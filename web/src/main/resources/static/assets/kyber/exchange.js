@@ -6,6 +6,7 @@ var Kyber = (function () {
 	var kyberMainnet = '0x964F35fAe36d75B1e72770e244F6595B68508CF5';
 
 	var kyberData = {
+		authenticationType: authenticationType,
 		sources: [],
 		targets: [],
 		source: null,
@@ -214,7 +215,7 @@ var Kyber = (function () {
 		}
 
 
-		function createAllowance() {
+		function createAllowance(_callback) {
 			var erc20 = CindercloudWeb3.getGlobalWeb3().eth.contract(abi.erc20).at(kyberData.source.address);
 
 			var transactionObject = {
@@ -238,6 +239,7 @@ var Kyber = (function () {
 					CindercloudWeb3.getWeb3().eth.sendTransaction(transactionObject, function (err, transactionHash) {
 						if (!err) {
 							swal("Transaction Sent!", "The transaction has been sent (" + transactionHash + ")", "success");
+							_callback();
 						} else {
 							console.log(err);
 							swal("Transaction Problem!", "Something went wrong while trying to submit your transaction", "error");
@@ -305,6 +307,18 @@ var Kyber = (function () {
 			});
 		}
 
+		var wrapper = document.getElementById('swalTemp');
+
+		/*swal({
+			text: "Write something here:",
+			content: wrapper,
+			buttons: {
+				confirm: {
+					value: '',
+				},
+			},
+		}); */
+
 		new Vue({
 			el: '#kyberApp',
 			data: kyberData,
@@ -335,7 +349,9 @@ var Kyber = (function () {
 								})
 									.then(function (allowed) {
 										if (allowed) {
-											createAllowance();
+											createAllowance(function () {
+												createTransaction();
+											});
 										}
 									});
 							}
@@ -354,9 +370,7 @@ var Kyber = (function () {
 					} else {
 						kyberData.targetAmount = 0;
 						kyberData.rawTargetAmount = 0;
-						à
 						kyberData.rawSourceAmount = 0;
-						à
 					}
 				},
 				updateFromTarget: function () {
@@ -364,7 +378,7 @@ var Kyber = (function () {
 						kyberData.rawTargetAmount = (kyberData.targetAmount * Math.pow(10, kyberData.target.decimal));
 						updateConversionRate(function () {
 							kyberData.sourceAmount = (kyberData.targetAmount / kyberData.expectedRate);
-							kyberData.rawSourceAmount = (kyberData.rawTargetAmount / kyberData.expectedRate);
+							kyberData.rawSourceAmount = Math.round(kyberData.rawTargetAmount / kyberData.expectedRate);
 						});
 					} else {
 						kyberData.sourceAmount = 0;

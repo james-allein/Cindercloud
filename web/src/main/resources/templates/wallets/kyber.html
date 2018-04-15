@@ -86,7 +86,7 @@
                 </div>
 
                 <div id="kyberApp">
-                    <div class="g-brd-round g-brd-gray-light-v5 rounded">
+                    <div v-if="authenticationType == 'WEB3'" class="g-brd-round g-brd-gray-light-v5 rounded">
                         <div class="row">
                             <div class="col col-md-5">
                                 <h4>Source</h4>
@@ -161,6 +161,10 @@
                                 </div>
                             </div>
                         </div>
+                    </div>
+
+                    <div v-if="authenticationType !== 'WEB3'" class="g-brd-round g-brd-gray-light-v5 rounded">
+                        <h1>No Web3</h1>
                     </div>
                 </div>
             </div>
