@@ -328,6 +328,9 @@ var Kyber = (function () {
 			el: '#kyberApp',
 			data: kyberData,
 			methods: {
+				sourceUpdated: function () {
+					console.log(kyberData.source.name);
+				},
 				exchange: function () {
 					kyberData.warningMessage = null;
 					if (kyberData.sourceAmount === 0) {
@@ -408,9 +411,16 @@ var Kyber = (function () {
 						this.target = this.targets[0];
 						updateBalance(val);
 						updateConversionRate(function () {
-							console.log('updated conversion rate');
+							kyberData.sourceAmount = (kyberData.targetAmount / kyberData.expectedRate);
+							kyberData.rawSourceAmount = Math.round(kyberData.rawTargetAmount / kyberData.expectedRate);
 						});
 					}
+				},
+				target: function () {
+					updateConversionRate(function () {
+						kyberData.targetAmount = (kyberData.sourceAmount * kyberData.expectedRate);
+						kyberData.rawTargetAmount = Math.round(kyberData.rawSourceAmount / kyberData.expectedRate);
+					});
 				}
 			},
 			created: function () {
