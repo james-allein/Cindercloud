@@ -24,6 +24,10 @@
         #kyberApp .dropdown li a .fa {
             padding-right: 0.5em;
         }
+
+        [v-cloak] {
+            display: none;
+        }
     </style>
 </div>
 
@@ -85,7 +89,8 @@
                     </div>
                 </div>
 
-                <div id="kyberApp">
+                <div id="kyberApp" >
+                    <div v-cloak="v-cloak">
                     <div v-if="authenticationType == 'WEB3'" class="g-brd-round g-brd-gray-light-v5 rounded">
                         <div class="row">
                             <div class="col col-md-5">
@@ -189,6 +194,7 @@
                                      class="img-fluid u-shadow-v6 g-width-500 rounded" alt="dog working hard" />
                             </div>
                         </div>
+                    </div>
                     </div>
                 </div>
             </div>

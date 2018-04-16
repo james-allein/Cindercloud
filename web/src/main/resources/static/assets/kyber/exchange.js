@@ -29,6 +29,14 @@ var Kyber = (function () {
 				decimal: 18,
 				usd_id: "ethereum"
 			},
+			DAI: {
+				name: "DAI",
+				symbol: "DAI",
+				icon: "dai.svg",
+				address: "0x89d24a6b4ccb1b6faa2625fe562bdd9a23260359",
+				image: "0x89d24a6b4ccb1b6faa2625fe562bdd9a23260359",
+				decimal: 18
+			},
 			KNC: {
 				name: "KyberNetwork",
 				symbol: "KNC",
@@ -154,6 +162,41 @@ var Kyber = (function () {
 				icon: "salt.svg",
 				decimal: 8,
 				usd_id: "salt"
+			},
+			ADEX: {
+				symbol: "ADX",
+				name: "AdEx",
+				address: "0x4470BB87d77b963A013DB939BE332f927f2b992e",
+				image: "0x4470BB87d77b963A013DB939BE332f927f2b992e",
+				decimals: 4
+			},
+			AIRSWAP: {
+				symbol: "AST",
+				name: "AirSwap",
+				address: "0x27054b13b1b798b345b591a4d22e6562d47ea75a",
+				image: "0x27054b13b1b798b345b591a4d22e6562d47ea75a",
+				decimals: 4
+			},
+			RIPIO: {
+				symbol: "RCN",
+				name: "Ripio Credit Network",
+				address: "0xf970b8e36e23f7fc3fd752eea86f8be8d83375a6",
+				image: "0xf970b8e36e23f7fc3fd752eea86f8be8d83375a6",
+				decimals: 18
+			},
+			ZILLIQA: {
+				symbol: "ZIL",
+				name: "Zilliqa",
+				addess: "0x05f4a42e251f2d52b8ed15e9fedaacfcef1fad27",
+				image: "0x05f4a42e251f2d52b8ed15e9fedaacfcef1fad27",
+				decimals: 12
+			},
+			CHAINLINK: {
+				symbol: "LINK",
+				name: "Chain Link",
+				address: "0x514910771af9ca656af840dff83e8264ecf986ca",
+				image: "0x514910771af9ca656af840dff83e8264ecf986ca",
+				decimals: 18
 			}
 		},
 		errorMessage: null,

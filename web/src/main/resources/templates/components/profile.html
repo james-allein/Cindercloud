@@ -26,18 +26,26 @@
                     Your Wallet
                 </a>
             </li>
+            <li class="g-pb-3">
+                <a th:classappend="${'exchange'.equals(active)} ? ' active g-color-primary--parent-active g-bg-gray-light-v5--active' : idle" class="d-block align-middle u-link-v5 g-color-text g-color-primary--hover g-bg-gray-light-v5--hover rounded g-pa-3"
+                   th:href="@{/wallet/kyber}">
+                                <span class="u-icon-v1 g-color-gray-dark-v5 mr-2"><i
+                                        class="icon-finance-196 u-line-icon-pro"></i></span>
+                    Exchange
+                </a>
+            </li>
             <li class="g-py-3">
                 <a th:classappend="${'transactions'.equals(active)} ? ' active g-color-primary--parent-active g-bg-gray-light-v5--active' : idle" class="d-block active align-middle u-link-v5 g-color-text g-color-primary--hover g-bg-gray-light-v5--hover rounded g-pa-3"
                    th:href="@{/wallet/transactions}">
                                 <span class="u-icon-v1 g-color-gray-dark-v5 mr-2"><i
-                                        class="icon-finance-135 u-line-icon-pro"></i></span>
+                                        class="icon-finance-078 u-line-icon-pro"></i></span>
                     Your Transactions
                 </a>
             </li>
             <li class="g-pb-3">
                 <a th:classappend="${'send-ether'.equals(active)} ? ' active g-color-primary--parent-active g-bg-gray-light-v5--active' : idle" class="d-block align-middle u-link-v5 g-color-text g-color-primary--hover g-bg-gray-light-v5--hover rounded g-pa-3"
                    th:href="@{/wallet/send}">
-                                <span class="u-icon-v1 g-color-gray-dark-v5 mr-2"><i
+                                <span class="u-icon-v1 g-color-primary mr-2"><i
                                         class="icon-communication-015 u-line-icon-pro"></i></span>
                     Send Ether
                 </a>
@@ -45,7 +53,7 @@
             <li class="g-pb-3">
                 <a th:classappend="${'send-tokens'.equals(active)} ? ' active g-color-primary--parent-active g-bg-gray-light-v5--active' : idle" class="d-block align-middle u-link-v5 g-color-text g-color-primary--hover g-bg-gray-light-v5--hover rounded g-pa-3"
                    th:href="@{/wallet/tokens/send}">
-                                <span class="u-icon-v1 g-color-gray-dark-v5 mr-2"><i
+                                <span class="u-icon-v1 g-color-orange mr-2"><i
                                         class="icon-communication-015 u-line-icon-pro"></i></span>
                     Send Tokens
                 </a>
@@ -54,7 +62,7 @@
                 <a th:classappend="${'address-book'.equals(active)} ? ' active g-color-primary--parent-active g-bg-gray-light-v5--active' : idle" class="d-block align-middle u-link-v5 g-color-text g-color-primary--hover g-bg-gray-light-v5--hover rounded g-pa-3"
                    th:href="@{/wallet/address-book}">
                                 <span class="u-icon-v1 g-color-gray-dark-v5 mr-2"><i
-                                        class="icon-education-142 u-line-icon-pro"></i></span>
+                                        class="icon-communication-154 u-line-icon-pro"></i></span>
                     Address Book
                 </a>
             </li>
