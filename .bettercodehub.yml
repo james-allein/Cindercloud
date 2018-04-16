@@ -4,6 +4,5 @@ languages:
 - javascript
 
 exclude:
-- /DirectoryYouWantToExclude/.*
-- web/src/main/resources/static/vendor/.*
-- web/src/main/resources/static/js/.*
+- /web/src/main/resources/static/vendor/.*
+- /web/src/main/resources/static/js/.*
