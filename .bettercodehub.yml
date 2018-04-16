@@ -4,5 +4,5 @@ languages:
 - javascript
 
 exclude:
-- /web/src/main/resources/static/vendor/.*
-- /web/src/main/resources/static/js/.*
+- /web/src/main/resources/static/assets/vendor/.*
+- /web/src/main/resources/static/assets/js/.*
