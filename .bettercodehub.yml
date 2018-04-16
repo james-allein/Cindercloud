@@ -1,0 +1,9 @@
+component_depth: 1
+languages:
+- java
+- javascript
+
+exclude:
+- /DirectoryYouWantToExclude/.*
+- web/src/main/resources/static/vendor/.*
+- web/src/main/resources/static/js/.*
