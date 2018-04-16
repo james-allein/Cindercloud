@@ -4,10 +4,10 @@ import org.bitcoinj.crypto.ChildNumber;
 import org.bitcoinj.wallet.DeterministicKeyChain;
 import org.bitcoinj.wallet.DeterministicSeed;
 import org.bitcoinj.wallet.UnreadableWalletException;
-import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
 import org.web3j.crypto.ECKeyPair;
 
+import javax.validation.constraints.NotNull;
 import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.List;

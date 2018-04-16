@@ -3,7 +3,8 @@ package cloud.cinder.cindercloud.services.controller.dto;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.NotEmpty;
-import org.jetbrains.annotations.NotNull;
+
+import javax.validation.constraints.NotNull;
 
 @Data
 @NoArgsConstructor

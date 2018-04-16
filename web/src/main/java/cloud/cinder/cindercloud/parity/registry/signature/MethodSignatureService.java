@@ -1,7 +1,7 @@
 package cloud.cinder.cindercloud.parity.registry.signature;
 
 import cloud.cinder.cindercloud.parity.registry.signature.domain.MethodSignature;
-import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang.StringUtils;
 import org.bouncycastle.util.encoders.Hex;
 import org.springframework.stereotype.Service;
 import org.web3j.rlp.RlpString;

@@ -2,11 +2,13 @@ package cloud.cinder.cindercloud.abi.domain;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
 
 @Getter
 @AllArgsConstructor
+@NoArgsConstructor
 public class AbiContractFunction extends AbiContractElement {
 
     private String name;
