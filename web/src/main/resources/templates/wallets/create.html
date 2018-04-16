@@ -1,12 +1,11 @@
 <!DOCTYPE html >
-<html lang="en"
-      xmlns="http://www.w3.org/1999/xhtml"
+<html xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorator="decorator/normal/decorator">
 <div layout:fragment="header-content">
     <title>Create Wallet | Create Mnemonic | Create Keystore | The Ethereum Blockchain Interactor and Explorer</title>
     <link rel="stylesheet" type="text/css"
-          href="https://cdn.jsdelivr.net/npm/intro.js@2.8.0-alpha.1/minified/introjs.min.css"/>
+          href="https://cdn.jsdelivr.net/npm/intro.js@2.8.0-alpha.1/minified/introjs.min.css" />
 </div>
 
 <body>
@@ -42,7 +41,7 @@
                         Create your own wallet. We will be implementing a range of different
                         wallets, so you can easily
                         use them on other platforms.
-                        <br/><b>At this point, we only support keystore files.</b>
+                        <br /><b>At this point, we only support keystore files.</b>
                     </p>
                 </div>
 
@@ -58,7 +57,8 @@
                             <div class="media-body align-self-center">
                                 <h3 class="h5 g-font-weight-400">Secure</h3>
                                 <p class="g-color-gray-dark-v5 mb-0">This application is open source and audited. If you
-                                    don't trust it, simply run an instance on your own and create a wallet.</p>
+                                                                     don't trust it, simply run an instance on your own
+                                                                     and create a wallet.</p>
                             </div>
                         </div>
                         <!-- End Icon Blocks -->
@@ -73,7 +73,7 @@
                             <div class="media-body align-self-center">
                                 <h3 class="h5 g-font-weight-400">Compatible</h3>
                                 <p class="g-color-gray-dark-v5 mb-0">Wallets that are generated here can also be used on
-                                    other platforms.</p>
+                                                                     other platforms.</p>
                             </div>
                         </div>
                         <!-- End Icon Blocks -->
@@ -101,7 +101,7 @@
                     </span>
                                         <input required="required" th:field="*{password}" autocomplete="off"
                                                class="form-control g-color-black g-bg-white g-bg-white--focus g-brd-gray-light-v3 g-rounded-left-0 g-rounded-right-3 g-py-15 g-px-15"
-                                               type="password" placeholder="Password"/>
+                                               type="password" placeholder="Password" />
                                     </div>
                                 </div>
                                 <div>
@@ -153,13 +153,11 @@
             type="application/javascript"></script>
 
     <script type="application/javascript">
-		$(document).ready(function () {
-			if (typeof(Storage) !== "undefined") {
-				if (localStorage.getItem("introjs.wallet.done") !== "true") {
-					introJs().start();
-				}
+		(function () {
+			if (typeof(Storage) !== "undefined" && localStorage.getItem("introjs.wallet.done") !== "true") {
+				introJs().start();
 			}
-		});
+		})();
     </script>
 
 </div>

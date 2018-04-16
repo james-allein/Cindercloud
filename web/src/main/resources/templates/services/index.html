@@ -1,10 +1,9 @@
 <!DOCTYPE html >
-<html lang="en"
-      xmlns="http://www.w3.org/1999/xhtml"
+<html xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorator="decorator/normal/decorator">
 <div layout:fragment="header-content">
-    <link rel="stylesheet" th:href="@{/assets/vendor/icon-material/material-icons.css}"/>
+    <link rel="stylesheet" th:href="@{/assets/vendor/icon-material/material-icons.css}" />
     <title>Blockchain Services | Cindercloud</title>
 </div>
 
@@ -36,7 +35,7 @@
         <div class="row">
             <div class="col-md-12">
                 <th:block th:if="${success != null}"
-                          th:include="components/alerts :: success(title='Message has been sent', body=${success})"/>
+                          th:include="components/alerts :: success(title='Message has been sent', body=${success})" />
             </div>
         </div>
         <div class="row">
@@ -48,16 +47,18 @@
                 </div>
                 <div class="mb-5">
                     <p>Next to our wallet and explorer we specialize in providing services for blockchain related
-                        projects. Running an ICO? Need help getting people to know you?</p>
-                    <p>As creative innovators, helping ICOs reach their goals of collecting millions, <br/><b>we can
-                        help you.</b></p>
+                       projects. Running an ICO? Need help getting people to know you?</p>
+                    <p>As creative innovators, helping ICOs reach their goals of collecting millions, <br /><b>we can
+                                                                                                               help
+                                                                                                               you.</b>
+                    </p>
                 </div>
                 <a class="btn btn-xl u-btn-outline-black g-font-size-default mr-2" href="#!">Explore more</a>
             </div>
 
             <div class="col-lg-6 g-mb-60">
                 <img class="img-fluid  u-shadow-v6 rounded " th:src="@{/assets/images/rockets/rocket-4.gif}"
-                     alt="Image Description"/>
+                     alt="Image Description" />
             </div>
         </div>
     </section>
@@ -66,7 +67,7 @@
         <div class="container g-py-50">
             <div class="d-flex justify-content-between">
                 <h3 class="h5 align-self-center g-color-white mb-0 mr-4">Looking for a Smart Contract Security
-                    Audit or ERC20 token design?</h3>
+                                                                         Audit or ERC20 token design?</h3>
                 <a class="align-self-center btn btn-xl u-btn-outline-white g-font-size-default text-uppercase"
                    th:href="@{/services/smart-contract-development-and-security}"><i
                         class="fa fa-lock"></i> we got you</a>
@@ -124,7 +125,10 @@
                             <div class="media-body">
                                 <h3 class="h5 g-color-black mb-20">Security Review</h3>
                                 <div class="g-width-30 g-brd-bottom g-brd-gray-dark-v5 g-my-15"></div>
-                                <p class="g-color-gray-dark-v4 g-mb-0">Whether it's us doing a security review or one of our partners, we'll make sure you get bang for your buck. Fill in the form and we'll get back to you.</p>
+                                <p class="g-color-gray-dark-v4 g-mb-0">Whether it's us doing a security review or one of
+                                                                       our partners, we'll make sure you get bang for
+                                                                       your buck. Fill in the form and we'll get back to
+                                                                       you.</p>
                             </div>
                         </div>
                     </div>
@@ -147,7 +151,10 @@
                             <div class="media-body">
                                 <h3 class="h5 g-color-black mb-20">Custom Development</h3>
                                 <div class="g-width-30 g-brd-bottom g-brd-gray-dark-v5 g-my-15"></div>
-                                <p class="g-color-gray-dark-v4 g-mb-0">Whether you need an integration of the ethereum blockchain and a third party or a layer on top of a decentralized application, feel free to reach out to us.</p>
+                                <p class="g-color-gray-dark-v4 g-mb-0">Whether you need an integration of the ethereum
+                                                                       blockchain and a third party or a layer on top of
+                                                                       a decentralized application, feel free to reach
+                                                                       out to us.</p>
                             </div>
                         </div>
                     </div>
@@ -166,7 +173,9 @@
                             <div class="media-body">
                                 <h3 class="h5 g-color-black mb-20">Social Boosting</h3>
                                 <div class="g-width-30 g-brd-bottom g-brd-gray-dark-v5 g-my-15"></div>
-                                <p class="g-color-gray-dark-v4 g-mb-0">On the side, we offer some seo boosting as well as ICO services. We're currently creating a platform to leverage our services. Soming soon
+                                <p class="g-color-gray-dark-v4 g-mb-0">On the side, we offer some seo boosting as well
+                                                                       as ICO services. We're currently creating a
+                                                                       platform to leverage our services. Soming soon
                                     <i class="fa fa-smile-o"></i></p>
                             </div>
                         </div>

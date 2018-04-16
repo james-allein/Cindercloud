@@ -1,7 +1,4 @@
-<html lang="en"
-      xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.thymeleaf.org"
->
+<html xmlns:th="http://www.thymeleaf.org">
 
 <div th:fragment="transfers">
     <div class="row">
@@ -35,7 +32,7 @@
                             <a th:href="@{'/token/' + ${transfer.tokenAddress}}">
                                 <img th:alt="${transfer.tokenName}" th:title="${transfer.tokenName}"
                                      th:alt-title="${transfer.tokenName}" class="g-width-25 g-height-25"
-                                     th:src="@{https://raw.githubusercontent.com/TrustWallet/tokens/master/images/} + ${#strings.toLowerCase(transfer.tokenAddress)} + .png"/>
+                                     th:src="@{https://raw.githubusercontent.com/TrustWallet/tokens/master/images/} + ${#strings.toLowerCase(transfer.tokenAddress)} + .png" />
                             </a>
                         </td>
                     </tr>
@@ -55,7 +52,7 @@
             <figure class="u-block-hover u-shadow-v19 g-bg-white g-rounded-4 g-pa-15">
                 <div class="d-flex justify-content-start text-center">
                     <img class="g-width-50 g-height-50 g-mr-15"
-                         th:src="@{https://raw.githubusercontent.com/TrustWallet/tokens/master/images/} + ${#strings.toLowerCase(token.token.address)} + .png"/>
+                         th:src="@{https://raw.githubusercontent.com/TrustWallet/tokens/master/images/} + ${#strings.toLowerCase(token.token.address)} + .png" />
                     <!-- Figure Info -->
                     <div class="d-block">
                         <div class="g-mb-5">
@@ -75,8 +72,10 @@
                                 <li class="list-inline-item align-middle g-mx-7">
                                     <a class="g-color-gray-dark-v5 g-color-primary--hover"
                                        th:href="@{/address/} + ${token.token.address}">
-                                        <em class="d-block g-color-primary g-font-style-normal"><span>€</span> <span th:text="${token.eurPrice}"></span></em>
-                                        <em class="d-block g-color-primary g-font-style-normal"><span>$</span> <span th:text="${token.dollarPrice}"></span></em>
+                                        <em class="d-block g-color-primary g-font-style-normal"><span>€</span> <span
+                                                th:text="${token.eurPrice}"></span></em>
+                                        <em class="d-block g-color-primary g-font-style-normal"><span>$</span> <span
+                                                th:text="${token.dollarPrice}"></span></em>
                                     </a>
                                 </li>
                             </ul>

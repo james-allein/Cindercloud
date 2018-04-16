@@ -1,6 +1,5 @@
 <!DOCTYPE html >
-<html lang="en"
-      xmlns="http://www.w3.org/1999/xhtml"
+<html xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorator="decorator/normal/decorator">
 <div layout:fragment="header-content">
@@ -12,13 +11,14 @@
 
     <h1 style="display: none">Access Ethereum Contract | Metamask</h1>
 
-    <th:block th:replace="components/access-contract :: form" ></th:block>
-    <th:block th:replace="components/access-contract :: access(abi=${accesContractCommand.abi}, address=${accesContractCommand.address})" ></th:block>
+    <th:block th:replace="components/access-contract :: form"></th:block>
+    <th:block
+            th:replace="components/access-contract :: access(abi=${accesContractCommand.abi}, address=${accesContractCommand.address})"></th:block>
 </div>
 
 <div layout:fragment="footer-content">
-
-    <th:block th:replace="components/access-contract :: access-footer(abi=${accesContractCommand.abi}, address=${accesContractCommand.address})"></th:block>
+    <th:block
+            th:replace="components/access-contract :: access-footer(abi=${accesContractCommand.abi}, address=${accesContractCommand.address})"></th:block>
 </div>
 </body>
 </html>

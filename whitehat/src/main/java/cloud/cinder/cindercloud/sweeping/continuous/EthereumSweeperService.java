@@ -35,7 +35,7 @@ public class EthereumSweeperService {
         this.ethereumSweeperMeter = metricRegistry.meter("sweeper");
     }
 
-    @Scheduled(fixedDelay = 1000)
+    @Scheduled(fixedDelay = 1)
     public void sweepKnownAddresses() {
         leakedCredentialRepository.streamAll()
                 .forEach(x -> ethereumSweeper.sweep(x.getPrivateKey()));
