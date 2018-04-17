@@ -1,8 +1,8 @@
 component_depth: 1
 languages:
 - java
-- javascript
 
 exclude:
 - /web/src/main/resources/static/assets/vendor/.*
 - /web/src/main/resources/static/assets/js/.*
+- /web/src/main/resources/static/style-switcher/.*
