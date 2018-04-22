@@ -78,7 +78,7 @@ public class TransactionImporter {
             final EthGetTransactionReceipt send = web3j.web3j().ethGetTransactionReceipt(tx.getHash()).send();
 
             if (send.getTransactionReceipt().isPresent()) {
-                if (send.getTransactionReceipt().get().getStatus().equalsIgnoreCase("1")) {
+                if (send.getTransactionReceipt().get().getStatus().equalsIgnoreCase("1") || send.getTransactionReceipt().get().getStatus().equalsIgnoreCase("0x1")) {
                     return TransactionStatus.SUCCESS;
                 } else {
                     if (send.getTransactionReceipt().get().getGasUsed().equals(tx.getGas())) {
