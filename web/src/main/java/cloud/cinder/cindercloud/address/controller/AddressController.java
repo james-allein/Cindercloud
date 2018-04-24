@@ -63,7 +63,8 @@ public class AddressController {
         final Observable<BigInteger> balance = addressService.getBalance(address);
         final Optional<SpecialAddress> specialAddress = addressService.findByAddress(address);
         Observable.zip(code, transactions, transactionCount, balance, (cde, tx, count, bal) -> {
-            modelAndView.addObject("address", new AddressVO(cde, format(bal), count, tx));
+            final Slice<Transaction> convertedSlice = tx.map(x -> transactionService.enrichWithSpecialAddresses(x));
+            modelAndView.addObject("address", new AddressVO(cde, format(bal), count, convertedSlice));
             modelAndView.addObject("balEUR", priceService.getPrice(Currency.EUR) * WeiUtils.asEth(bal));
             modelAndView.addObject("balUSD", priceService.getPrice(Currency.USD) * WeiUtils.asEth(bal));
             modelAndView.addObject("isSpecial", specialAddress.isPresent());

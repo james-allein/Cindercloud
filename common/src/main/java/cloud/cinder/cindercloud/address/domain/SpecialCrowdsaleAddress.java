@@ -5,5 +5,6 @@ import javax.persistence.Entity;
 
 @Entity
 @DiscriminatorValue("crowdsale")
-public class SpecialCrowdsaleAddress extends SpecialAddress{
+public class SpecialCrowdsaleAddress extends SpecialAddress {
+
 }

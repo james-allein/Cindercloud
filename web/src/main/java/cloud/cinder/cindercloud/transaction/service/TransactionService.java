@@ -1,11 +1,13 @@
 package cloud.cinder.cindercloud.transaction.service;
 
+import cloud.cinder.cindercloud.address.domain.SpecialAddress;
 import cloud.cinder.cindercloud.address.service.AddressService;
 import cloud.cinder.cindercloud.block.domain.Block;
 import cloud.cinder.cindercloud.block.service.BlockService;
 import cloud.cinder.cindercloud.etherscan.EtherscanService;
 import cloud.cinder.cindercloud.parity.registry.signature.MethodSignatureService;
 import cloud.cinder.cindercloud.parity.registry.signature.domain.MethodSignature;
+import cloud.cinder.cindercloud.token.service.TokenService;
 import cloud.cinder.cindercloud.transaction.domain.Transaction;
 import cloud.cinder.cindercloud.transaction.domain.TransactionStatus;
 import cloud.cinder.cindercloud.transaction.repository.TransactionRepository;
@@ -40,6 +42,8 @@ public class TransactionService {
     private BlockService blockService;
     @Autowired
     private AddressService addressService;
+    @Autowired
+    private TokenService tokenService;
     @Autowired
     private EtherscanService etherscanService;
     @Autowired
@@ -87,12 +91,39 @@ public class TransactionService {
                 }).toBlocking().firstOrDefault(Optional.empty());
     }
 
-    private Transaction enrichWithSpecialAddresses(final Transaction tx) {
-        addressService.findByAddress(tx.getFromAddress()).ifPresent(tx::setSpecialFrom);
-        if (tx.isContractCreation()) {
-            addressService.findByAddress(tx.getCreates()).ifPresent(tx::setSpecialTo);
+    public Transaction enrichWithSpecialAddresses(final Transaction tx) {
+        Optional<SpecialAddress> byAddress = addressService.findByAddress(tx.getFromAddress());
+        if (byAddress.isPresent()) {
+            tx.setSpecialFrom(byAddress.get());
         } else {
-            addressService.findByAddress(tx.getToAddress()).ifPresent(tx::setSpecialTo);
+            tokenService.findByAddress(tx.getFromAddress()).ifPresent(x -> {
+                tx.setSpecialFrom(
+                        SpecialAddress.builder()
+                                .address(tx.getFromAddress())
+                                .name(x.getName())
+                                .slug(x.getSlug())
+                                .url(x.getWebsite())
+                                .build()
+                );
+            });
+        }
+        addressService.findByAddress(tx.getFromAddress()).ifPresent(tx::setSpecialFrom);
+
+        final String to = tx.isContractCreation() ? tx.getCreates() : tx.getToAddress();
+        final Optional<SpecialAddress> specialToAddress = addressService.findByAddress(to);
+        if (specialToAddress.isPresent()) {
+            tx.setSpecialTo(specialToAddress.get());
+        } else {
+            tokenService.findByAddress(to).ifPresent(x -> {
+                tx.setSpecialTo(
+                        SpecialAddress.builder()
+                                .address(to)
+                                .name(x.getName())
+                                .slug(x.getSlug())
+                                .url(x.getWebsite())
+                                .build()
+                );
+            });
         }
         return tx;
     }
