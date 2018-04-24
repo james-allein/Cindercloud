@@ -33,7 +33,7 @@ public class ContractController {
     }
 
     @PostMapping
-    public String accessContract(@ModelAttribute("accesContractCommand") @Valid final AccessContractCommand accessContractCommand,
+    public String accessContract(@ModelAttribute("accessContractCommand") @Valid final AccessContractCommand accessContractCommand,
                                  final BindingResult bindingResult,
                                  final ModelMap modelMap) {
         if (bindingResult.hasErrors()) {

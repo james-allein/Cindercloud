@@ -13,12 +13,12 @@
 
     <th:block th:replace="components/access-contract :: form"></th:block>
     <th:block
-            th:replace="components/access-contract :: access(abi=${accesContractCommand.abi}, address=${accesContractCommand.address})"></th:block>
+            th:replace="components/access-contract :: access(abi=${accessContractCommand.abi}, address=${accessContractCommand.address})"></th:block>
 </div>
 
 <div layout:fragment="footer-content">
     <th:block
-            th:replace="components/access-contract :: access-footer(abi=${accesContractCommand.abi}, address=${accesContractCommand.address})"></th:block>
+            th:replace="components/access-contract :: access-footer(abi=${accessContractCommand.abi}, address=${accessContractCommand.address})"></th:block>
 </div>
 </body>
 </html>
