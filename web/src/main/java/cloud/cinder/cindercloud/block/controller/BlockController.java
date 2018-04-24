@@ -6,6 +6,7 @@ import cloud.cinder.cindercloud.block.domain.Block;
 import cloud.cinder.cindercloud.block.service.BlockService;
 import cloud.cinder.cindercloud.transaction.domain.Transaction;
 import cloud.cinder.cindercloud.transaction.service.TransactionService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -22,6 +23,7 @@ import java.util.Optional;
 
 @Controller
 @RequestMapping(value = "/blocks")
+@Slf4j
 public class BlockController {
 
     @Autowired
@@ -51,12 +53,17 @@ public class BlockController {
     @RequestMapping(value = "/{hash}")
     public String getBlock(@PathVariable("hash") final String hash,
                            final Model model) {
-        final Block block = blockService.getBlock(hash).single().toBlocking().first();
-        model.addAttribute("block", block);
-        final Optional<SpecialAddress> specialMinedBy = addressService.findByAddress(block.getMinedBy());
-        model.addAttribute("isMinedBySpecialName", specialMinedBy.isPresent());
-        model.addAttribute("minedBySpecialName", specialMinedBy.map(SpecialAddress::getName).orElse(""));
-        return "blocks/block";
+        try {
+            final Block block = blockService.getBlock(hash).single().toBlocking().first();
+            model.addAttribute("block", block);
+            final Optional<SpecialAddress> specialMinedBy = addressService.findByAddress(block.getMinedBy());
+            model.addAttribute("isMinedBySpecialName", specialMinedBy.isPresent());
+            model.addAttribute("minedBySpecialName", specialMinedBy.map(SpecialAddress::getName).orElse(""));
+            return "blocks/block";
+        } catch (final Exception ex) {
+            log.debug("Error while trying to fetch block {}", hash);
+            return "error";
+        }
     }
 
     @RequestMapping(value = "/{hash}/transactions")
