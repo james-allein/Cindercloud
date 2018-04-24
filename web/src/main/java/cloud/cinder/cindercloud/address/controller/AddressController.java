@@ -88,9 +88,9 @@ public class AddressController {
         return "components/addresses :: mined_blocks";
     }
 
-    private void validateAddress(final @PathVariable("hash") String hash) {
+    private void validateAddress(final String hash) {
         if (hash == null || hash.isEmpty() || noValidAddress(hash)) {
-            throw new IllegalArgumentException("Not a valid address");
+            throw new IllegalArgumentException("Not a valid address: " + hash);
         }
     }
 
