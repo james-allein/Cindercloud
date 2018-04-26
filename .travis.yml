@@ -34,3 +34,4 @@ after_success:
   - docker push cindercloud/web:"$TRAVIS_BRANCH"
   - docker push cindercloud/whitehat:"$TRAVIS_BRANCH"
   - docker push cindercloud/importer:"$TRAVIS_BRANCH"
+  - bash <(curl -s https://copilot.blackducksoftware.com/ci/travis/scripts/upload)
