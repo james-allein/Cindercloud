@@ -3,6 +3,8 @@ package cloud.cinder.cindercloud.wallet.controller;
 import cloud.cinder.cindercloud.coinmarketcap.dto.Currency;
 import cloud.cinder.cindercloud.cryptocompare.service.TokenPriceService;
 import cloud.cinder.cindercloud.erc20.controller.dto.AddressTokenDto;
+import cloud.cinder.cindercloud.erc20.controller.dto.CustomAddressTokenDto;
+import cloud.cinder.cindercloud.erc20.service.CustomERC20Service;
 import cloud.cinder.cindercloud.security.domain.AuthenticationType;
 import cloud.cinder.cindercloud.token.service.ERC20Service;
 import cloud.cinder.cindercloud.token.service.TokenService;
@@ -42,17 +44,19 @@ public class CreateTokenTransactionController {
     private final TokenService tokenService;
     private final ERC20Service erc20Service;
     private TokenPriceService tokenPriceService;
+    private final CustomERC20Service customERC20Service;
 
     public CreateTokenTransactionController(final AuthenticationService authenticationService,
                                             final Web3TransactionService web3TransactionService,
                                             final TokenService tokenService,
                                             final ERC20Service erc20Service,
-                                            final TokenPriceService tokenPriceService) {
+                                            final TokenPriceService tokenPriceService, final CustomERC20Service customERC20Service) {
         this.authenticationService = authenticationService;
         this.web3TransactionService = web3TransactionService;
         this.tokenService = tokenService;
         this.erc20Service = erc20Service;
         this.tokenPriceService = tokenPriceService;
+        this.customERC20Service = customERC20Service;
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/send")
@@ -85,6 +89,21 @@ public class CreateTokenTransactionController {
                 .filter(x -> x.getRawBalance() > 0)
                 .collect(Collectors.toList());
         modelMap.put("availableTokens", tokens);
+
+        final List<CustomAddressTokenDto> customTokens = customERC20Service.findAll(address)
+                .stream()
+                .map(x -> {
+                    double rawBalance = erc20Service.balanceOf(address, x.getAddress()).doubleValue();
+                    return new CustomAddressTokenDto(
+                            x,
+                            formatter.format(rawBalance),
+                            rawBalance,
+                            tokenPriceService.getPriceAsString(x.getSymbol(), Currency.EUR, rawBalance),
+                            tokenPriceService.getPriceAsString(x.getSymbol(), Currency.USD, rawBalance)
+                    );
+                })
+                .collect(Collectors.toList());
+        modelMap.putIfAbsent("customTokens", customTokens);
         return "components/profile :: tokenSelection";
     }
 
