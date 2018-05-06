@@ -1,0 +1,31 @@
+package cloud.cinder.cindercloud.erc20.domain;
+
+import lombok.Data;
+
+import javax.persistence.*;
+
+@Table(name = "custom_erc20")
+@Entity
+@Data
+public class CustomERC20 {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(name = "address")
+    private String address;
+
+    @Column(name = "name")
+    private String name;
+
+    @Column(name = "decimals")
+    private int decimals;
+
+    @Column(name = "symbol")
+    private String symbol;
+
+    @Column(name = "added_by")
+    private String addedBy;
+
+}
