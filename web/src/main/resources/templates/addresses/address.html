@@ -7,13 +7,29 @@
 
 <body>
 <div layout:fragment="main-content">
+
+
     <section class="breadcrumbs g-bg-gray-light-v5 g-py-50">
         <div class="container">
+            <div id="qrModal" class="text-left g-max-width-600 g-bg-white g-overflow-y-auto g-pa-20"
+                 style="display: none;">
+                <button type="button" class="close" onclick="Custombox.modal.close();">
+                    <i class="hs-icon hs-icon-close"></i>
+                </button>
+
+                <h4 class="g-mb-20">QRcode</h4>
+
+                <div id="qrcode"></div>
+            </div>
             <div class="d-sm-flex ">
                 <div class="align-self-center">
-                    <h2 class="h3 g-font-weight-300 w-100 g-mb-10 g-mb-0--md">Address: <br/>
+                    <h2 class="h3 g-font-weight-300 w-100 g-mb-10 g-mb-0--md">Address: <i href="#qrModal"
+                                                                                          data-modal-target="#qrModal"
+                                                                                          data-modal-effect="fadein"
+                                                                                          class="fa fa-qrcode"></i><br />
                         <b> <span th:text="${hash}"></span> <span th:if="${isSpecial}">( <span
-                                th:text="${specialName}"></span> )</span></b>
+                                th:text="${specialName}"></span> )</span>
+                        </b>
                     </h2>
                 </div>
 
@@ -89,9 +105,9 @@
                     <em class="u-nav-v8__description">Join the conversation.</em>
                 </a>
             </li>
-
         </ul>
         <!-- End Nav tabs -->
+
 
         <!-- Tab panes -->
         <div id="nav-8-1-default-hor-left" class="tab-content g-pt-20">
@@ -211,13 +227,13 @@
           <i class="icon-question g-font-size-25"></i>
         </span>
                             <span class="media-body align-self-center">
-          <strong>Unused account?</strong><br/> No transactions could be found referencing this account. Maybe we didn't index them yet?
+          <strong>Unused account?</strong><br /> No transactions could be found referencing this account. Maybe we didn't index them yet?
         </span>
                         </div>
                     </div>
                 </section>
-                <hr/>
-                <br/>
+                <hr />
+                <br />
             </div>
             <div class="tab-pane fade" id="tokenTransfers" role="tabpanel">
                 <div class="row text-center text-uppercase">
@@ -263,11 +279,22 @@
         </div>
         <!-- End Tab panes -->
     </section>
+
+
 </div>
 
 <div layout:fragment="footer-content">
     <!-- JS Implementing Plugins -->
     <script th:src="@{/assets/vendor/appear.js}"></script>
+    <script th:src="@{/assets/vendor/qrcode.js}"></script>
+
+    <script th:src="@{/assets/vendor/custombox/custombox.min.js}"></script>
+    <script th:src="@{/assets/js/components/hs.modal-window.js}"></script>
+    <script type="application/javascript">
+		$(document).ready(function () {
+			$.HSCore.components.HSModalWindow.init('[data-modal-target]');
+		});
+    </script>
 
     <span id="currentAddress" th:attr="data-hash=${hash}"></span>
 
@@ -303,6 +330,14 @@
 			populateTokens();
 			populateTokenTransfers();
 			populateMinedBlocks();
+			var qrcode = new QRCode(document.getElementById("qrcode"), {
+				text: $('#currentAddress').data('hash'),
+				width: 128,
+				height: 128,
+				colorDark: "#000000",
+				colorLight: "#ffffff",
+				correctLevel: QRCode.CorrectLevel.H
+			});
 		});
     </script>
 
