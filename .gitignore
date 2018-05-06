@@ -17,3 +17,6 @@ common/docker_data
 
 web/src/test/java/cloud/cinder/cindercloud/whitehat/
 web/src/test/resources/whitehat/
+
+common/apm/glowroot/data
+common/apm/glowroot/tmp
