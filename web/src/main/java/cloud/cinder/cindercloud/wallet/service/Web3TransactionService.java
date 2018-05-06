@@ -101,7 +101,7 @@ public class Web3TransactionService {
                                         final EthGetTransactionCount ethGetTransactionCount,
                                         final String owner) {
         try {
-            final HumanStandardToken token = HumanStandardToken.load(command.getTokenAddress(), web3jGateway.web3j(), Credentials.create(ECKeyPair.create(BigInteger.ZERO)), BigInteger.ZERO, BigInteger.ZERO);
+            final HumanStandardToken token = HumanStandardToken.load(command.getTokenAddress(), web3jGateway.web3j());
             final BigInteger balance = token.balanceOf(owner).send();
             if (!hasEnoughTokens(balance, command)) {
                 log.debug("User did not have any tokens");
