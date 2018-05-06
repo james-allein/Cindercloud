@@ -20,3 +20,4 @@ web/src/test/resources/whitehat/
 
 common/apm/glowroot/data
 common/apm/glowroot/tmp
+common/apm/glowroot/logs
