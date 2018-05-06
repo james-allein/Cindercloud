@@ -29,7 +29,7 @@ public class CustomERC20Service {
         return customERC20Repository.findAllByAddedBy(address);
     }
 
-    @Transactional(readOnly = false)
+    @Transactional
     public boolean add(final String address, final String addedBy) {
         Optional<CustomERC20> recognize = recognize(address, addedBy);
         if (recognize.isPresent()) {

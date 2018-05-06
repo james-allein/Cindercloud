@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface CustomERC20Repository extends JpaRepository<CustomERC20, Long> {
 
-    @Query("select erc20 from CustomERC20 erc20 where toLower(addressBy) LIKE :address")
+    @Query("select erc20 from CustomERC20 erc20 where lower(addedBy) LIKE :address")
     List<CustomERC20> findAllByAddedBy(@Param("address") final String address);
 
 }

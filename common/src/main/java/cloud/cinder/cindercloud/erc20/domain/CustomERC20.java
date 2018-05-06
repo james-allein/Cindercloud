@@ -2,12 +2,14 @@ package cloud.cinder.cindercloud.erc20.domain;
 
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
 @Table(name = "custom_erc20")
 @Entity
 @Data
+@NoArgsConstructor
 public class CustomERC20 {
 
     @Id
