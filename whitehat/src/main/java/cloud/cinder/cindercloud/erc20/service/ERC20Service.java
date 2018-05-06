@@ -11,8 +11,6 @@ import java.math.BigInteger;
 @Component
 public class ERC20Service {
 
-    private static final Credentials DUMMY = Credentials.create("0x0");
-
     @Autowired
     private Web3jGateway web3j;
 
@@ -26,6 +24,6 @@ public class ERC20Service {
     }
 
     private HumanStandardToken getERC20(final String token) {
-        return HumanStandardToken.load(token, web3j.web3j(), DUMMY, BigInteger.valueOf(0), BigInteger.valueOf(0));
+        return HumanStandardToken.load(token, web3j.web3j());
     }
 }

@@ -1,5 +1,6 @@
 package cloud.cinder.cindercloud.erc20.domain;
 
+import lombok.Builder;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -28,4 +29,12 @@ public class CustomERC20 {
     @Column(name = "added_by")
     private String addedBy;
 
+    @Builder
+    public CustomERC20(final String address, final String name, final int decimals, final String symbol, final String addedBy) {
+        this.address = address;
+        this.name = name;
+        this.decimals = decimals;
+        this.symbol = symbol;
+        this.addedBy = addedBy;
+    }
 }

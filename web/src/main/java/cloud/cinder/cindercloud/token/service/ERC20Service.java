@@ -17,7 +17,6 @@ import java.math.RoundingMode;
 @Slf4j
 public class ERC20Service {
 
-    private static final Credentials DUMMY = Credentials.create("0x0");
 
     @Autowired
     private Web3jGateway web3j;
