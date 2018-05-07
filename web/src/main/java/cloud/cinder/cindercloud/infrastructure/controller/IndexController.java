@@ -22,7 +22,7 @@ public class IndexController {
     private final PriceService priceService;
     private final LoginEventService loginEventService;
     private final TokenService tokenService;
-    private EventService eventService;
+    private final EventService eventService;
 
     public IndexController(final BlockService blockService,
                            final TransactionService transactionService,
