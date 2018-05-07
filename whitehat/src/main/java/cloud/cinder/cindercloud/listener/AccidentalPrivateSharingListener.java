@@ -69,7 +69,9 @@ public class AccidentalPrivateSharingListener {
         return web3j.web3j().transactionObservable()
                 .subscribe(processTransaction(), error -> {
                     log.trace("[Live Private Sharing]Problem with live transactions, resubbing: {}", error.getMessage());
-                    liveTransactions.unsubscribe();
+                    if (liveTransactions != null) {
+                        liveTransactions.unsubscribe();
+                    }
                     this.liveTransactions = subscribeLiveTransactions();
                 });
     }
