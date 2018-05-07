@@ -12,7 +12,7 @@
         <form method="POST" th:action="@{/wallet/login?type=keystore}" th:object="${keystoreLoginCommand}"
               class="g-py-15">
 
-            <div th:if="${error != null}" class="alert alert-dismissible fade show g-bg-red g-color-white rounded-0"
+            <div th:if="${keystoreError != null}" class="alert alert-dismissible fade show g-bg-red g-color-white rounded-0"
                  role="alert">
                 <button type="button" class="close u-alert-close--light" data-dismiss="alert" aria-label="Close">
                     <span aria-hidden="true">×</span>
@@ -22,7 +22,7 @@
                     <span class="d-flex g-mr-10 g-mt-5">
                       <i class="icon-ban g-font-size-25"></i>
                     </span>
-                    <span th:text="${error}" class="media-body align-self-center">
+                    <span th:text="${keystoreError}" class="media-body align-self-center">
                       Change a few things up and try submitting again.
                     </span>
                 </div>
@@ -163,14 +163,14 @@
                     <span class="align-self-center u-icon-v1 u-icon-size--lg g-color-primary">
                       <i class="icon-finance-193 u-line-icon-pro"></i>
                     </span>
-            <h1 class="h4 g-color-black g-font-weight-400">Use your mnemonic</h1>
+            <h1 class="h4 g-color-black g-font-weight-400">Use your mnemonic / Backup phrase</h1>
         </header>
 
         <!-- Form -->
         <form id="mnemonicForm" method="POST" th:action="@{/wallet/mnemonic}" th:object="${mnemonicAddressRequest}"
               class="g-py-15">
 
-            <div th:if="${error != null}" class="alert alert-dismissible fade show g-bg-red g-color-white rounded-0"
+            <div th:if="${mnemonicError != null}" class="alert alert-dismissible fade show g-bg-red g-color-white rounded-0"
                  role="alert">
                 <button type="button" class="close u-alert-close--light" data-dismiss="alert" aria-label="Close">
                     <span aria-hidden="true">×</span>
@@ -180,7 +180,7 @@
                     <span class="d-flex g-mr-10 g-mt-5">
                       <i class="icon-ban g-font-size-25"></i>
                     </span>
-                    <span th:text="${error}" class="media-body align-self-center">
+                    <span th:text="${mnemonicError}" class="media-body align-self-center">
                       Change a few things up and try submitting again.
                     </span>
                 </div>
@@ -266,7 +266,7 @@
         <form method="POST" th:action="@{/wallet/login?type=privatekey}" th:object="${privatekeyLoginCommand}"
               class="g-py-10">
 
-            <div th:if="${error != null}" class="alert alert-dismissible fade show g-bg-red g-color-white rounded-0"
+            <div th:if="${privateKeyError != null}" class="alert alert-dismissible fade show g-bg-red g-color-white rounded-0"
                  role="alert">
                 <button type="button" class="close u-alert-close--light" data-dismiss="alert" aria-label="Close">
                     <span aria-hidden="true">×</span>
@@ -276,7 +276,7 @@
                     <span class="d-flex g-mr-10 g-mt-5">
                       <i class="icon-ban g-font-size-25"></i>
                     </span>
-                    <span th:text="${error}" class="media-body align-self-center">
+                    <span th:text="${privateKeyError}" class="media-body align-self-center">
                       Change a few things up and try submitting again.
                     </span>
                 </div>

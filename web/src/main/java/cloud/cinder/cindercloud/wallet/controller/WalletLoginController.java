@@ -59,7 +59,7 @@ public class WalletLoginController {
             return "redirect:/wallet";
         } catch (final Exception ex) {
             log.debug("Error while trying to login with keystore: {}", keystoreLoginCommand.getKeystoreValue(), ex.getMessage());
-            redirectAttributes.addFlashAttribute("error", ex.getMessage());
+            redirectAttributes.addFlashAttribute("keystoreError", ex.getMessage());
             return "redirect:/wallet/login";
         }
     }
@@ -73,7 +73,7 @@ public class WalletLoginController {
             return "redirect:/wallet";
         } catch (final Exception ex) {
             log.debug("Error while trying to login with invalid private key", privateKeyLoginCommand.getPrivateKey());
-            redirectAttributes.addFlashAttribute("error", ex.getMessage());
+            redirectAttributes.addFlashAttribute("privateKeyError", ex.getMessage());
             return "redirect:/wallet/login";
         }
     }
@@ -106,8 +106,8 @@ public class WalletLoginController {
             loginHandler.login(creds);
             return "redirect:/wallet";
         } catch (final Exception ex) {
-            log.debug("Error while trying to login with invalid private key", mnemonicLoginCommand.getMnemonic());
-            redirectAttributes.addFlashAttribute("error", ex.getMessage());
+            log.debug("Error while trying to login with invalid mnemonic and idx", mnemonicLoginCommand.getMnemonic());
+            redirectAttributes.addFlashAttribute("mnemonicError", ex.getMessage());
             return "redirect:/wallet/login";
         }
     }
