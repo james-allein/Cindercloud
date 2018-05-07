@@ -24,7 +24,6 @@ dependencies {
 
     compile("org.springframework.boot:spring-boot-starter")
     compile("org.springframework.boot:spring-boot-starter-data-jpa")
-    compile("org.springframework.boot:spring-boot-starter-web")
 
     compile "io.prometheus:simpleclient_spring_boot:$prometheusVersion"
     compile "io.prometheus:simpleclient_hotspot:$prometheusVersion"
