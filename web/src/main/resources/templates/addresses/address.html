@@ -286,7 +286,7 @@
 <div layout:fragment="footer-content">
     <!-- JS Implementing Plugins -->
     <script th:src="@{/assets/vendor/appear.js}"></script>
-    <script th:src="@{/assets/vendor/qrcode.js}"></script>
+    <script th:src="@{/assets/js/jquery-qrcode-0.14.0.min.js}"></script>
 
     <script th:src="@{/assets/vendor/custombox/custombox.min.js}"></script>
     <script th:src="@{/assets/js/components/hs.modal-window.js}"></script>
@@ -330,14 +330,16 @@
 			populateTokens();
 			populateTokenTransfers();
 			populateMinedBlocks();
-			var qrcode = new QRCode(document.getElementById("qrcode"), {
-				text: $('#currentAddress').data('hash'),
-				width: 128,
-				height: 128,
-				colorDark: "#000000",
-				colorLight: "#ffffff",
-				correctLevel: QRCode.CorrectLevel.H
-			});
+
+            $('#qrcode').qrcode({
+                text: $('#currentAddress').data('hash'),
+				ecLevel: 'H',
+                mode: 4,
+				mSize: 15 * 0.01,
+				mPosX: 50 * 0.01,
+				mPosY: 50 * 0.01,
+                image: $('#logo')[0]
+            });
 		});
     </script>
 
