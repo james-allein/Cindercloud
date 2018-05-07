@@ -92,7 +92,6 @@ public class Web3TransactionService {
                 throw new IllegalArgumentException(send.getError().getMessage());
             }
         } catch (final Exception ex) {
-            //TODO: handle "already imported" transactions
             throw new IllegalArgumentException("Error trying to submit a transaction, please try again later.");
         }
     }
