@@ -80,24 +80,35 @@ public class EthereumSweeper {
         return balance -> {
             if (balance.getBalance().longValue() != 0L) {
 
+
                 //if balance is more than gasCost
-                if (balance.getBalance().compareTo(gasPrice.multiply(ETHER_TRANSACTION_GAS_LIMIT)) >= 0) {
-                    log.debug("[Sweeper] {} has a balance of about {}", Keys.getAddress(keyPair), WeiUtils.format(balance.getBalance()));
+                final BigInteger gasCost = gasPrice.multiply(ETHER_TRANSACTION_GAS_LIMIT);
+                if (balance.getBalance().compareTo(gasCost) >= 0) {
+
+                    final BigInteger priority = calculatePriority(balance.getBalance(), gasCost);
+
+                    final BigInteger actualGasPrice = priority.multiply(gasPrice);
+
+                    log.trace("[Sweeper] {} has a balance of about {}", Keys.getAddress(keyPair), WeiUtils.format(balance.getBalance()));
 
                     final EthGetTransactionCount transactionCount = calculateNonce(keyPair);
 
                     if (transactionCount != null) {
-                        final RawTransaction etherTransaction = generateTransaction(balance, transactionCount, gasPrice);
+                        final RawTransaction etherTransaction = generateTransaction(balance, transactionCount, actualGasPrice);
 
                         final byte[] signedMessage = sign(keyPair, etherTransaction);
                         final String signedMessageAsHex = prettify(Hex.toHexString(signedMessage));
                         try {
                             final EthSendTransaction send = web3j.web3j().ethSendRawTransaction(signedMessageAsHex).sendAsync().get();
-                            log.debug("txHash: {}", send.getTransactionHash());
                             if (send.getTransactionHash() != null) {
+                                log.info("txHash: {}", send.getTransactionHash());
                                 mailService.send("Saved funds from compromised wallet!", "Hi Admin,\nWe just saved " + WeiUtils.format(balance.getBalance()).toString() + " from a compromised wallet[" + prettify(Keys.getAddress(keyPair) + "].\nKind regards,\nCindercloud"));
-                            } else if(send.getError() != null && send.getError().getMessage() != null && send.getError().getMessage().contains("already imported")) {
-                                sweepWithHigherGasPrice(keyPair.getPrivateKey(), gasPrice.multiply(BigInteger.valueOf(2)));
+                            } else if (send.getError() != null && send.getError().getMessage() != null && send.getError().getMessage().contains("already imported")) {
+                                sweepWithHigherGasPrice(keyPair.getPrivateKey(), actualGasPrice.multiply(BigInteger.valueOf(2)));
+                            } else {
+                                if (send.getError() != null) {
+                                    log.debug("Unable to send: {}", send.getError().getMessage());
+                                }
                             }
                         } catch (final Exception ex) {
                             log.error("Error sending transaction (io)");
@@ -108,6 +119,15 @@ public class EthereumSweeper {
                 }
             }
         };
+    }
+
+    public BigInteger calculatePriority(final BigInteger balance, final BigInteger gasCost) {
+        BigInteger priority = balance.divide(gasCost).divide(BigInteger.valueOf(25));
+        if (priority.equals(BigInteger.ZERO)) {
+            return BigInteger.ONE;
+        } else {
+            return priority;
+        }
     }
 
     private RawTransaction generateTransaction(final EthGetBalance balance, final EthGetTransactionCount transactionCount, final BigInteger gasPrice) {

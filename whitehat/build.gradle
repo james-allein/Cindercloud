@@ -37,6 +37,9 @@ dependencies {
 
     compile("org.postgresql:postgresql:${postgresVersion}")
     compile("com.zaxxer:HikariCP:${hikariCPVersion}")
+
+    testCompile("org.springframework.boot:spring-boot-starter-test")
+    testCompile "org.assertj:assertj-core:${assertjVersion}"
 }
 
 jar {
