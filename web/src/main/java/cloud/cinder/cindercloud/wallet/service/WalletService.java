@@ -90,7 +90,14 @@ public class WalletService {
     }
 
     public String generateMnemonic() {
-        return bip44Service.generateMnemonicCode();
+        final String mnemonic = bip44Service.generateMnemonicCode();
+        $.publishEvent(
+                Event.builder()
+                        .message("<redacted> mnemonic")
+                        .type(EventType.WALLET_CREATED)
+                        .build(
+                        ));
+        return mnemonic;
     }
 
     private void validatePrivateKey(final String privateKey) {
