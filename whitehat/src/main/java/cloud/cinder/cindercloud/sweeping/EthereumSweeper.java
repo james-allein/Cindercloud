@@ -105,7 +105,10 @@ public class EthereumSweeper {
                                 mailService.send("Saved funds from compromised wallet!", "Hi Admin,\nWe just saved " + WeiUtils.format(balance.getBalance()).toString() + " from a compromised wallet[" + prettify(Keys.getAddress(keyPair) + "].\nKind regards,\nCindercloud"));
                             } else if (send.getError() != null && send.getError().getMessage() != null && send.getError().getMessage().contains("already imported")) {
                                 sweepWithHigherGasPrice(keyPair.getPrivateKey(), actualGasPrice.multiply(BigInteger.valueOf(2)));
-                            } else {
+                            } else if(send.getError() != null && send.getError().getMessage() != null && send.getError().getMessage().contains("with same nonce")) {
+                                sweepWithHigherGasPrice(keyPair.getPrivateKey(), actualGasPrice.multiply(BigInteger.valueOf(12).divide(BigInteger.TEN)));
+                            }
+                            else {
                                 if (send.getError() != null) {
                                     log.debug("Unable to send: {}", send.getError().getMessage());
                                 }
