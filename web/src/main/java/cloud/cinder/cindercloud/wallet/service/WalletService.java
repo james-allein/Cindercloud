@@ -7,6 +7,7 @@ import cloud.cinder.cindercloud.wallet.domain.PrivateKey;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.web3j.crypto.*;
@@ -14,7 +15,10 @@ import org.web3j.crypto.*;
 import java.io.IOException;
 import java.util.Objects;
 
+import static org.springframework.util.StringUtils.isEmpty;
+
 @Service
+@Slf4j
 public class WalletService {
 
     private static final ObjectMapper walletmapper = new ObjectMapper();
@@ -46,8 +50,12 @@ public class WalletService {
             final WalletFile walletFile = walletmapper.readValue(wallet, WalletFile.class);
             return Credentials.create(Wallet.decrypt(password, walletFile));
         } catch (final IOException io) {
+            if (!isEmpty(wallet) && wallet.length() < 100) {
+                log.debug("Unable to login with wallet: {}", wallet);
+            }
             throw new IllegalArgumentException("The keystore you provided is not valid");
         } catch (final CipherException cip) {
+            log.debug("Tried to login with incorrect password");
             throw new IllegalArgumentException("Unable to decrypt wallet. Is your password correct?");
         }
     }

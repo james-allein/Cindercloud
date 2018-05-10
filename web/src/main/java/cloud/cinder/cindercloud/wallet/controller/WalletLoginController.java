@@ -58,7 +58,6 @@ public class WalletLoginController {
             loginHandler.login(creds);
             return "redirect:/wallet";
         } catch (final Exception ex) {
-            log.debug("Error while trying to login with keystore: {}", keystoreLoginCommand.getKeystoreValue(), ex.getMessage());
             redirectAttributes.addFlashAttribute("keystoreError", ex.getMessage());
             return "redirect:/wallet/login";
         }
