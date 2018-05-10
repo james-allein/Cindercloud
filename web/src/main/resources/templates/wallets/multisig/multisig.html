@@ -1,0 +1,40 @@
+<!DOCTYPE html >
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="decorator/normal/decorator">
+<div layout:fragment="header-content">
+    <link rel="stylesheet" th:href="@{/assets/vendor/custombox/custombox.min.css}" />
+</div>
+
+<body>
+<div layout:fragment="main-content">
+    <div class="container g-pt-70 g-pb-30">
+        <div class="row">
+            <!-- Profile Settings -->
+            <div class="col-lg-3 g-mb-50">
+                <th:block th:replace="components/profile :: sidenav(active='multisig')"></th:block>
+            </div>
+            <!-- End Profile Settings -->
+
+            <!-- Wallet -->
+            <div class="col-lg-9 g-mb-50">
+                <!-- Balance & Rewards -->
+                <div class="g-brd-around g-brd-gray-light-v4 rounded g-px-30 g-pt-30">
+                    <h3 class="h5 mb-3">Multisig <span th:text="${multisigAddress}"></span></h3>
+
+                    <th:block th:if="${error != null}"
+                              th:include="components/alerts :: error(title='Error', body=${error})" />
+
+
+                </div>
+                <!-- End Balance & Rewards -->
+            </div>
+            <!-- End Wallet -->
+        </div>
+    </div>
+</div>
+<div layout:fragment="footer-content">
+    <script th:src="@{/assets/js/custom/wallet/multisig.js}"></script>
+</div>
+</body>
+</html>
