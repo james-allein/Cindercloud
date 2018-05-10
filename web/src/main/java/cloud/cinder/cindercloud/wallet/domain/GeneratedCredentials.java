@@ -3,10 +3,14 @@ package cloud.cinder.cindercloud.wallet.domain;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.web3j.crypto.Credentials;
+import org.web3j.crypto.ECKeyPair;
+import org.web3j.crypto.Keys;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
+import static cloud.cinder.cindercloud.utils.AddressUtils.prettifyAddress;
 
 @AllArgsConstructor
 @Getter
@@ -19,5 +23,9 @@ public class GeneratedCredentials {
 
     public String getFilename() {
         return formatter.format(new Date()) + "--" + Credentials.create(privateKey.asString()).getAddress() + ".json";
+    }
+
+    public String getAddress() {
+        return prettifyAddress(Keys.getAddress(ECKeyPair.create(privateKey.getPrivateKey())));
     }
 }
