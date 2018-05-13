@@ -2,7 +2,7 @@ version: '2'
 
 services:
   cindercloud-vault:
-    image: vault:0.10.1
+    image: vault:0.9.6
     ports:
       - 8200:8200
     volumes:

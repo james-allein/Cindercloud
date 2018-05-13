@@ -23,6 +23,9 @@ dependencies {
     compile("org.springframework.data:spring-data-keyvalue")
     runtime("org.springframework.boot:spring-boot-properties-migrator")
 
+    compile group: 'org.web3j', name: 'core', version: "${theWeb3jVersion}"
+    compile group: 'org.web3j', name: 'crypto', version: "${theWeb3jVersion}"
+
     compile("org.springframework.vault:spring-vault-core:2.0.1.RELEASE")
     compile("commons-collections:commons-collections:${collectionCommonsVersion}")
     compileOnly "org.projectlombok:lombok:${lombokVersion}"

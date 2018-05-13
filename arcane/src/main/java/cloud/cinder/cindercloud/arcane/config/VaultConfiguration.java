@@ -22,7 +22,9 @@ public class VaultConfiguration extends AbstractVaultConfiguration {
 
     @Override
     public VaultEndpoint vaultEndpoint() {
-        return VaultEndpoint.create(vaultHost, vaultPort);
+        final VaultEndpoint vaultEndpoint = VaultEndpoint.create(vaultHost, vaultPort);
+        vaultEndpoint.setScheme("http");
+        return vaultEndpoint;
     }
 
     @Override
