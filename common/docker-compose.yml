@@ -1,6 +1,16 @@
 version: '2'
 
 services:
+  cindercloud-vault:
+    image: vault:0.10.1
+    ports:
+      - 8200:8200
+    volumes:
+      - ./docker_data/vault/logs:/vault/logs
+      - ./docker_data/vault/file:/vault/file
+    container_name: cindercloud-vault
+    environment:
+      VAULT_DEV_ROOT_TOKEN_ID: vault_root
   cindercloud-postgres:
     image: postgres:10.3
     ports:

@@ -1,3 +1,15 @@
+apply plugin: "io.spring.dependency-management"
+
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${theSpringBootVersion}")
+        classpath "io.spring.gradle:dependency-management-plugin:${theDependencyManagementPlugin}"
+    }
+}
+
 dependencyManagement {
     imports {
         mavenBom "io.spring.platform:platform-bom:${theSpringPlatformBomVersion}"

@@ -2,7 +2,7 @@ spring:
     application:
         name: Cindercloud-importer
     datasource:
-        url: jdbc:postgresql://localhost:5432/cindercloud
+        url: jdbc:postgresql://localhost:5432/2
         username: cindercloud
         password: cindercloud
         driver-class-name: org.postgresql.Driver
