@@ -10,30 +10,82 @@
 <div layout:fragment="main-content">
     <div class="container g-pt-70 g-pb-30">
         <div class="row">
-            <!-- Profile Settings -->
             <div class="col-lg-3 g-mb-50">
                 <th:block th:replace="components/profile :: sidenav(active='multisig')"></th:block>
             </div>
-            <!-- End Profile Settings -->
-
-            <!-- Wallet -->
             <div class="col-lg-9 g-mb-50">
-                <!-- Balance & Rewards -->
                 <div class="g-brd-around g-brd-gray-light-v4 rounded g-px-30 g-pt-30">
                     <h3 class="h5 mb-3">Multisig <span th:text="${multisigAddress}"></span></h3>
 
                     <th:block th:if="${error != null}"
                               th:include="components/alerts :: error(title='Error', body=${error})" />
 
+                    <div id="multisigApp">
+                        <div v-cloak="v-cloak">
+                            <li class="media g-brd-around g-brd-gray-light-v4 g-brd-left-3 g-brd-blue-left g-rounded-3 g-pa-20 g-mb-7">
+                                <div class="d-flex g-mt-2 g-mr-15">
+                                    <div>
+                                        <a href="#!"
+                                           class="btn g-width-160 btn-sm u-btn-inset u-btn-inset--rounded u-btn-outline-primary u-btn-primary g-font-weight-600 g-letter-spacing-0_5 text-uppercase g-brd-2 g-rounded-50 g-mr-10 g-mb-15">
+                                            <small>
+                                                <i class="fa fa-check-circle g-mr-3"></i>
+                                                View
+                                            </small>
+                                        </a>
+                                        <br />
+                                        <a href="#!"
+                                           class="btn g-width-160 btn-sm u-btn-inset u-btn-inset--rounded u-btn-primary g-font-weight-600 g-letter-spacing-0_5 text-uppercase g-brd-2 g-rounded-50 g-mr-10 g-mb-15">
+                                            <small>
+                                                <i class="fa fa-send g-mr-3"></i>
+                                                Send Ether
+                                            </small>
+                                        </a>
+                                        <br />
+                                        <a href="#!"
+                                           class="btn g-width-160 btn-sm u-btn-inset u-btn-inset--rounded u-btn-primary g-font-weight-600 g-letter-spacing-0_5 text-uppercase g-brd-2 g-rounded-50 g-mr-10 g-mb-15">
+
+                                            <small><i class="fa fa-paper-plane-o g-mr-3"></i> Send Tokens</small>
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="media-body">
+
+                                    <div class="d-flex justify-content-between">
+                                        <h5 class="h6 g-font-weight-600 g-color-black">James
+                                                                                       Coolman</h5>
+
+                                    </div>
+                                    <p>Address</p>
+
+                                    <br />
+
+                                    <span class="u-label u-label--sm g-bg-blue g-rounded-20 g-px-10">
+                                    <span>balance</span>
+                                </span>
+                                    <span class="u-label u-label--sm g-bg-primary g-rounded-20 g-px-10">
+                                    <i class="fa fa-dollar"></i> <span>bal usd</span>
+                                </span>
+                                    <span class="u-label u-label--sm g-bg-orange g-rounded-20 g-px-10">
+                                    <i class="fa fa-eur"></i> <span>bal eur</span>
+                                </span>
+
+                                    <span class="small pull-right text-nowrap g-color-blue">modified <span>2 min ago</span></span>
+
+                                </div>
+                            </li>
+                        </div>
+                    </div>
 
                 </div>
-                <!-- End Balance & Rewards -->
             </div>
-            <!-- End Wallet -->
         </div>
     </div>
 </div>
 <div layout:fragment="footer-content">
+    <span id="currentAddress" th:attr="data-hash=${address}"></span>
+    <span id="multisigAddress" th:attr="data-hash=${multisigAddress}"></span>
+
+    <script th:src="@{/assets/abi/abi.js}"></script>
     <script th:src="@{/assets/js/custom/wallet/multisig.js}"></script>
 </div>
 </body>
