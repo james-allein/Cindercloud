@@ -1,5 +1,5 @@
 package cloud.cinder.cindercloud.security.domain;
 
 public enum AuthenticationType {
-    CINDERCLOUD, WEB3, TREZOR
+    CINDERCLOUD, WEB3, TREZOR, ARCANE
 }
