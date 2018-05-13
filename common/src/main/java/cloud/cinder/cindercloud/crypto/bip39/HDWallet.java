@@ -3,7 +3,6 @@ package cloud.cinder.cindercloud.crypto.bip39;
 import com.google.common.base.Joiner;
 import org.apache.commons.codec.binary.Hex;
 import org.bitcoinj.core.AddressFormatException;
-import org.bitcoinj.core.NetworkParameters;
 import org.bitcoinj.crypto.*;
 
 import java.util.ArrayList;

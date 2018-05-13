@@ -29,6 +29,7 @@ dependencies {
     compile("org.ocpsoft.prettytime:prettytime:$prettyTimeVersion")
 
     compile group: 'org.bitcoinj', name: 'bitcoinj-core', version: "${bitcoinJVersion}"
+    compile group: 'commons-codec', name: 'commons-codec', version: '1.11'
 
     testCompile("org.springframework.boot:spring-boot-starter-test")
     testCompile "org.assertj:assertj-core:$assertjVersion"
