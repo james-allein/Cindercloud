@@ -5,13 +5,14 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Data
 @Entity
-@Table(name = "wallet_address")
+@Table(name = "wallet_addresses")
 @NoArgsConstructor
 public class WalletAddress {
 
@@ -20,7 +21,11 @@ public class WalletAddress {
 
     private String owner;
     private String address;
+
+    @Column(name = "secret_key")
     private String secretKey;
+    @Column(name = "wallet_type")
+    private WalletType walletType;
 
     @Builder
     public WalletAddress(final String owner, final String address, final String secretKey) {
