@@ -3,7 +3,7 @@ cloud:
     ethereum:
       endpoint:
         url: https://fullnode.fundrequest.io
-        local-url: https://mainnet.infura.io
+        local-url: https://fullnode.infura.io
     queue:
       block-added: cindercloud_mainnet_localhost
       user-token-import: mainnet_user_token_import
