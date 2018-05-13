@@ -10,7 +10,7 @@ import javax.persistence.Id;
 @Secret
 @NoArgsConstructor
 @Data
-public class PrivateKeySecret {
+public class WalletSecret {
 
     @Id
     private String id;
@@ -20,9 +20,9 @@ public class PrivateKeySecret {
     private String owner;
 
     @Builder
-    public PrivateKeySecret(final String privateKey,
-                            final String address,
-                            final String owner) {
+    public WalletSecret(final String privateKey,
+                        final String address,
+                        final String owner) {
         this.privateKey = privateKey;
         this.address = address;
         this.owner = owner;
