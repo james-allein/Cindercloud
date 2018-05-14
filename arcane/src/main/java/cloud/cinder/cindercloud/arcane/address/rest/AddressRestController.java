@@ -1,6 +1,6 @@
-package cloud.cinder.cindercloud.arcane.claim.rest;
+package cloud.cinder.cindercloud.arcane.address.rest;
 
-import cloud.cinder.cindercloud.arcane.claim.ClaimAddressService;
+import cloud.cinder.cindercloud.arcane.address.ClaimAddressService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;

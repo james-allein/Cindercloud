@@ -1,4 +1,4 @@
-package cloud.cinder.cindercloud.arcane.claim;
+package cloud.cinder.cindercloud.arcane.address;
 
 import cloud.cinder.cindercloud.arcane.privatekey.domain.WalletSecret;
 import cloud.cinder.cindercloud.arcane.privatekey.repository.WalletSecretRepository;
