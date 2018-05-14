@@ -17,12 +17,12 @@ public class WalletSecret {
 
     private String privateKey;
     private String address;
-    private String owner;
+    private Long owner;
 
     @Builder
     public WalletSecret(final String privateKey,
                         final String address,
-                        final String owner) {
+                        final Long owner) {
         this.privateKey = privateKey;
         this.address = address;
         this.owner = owner;

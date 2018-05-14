@@ -39,7 +39,7 @@ dependencies {
     testCompile "org.assertj:assertj-core:${assertjVersion}"
 }
 
-bootRun {
+bootJar {
     mainClassName = 'cloud.cinder.cindercloud.arcane.ArcaneApplication'
 }
 
