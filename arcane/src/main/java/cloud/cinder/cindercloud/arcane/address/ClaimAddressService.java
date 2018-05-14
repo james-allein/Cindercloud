@@ -7,6 +7,7 @@ import cloud.cinder.cindercloud.arcane.secret.repository.SecretRepository;
 import cloud.cinder.cindercloud.arcane.user.domain.User;
 import cloud.cinder.cindercloud.arcane.user.repository.UserRepository;
 import org.bouncycastle.util.encoders.Hex;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.web3j.crypto.ECKeyPair;
 import org.web3j.crypto.Keys;
@@ -16,17 +17,12 @@ import java.util.List;
 @Service
 public class ClaimAddressService {
 
-    private final WalletSecretRepository privateKeySecretRepository;
-    private final UserRepository userRepository;
-    private final SecretRepository secretRepository;
-
-    public ClaimAddressService(final WalletSecretRepository privateKeySecretRepository,
-                               final UserRepository userRepository,
-                               final SecretRepository secretRepository) {
-        this.privateKeySecretRepository = privateKeySecretRepository;
-        this.userRepository = userRepository;
-        this.secretRepository = secretRepository;
-    }
+    @Autowired
+    private WalletSecretRepository walletSecretRepository;
+    @Autowired
+    private UserRepository userRepository;
+    @Autowired
+    private SecretRepository secretRepository;
 
     public String claimAddress(final String user) {
         try {
@@ -41,7 +37,7 @@ public class ClaimAddressService {
     }
 
     private void persistSecret(final User secretOwner, final ECKeyPair ecKeyPair, final String address) {
-        final WalletSecret walletSecret = privateKeySecretRepository.save(
+        final WalletSecret walletSecret = walletSecretRepository.save(
                 WalletSecret.builder()
                         .address(address)
                         .privateKey(Hex.toHexString(ecKeyPair.getPrivateKey().toByteArray()))
@@ -62,9 +58,5 @@ public class ClaimAddressService {
                         .externalId(user)
                         .build(
                         )));
-    }
-
-    public List<WalletSecret> findByUser(final String owner) {
-        return privateKeySecretRepository.findByOwner(owner);
     }
 }

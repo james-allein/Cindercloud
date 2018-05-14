@@ -7,5 +7,4 @@ import java.util.List;
 
 public interface WalletSecretRepository extends CrudRepository<WalletSecret, String> {
 
-    List<WalletSecret> findByOwner(final String owner);
 }
