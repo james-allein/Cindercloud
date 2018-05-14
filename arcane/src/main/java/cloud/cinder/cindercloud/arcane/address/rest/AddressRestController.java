@@ -1,21 +1,35 @@
 package cloud.cinder.cindercloud.arcane.address.rest;
 
-import cloud.cinder.cindercloud.arcane.address.ClaimAddressService;
+import cloud.cinder.cindercloud.arcane.address.rest.request.GenerateAddressRequest;
+import cloud.cinder.cindercloud.arcane.address.rest.response.GenerateAddressResponse;
+import cloud.cinder.cindercloud.arcane.address.rest.response.ListAddressesResponse;
+import cloud.cinder.cindercloud.arcane.address.service.AddressService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import javax.websocket.server.PathParam;
 
 @RestController
 @RequestMapping("/api/v1/address")
 public class AddressRestController {
 
     @Autowired
-    private ClaimAddressService claimAddressService;
+    private AddressService addressService;
 
-    @GetMapping(value = "/generate")
-    public String generate() {
-        return claimAddressService.claimAddress("cindercloud");
+    @PostMapping(value = "/generate")
+    public GenerateAddressResponse generate(@RequestBody final GenerateAddressRequest generateAddressRequest) {
+        final String generatedAddress = addressService.generate(generateAddressRequest.getOwner());
+        return GenerateAddressResponse.builder()
+                .address(generatedAddress)
+                .owner(generateAddressRequest.getOwner())
+                .build();
+    }
+
+    @GetMapping(value = "/list")
+    public ListAddressesResponse listAddresses(@PathParam("owner") final String owner) {
+        return
+                ListAddressesResponse.builder()
+                        .addresses(addressService.list(owner))
+                        .build();
     }
 }

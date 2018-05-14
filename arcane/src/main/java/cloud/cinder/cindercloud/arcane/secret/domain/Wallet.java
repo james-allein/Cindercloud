@@ -10,14 +10,25 @@ import org.springframework.data.annotation.CreatedDate;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
-@Table(name = "secrets")
+@Table(name = "wallets")
 @Entity
 @Data
 @NoArgsConstructor
-public class Secret {
+public class Wallet {
 
     @Id
-    private String id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(name = "secret_id")
+    private String secretId;
+
+    @Column(name = "address")
+    private String address;
+
+    @Column(name = "wallet_type")
+    @Enumerated(value = EnumType.STRING)
+    private WalletType walletType;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
@@ -32,8 +43,10 @@ public class Secret {
     private String createdBy;
 
     @Builder
-    public Secret(final String id, final User user) {
-        this.id = id;
+    public Wallet(final String secretId, final String address, final WalletType walletType, final User user) {
+        this.secretId = secretId;
+        this.address = address;
+        this.walletType = walletType;
         this.user = user;
     }
 }

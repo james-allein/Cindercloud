@@ -1,8 +1,8 @@
-package cloud.cinder.cindercloud.arcane.address;
+package cloud.cinder.cindercloud.arcane.address.service;
 
 import cloud.cinder.cindercloud.arcane.privatekey.domain.WalletSecret;
 import cloud.cinder.cindercloud.arcane.privatekey.repository.WalletSecretRepository;
-import cloud.cinder.cindercloud.arcane.secret.domain.Secret;
+import cloud.cinder.cindercloud.arcane.secret.domain.Wallet;
 import cloud.cinder.cindercloud.arcane.secret.repository.SecretRepository;
 import cloud.cinder.cindercloud.arcane.user.domain.User;
 import cloud.cinder.cindercloud.arcane.user.repository.UserRepository;
@@ -13,9 +13,10 @@ import org.web3j.crypto.ECKeyPair;
 import org.web3j.crypto.Keys;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
-public class ClaimAddressService {
+public class AddressService {
 
     @Autowired
     private WalletSecretRepository walletSecretRepository;
@@ -24,19 +25,25 @@ public class ClaimAddressService {
     @Autowired
     private SecretRepository secretRepository;
 
-    public String claimAddress(final String user) {
+    public List<String> list(final String owner) {
+        return secretRepository.findByUserExternalId(owner)
+                .stream()
+                .map(Wallet::getAddress)
+                .collect(Collectors.toList());
+    }
+
+    public String generate(final String user) {
         try {
             final User secretOwner = createOrFetchUser(user);
             final ECKeyPair ecKeyPair = Keys.createEcKeyPair();
-            final String address = Keys.getAddress(ecKeyPair.getPublicKey());
-            persistSecret(secretOwner, ecKeyPair, address);
-            return address;
+            return persistSecret(secretOwner, ecKeyPair);
         } catch (final Exception ex) {
             throw new IllegalArgumentException("Unable to generate keypair", ex);
         }
     }
 
-    private void persistSecret(final User secretOwner, final ECKeyPair ecKeyPair, final String address) {
+    private String persistSecret(final User secretOwner, final ECKeyPair ecKeyPair) {
+        final String address = Keys.getAddress(ecKeyPair.getPublicKey());
         final WalletSecret walletSecret = walletSecretRepository.save(
                 WalletSecret.builder()
                         .address(address)
@@ -45,11 +52,13 @@ public class ClaimAddressService {
                         .build()
         );
         secretRepository.save(
-                Secret.builder()
-                        .id(walletSecret.getId())
+                Wallet.builder()
+                        .secretId(walletSecret.getId())
+                        .address(address)
                         .user(secretOwner)
                         .build()
         );
+        return address;
     }
 
     private User createOrFetchUser(final String user) {
