@@ -21,7 +21,7 @@ public class SecretCleanupService {
     public void init() {
         secretRepository.findAll()
                 .stream()
-                .filter(x -> !walletSecretRepository.existsById(x.getId()))
+                .filter(x -> !walletSecretRepository.existsById(x.getSecretId()))
                 .forEach(x -> secretRepository.delete(x));
     }
 }

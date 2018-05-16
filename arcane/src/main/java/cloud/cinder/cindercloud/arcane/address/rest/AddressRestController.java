@@ -18,7 +18,7 @@ public class AddressRestController {
 
     @PostMapping(value = "/generate")
     public GenerateAddressResponse generate(@RequestBody final GenerateAddressRequest generateAddressRequest) {
-        final String generatedAddress = addressService.generate(generateAddressRequest.getOwner());
+        final String generatedAddress = addressService.generate(generateAddressRequest.getOwner(), generateAddressRequest.getWalletType());
         return GenerateAddressResponse.builder()
                 .address(generatedAddress)
                 .owner(generateAddressRequest.getOwner())

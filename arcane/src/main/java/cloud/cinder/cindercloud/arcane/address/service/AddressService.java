@@ -3,6 +3,7 @@ package cloud.cinder.cindercloud.arcane.address.service;
 import cloud.cinder.cindercloud.arcane.privatekey.domain.WalletSecret;
 import cloud.cinder.cindercloud.arcane.privatekey.repository.WalletSecretRepository;
 import cloud.cinder.cindercloud.arcane.secret.domain.Wallet;
+import cloud.cinder.cindercloud.arcane.secret.domain.WalletType;
 import cloud.cinder.cindercloud.arcane.secret.repository.SecretRepository;
 import cloud.cinder.cindercloud.arcane.user.domain.User;
 import cloud.cinder.cindercloud.arcane.user.repository.UserRepository;
@@ -32,17 +33,17 @@ public class AddressService {
                 .collect(Collectors.toList());
     }
 
-    public String generate(final String user) {
+    public String generate(final String user, final WalletType walletType) {
         try {
             final User secretOwner = createOrFetchUser(user);
             final ECKeyPair ecKeyPair = Keys.createEcKeyPair();
-            return persistSecret(secretOwner, ecKeyPair);
+            return persistSecret(secretOwner, ecKeyPair, walletType);
         } catch (final Exception ex) {
             throw new IllegalArgumentException("Unable to generate keypair", ex);
         }
     }
 
-    private String persistSecret(final User secretOwner, final ECKeyPair ecKeyPair) {
+    private String persistSecret(final User secretOwner, final ECKeyPair ecKeyPair, final WalletType walletType) {
         final String address = Keys.getAddress(ecKeyPair.getPublicKey());
         final WalletSecret walletSecret = walletSecretRepository.save(
                 WalletSecret.builder()
@@ -55,6 +56,7 @@ public class AddressService {
                 Wallet.builder()
                         .secretId(walletSecret.getId())
                         .address(address)
+                        .walletType(walletType)
                         .user(secretOwner)
                         .build()
         );
