@@ -1,13 +1,14 @@
-package cloud.cinder.cindercloud.utils;
+package cloud.cinder.ethereum.util;
 
 import cloud.cinder.cindercloud.utils.domain.PrettyAmount;
 import org.web3j.utils.Convert;
 
+import javax.annotation.Nonnull;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.math.RoundingMode;
 
-public class WeiUtils {
+public class EthUtil {
 
     public static double asEth(final BigInteger weiBalance) {
         return new BigDecimal(weiBalance).divide(BigDecimal.valueOf(Math.pow(10, 18)), 8, RoundingMode.HALF_DOWN).doubleValue();
@@ -28,6 +29,14 @@ public class WeiUtils {
             }
         } else {
             return new PrettyAmount(Convert.fromWei(new BigDecimal(value), Convert.Unit.ETHER).toPlainString(), "ether");
+        }
+    }
+
+    public static String prettifyAddress(final @Nonnull String address) {
+        if (!address.startsWith("0x")) {
+            return String.format("0x%s", address);
+        } else {
+            return address;
         }
     }
 

@@ -1,7 +1,7 @@
-package cloud.cinder.cindercloud.abi;
+package cloud.cinder.ethereum.abi;
 
-import cloud.cinder.cindercloud.abi.domain.AbiContract;
-import cloud.cinder.cindercloud.abi.domain.AbiContractElement;
+import cloud.cinder.ethereum.abi.domain.AbiContract;
+import cloud.cinder.ethereum.abi.domain.AbiContractElement;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;

@@ -1,8 +1,8 @@
 package cloud.cinder.cindercloud.transaction.domain;
 
 import cloud.cinder.cindercloud.address.domain.SpecialAddress;
-import cloud.cinder.cindercloud.utils.WeiUtils;
 import cloud.cinder.cindercloud.utils.domain.PrettyAmount;
+import cloud.cinder.ethereum.util.EthUtil;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -64,11 +64,11 @@ public class Transaction {
     }
 
     public PrettyAmount formattedValue() {
-        return WeiUtils.format(value);
+        return EthUtil.format(value);
     }
 
     public PrettyAmount formattedGasPrice() {
-        return WeiUtils.format(gasPrice);
+        return EthUtil.format(gasPrice);
     }
 
     public String prettyHash() {

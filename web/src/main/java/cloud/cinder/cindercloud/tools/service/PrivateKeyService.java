@@ -2,7 +2,7 @@ package cloud.cinder.cindercloud.tools.service;
 
 import cloud.cinder.cindercloud.credentials.CredentialService;
 import cloud.cinder.cindercloud.tools.service.dto.PrivateKeyCheckResult;
-import cloud.cinder.cindercloud.utils.WeiUtils;
+import cloud.cinder.cindercloud.utils.EthUtil;
 import cloud.cinder.cindercloud.web3j.Web3jGateway;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -38,7 +38,7 @@ public class PrivateKeyService {
                         final BigInteger txCount = web3j.web3j().ethGetTransactionCount(address, DefaultBlockParameterName.LATEST).observable().toBlocking().first().getTransactionCount();
                         return PrivateKeyCheckResult.builder()
                                 .address(address)
-                                .balance(WeiUtils.format(balance).toString())
+                                .balance(EthUtil.format(balance).toString())
                                 .privateKey(x)
                                 .txCount(txCount.toString())
                                 .rawTxCount(txCount)

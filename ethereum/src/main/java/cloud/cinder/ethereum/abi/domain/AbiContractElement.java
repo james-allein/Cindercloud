@@ -1,4 +1,4 @@
-package cloud.cinder.cindercloud.abi.domain;
+package cloud.cinder.ethereum.abi.domain;
 
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;

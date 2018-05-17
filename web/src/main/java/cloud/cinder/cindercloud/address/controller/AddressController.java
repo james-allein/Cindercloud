@@ -9,7 +9,7 @@ import cloud.cinder.cindercloud.coinmarketcap.service.PriceService;
 import cloud.cinder.cindercloud.token.service.TokenService;
 import cloud.cinder.cindercloud.transaction.domain.Transaction;
 import cloud.cinder.cindercloud.transaction.service.TransactionService;
-import cloud.cinder.cindercloud.utils.WeiUtils;
+import cloud.cinder.cindercloud.utils.EthUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Slice;
@@ -26,7 +26,7 @@ import java.math.BigInteger;
 import java.util.Optional;
 
 import static cloud.cinder.cindercloud.utils.AddressUtils.prettifyAddress;
-import static cloud.cinder.cindercloud.utils.WeiUtils.format;
+import static cloud.cinder.cindercloud.utils.EthUtil.format;
 
 @Controller
 @RequestMapping("/address")
@@ -65,8 +65,8 @@ public class AddressController {
         Observable.zip(code, transactions, transactionCount, balance, (cde, tx, count, bal) -> {
             final Slice<Transaction> convertedSlice = tx.map(x -> transactionService.enrichWithSpecialAddresses(x));
             modelAndView.addObject("address", new AddressVO(cde, format(bal), count, convertedSlice));
-            modelAndView.addObject("balEUR", priceService.getPrice(Currency.EUR) * WeiUtils.asEth(bal));
-            modelAndView.addObject("balUSD", priceService.getPrice(Currency.USD) * WeiUtils.asEth(bal));
+            modelAndView.addObject("balEUR", priceService.getPrice(Currency.EUR) * EthUtil.asEth(bal));
+            modelAndView.addObject("balUSD", priceService.getPrice(Currency.USD) * EthUtil.asEth(bal));
             modelAndView.addObject("isSpecial", specialAddress.isPresent());
             modelAndView.addObject("hash", address);
             modelAndView.addObject("specialName", specialAddress.map(SpecialAddress::getName).orElse(""));

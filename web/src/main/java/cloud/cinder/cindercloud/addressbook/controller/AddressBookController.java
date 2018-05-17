@@ -6,7 +6,7 @@ import cloud.cinder.cindercloud.addressbook.controller.vo.ContactVO;
 import cloud.cinder.cindercloud.addressbook.service.AddressBookService;
 import cloud.cinder.cindercloud.coinmarketcap.dto.Currency;
 import cloud.cinder.cindercloud.coinmarketcap.service.PriceService;
-import cloud.cinder.cindercloud.utils.WeiUtils;
+import cloud.cinder.cindercloud.utils.EthUtil;
 import cloud.cinder.cindercloud.wallet.service.AuthenticationService;
 import lombok.extern.slf4j.Slf4j;
 import org.ocpsoft.prettytime.PrettyTime;
@@ -23,7 +23,7 @@ import java.text.DecimalFormat;
 import java.util.Locale;
 import java.util.stream.Collectors;
 
-import static cloud.cinder.cindercloud.utils.WeiUtils.format;
+import static cloud.cinder.cindercloud.utils.EthUtil.format;
 
 
 @Controller
@@ -76,7 +76,7 @@ public class AddressBookController {
     }
 
     private String getBalance(final BigInteger bal, final Currency eur) {
-        return decimalFormat.format(priceService.getPrice(eur) * WeiUtils.asEth(bal));
+        return decimalFormat.format(priceService.getPrice(eur) * EthUtil.asEth(bal));
     }
 
     @PostMapping("/new")

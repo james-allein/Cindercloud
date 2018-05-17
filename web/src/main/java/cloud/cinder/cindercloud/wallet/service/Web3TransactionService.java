@@ -1,6 +1,6 @@
 package cloud.cinder.cindercloud.wallet.service;
 
-import cloud.cinder.cindercloud.erc20.domain.HumanStandardToken;
+import cloud.cinder.ethereum.token.HumanStandardToken;
 import cloud.cinder.cindercloud.wallet.controller.command.confirm.ConfirmEtherTransactionCommand;
 import cloud.cinder.cindercloud.wallet.controller.command.confirm.ConfirmTokenTransactionCommand;
 import cloud.cinder.cindercloud.web3j.Web3jGateway;
@@ -10,8 +10,6 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.web3j.abi.FunctionEncoder;
 import org.web3j.abi.datatypes.Function;
-import org.web3j.crypto.Credentials;
-import org.web3j.crypto.ECKeyPair;
 import org.web3j.crypto.RawTransaction;
 import org.web3j.protocol.core.DefaultBlockParameterName;
 import org.web3j.protocol.core.methods.response.EthGetTransactionCount;

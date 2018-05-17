@@ -1,6 +1,6 @@
 package cloud.cinder.cindercloud.abi;
 
-import cloud.cinder.cindercloud.abi.domain.*;
+import cloud.cinder.ethereum.abi.AbiDecoder;
 import org.junit.Test;
 
 import java.io.IOException;
