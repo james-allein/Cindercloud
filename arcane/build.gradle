@@ -23,6 +23,8 @@ dependencies {
     compile("org.springframework.data:spring-data-keyvalue")
     runtime("org.springframework.boot:spring-boot-properties-migrator")
 
+    compile('io.springfox:springfox-swagger2:2.7.0')
+
     compile group: 'org.web3j', name: 'core', version: "${theWeb3jVersion}"
     compile group: 'org.web3j', name: 'crypto', version: "${theWeb3jVersion}"
 

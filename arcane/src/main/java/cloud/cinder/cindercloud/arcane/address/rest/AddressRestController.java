@@ -21,6 +21,7 @@ public class AddressRestController {
         final String generatedAddress = addressService.generate(generateAddressRequest.getOwner(), generateAddressRequest.getWalletType());
         return GenerateAddressResponse.builder()
                 .address(generatedAddress)
+                .walletType(generateAddressRequest.getWalletType())
                 .owner(generateAddressRequest.getOwner())
                 .build();
     }

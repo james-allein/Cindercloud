@@ -9,5 +9,5 @@ import lombok.NoArgsConstructor;
 public class GenerateAddressRequest {
 
     private String owner;
-    private WalletType walletType;
+    private WalletType walletType = WalletType.ETHEREUM;
 }
