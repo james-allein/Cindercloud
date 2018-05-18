@@ -1,7 +1,7 @@
 package cloud.cinder.cindercloud.address.controller.vo;
 
-import cloud.cinder.cindercloud.transaction.domain.Transaction;
 import cloud.cinder.cindercloud.utils.domain.PrettyAmount;
+import cloud.cinder.ethereum.transaction.Transaction;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.springframework.data.domain.Slice;

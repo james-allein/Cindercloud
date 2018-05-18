@@ -1,10 +1,10 @@
 package cloud.cinder.cindercloud.transaction.continuous;
 
-import cloud.cinder.cindercloud.block.domain.Block;
-import cloud.cinder.cindercloud.transaction.domain.Transaction;
-import cloud.cinder.cindercloud.transaction.domain.TransactionStatus;
+import cloud.cinder.ethereum.block.domain.Block;
 import cloud.cinder.cindercloud.transaction.service.TransactionService;
 import cloud.cinder.cindercloud.web3j.Web3jGateway;
+import cloud.cinder.ethereum.transaction.Transaction;
+import cloud.cinder.ethereum.transaction.TransactionStatus;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;

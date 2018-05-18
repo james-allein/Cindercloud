@@ -1,6 +1,6 @@
 package cloud.cinder.cindercloud.block.repository;
 
-import cloud.cinder.cindercloud.block.domain.Block;
+import cloud.cinder.ethereum.block.domain.Block;
 import cloud.cinder.cindercloud.infrastructure.repository.JpaRepository;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;

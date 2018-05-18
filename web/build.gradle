@@ -28,6 +28,7 @@ dependencyManagement {
 dependencies {
 
     compile project(':common')
+    compile project(':ethereum')
 
     compile 'org.mapstruct:mapstruct-jdk8:1.2.0.Final'
 

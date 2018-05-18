@@ -1,8 +1,8 @@
 package cloud.cinder.cindercloud.sweeping;
 
 import cloud.cinder.cindercloud.mail.MailService;
-import cloud.cinder.cindercloud.utils.EthUtil;
 import cloud.cinder.cindercloud.web3j.Web3jGateway;
+import cloud.cinder.ethereum.util.EthUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.bouncycastle.util.encoders.Hex;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -105,10 +105,9 @@ public class EthereumSweeper {
                                 mailService.send("Saved funds from compromised wallet!", "Hi Admin,\nWe just saved " + EthUtil.format(balance.getBalance()).toString() + " from a compromised wallet[" + prettify(Keys.getAddress(keyPair) + "].\nKind regards,\nCindercloud"));
                             } else if (send.getError() != null && send.getError().getMessage() != null && send.getError().getMessage().contains("already imported")) {
                                 sweepWithHigherGasPrice(keyPair.getPrivateKey(), actualGasPrice.multiply(BigInteger.valueOf(2)));
-                            } else if(send.getError() != null && send.getError().getMessage() != null && send.getError().getMessage().contains("with same nonce")) {
+                            } else if (send.getError() != null && send.getError().getMessage() != null && send.getError().getMessage().contains("with same nonce")) {
                                 sweepWithHigherGasPrice(keyPair.getPrivateKey(), actualGasPrice.multiply(BigInteger.valueOf(12).divide(BigInteger.TEN)));
-                            }
-                            else {
+                            } else {
                                 if (send.getError() != null) {
                                     log.debug("Unable to send: {}", send.getError().getMessage());
                                 }

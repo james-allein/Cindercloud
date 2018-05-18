@@ -12,7 +12,7 @@ import org.web3j.crypto.Credentials;
 
 import java.util.Date;
 
-import static cloud.cinder.cindercloud.utils.AddressUtils.prettifyAddress;
+import static cloud.cinder.ethereum.util.EthUtil.prettifyAddress;
 
 @Component
 public class LoginHandler {

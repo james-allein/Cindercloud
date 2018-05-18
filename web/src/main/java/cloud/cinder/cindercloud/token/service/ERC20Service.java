@@ -1,7 +1,7 @@
 package cloud.cinder.cindercloud.token.service;
 
-import cloud.cinder.ethereum.token.HumanStandardToken;
 import cloud.cinder.cindercloud.web3j.Web3jGateway;
+import cloud.cinder.ethereum.token.domain.HumanStandardToken;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;

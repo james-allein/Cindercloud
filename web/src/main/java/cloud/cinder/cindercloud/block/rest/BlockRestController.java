@@ -1,6 +1,6 @@
 package cloud.cinder.cindercloud.block.rest;
 
-import cloud.cinder.cindercloud.block.domain.Block;
+import cloud.cinder.ethereum.block.domain.Block;
 import cloud.cinder.cindercloud.block.service.BlockService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

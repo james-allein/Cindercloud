@@ -1,15 +1,15 @@
 package cloud.cinder.cindercloud.address.controller;
 
 import cloud.cinder.cindercloud.address.controller.vo.AddressVO;
-import cloud.cinder.cindercloud.address.domain.SpecialAddress;
+import cloud.cinder.ethereum.address.domain.SpecialAddress;
 import cloud.cinder.cindercloud.address.service.AddressService;
 import cloud.cinder.cindercloud.block.service.BlockService;
 import cloud.cinder.cindercloud.coinmarketcap.dto.Currency;
 import cloud.cinder.cindercloud.coinmarketcap.service.PriceService;
 import cloud.cinder.cindercloud.token.service.TokenService;
-import cloud.cinder.cindercloud.transaction.domain.Transaction;
 import cloud.cinder.cindercloud.transaction.service.TransactionService;
-import cloud.cinder.cindercloud.utils.EthUtil;
+import cloud.cinder.ethereum.transaction.Transaction;
+import cloud.cinder.ethereum.util.EthUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Slice;
@@ -25,8 +25,8 @@ import rx.Observable;
 import java.math.BigInteger;
 import java.util.Optional;
 
-import static cloud.cinder.cindercloud.utils.AddressUtils.prettifyAddress;
-import static cloud.cinder.cindercloud.utils.EthUtil.format;
+import static cloud.cinder.ethereum.util.EthUtil.format;
+import static cloud.cinder.ethereum.util.EthUtil.prettifyAddress;
 
 @Controller
 @RequestMapping("/address")

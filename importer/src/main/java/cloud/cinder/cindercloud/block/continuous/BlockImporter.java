@@ -1,8 +1,8 @@
 package cloud.cinder.cindercloud.block.continuous;
 
-import cloud.cinder.cindercloud.block.domain.BlockImportJob;
+import cloud.cinder.ethereum.block.domain.BlockImportJob;
 import cloud.cinder.cindercloud.block.continuous.repository.BlockImportJobRepository;
-import cloud.cinder.cindercloud.block.domain.Block;
+import cloud.cinder.ethereum.block.domain.Block;
 import cloud.cinder.cindercloud.block.repository.BlockRepository;
 import cloud.cinder.cindercloud.block.service.BlockService;
 import cloud.cinder.cindercloud.web3j.Web3jGateway;

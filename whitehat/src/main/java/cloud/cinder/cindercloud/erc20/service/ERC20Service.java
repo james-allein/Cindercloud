@@ -1,7 +1,7 @@
 package cloud.cinder.cindercloud.erc20.service;
 
-import cloud.cinder.ethereum.token.HumanStandardToken;
 import cloud.cinder.cindercloud.web3j.Web3jGateway;
+import cloud.cinder.ethereum.token.domain.HumanStandardToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

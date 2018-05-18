@@ -1,6 +1,6 @@
 package cloud.cinder.cindercloud.token.listener;
 
-import cloud.cinder.cindercloud.token.domain.Token;
+import cloud.cinder.ethereum.token.domain.Token;
 import cloud.cinder.cindercloud.token.listener.model.UserTokenRequest;
 import cloud.cinder.cindercloud.token.service.TokenService;
 import cloud.cinder.cindercloud.token.service.TokenTransferService;
@@ -22,7 +22,7 @@ import org.web3j.protocol.core.methods.response.Log;
 import java.util.Optional;
 
 import static cloud.cinder.cindercloud.token.listener.TokenTransferListener.TRANSFER_EVENT;
-import static cloud.cinder.cindercloud.utils.AddressUtils.prettifyAddress;
+import static cloud.cinder.ethereum.util.EthUtil.prettifyAddress;
 
 @Component
 @ConditionalOnProperty(name = "cloud.cinder.ethereum.token-transfer-import", havingValue = "true")

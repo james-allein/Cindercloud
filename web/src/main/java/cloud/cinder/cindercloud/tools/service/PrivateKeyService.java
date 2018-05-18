@@ -2,8 +2,8 @@ package cloud.cinder.cindercloud.tools.service;
 
 import cloud.cinder.cindercloud.credentials.CredentialService;
 import cloud.cinder.cindercloud.tools.service.dto.PrivateKeyCheckResult;
-import cloud.cinder.cindercloud.utils.EthUtil;
 import cloud.cinder.cindercloud.web3j.Web3jGateway;
+import cloud.cinder.ethereum.util.EthUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.web3j.crypto.ECKeyPair;
@@ -16,7 +16,8 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-import static cloud.cinder.cindercloud.utils.AddressUtils.prettifyAddress;
+import static cloud.cinder.ethereum.util.EthUtil.prettifyAddress;
+
 
 @Component
 public class PrivateKeyService {

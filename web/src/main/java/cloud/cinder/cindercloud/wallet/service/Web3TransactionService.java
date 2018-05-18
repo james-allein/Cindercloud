@@ -1,9 +1,9 @@
 package cloud.cinder.cindercloud.wallet.service;
 
-import cloud.cinder.ethereum.token.HumanStandardToken;
 import cloud.cinder.cindercloud.wallet.controller.command.confirm.ConfirmEtherTransactionCommand;
 import cloud.cinder.cindercloud.wallet.controller.command.confirm.ConfirmTokenTransactionCommand;
 import cloud.cinder.cindercloud.web3j.Web3jGateway;
+import cloud.cinder.ethereum.token.domain.HumanStandardToken;
 import lombok.extern.slf4j.Slf4j;
 import org.bouncycastle.util.encoders.Hex;
 import org.springframework.context.ApplicationEventPublisher;

@@ -1,7 +1,7 @@
 package cloud.cinder.cindercloud.transaction.repository;
 
 import cloud.cinder.cindercloud.infrastructure.repository.JpaRepository;
-import cloud.cinder.cindercloud.transaction.domain.Transaction;
+import cloud.cinder.ethereum.transaction.Transaction;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.jpa.repository.Query;

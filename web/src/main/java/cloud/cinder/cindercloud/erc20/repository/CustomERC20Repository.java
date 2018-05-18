@@ -1,6 +1,6 @@
 package cloud.cinder.cindercloud.erc20.repository;
 
-import cloud.cinder.cindercloud.erc20.domain.CustomERC20;
+import cloud.cinder.ethereum.erc20.domain.CustomERC20;
 import cloud.cinder.cindercloud.infrastructure.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

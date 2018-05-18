@@ -1,7 +1,7 @@
 package cloud.cinder.cindercloud.transaction.controller;
 
-import cloud.cinder.cindercloud.parity.registry.signature.domain.MethodSignature;
 import cloud.cinder.cindercloud.transaction.service.TransactionService;
+import cloud.cinder.ethereum.parity.domain.MethodSignature;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
