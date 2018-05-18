@@ -12,7 +12,7 @@ import org.web3j.utils.Numeric;
 
 import java.util.Date;
 
-import static cloud.cinder.cindercloud.utils.AddressUtils.prettifyAddress;
+import static cloud.cinder.ethereum.util.EthUtil.prettifyAddress;
 
 @Component
 @Slf4j

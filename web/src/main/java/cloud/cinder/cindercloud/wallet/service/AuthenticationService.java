@@ -13,7 +13,7 @@ import org.web3j.crypto.ECKeyPair;
 import org.web3j.crypto.RawTransaction;
 import org.web3j.crypto.TransactionEncoder;
 
-import static cloud.cinder.cindercloud.utils.AddressUtils.prettifyAddress;
+import static cloud.cinder.ethereum.util.EthUtil.prettifyAddress;
 
 @Service
 @Slf4j

@@ -1,17 +1,17 @@
 package cloud.cinder.cindercloud.transaction.service;
 
-import cloud.cinder.cindercloud.address.domain.SpecialAddress;
+import cloud.cinder.ethereum.address.domain.SpecialAddress;
 import cloud.cinder.cindercloud.address.service.AddressService;
-import cloud.cinder.cindercloud.block.domain.Block;
+import cloud.cinder.ethereum.block.domain.Block;
 import cloud.cinder.cindercloud.block.service.BlockService;
 import cloud.cinder.cindercloud.etherscan.EtherscanService;
-import cloud.cinder.cindercloud.parity.registry.signature.MethodSignatureService;
-import cloud.cinder.cindercloud.parity.registry.signature.domain.MethodSignature;
+import cloud.cinder.ethereum.parity.domain.MethodSignature;
+import cloud.cinder.ethereum.parity.MethodSignatureService;
 import cloud.cinder.cindercloud.token.service.TokenService;
-import cloud.cinder.cindercloud.transaction.domain.Transaction;
-import cloud.cinder.cindercloud.transaction.domain.TransactionStatus;
 import cloud.cinder.cindercloud.transaction.repository.TransactionRepository;
 import cloud.cinder.cindercloud.web3j.Web3jGateway;
+import cloud.cinder.ethereum.transaction.Transaction;
+import cloud.cinder.ethereum.transaction.TransactionStatus;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -175,7 +175,6 @@ public class TransactionService {
                     .map(tx -> transactionRepository.save(tx));
         } catch (
                 Exception ex)
-
         {
             return Observable.error(ex);
         }

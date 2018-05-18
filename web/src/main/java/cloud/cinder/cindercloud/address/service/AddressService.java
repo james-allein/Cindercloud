@@ -1,6 +1,6 @@
 package cloud.cinder.cindercloud.address.service;
 
-import cloud.cinder.cindercloud.address.domain.SpecialAddress;
+import cloud.cinder.ethereum.address.domain.SpecialAddress;
 import cloud.cinder.cindercloud.address.repository.SpecialAddressRepository;
 import cloud.cinder.cindercloud.web3j.Web3jGateway;
 import org.springframework.stereotype.Component;

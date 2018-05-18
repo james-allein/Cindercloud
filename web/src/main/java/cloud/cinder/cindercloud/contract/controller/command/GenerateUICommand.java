@@ -1,6 +1,6 @@
 package cloud.cinder.cindercloud.contract.controller.command;
 
-import cloud.cinder.cindercloud.abi.domain.AbiContractElement;
+import cloud.cinder.ethereum.abi.domain.AbiContractElement;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

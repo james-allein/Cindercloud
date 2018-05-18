@@ -1,7 +1,7 @@
 package cloud.cinder.cindercloud.erc20.service;
 
-import cloud.cinder.cindercloud.erc20.domain.CustomERC20;
-import cloud.cinder.cindercloud.erc20.domain.HumanStandardToken;
+import cloud.cinder.ethereum.erc20.domain.CustomERC20;
+import cloud.cinder.ethereum.token.domain.HumanStandardToken;
 import cloud.cinder.cindercloud.erc20.repository.CustomERC20Repository;
 import cloud.cinder.cindercloud.web3j.Web3jGateway;
 import lombok.extern.slf4j.Slf4j;

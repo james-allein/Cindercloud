@@ -12,7 +12,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
-import static cloud.cinder.cindercloud.utils.AddressUtils.prettifyAddress;
+import static cloud.cinder.ethereum.util.EthUtil.prettifyAddress;
 
 @Service
 @Slf4j

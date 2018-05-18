@@ -1,6 +1,6 @@
 package cloud.cinder.cindercloud.config;
 
-import cloud.cinder.cindercloud.parity.registry.signature.contract.ParitySignatureRegistry;
+import cloud.cinder.ethereum.parity.domain.ParitySignatureRegistry;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

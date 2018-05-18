@@ -1,7 +1,7 @@
 package cloud.cinder.cindercloud.transaction.rest;
 
-import cloud.cinder.cindercloud.transaction.domain.Transaction;
 import cloud.cinder.cindercloud.transaction.service.TransactionService;
+import cloud.cinder.ethereum.transaction.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;

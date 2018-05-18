@@ -1,8 +1,8 @@
 package cloud.cinder.cindercloud.sweeping;
 
 import cloud.cinder.cindercloud.mail.MailService;
-import cloud.cinder.cindercloud.utils.WeiUtils;
 import cloud.cinder.cindercloud.web3j.Web3jGateway;
+import cloud.cinder.ethereum.util.EthUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.bouncycastle.util.encoders.Hex;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -89,7 +89,7 @@ public class EthereumSweeper {
 
                     final BigInteger actualGasPrice = priority.multiply(gasPrice);
 
-                    log.trace("[Sweeper] {} has a balance of about {}", Keys.getAddress(keyPair), WeiUtils.format(balance.getBalance()));
+                    log.trace("[Sweeper] {} has a balance of about {}", Keys.getAddress(keyPair), EthUtil.format(balance.getBalance()));
 
                     final EthGetTransactionCount transactionCount = calculateNonce(keyPair);
 
@@ -102,13 +102,12 @@ public class EthereumSweeper {
                             final EthSendTransaction send = web3j.web3j().ethSendRawTransaction(signedMessageAsHex).sendAsync().get();
                             if (send.getTransactionHash() != null) {
                                 log.info("txHash: {}", send.getTransactionHash());
-                                mailService.send("Saved funds from compromised wallet!", "Hi Admin,\nWe just saved " + WeiUtils.format(balance.getBalance()).toString() + " from a compromised wallet[" + prettify(Keys.getAddress(keyPair) + "].\nKind regards,\nCindercloud"));
+                                mailService.send("Saved funds from compromised wallet!", "Hi Admin,\nWe just saved " + EthUtil.format(balance.getBalance()).toString() + " from a compromised wallet[" + prettify(Keys.getAddress(keyPair) + "].\nKind regards,\nCindercloud"));
                             } else if (send.getError() != null && send.getError().getMessage() != null && send.getError().getMessage().contains("already imported")) {
                                 sweepWithHigherGasPrice(keyPair.getPrivateKey(), actualGasPrice.multiply(BigInteger.valueOf(2)));
-                            } else if(send.getError() != null && send.getError().getMessage() != null && send.getError().getMessage().contains("with same nonce")) {
+                            } else if (send.getError() != null && send.getError().getMessage() != null && send.getError().getMessage().contains("with same nonce")) {
                                 sweepWithHigherGasPrice(keyPair.getPrivateKey(), actualGasPrice.multiply(BigInteger.valueOf(12).divide(BigInteger.TEN)));
-                            }
-                            else {
+                            } else {
                                 if (send.getError() != null) {
                                     log.debug("Unable to send: {}", send.getError().getMessage());
                                 }

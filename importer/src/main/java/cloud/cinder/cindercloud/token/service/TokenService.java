@@ -1,7 +1,7 @@
 package cloud.cinder.cindercloud.token.service;
 
 
-import cloud.cinder.cindercloud.token.domain.Token;
+import cloud.cinder.ethereum.token.domain.Token;
 import cloud.cinder.cindercloud.token.repository.TokenRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

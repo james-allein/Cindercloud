@@ -1,7 +1,7 @@
 package cloud.cinder.cindercloud.token.repository;
 
 import cloud.cinder.cindercloud.infrastructure.repository.JpaRepository;
-import cloud.cinder.cindercloud.token.domain.TokenTransfer;
+import cloud.cinder.ethereum.token.domain.TokenTransfer;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

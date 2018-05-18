@@ -17,7 +17,7 @@ import rx.functions.Action1;
 
 import java.util.Date;
 
-import static cloud.cinder.cindercloud.utils.AddressUtils.prettifyAddress;
+import static cloud.cinder.ethereum.util.EthUtil.prettifyAddress;
 
 @Component
 @Slf4j
