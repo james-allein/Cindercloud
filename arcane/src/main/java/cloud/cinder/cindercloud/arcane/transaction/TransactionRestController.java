@@ -20,4 +20,9 @@ public class TransactionRestController {
     public SignedTransactionDto sign(@RequestBody RawTransactionDto rawTransactionDto) {
         return signatureService.sign(rawTransactionDto);
     }
+
+    @PostMapping("/submit")
+    public RawTransactionDto sign(@RequestBody RawTransactionDto rawTransactionDto) {
+
+    }
 }

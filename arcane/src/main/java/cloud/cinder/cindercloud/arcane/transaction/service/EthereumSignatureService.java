@@ -12,6 +12,8 @@ import org.web3j.crypto.TransactionEncoder;
 
 import java.util.Optional;
 
+import static cloud.cinder.ethereum.util.EthUtil.prettifyAddress;
+
 @Component
 public class EthereumSignatureService {
 
@@ -27,7 +29,7 @@ public class EthereumSignatureService {
                 .map(x -> TransactionEncoder.signMessage(rawTransactionDto.toRawTransaction(), Credentials.create(x.getPrivateKey())))
                 .map(x -> SignedTransactionDto.builder()
                         .rawTransactionDto(rawTransactionDto)
-                        .signedBytes(Hex.toHexString(x))
+                        .signedBytes(prettifyAddress(Hex.toHexString(x)))
                         .build())
                 .orElseThrow(() -> new IllegalArgumentException("Unable to create transaction"));
     }
