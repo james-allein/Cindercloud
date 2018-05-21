@@ -34,7 +34,7 @@ public class MethodSignatureService {
     }
 
     private String sanitize(final String input) {
-        if (input != null && input.toLowerCase().startsWith("0x")) {
+        if ((input != null) && input.toLowerCase().startsWith("0x")) {
             return input.substring(2);
         } else {
             return input;
