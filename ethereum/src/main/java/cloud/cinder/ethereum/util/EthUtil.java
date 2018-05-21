@@ -1,6 +1,6 @@
 package cloud.cinder.ethereum.util;
 
-import cloud.cinder.cindercloud.utils.domain.PrettyAmount;
+import cloud.cinder.common.utils.domain.PrettyAmount;
 import org.web3j.utils.Convert;
 
 import javax.annotation.Nonnull;
