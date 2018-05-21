@@ -48,8 +48,8 @@ import java.net.UnknownHostException;
 public class CindercloudWeb {
 
     public static void main(String[] args) throws UnknownHostException {
-        SpringApplication app = new SpringApplication(CindercloudWeb.class);
-        Environment env = app.run(args).getEnvironment();
+        final SpringApplication app = new SpringApplication(CindercloudWeb.class);
+        final Environment env = app.run(args).getEnvironment();
         log.info("\n----------------------------------------------------------\n\t"
                         + "Application '{}' is running! Access URLs:\n\t"
                         + "Local: \t\thttp://localhost:{}\n\t"
