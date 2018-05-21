@@ -1,9 +1,9 @@
 package cloud.cinder.ethereum.parity;
 
 import cloud.cinder.ethereum.parity.domain.MethodSignature;
-import org.apache.commons.lang.StringUtils;
 import org.bouncycastle.util.encoders.Hex;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 import org.web3j.rlp.RlpString;
 
 import java.util.Arrays;
@@ -23,7 +23,7 @@ public class MethodSignatureService {
             final String sanitizedInput = sanitize(input);
             final byte[] bytes = RlpString.create(Arrays.copyOfRange(Hex.decode(sanitizedInput), 0, 4)).getBytes();
             final String signature = paritySignatureRegistryService.entries(bytes);
-            if (StringUtils.isNotBlank(signature)) {
+            if (!StringUtils.isEmpty(signature)) {
                 return Optional.of(new MethodSignature(input, signature));
             } else {
                 return Optional.empty();
